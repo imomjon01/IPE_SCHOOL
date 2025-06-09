@@ -23,6 +23,6 @@ public class User extends BaseEntity {
     private List<Roles> roles;
     @ManyToMany
     private List<QuestionUser> questionUsers;
-    @ManyToOne
-    private Group group;
+    @ManyToMany
+    private List<Group> groups;
 }
