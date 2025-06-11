@@ -2,11 +2,11 @@ package ipe.school.ipe_school.models.entity;
 
 import ipe.school.ipe_school.models.base.BaseEntity;
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.OneToMany;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,8 +14,10 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class QuestionUser extends BaseEntity {
-    private String question;
-    private String answer;
-    private Boolean active;
+public class Modul extends BaseEntity {
+
+    private String modulName;
+    @OneToMany
+    private List<Task> tasks;
+
 }

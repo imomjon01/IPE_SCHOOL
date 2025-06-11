@@ -22,5 +22,9 @@ import java.util.List;
 public class Group extends BaseEntity {
     private String name;
     @OneToMany
-    private List<Task> tasks;
+    private List<User> students;
+    @OneToMany
+    private List<Modul> moduls;
+    @OneToMany
+    private List<StudentProgress> studentProgresses;
 }

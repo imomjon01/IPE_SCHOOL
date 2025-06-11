@@ -2,15 +2,11 @@ package ipe.school.ipe_school.models.entity;
 
 import ipe.school.ipe_school.models.base.BaseEntity;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -18,10 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class Question extends BaseEntity {
-    @OneToOne
-    private Attachment attachment;
-    private String questionTest;
-    private List<String> variant;
-    private String currectAnswer;
+public class Attachment extends BaseEntity {
+
+    String contentType;
+    private byte[] content;
 }

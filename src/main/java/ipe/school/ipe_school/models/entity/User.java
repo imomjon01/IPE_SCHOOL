@@ -21,8 +21,6 @@ public class User extends BaseEntity {
     private String password;
     @ManyToMany
     private List<Roles> roles;
-    @ManyToMany
-    private List<QuestionUser> questionUsers;
-    @ManyToMany
-    private List<Group> groups;
+    @OneToOne
+    private Attachment attachment;
 }

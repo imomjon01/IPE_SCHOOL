@@ -2,6 +2,7 @@ package ipe.school.ipe_school.models.entity;
 
 import ipe.school.ipe_school.models.base.BaseEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,9 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class Variants extends BaseEntity {
-    private String answer;
-    private Boolean is_active;
+public class StudentProgress extends BaseEntity {
+
+    @OneToOne
+    private User student;
+    private Integer progress;
 }
