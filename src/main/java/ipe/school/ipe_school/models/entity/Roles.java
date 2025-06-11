@@ -5,6 +5,7 @@ import ipe.school.ipe_school.models.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
 
 @Getter
 @Setter
@@ -12,7 +13,12 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class Roles extends BaseEntity {
+public class Roles extends BaseEntity implements GrantedAuthority {
 
-    private String roleName = Role.STUDENT.name();
+    private String name;
+
+    @Override
+    public String getAuthority() {
+        return this.name;
+    }
 }
