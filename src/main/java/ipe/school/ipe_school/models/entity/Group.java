@@ -24,7 +24,7 @@ public class Group extends BaseEntity {
     @OneToMany
     private List<User> students;
     @OneToMany
-    private List<Modul> moduls;
+    private List<Module> modules;
     @OneToMany
     private List<StudentProgress> studentProgresses;
 }

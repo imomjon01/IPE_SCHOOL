@@ -2,7 +2,6 @@ package ipe.school.ipe_school.models.entity;
 
 import ipe.school.ipe_school.models.base.BaseEntity;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,5 +22,5 @@ public class Question extends BaseEntity {
     private Attachment attachment;
     private String questionTest;
     private List<String> variant;
-    private String currectAnswer;
+    private String currentAnswer;
 }
