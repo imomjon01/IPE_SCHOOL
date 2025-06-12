@@ -111,7 +111,15 @@ public class MentorServiceImpl implements MentorService {
     }
 
     @Override
-    public MentorRes updateMentor(Long mentorId, MentorReq mentorReq) {
-        return null; // tog'irlab qoyaman
+    public MentorRes updateMentor(Long mentorId, MentorUpdateReq mentorUpdateReq) {
+        User user = userRepository.findById(mentorId).get();
+        user.set_active(mentorUpdateReq.is_active());
+        user.setPassword(passwordEncoder.encode(mentorUpdateReq.getPassword()));
+        user.setRoles(mentorUpdateReq.getRoles());
+        User save = userRepository.save(user);
+        return new MentorRes(save.getId(),save.getFirstName(),
+                save.getLastName(), save.getPhoneNumber(),
+                save.getAttachment().getContent(),
+                groupService.getGroupByMentorId(mentorId));
     }
 }

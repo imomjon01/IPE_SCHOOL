@@ -1,8 +1,7 @@
 package ipe.school.ipe_school.controller;
 
-import ipe.school.ipe_school.models.dtos.req.GroupReq;
 import ipe.school.ipe_school.models.dtos.req.MentorReq;
-import ipe.school.ipe_school.models.dtos.res.GroupDetailsRes;
+import ipe.school.ipe_school.models.dtos.req.MentorUpdateReq;
 import ipe.school.ipe_school.models.dtos.res.GroupRes;
 import ipe.school.ipe_school.models.dtos.res.MentorRes;
 import ipe.school.ipe_school.service.interfaces.MentorService;
@@ -47,8 +46,8 @@ public class AdminMentorController {
     }
 
     @PostMapping("/{mentor_id}")
-    public ResponseEntity<MentorRes> updateMentor(@PathVariable Long mentor_id, @RequestBody MentorReq mentorReq) {
-        MentorRes mentorRes = mentorService.updateMentor(mentor_id, mentorReq);
+    public ResponseEntity<MentorRes> updateMentor(@PathVariable Long mentor_id, @RequestBody MentorUpdateReq mentorUpdateReq) {
+        MentorRes mentorRes = mentorService.updateMentor(mentor_id, mentorUpdateReq);
         return new ResponseEntity<>(mentorRes, HttpStatus.OK);
     }
 }
