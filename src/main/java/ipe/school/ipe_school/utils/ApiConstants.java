@@ -4,4 +4,5 @@ public interface ApiConstants {
     String API_PATH = "/api";
     String API_VERSION = "/v1";
     String AUTH = "/auth";
+    String GROUP="/group";
 }
