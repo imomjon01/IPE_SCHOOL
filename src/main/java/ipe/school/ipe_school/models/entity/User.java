@@ -37,7 +37,7 @@ public class User extends BaseEntity implements UserDetails {
         return this.phoneNumber;
     }
 
-    public User( String phoneNumber, List<Roles> roles) {
+    public User(String phoneNumber, List<Roles> roles) {
         this.phoneNumber = phoneNumber;
         this.roles = roles;
     }

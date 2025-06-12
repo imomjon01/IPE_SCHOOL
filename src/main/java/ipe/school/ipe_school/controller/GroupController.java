@@ -22,6 +22,7 @@ public class GroupController {
 
     @PostMapping()
     public ResponseEntity<GroupRes> addGroup(@RequestBody GroupReq groupReq) {
+        System.out.println(groupReq);
         GroupRes groupRes=groupService.createGroup(groupReq);
         return new ResponseEntity<>(groupRes, HttpStatus.CREATED);
     }

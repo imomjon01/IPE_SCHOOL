@@ -4,7 +4,7 @@ import lombok.Value;
 
 @Value
 public class RegisterDto {
-    String email;
+    String phoneNumber;
     String password;
     String confirmPassword;
     String firstName;

@@ -33,6 +33,7 @@ public class GroupMapper {
     }
 
     private UserRes toUserRes(User user) {
+        if (user==null) return null;
         UserRes res = new UserRes();
         res.setId(user.getId());
         res.setFirstName(user.getFirstName());
@@ -42,6 +43,7 @@ public class GroupMapper {
     }
 
     private ModuleRes toModuleRes(Module module) {
+        if (module==null) return null;
         ModuleRes res = new ModuleRes();
         res.setId(module.getId());
         res.setModuleName(module.getModuleName());
