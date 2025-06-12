@@ -22,7 +22,7 @@ public class AdminArchiveController {
     private final ArchiveService archiveService;
 
     @GetMapping(STUDENT)
-    public HttpEntity<?> getStudents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+    public ResponseEntity<Page<StudentDetailsRes>> getStudents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
                                      @RequestParam(required = false) String search
     ) {
         Page<StudentDetailsRes> students = archiveService.findAllStudents_isActive(page, size, search);
@@ -30,7 +30,7 @@ public class AdminArchiveController {
     }
 
     @GetMapping(GROUP)
-    public HttpEntity<?> getGroups(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+    public ResponseEntity<Page<GroupRes>> getGroups(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
                                    @RequestParam(required = false) String search
     ) {
         Page<GroupRes> students = archiveService.findAllGroups_isActive(page, size, search);
@@ -38,7 +38,7 @@ public class AdminArchiveController {
     }
 
     @GetMapping(MENTOR)
-    public HttpEntity<?> getMentors(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+    public ResponseEntity<Page<StudentDetailsRes>> getMentors(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
                                     @RequestParam(required = false) String search
     ) {
         Page<StudentDetailsRes> students = archiveService.findAllStudents_isActive(page, size, search);
