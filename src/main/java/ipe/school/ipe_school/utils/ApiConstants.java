@@ -5,4 +5,7 @@ public interface ApiConstants {
     String API_VERSION = "/v1";
     String AUTH = "/auth";
     String GROUP="/group";
+    String MENTOR="/mentor";
+    String ADMIN="/admin";
+    String ADD = "/add";
 }

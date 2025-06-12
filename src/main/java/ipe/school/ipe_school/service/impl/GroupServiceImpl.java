@@ -58,4 +58,14 @@ public class GroupServiceImpl implements GroupService {
         group.set_active(false);
         groupRepository.save(group);
     }
+
+    @Override
+    public List<Group> getGroupByMentorId(Long mentorId) {
+        return groupRepository.findByMentorId(mentorId);
+    }
+
+    @Override
+    public List<Group> getAllGroup() {
+        return groupRepository.findAll();
+    }
 }

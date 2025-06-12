@@ -16,6 +16,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Attachment extends BaseEntity {
 
-    String contentType;
+    private String contentType;
     private byte[] content;
 }

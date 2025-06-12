@@ -20,6 +20,7 @@ import java.util.List;
 public class User extends BaseEntity implements UserDetails {
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String phoneNumber;
     private String password;
     @ManyToMany

@@ -3,6 +3,7 @@ package ipe.school.ipe_school.service.interfaces;
 import ipe.school.ipe_school.models.dtos.req.GroupReq;
 import ipe.school.ipe_school.models.dtos.res.GroupDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.GroupRes;
+import ipe.school.ipe_school.models.entity.Group;
 
 import java.util.List;
 
@@ -16,4 +17,8 @@ public interface GroupService {
     GroupDetailsRes updateGroup(Long groupId, GroupReq groupReq);
 
     void updateGroup_Active(Long groupId);
+
+    List<Group> getGroupByMentorId(Long mentorId);
+
+    List<Group> getAllGroup();
 }

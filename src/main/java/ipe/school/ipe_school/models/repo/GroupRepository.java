@@ -10,4 +10,6 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
     List<Group> findAllBy_active(boolean active);
 
     Group getGroupById(Long id);
+
+    List<Group> findByMentorId(Long mentorId);
 }

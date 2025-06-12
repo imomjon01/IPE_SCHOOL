@@ -14,7 +14,7 @@ import java.util.List;
 import static ipe.school.ipe_school.utils.ApiConstants.*;
 
 @RestController
-@RequestMapping(API_PATH+API_VERSION+GROUP)
+@RequestMapping(API_PATH + API_VERSION + GROUP)
 @RequiredArgsConstructor
 public class GroupController {
 
@@ -23,25 +23,25 @@ public class GroupController {
     @PostMapping()
     public ResponseEntity<GroupRes> addGroup(@RequestBody GroupReq groupReq) {
         System.out.println(groupReq);
-        GroupRes groupRes=groupService.createGroup(groupReq);
+        GroupRes groupRes = groupService.createGroup(groupReq);
         return new ResponseEntity<>(groupRes, HttpStatus.CREATED);
     }
 
     @GetMapping()
     public ResponseEntity<List<GroupDetailsRes>> getAllGroups() {
-        List<GroupDetailsRes> groups=groupService.getGroupsBy_Active();
+        List<GroupDetailsRes> groups = groupService.getGroupsBy_Active();
         return new ResponseEntity<>(groups, HttpStatus.OK);
     }
 
     @GetMapping("/{group_id}")
     public ResponseEntity<GroupDetailsRes> getGroupById(@PathVariable Long group_id) {
-        GroupDetailsRes groupDetailsRes=groupService.getGroupById(group_id);
+        GroupDetailsRes groupDetailsRes = groupService.getGroupById(group_id);
         return new ResponseEntity<>(groupDetailsRes, HttpStatus.OK);
     }
 
     @PostMapping("/{group_id}")
     public ResponseEntity<GroupDetailsRes> updateGroup(@PathVariable Long group_id, @RequestBody GroupReq groupReq) {
-        GroupDetailsRes groupDetailsRes=groupService.updateGroup(group_id,groupReq);
+        GroupDetailsRes groupDetailsRes = groupService.updateGroup(group_id, groupReq);
         return new ResponseEntity<>(groupDetailsRes, HttpStatus.OK);
     }
 
