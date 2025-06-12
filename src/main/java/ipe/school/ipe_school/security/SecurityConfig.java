@@ -34,7 +34,7 @@ public class SecurityConfig {
                             "/swagger-ui/**",
                             "/v3/api-docs/**"
                     ).permitAll()
-                    .requestMatchers("/api/v1/auth", "/api/v1/auth/**", "/api/v1/admin/mentor", "/api/v1/admin/mentor/**").permitAll()
+                    .requestMatchers("/api/v1/auth", "/api/v1/auth/**", "/api/v1/admin/mentor", "/api/v1/admin/mentor/**","/actuator/prometheus").permitAll()
                     .anyRequest().authenticated();
         });
         http.addFilterBefore(mySecurityFilter, UsernamePasswordAuthenticationFilter.class);
