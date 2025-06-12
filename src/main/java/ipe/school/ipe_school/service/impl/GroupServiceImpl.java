@@ -47,4 +47,12 @@ public class GroupServiceImpl implements GroupService {
         group.setName(groupReq.getName());
         return groupMapper.toDetailsDTO(groupRepository.save(group));
     }
+
+    @Transactional
+    @Override
+    public void updateGroup_Active(Long groupId) {
+        Group group=groupRepository.getGroupById(groupId);
+        group.set_active(false);
+        groupRepository.save(group);
+    }
 }

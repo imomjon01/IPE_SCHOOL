@@ -44,4 +44,10 @@ public class GroupController {
         return new ResponseEntity<>(groupDetailsRes, HttpStatus.OK);
     }
 
+    @DeleteMapping("/{group_id}")
+    public ResponseEntity<GroupRes> deleteGroup(@PathVariable Long group_id) {
+        groupService.updateGroup_Active(group_id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

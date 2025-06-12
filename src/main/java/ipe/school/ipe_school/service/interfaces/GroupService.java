@@ -14,4 +14,6 @@ public interface GroupService {
     GroupDetailsRes getGroupById(Long groupId);
 
     GroupDetailsRes updateGroup(Long groupId, GroupReq groupReq);
+
+    void updateGroup_Active(Long groupId);
 }
