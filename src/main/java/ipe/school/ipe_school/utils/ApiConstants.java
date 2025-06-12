@@ -8,4 +8,7 @@ public interface ApiConstants {
     String MENTOR="/mentor";
     String ADMIN="/admin";
     String ADD = "/add";
+    String STUDENT = "/student";
+    String ARCHIVE = "/archive";
+
 }

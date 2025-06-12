@@ -6,7 +6,6 @@ import ipe.school.ipe_school.models.dtos.req.RegisterDto;
 import ipe.school.ipe_school.models.dtos.res.LoginRes;
 import ipe.school.ipe_school.service.interfaces.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
