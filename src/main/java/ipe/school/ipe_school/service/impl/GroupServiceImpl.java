@@ -21,7 +21,10 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupRes createGroup(GroupReq groupReq) {
-        Group group= Group.builder().name(groupReq.getName()).build();
+        Group group= Group.builder().
+                name(groupReq.getName())
+                ._active(true)
+                .build();
         Group savedGroup = groupRepository.save(group);
         return new GroupRes(savedGroup.getId(), savedGroup.getName());
     }
