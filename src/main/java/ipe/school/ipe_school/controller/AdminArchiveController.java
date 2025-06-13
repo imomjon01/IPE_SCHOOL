@@ -23,7 +23,7 @@ public class AdminArchiveController {
 
     @GetMapping(STUDENT)
     public ResponseEntity<Page<StudentDetailsRes>> getStudents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
-                                     @RequestParam(required = false) String search
+                                                               @RequestParam(required = false) String search
     ) {
         Page<StudentDetailsRes> students = archiveService.findAllStudents_isActive(page, size, search);
         return ResponseEntity.ok(students);
@@ -31,7 +31,7 @@ public class AdminArchiveController {
 
     @GetMapping(GROUP)
     public ResponseEntity<Page<GroupRes>> getGroups(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
-                                   @RequestParam(required = false) String search
+                                                    @RequestParam(required = false) String search
     ) {
         Page<GroupRes> students = archiveService.findAllGroups_isActive(page, size, search);
         return ResponseEntity.ok(students);
@@ -39,7 +39,7 @@ public class AdminArchiveController {
 
     @GetMapping(MENTOR)
     public ResponseEntity<Page<StudentDetailsRes>> getMentors(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
-                                    @RequestParam(required = false) String search
+                                                              @RequestParam(required = false) String search
     ) {
         Page<StudentDetailsRes> students = archiveService.findAllStudents_isActive(page, size, search);
         return ResponseEntity.ok(students);
