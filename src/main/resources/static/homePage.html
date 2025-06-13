@@ -896,9 +896,14 @@
         }
     });
 
-    // Login Form Submission
+    // Login Form Submission - Enhanced version
     document.getElementById('login-form').addEventListener('submit', async function(e) {
         e.preventDefault();
+
+        // Show loading state
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
 
         const phoneNumber = e.target.phoneNumber.value;
         const password = e.target.password.value;
@@ -915,17 +920,110 @@
             const data = await response.json();
 
             if (response.ok) {
-                // Store token and redirect
+                // Store user data
                 localStorage.setItem('authToken', data.token);
-                window.location.href = '/dashboard';
+                localStorage.setItem('userData', JSON.stringify({
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    phoneNumber: data.phoneNumber,
+                    roles: data.roles,
+                    image: data.image
+                }));
+
+                // Show success message
+                showMessage('Login successful! Redirecting...', 'success');
+
+                // Redirect after short delay
+                setTimeout(() => {
+                    window.location.href = data.redirect || determineRedirectUrl(data.roles);
+                }, 1500);
             } else {
-                alert(data.message || 'Login failed. Please try again.');
+                showMessage(data.message || 'Login failed. Please check your credentials.', 'error');
             }
         } catch (error) {
             console.error('Login error:', error);
-            alert('An error occurred. Please try again later.');
+            showMessage('Network error. Please try again later.', 'error');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Login';
         }
     });
+
+    // Determine redirect URL based on roles
+    function determineRedirectUrl(roles) {
+        if (roles.includes('ADMIN')) {
+            return '/adminCabinet';
+        } else if (roles.includes('MENTOR')) {
+            return '/mentorCabinet.html';
+        } else {
+            return '/studentCabinet';
+        }
+    }
+
+    // Show message function
+    function showMessage(message, type) {
+        // Remove any existing messages first
+        const existingAlert = document.querySelector('.login-header .alert');
+        if (existingAlert) {
+            existingAlert.remove();
+        }
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `alert alert-${type}`;
+        messageDiv.textContent = message;
+
+        const loginHeader = document.querySelector('.login-header');
+        loginHeader.appendChild(messageDiv);
+
+        setTimeout(() => {
+            messageDiv.remove();
+        }, 5000);
+    }
+
+    // Check authentication on page load for protected pages
+    // This should be included in your dashboard pages (studentCabinet.html, etc.)
+    function checkAuthentication() {
+        const token = localStorage.getItem('authToken');
+        const userData = JSON.parse(localStorage.getItem('userData'));
+
+        if (!token) {
+            window.location.href = '/'; // Redirect to login if not authenticated
+            return;
+        }
+
+        // Display user info in dashboard
+        if (userData) {
+            const userNameElement = document.getElementById('user-name');
+            const userPhoneElement = document.getElementById('user-phone');
+
+            if (userNameElement) {
+                userNameElement.textContent = `${userData.firstName} ${userData.lastName}`;
+            }
+            if (userPhoneElement) {
+                userPhoneElement.textContent = userData.phoneNumber;
+            }
+        }
+
+        // Role-specific functionality
+        if (userData && userData.roles) {
+            if (userData.roles.includes('ADMIN')) {
+                // Show admin features
+                const adminElements = document.querySelectorAll('.admin-only');
+                adminElements.forEach(el => el.style.display = 'block');
+            } else if (userData.roles.includes('MENTOR')) {
+                // Show mentor features
+                const mentorElements = document.querySelectorAll('.mentor-only');
+                mentorElements.forEach(el => el.style.display = 'block');
+            } else {
+                // Show student features
+                const studentElements = document.querySelectorAll('.student-only');
+                studentElements.forEach(el => el.style.display = 'block');
+            }
+        }
+    }
+
+    // Call this function in your dashboard pages
+    // document.addEventListener('DOMContentLoaded', checkAuthentication);
 </script>
 </body>
 </html>
