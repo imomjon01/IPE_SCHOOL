@@ -3,6 +3,7 @@ package ipe.school.ipe_school.models.repo;
 import ipe.school.ipe_school.models.entity.Roles;
 import ipe.school.ipe_school.models.entity.User;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -37,4 +38,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findUsersBy_active(boolean active);
 
     List<User> findByRoles(List<Roles> roles);
+
+    @Query("SELECT g from Group g where g._active = :active and LOWER(g.name) LIKE LOWER(CONCAT('%', :search, '%'))")
+    Page<User> findAllActiveGroupsWithSearch(String search, boolean active, Pageable pageable);
+
+    @Query("SELECT g from Group g where g._active = :active")
+    Page<User> findAllActiveMentors(boolean active, Pageable pageable);
 }

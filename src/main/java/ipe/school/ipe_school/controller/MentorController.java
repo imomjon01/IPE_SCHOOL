@@ -1,22 +1,19 @@
 package ipe.school.ipe_school.controller;
 
-import ipe.school.ipe_school.utils.ApiConstants;
-import org.springframework.http.HttpEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import ipe.school.ipe_school.service.interfaces.MentorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static ipe.school.ipe_school.utils.ApiConstants.API_PATH;
-import static ipe.school.ipe_school.utils.ApiConstants.API_VERSION;
+import static ipe.school.ipe_school.utils.ApiConstants.*;
 
 @RestController
-@RequestMapping(API_PATH + API_VERSION + "/mentor")
+@RequestMapping(API_PATH + API_VERSION + MENTOR)
+@RequiredArgsConstructor
 public class MentorController {
+    private final MentorService mentorService;
 
-    @GetMapping()
-    public HttpEntity<?> getGroups() {
-        System.out.println("Keldi");
-        return null;
-    }
+
+
 
 }

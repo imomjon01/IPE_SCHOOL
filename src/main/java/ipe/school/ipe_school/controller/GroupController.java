@@ -3,10 +3,13 @@ package ipe.school.ipe_school.controller;
 import ipe.school.ipe_school.models.dtos.req.GroupReq;
 import ipe.school.ipe_school.models.dtos.res.GroupDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.GroupRes;
+import ipe.school.ipe_school.models.entity.Group;
+import ipe.school.ipe_school.models.entity.User;
 import ipe.school.ipe_school.service.interfaces.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,5 +53,12 @@ public class GroupController {
         groupService.updateGroup_Active(groupId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+/*
+    @GetMapping("/{mentorId}")
+    public ResponseEntity<GroupRes> getGroupByMentor(@PathVariable Long mentorId) {
+        List<Group> groupByMentorId = groupService.getGroupByMentorId(mentorId);
+        return new ResponseEntity<>()
+
+    }*/
 
 }

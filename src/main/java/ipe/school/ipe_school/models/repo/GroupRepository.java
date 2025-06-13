@@ -14,6 +14,7 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
 
     Group getGroupById(Long id);
 
+    @Query("SELECT g from Group g where g._active = true and g.mentor.id = :mentorId ")
     List<Group> findByMentorId(Long mentorId);
 
     @Query("SELECT g FROM Group g where g._active = :isActive ")
