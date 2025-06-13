@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+
     @Transactional
     public UserRes changeUserRole(Long userId, List<Long> roleIds) {
         List<Roles> roles = rolesRepository.findByIdIn(roleIds);
