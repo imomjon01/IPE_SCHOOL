@@ -3,6 +3,7 @@ package ipe.school.ipe_school.service.impl;
 import ipe.school.ipe_school.models.dtos.req.LoginDto;
 import ipe.school.ipe_school.models.dtos.req.RegisterDto;
 import ipe.school.ipe_school.models.dtos.res.LoginRes;
+import ipe.school.ipe_school.models.entity.Roles;
 import ipe.school.ipe_school.models.entity.User;
 import ipe.school.ipe_school.models.repo.UserRepository;
 import ipe.school.ipe_school.security.JwtService;
@@ -11,9 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,11 +38,13 @@ public class AuthServiceImpl implements AuthService {
                 loginDto.getPassword()
         );
 
-        System.out.println("user login qildi");
-
         authenticationManager.authenticate(auth);
         String token = jwtService.generateToken(loginDto.getPhoneNumber());
-        return new LoginRes(token);
+        List<String> list = user.getRoles().stream().map(Roles::getName).toList();
+        System.out.println(list + "===============");
+        return new LoginRes(token, user.getFirstName(),
+                user.getLastName(), user.getPhoneNumber(), list,
+                user.getAttachment().getContent());
     }
 
     @Override

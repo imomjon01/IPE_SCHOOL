@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.Map;
+
 import static ipe.school.ipe_school.utils.ApiConstants.*;
 
 @RestController
@@ -21,9 +24,30 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping
-    public ResponseEntity<LoginRes> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
         LoginRes loginRes = authService.login(loginDto);
-        return ResponseEntity.ok(loginRes);
+
+        // Determine redirect URL based on roles
+        String redirectUrl = determineRedirectUrl(loginRes.getRoles());
+
+        return ResponseEntity.ok(Map.of(
+                "token", loginRes.getToken(),
+                "firstName", loginRes.getFirstName(),
+                "lastName", loginRes.getLastName(),
+                "phoneNumber", loginRes.getPhoneNumber(),
+                "roles", loginRes.getRoles(),
+                "redirect", redirectUrl
+        ));
+    }
+
+    private String determineRedirectUrl(List<String> roles) {
+        if (roles.contains("ROLE_ADMIN")) {
+            return "http://localhost:63342/IPE_SCHOOL/static/adminCabinet.html";
+        } else if (roles.contains("ROLE_MENTOR")) {
+            return "http://localhost:63342/IPE_SCHOOL/static/mentorCabinet.html";
+        } else {
+            return "http://localhost:63342/IPE_SCHOOL/static/studentCabinet.html";
+        }
     }
 
     @PostMapping("/register")
