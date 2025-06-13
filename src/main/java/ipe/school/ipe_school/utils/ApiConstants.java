@@ -11,5 +11,6 @@ public interface ApiConstants {
     String STUDENT = "/student";
     String ARCHIVE = "/archive";
     String MODULE = "/module";
+    String ROLE="/role";
 
 }

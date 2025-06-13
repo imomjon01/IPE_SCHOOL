@@ -1,11 +1,10 @@
-package ipe.school.ipe_school.controller;
+package ipe.school.ipe_school.controller.admin;
 
 import ipe.school.ipe_school.models.dtos.res.GroupRes;
 import ipe.school.ipe_school.models.dtos.res.StudentDetailsRes;
 import ipe.school.ipe_school.service.interfaces.ArchiveService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

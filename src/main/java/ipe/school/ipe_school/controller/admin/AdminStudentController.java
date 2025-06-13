@@ -1,4 +1,4 @@
-package ipe.school.ipe_school.controller;
+package ipe.school.ipe_school.controller.admin;
 
 import ipe.school.ipe_school.models.dtos.req.StudentDto;
 import ipe.school.ipe_school.models.dtos.res.StudentDetailsRes;
@@ -7,14 +7,11 @@ import ipe.school.ipe_school.service.interfaces.StudentService;
 import jakarta.servlet.annotation.MultipartConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-
-import java.util.List;
 
 import static ipe.school.ipe_school.utils.ApiConstants.*;
 

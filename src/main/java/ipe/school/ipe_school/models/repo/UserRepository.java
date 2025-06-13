@@ -1,5 +1,6 @@
 package ipe.school.ipe_school.models.repo;
 
+import ipe.school.ipe_school.models.entity.Roles;
 import ipe.school.ipe_school.models.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,4 +35,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     List<User> findUsersBy_active(boolean active);
+
+    List<User> findByRoles(List<Roles> roles);
 }

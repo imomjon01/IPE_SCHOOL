@@ -33,21 +33,21 @@ public class GroupController {
         return new ResponseEntity<>(groups, HttpStatus.OK);
     }
 
-    @GetMapping("/{group_id}")
-    public ResponseEntity<GroupRes> getGroupById(@PathVariable Long group_id) {
-        GroupRes groupDetailsRes = groupService.getGroupById(group_id);
+    @GetMapping("/{groupId}")
+    public ResponseEntity<GroupRes> getGroupById(@PathVariable Long groupId) {
+        GroupRes groupDetailsRes = groupService.getGroupById(groupId);
         return new ResponseEntity<>(groupDetailsRes, HttpStatus.OK);
     }
 
-    @PostMapping("/{group_id}")
-    public ResponseEntity<GroupDetailsRes> updateGroup(@PathVariable Long group_id, @RequestBody GroupReq groupReq) {
-        GroupDetailsRes groupDetailsRes = groupService.updateGroup(group_id, groupReq);
+    @PostMapping("/{groupId}")
+    public ResponseEntity<GroupDetailsRes> updateGroup(@PathVariable Long groupId, @RequestBody GroupReq groupReq) {
+        GroupDetailsRes groupDetailsRes = groupService.updateGroup(groupId, groupReq);
         return new ResponseEntity<>(groupDetailsRes, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{group_id}")
-    public ResponseEntity<?> deleteGroup(@PathVariable Long group_id) {
-        groupService.updateGroup_Active(group_id);
+    @DeleteMapping("/{groupId}")
+    public ResponseEntity<?> deleteGroup(@PathVariable Long groupId) {
+        groupService.updateGroup_Active(groupId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

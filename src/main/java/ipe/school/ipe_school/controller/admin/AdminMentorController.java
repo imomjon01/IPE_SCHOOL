@@ -1,4 +1,4 @@
-package ipe.school.ipe_school.controller;
+package ipe.school.ipe_school.controller.admin;
 
 import ipe.school.ipe_school.models.dtos.req.MentorReq;
 import ipe.school.ipe_school.models.dtos.req.MentorUpdateReq;
@@ -21,9 +21,9 @@ public class AdminMentorController {
 
     private final MentorService mentorService;
 
-    @DeleteMapping("/{mentor_id}")
-    public ResponseEntity<GroupRes> delete_mentor(@PathVariable Long mentor_id) {
-        mentorService.updateMentor_Active(mentor_id);
+    @DeleteMapping("/{mentorId}")
+    public ResponseEntity<GroupRes> delete_mentor(@PathVariable Long mentorId) {
+        mentorService.updateMentor_Active(mentorId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -39,15 +39,15 @@ public class AdminMentorController {
         return new ResponseEntity<>(mentorRes, HttpStatus.OK);
     }
 
-    @GetMapping("/{mentor_id}")
-    public ResponseEntity<MentorRes> getMentorById(@PathVariable Long mentor_id) {
-        MentorRes mentorRes = mentorService.getMentorId(mentor_id);
+    @GetMapping("/{mentorId}")
+    public ResponseEntity<MentorRes> getMentorById(@PathVariable Long mentorId) {
+        MentorRes mentorRes = mentorService.getMentorId(mentorId);
         return new ResponseEntity<>(mentorRes, HttpStatus.OK);
     }
 
-    @PostMapping("/{mentor_id}")
-    public ResponseEntity<MentorRes> updateMentor(@PathVariable Long mentor_id, @RequestBody MentorUpdateReq mentorUpdateReq) {
-        MentorRes mentorRes = mentorService.updateMentor(mentor_id, mentorUpdateReq);
+    @PostMapping("/{mentorId}")
+    public ResponseEntity<MentorRes> updateMentor(@PathVariable Long mentorId, @RequestBody MentorUpdateReq mentorUpdateReq) {
+        MentorRes mentorRes = mentorService.updateMentor(mentorId, mentorUpdateReq);
         return new ResponseEntity<>(mentorRes, HttpStatus.OK);
     }
 }
