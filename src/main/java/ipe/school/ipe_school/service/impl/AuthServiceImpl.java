@@ -9,7 +9,9 @@ import ipe.school.ipe_school.security.JwtService;
 import ipe.school.ipe_school.service.interfaces.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +25,19 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginRes login(LoginDto loginDto) {
+        User user = userRepository.findByPhoneNumber(loginDto.getPhoneNumber());
+
+        if (!user.get_active()) {
+            throw new DisabledException("User account is not active. Please contact administrator.");
+        }
+
         var auth = new UsernamePasswordAuthenticationToken(
-                loginDto.getPhoneNumber(), loginDto.getPassword()
+                loginDto.getPhoneNumber(),
+                loginDto.getPassword()
         );
+
+        System.out.println("user login qildi");
+
         authenticationManager.authenticate(auth);
         String token = jwtService.generateToken(loginDto.getPhoneNumber());
         return new LoginRes(token);

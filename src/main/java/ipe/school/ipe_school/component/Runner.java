@@ -3,10 +3,8 @@ package ipe.school.ipe_school.component;
 import ipe.school.ipe_school.models.entity.Roles;
 import ipe.school.ipe_school.service.interfaces.MentorService;
 import ipe.school.ipe_school.service.interfaces.RolesService;
-import ipe.school.ipe_school.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,6 +15,7 @@ import java.util.List;
 public class Runner implements CommandLineRunner {
 
     private final RolesService rolesService;
+    private final MentorService mentorService;
 
     public void run(String... args) throws Exception {
         if (rolesService.findAll().isEmpty()) {
