@@ -32,9 +32,21 @@ public class ModuleController {
         return new ResponseEntity<>(moduleReses, HttpStatus.OK);
     }
 
-    @GetMapping("/{module_id}")
-    public ResponseEntity<ModuleDetailsRes> getModuleById(@PathVariable Long module_id) {
-        ModuleDetailsRes moduleDetailsRes=moduleService.getModuleById(module_id);
+    @GetMapping("/{moduleId}")
+    public ResponseEntity<ModuleDetailsRes> getModuleById(@PathVariable Long moduleId) {
+        ModuleDetailsRes moduleDetailsRes=moduleService.getModuleById(moduleId);
         return new ResponseEntity<>(moduleDetailsRes, HttpStatus.OK);
+    }
+
+    @PostMapping("/{moduleId}")
+    public ResponseEntity<ModuleDetailsRes> updateModule(@PathVariable Long moduleId, @RequestBody ModuleReq moduleReq) {
+        ModuleDetailsRes moduleDetailsRes=moduleService.updateModule(moduleId,moduleReq);
+        return new ResponseEntity<>(moduleDetailsRes, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{moduleId}")
+    public ResponseEntity<ModuleRes> deleteModule(@PathVariable Long moduleId) {
+        moduleService.updateModule_Active(moduleId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

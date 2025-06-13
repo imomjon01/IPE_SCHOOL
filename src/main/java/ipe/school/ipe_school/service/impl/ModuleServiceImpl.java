@@ -1,5 +1,6 @@
 package ipe.school.ipe_school.service.impl;
 
+import ipe.school.ipe_school.component.ModuleMapper;
 import ipe.school.ipe_school.models.dtos.req.ModuleReq;
 import ipe.school.ipe_school.models.dtos.res.ModuleDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.ModuleRes;
@@ -8,6 +9,7 @@ import ipe.school.ipe_school.models.repo.ModuleRepository;
 import ipe.school.ipe_school.service.interfaces.ModuleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ModuleServiceImpl implements ModuleService {
     private final ModuleRepository moduleRepository;
+    private final ModuleMapper moduleMapper;
 
     @Override
     public ModuleRes createModule(ModuleReq moduleReq) {
@@ -35,6 +38,22 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     public ModuleDetailsRes getModuleById(Long moduleId) {
         Module module = moduleRepository.findById(moduleId).orElseThrow(RuntimeException::new);
+        return moduleMapper.toDetailsDto(module);
+    }
 
+    @Transactional
+    @Override
+    public ModuleDetailsRes updateModule(Long moduleId, ModuleReq moduleReq) {
+        Module module = moduleRepository.findById(moduleId).orElseThrow(RuntimeException::new);
+        module.setModuleName(moduleReq.getName());
+        Module savedModule = moduleRepository.save(module);
+        return moduleMapper.toDetailsDto(savedModule);
+    }
+
+    @Override
+    @Transactional
+    public void updateModule_Active(Long moduleId) {
+        Module module = moduleRepository.findById(moduleId).orElseThrow(RuntimeException::new);
+        module.set_active(false);
     }
 }

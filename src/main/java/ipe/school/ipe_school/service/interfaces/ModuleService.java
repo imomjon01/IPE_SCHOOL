@@ -12,4 +12,8 @@ public interface ModuleService {
     List<ModuleRes> getAllModulesBy_active();
 
     ModuleDetailsRes getModuleById(Long moduleId);
+
+    ModuleDetailsRes updateModule(Long moduleId, ModuleReq moduleReq);
+
+    void updateModule_Active(Long moduleId);
 }
