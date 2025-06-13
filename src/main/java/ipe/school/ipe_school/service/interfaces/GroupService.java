@@ -12,7 +12,7 @@ public interface GroupService {
 
     List<GroupDetailsRes> getGroupsBy_Active();
 
-    GroupDetailsRes getGroupById(Long groupId);
+    GroupRes getGroupById(Long groupId);
 
     GroupDetailsRes updateGroup(Long groupId, GroupReq groupReq);
 

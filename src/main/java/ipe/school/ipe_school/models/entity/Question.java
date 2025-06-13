@@ -1,6 +1,7 @@
 package ipe.school.ipe_school.models.entity;
 
 import ipe.school.ipe_school.models.base.BaseEntity;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ public class Question extends BaseEntity {
     @OneToOne
     private Attachment attachment;
     private String questionTest;
+    @ElementCollection
     private List<String> variant;
     private String currentAnswer;
 }

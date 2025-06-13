@@ -38,9 +38,9 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDetailsRes getGroupById(Long groupId) {
+    public GroupRes getGroupById(Long groupId) {
         Group group=groupRepository.getGroupById(groupId);
-        return groupMapper.toDetailsDTO(group);
+        return new GroupRes(group.getId(), group.getName());
     }
 
     @Transactional
