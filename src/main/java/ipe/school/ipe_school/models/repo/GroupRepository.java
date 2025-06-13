@@ -16,8 +16,7 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
 
     List<Group> findByMentorId(Long mentorId);
 
-    @Query("SELECT u FROM User u JOIN u.roles r " +
-            "WHERE r.name = 'ROLE_STUDENT' AND u._active = :isActive")
+    @Query("SELECT g FROM Group g where g._active = :isActive ")
     Page<Group> findAllActiveGroups(@Param("isActive") Boolean isActive, Pageable pageable);
 
     @Query("SELECT g FROM Group g  " +
@@ -25,6 +24,6 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
             "AND (" +
             "LOWER(g.name) LIKE LOWER(CONCAT('%', :search, '%')) " +
             ")")
-    Page<Group> findAllActiveGroupsWithSearch(String search, boolean b, Pageable pageable);
+    Page<Group> findAllActiveGroupsWithSearch(String search, boolean isActive, Pageable pageable);
 
 }

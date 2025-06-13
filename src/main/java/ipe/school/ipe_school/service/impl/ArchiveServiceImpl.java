@@ -2,6 +2,7 @@ package ipe.school.ipe_school.service.impl;
 
 import ipe.school.ipe_school.models.dtos.res.GroupRes;
 import ipe.school.ipe_school.models.dtos.res.StudentDetailsRes;
+import ipe.school.ipe_school.models.dtos.res.UserRes;
 import ipe.school.ipe_school.models.entity.Group;
 import ipe.school.ipe_school.models.entity.User;
 import ipe.school.ipe_school.models.repo.GroupRepository;
@@ -57,4 +58,21 @@ public class ArchiveServiceImpl implements ArchiveService {
         ));
     }
 
+    @Override
+    public Page<UserRes> findAllMentors_isActive(int page, int size, String search) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        Page<User> mentorsPage;
+        if (search != null && !search.trim().isEmpty()) {
+            mentorsPage = userRepository.findAllActiveGroupsWithSearch(search, false, pageRequest);
+        } else {
+            mentorsPage = userRepository.findAllActiveMentors(false, pageRequest);
+        }
+        return mentorsPage.map(mentor -> new UserRes(
+                mentor.getId(),
+                mentor.getFirstName(),
+                mentor.getLastName(),
+                mentor.getPhoneNumber()
+        ));
+    }
 }
