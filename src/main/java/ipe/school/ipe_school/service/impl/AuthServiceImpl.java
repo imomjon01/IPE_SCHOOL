@@ -39,7 +39,7 @@ public class AuthServiceImpl implements AuthService {
     public LoginRes login(LoginDto loginDto) {
         User user = userRepository.findByPhoneNumber(loginDto.getPhoneNumber());
 
-        if (user == null || user.get_active() == false) {
+        if (user == null || !user.get_active()) {
             throw new UsernameNotFoundException("Username not found");
         }
 

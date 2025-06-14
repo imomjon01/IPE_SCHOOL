@@ -8,11 +8,15 @@ import ipe.school.ipe_school.models.dtos.res.LoginRes;
 import ipe.school.ipe_school.models.dtos.res.UserRes;
 import ipe.school.ipe_school.service.interfaces.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.*;
 
 import static ipe.school.ipe_school.utils.ApiConstants.*;
@@ -25,24 +29,36 @@ public class AuthController {
 
     @PostMapping
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
-        LoginRes loginRes = authService.login(loginDto);
+        try {
+            LoginRes loginRes = authService.login(loginDto);
 
-        String base64Image = loginRes.getImage() != null
-                ? "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(loginRes.getImage())
-                : null;
+            String base64Image = loginRes.getImage() != null
+                    ? "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(loginRes.getImage())
+                    : null;
 
-        String redirectUrl = determineRedirectUrl(loginRes.getRoles());
+            String redirectUrl = determineRedirectUrl(loginRes.getRoles());
 
-        return ResponseEntity.ok(Map.of(
-                "token", loginRes.getToken(),
-                "firstName", loginRes.getFirstName(),
-                "lastName", loginRes.getLastName(),
-                "phoneNumber", loginRes.getPhoneNumber(),
-                "roles", loginRes.getRoles(),
-                "image", base64Image,
-                "redirect", redirectUrl,
-                "userId", loginRes.getUserId()
-        ));
+            return ResponseEntity.ok(Map.of(
+                    "token", loginRes.getToken(),
+                    "firstName", loginRes.getFirstName(),
+                    "lastName", loginRes.getLastName(),
+                    "phoneNumber", loginRes.getPhoneNumber(),
+                    "roles", loginRes.getRoles(),
+                    "image", base64Image,
+                    "redirect", redirectUrl,
+                    "userId", loginRes.getUserId()
+            ));
+        } catch (UsernameNotFoundException | BadCredentialsException e) {
+            // Login xatolari uchun
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                    "message", "Telefon raqam yoki parol noto‘g‘ri"
+            ));
+        } catch (Exception e) {
+            // Har qanday boshqa xatoliklar uchun
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "message", "Tizimda xatolik yuz berdi"
+            ));
+        }
     }
 
     private String determineRedirectUrl(List<String> roles) {
