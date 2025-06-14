@@ -18,4 +18,10 @@ public class Attachment extends BaseEntity {
 
     private String contentType;
     private byte[] content;
+
+    public Attachment(Long id, Boolean _active, String contentType, byte[] content) {
+        super(id, _active);
+        this.contentType = contentType;
+        this.content = content;
+    }
 }

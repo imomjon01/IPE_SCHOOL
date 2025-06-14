@@ -12,5 +12,6 @@ public interface ApiConstants {
     String ARCHIVE = "/archive";
     String MODULE = "/module";
     String ROLE="/role";
+    String TASK="/task";
 
 }

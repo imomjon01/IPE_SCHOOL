@@ -1,9 +1,7 @@
 package ipe.school.ipe_school.models.entity;
 
 import ipe.school.ipe_school.models.base.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -19,7 +17,7 @@ public class Task extends BaseEntity {
     @OneToMany
     private List<Question> questions;
     private String taskName;
-    @OneToOne
-    private Attachment attachment;
+    @ManyToMany
+    private List<Attachment> attachment;
     private String youtubeURL;
 }

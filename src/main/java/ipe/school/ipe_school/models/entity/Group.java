@@ -22,6 +22,7 @@ public class Group extends BaseEntity {
     private String name;
     @ManyToOne
     private User mentor;
+    @ManyToMany
     private List<User> students = new ArrayList<>();
     @OneToMany
     private List<Module> modules;
