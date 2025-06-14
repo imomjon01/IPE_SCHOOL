@@ -9,6 +9,7 @@ import ipe.school.ipe_school.models.dtos.res.UserRes;
 import ipe.school.ipe_school.service.interfaces.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.*;
 
 import static ipe.school.ipe_school.utils.ApiConstants.*;
@@ -77,9 +82,32 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/updateProfile")
-    public ResponseEntity<?> updateProfile(@RequestBody UserReq userReq) {
+    @PostMapping(value = "/updateProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateProfile(
+            @RequestPart("id") String id,
+            @RequestPart("firstName") String firstName,
+            @RequestPart("lastName") String lastName,
+            @RequestPart("phoneNumber") String phoneNumber,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+
+        UserReq userReq = new UserReq(id, firstName, lastName, phoneNumber, file);
         UserRes userRes = authService.updateUser(userReq);
-        return ResponseEntity.ok(userRes);
+
+        String base64Image = null;
+        if (file != null && !file.isEmpty()) {
+            try {
+                base64Image = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(file.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace(); // yoki logger.warn() ishlatishingiz mumkin
+            }
+        }
+
+        return ResponseEntity.ok(Map.of(
+                "firstName", userRes.getFirstName(),
+                "lastName", userRes.getLastName(),
+                "phoneNumber", userRes.getPhoneNumber(),
+                "image", base64Image
+        ));
     }
+
 }

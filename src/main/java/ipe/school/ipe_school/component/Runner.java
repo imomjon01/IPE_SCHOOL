@@ -30,9 +30,9 @@ public class Runner implements CommandLineRunner {
             )));
         }
 
-       /* MentorReq mentorReq = new MentorReq("Eshmant", "Toshmatov", "123", "123");
-        MentorRes mentor = mentorService.createMentor(mentorReq);
-        System.out.println("Mentor: " + mentor);*/
+//       /* MentorReq mentorReq = new MentorReq("Eshmant", "Toshmatov", "123", "123");
+//        MentorRes mentor = mentorService.createMentor(mentorReq);
+//        System.out.println("Mentor: " + mentor);*/
     }
 }
 

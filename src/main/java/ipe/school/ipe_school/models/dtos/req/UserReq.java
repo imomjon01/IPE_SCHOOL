@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Value
 public class UserReq {
-    Long id;
+    String id;
     String firstName;
     String lastName;
     String phoneNumber;
