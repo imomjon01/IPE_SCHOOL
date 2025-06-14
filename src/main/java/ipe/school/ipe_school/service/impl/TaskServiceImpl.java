@@ -41,24 +41,17 @@ public class TaskServiceImpl implements TaskService {
         }
         task.setTaskName(taskReq.getTaskName());
         task.setYoutubeURL(taskReq.getYoutubeURL());
-        task.set_active(true);
+        task.setActive(true);
         Task savedTask = taskRepository.save(task);
         return new TaskRes(savedTask.getId(), savedTask.getTaskName());
     }
 
-    @Override
-    @Transactional
-    public List<TaskRes> getTasksByModuleId(Long moduleId) {
-        Module module = moduleRepository.findByIdAnd_active(moduleId,true);
-        List<Task> taskes = taskRepository.findByModuleAnd_active(module,true);
-        return taskes.stream().map(task -> new TaskRes(task.getId(), task.getTaskName())).collect(Collectors.toList());
-    }
 
     @Override
     @Transactional
     public void updateTask_active(Long taskReq) {
         Task task = taskRepository.findById(taskReq).orElseThrow(RuntimeException::new);
-        task.set_active(false);
+        task.setActive(false);
         taskRepository.save(task);
     }
 
@@ -72,7 +65,7 @@ public class TaskServiceImpl implements TaskService {
         }
         if (taskReq.getAttachments() != null) {
             List<Attachment> attachments = taskReq.getAttachments().stream().map(item -> new Attachment(item.getContentType(), item.getContentType().getBytes())).toList();
-            attachments.forEach(attachment -> attachment.set_active(true));
+            attachments.forEach(attachment -> attachment.setActive(true));
             List<Attachment> savedAttachment = attachmentRepository.saveAll(attachments);
             task.setAttachment(savedAttachment);
         }

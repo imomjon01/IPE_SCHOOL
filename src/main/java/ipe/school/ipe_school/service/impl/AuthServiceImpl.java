@@ -39,7 +39,7 @@ public class AuthServiceImpl implements AuthService {
     public LoginRes login(LoginDto loginDto) {
         User user = userRepository.findByPhoneNumber(loginDto.getPhoneNumber());
 
-        if (user == null || !user.get_active()) {
+        if (user == null || !user.getActive()) {
             throw new UsernameNotFoundException("Username not found");
         }
 
@@ -69,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
 //        String firstName;
 //        String lastName;
         User user = User.builder()
-                ._active(true)
+                .active(true)
                 .phoneNumber(registerDto.getPhoneNumber())
                 .password(passwordEncoder.encode(registerDto.getPassword()))
                 .firstName(registerDto.getFirstName())

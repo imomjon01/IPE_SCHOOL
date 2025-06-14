@@ -23,7 +23,7 @@ public class ModuleServiceImpl implements ModuleService {
     public ModuleRes createModule(ModuleReq moduleReq) {
         Module module = Module.builder()
                 .moduleName(moduleReq.getName())
-                ._active(true)
+                .active(true)
                 .build();
         Module savedModule = moduleRepository.save(module);
         return new ModuleRes(savedModule.getId(), savedModule.getModuleName());
@@ -31,7 +31,7 @@ public class ModuleServiceImpl implements ModuleService {
 
     @Override
     public List<ModuleRes> getAllModulesBy_active() {
-        List<Module> modules = moduleRepository.findAllBy_active(true);
+        List<Module> modules = moduleRepository.findAllByActive(true);
         return modules.stream().map(module -> new ModuleRes(module.getId(), module.getModuleName())).toList();
     }
 
@@ -54,6 +54,6 @@ public class ModuleServiceImpl implements ModuleService {
     @Transactional
     public void updateModule_Active(Long moduleId) {
         Module module = moduleRepository.findById(moduleId).orElseThrow(RuntimeException::new);
-        module.set_active(false);
+        module.setActive(false);
     }
 }

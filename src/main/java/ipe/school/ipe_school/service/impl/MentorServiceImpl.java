@@ -29,7 +29,7 @@ public class MentorServiceImpl implements MentorService {
     @Override
     public void updateMentor_Active(Long mentor_id) {
         Optional<User> byId = userRepository.findById(mentor_id);
-        byId.get().set_active(false);
+        byId.get().setActive(false);
         userRepository.save(byId.get());
     }
 
@@ -42,7 +42,7 @@ public class MentorServiceImpl implements MentorService {
         user.setLastName(mentorReq.getLastName());
         user.setPassword(passwordEncoder.encode(mentorReq.getPassword()));
         user.setPhoneNumber(mentorReq.getPhoneNumber());
-        user.set_active(true);
+        user.setActive(true);
 
         ClassPathResource imgFile = new ClassPathResource("images/img.png");
         Attachment attachment = new Attachment();
@@ -68,7 +68,7 @@ public class MentorServiceImpl implements MentorService {
     @Transactional
     @Override
     public List<MentorRes> getMentorsBy_Active() {
-        List<User> users = userRepository.findBy_activeTrueAndRoles_Name("ROLE_MENTOR");
+        List<User> users = userRepository.findByActiveTrueAndRoles_Name("ROLE_MENTOR");
         List<Group> groups = groupService.getAllGroup();
 
         Map<Long, List<Group>> mentorGroupsMap = new HashMap<>();
@@ -100,7 +100,7 @@ public class MentorServiceImpl implements MentorService {
     @Override
     public MentorRes getMentorId(Long mentorId) {
         User user = userRepository.findById(mentorId).get();
-        if (user.get_active()) {
+        if (user.getActive()) {
             if (user.getRoles().contains(rolesRepository.findByName("ROLE_MENTOR"))){
                 List<Group> groups = groupService.getGroupByMentorId(mentorId);
                 return new MentorRes(user.getId(), user.getFirstName(),
@@ -114,7 +114,7 @@ public class MentorServiceImpl implements MentorService {
     @Override
     public MentorRes updateMentor(Long mentorId, MentorUpdateReq mentorUpdateReq) {
         User user = userRepository.findById(mentorId).get();
-        user.set_active(mentorUpdateReq.is_active());
+        user.setActive(mentorUpdateReq.is_active());
         user.setPassword(passwordEncoder.encode(mentorUpdateReq.getPassword()));
         user.setRoles(mentorUpdateReq.getRoles());
         User save = userRepository.save(user);

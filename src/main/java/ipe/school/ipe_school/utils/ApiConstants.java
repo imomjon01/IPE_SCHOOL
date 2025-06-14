@@ -13,5 +13,6 @@ public interface ApiConstants {
     String MODULE = "/module";
     String ROLE="/role";
     String TASK="/task";
-
+    String ANSWER="/answer";
+    String SUBMISSION="/submission";
 }

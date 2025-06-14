@@ -10,18 +10,18 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface GroupRepository extends JpaRepository<Group, Long> {
-    List<Group> findAllBy_active(boolean active);
+    List<Group> findAllByActive(Boolean active);
 
     Group getGroupById(Long id);
 
-    @Query("SELECT g from Group g where g._active = true and g.mentor.id = :mentorId ")
+    @Query("SELECT g from Group g where g.active = true and g.mentor.id = :mentorId ")
     List<Group> findByMentorId(Long mentorId);
 
-    @Query("SELECT g FROM Group g where g._active = :isActive ")
+    @Query("SELECT g FROM Group g where g.active = :isActive ")
     Page<Group> findAllActiveGroups(@Param("isActive") Boolean isActive, Pageable pageable);
 
     @Query("SELECT g FROM Group g  " +
-            "WHERE g._active = :isActive " +
+            "WHERE g.active = :isActive " +
             "AND (" +
             "LOWER(g.name) LIKE LOWER(CONCAT('%', :search, '%')) " +
             ")")

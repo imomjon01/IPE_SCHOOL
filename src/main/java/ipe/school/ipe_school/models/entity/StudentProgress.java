@@ -2,6 +2,7 @@ package ipe.school.ipe_school.models.entity;
 
 import ipe.school.ipe_school.models.base.BaseEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class StudentProgress extends BaseEntity {
 
-    @OneToOne
+    @ManyToOne
     private User student;
-    private Integer progress;
+    private Double progress;
 }

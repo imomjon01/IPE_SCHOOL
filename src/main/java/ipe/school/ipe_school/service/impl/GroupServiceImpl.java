@@ -23,7 +23,7 @@ public class GroupServiceImpl implements GroupService {
     public GroupRes createGroup(GroupReq groupReq) {
         Group group= Group.builder().
                 name(groupReq.getName())
-                ._active(true)
+                .active(true)
                 .build();
         Group savedGroup = groupRepository.save(group);
         return new GroupRes(savedGroup.getId(), savedGroup.getName());
@@ -31,7 +31,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupDetailsRes> getGroupsBy_Active() {
-        List<Group> groups = groupRepository.findAllBy_active(true);
+        List<Group> groups = groupRepository.findAllByActive(true);
         return groups.stream()
                 .map(groupMapper::toDetailsDTO)
                 .toList();
@@ -55,7 +55,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void updateGroup_Active(Long groupId) {
         Group group=groupRepository.getGroupById(groupId);
-        group.set_active(false);
+        group.setActive(false);
         groupRepository.save(group);
     }
 

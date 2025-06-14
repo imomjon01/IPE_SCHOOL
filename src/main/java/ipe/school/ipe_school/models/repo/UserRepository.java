@@ -15,11 +15,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByPhoneNumber(String phoneNumber);
 
-    List<User> findBy_activeTrueAndRoles_Name(String roleName);
+    List<User> findByActiveTrueAndRoles_Name(String roleName);
 
 
     @Query("SELECT u FROM User u JOIN u.roles r " +
-            "WHERE r.name = 'ROLE_STUDENT' AND u._active = :isActive " +
+            "WHERE r.name = 'ROLE_STUDENT' AND u.active = :isActive " +
             "AND (" +
             "LOWER(u.firstName) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
             "LOWER(u.lastName) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
@@ -31,17 +31,17 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     @Query("SELECT u FROM User u JOIN u.roles r " +
-            "WHERE r.name = 'ROLE_STUDENT' AND u._active = :isActive")
+            "WHERE r.name = 'ROLE_STUDENT' AND u.active = :isActive")
     Page<User> findAllActiveStudents(@Param("isActive") Boolean isActive, Pageable pageable);
 
 
-    List<User> findUsersBy_active(boolean active);
+    List<User> findUsersByActive(boolean active);
 
     List<User> findByRoles(List<Roles> roles);
 
-    @Query("SELECT g from Group g where g._active = :active and LOWER(g.name) LIKE LOWER(CONCAT('%', :search, '%'))")
+    @Query("SELECT g from Group g where g.active = :active and LOWER(g.name) LIKE LOWER(CONCAT('%', :search, '%'))")
     Page<User> findAllActiveGroupsWithSearch(String search, boolean active, Pageable pageable);
 
-    @Query("SELECT g from Group g where g._active = :active")
+    @Query("SELECT g from Group g where g.active = :active")
     Page<User> findAllActiveMentors(boolean active, Pageable pageable);
 }

@@ -26,12 +26,6 @@ public class TaskController {
         return new ResponseEntity<>(taskRes, HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<TaskRes>> getTasks(@RequestBody Long moduleId) {
-        List<TaskRes> taskReses=taskService.getTasksByModuleId(moduleId);
-        return new ResponseEntity<>(taskReses, HttpStatus.OK);
-    }
-
     @GetMapping("/{taskId}")
     public ResponseEntity<TaskRes> getTask(@PathVariable Long taskId) {
 

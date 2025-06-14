@@ -44,7 +44,7 @@ public class StudentServiceImpl implements StudentService {
                 .lastName(studentDto.getLastName())
                 .phoneNumber(studentDto.getPhoneNumber())
                 .password(passwordEncoder.encode(studentDto.getPassword()))
-                ._active(true)
+                .active(true)
                 .attachment(new Attachment())
                 .build();
 
@@ -88,7 +88,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentRes activeUpdate(Long studentId) {
         User user = userRepository.findById(studentId).orElseThrow();
-        user.set_active(false);
+        user.setActive(false);
         return new StudentRes(user.getId(), user.getFirstName(), user.getLastName(), user.getPhoneNumber(), user.getPassword());
     }
 
