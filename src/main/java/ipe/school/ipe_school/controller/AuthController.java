@@ -82,21 +82,21 @@ public class AuthController {
 
     @PostMapping(value = "/updateProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateProfile(
-            @RequestPart("id") String id,
+            @RequestPart("id") Long id,
             @RequestPart("firstName") String firstName,
             @RequestPart("lastName") String lastName,
             @RequestPart("phoneNumber") String phoneNumber,
             @RequestPart(value = "file", required = false) MultipartFile file) {
 
-        UserReq userReq = new UserReq(id, firstName, lastName, phoneNumber, file);
-        UserRes userRes = authService.updateUser(userReq);
+        UserReq userReq = new UserReq(id, firstName, lastName, phoneNumber);
+        UserRes userRes = authService.updateUser(userReq, file);
 
         String base64Image = null;
         if (file != null && !file.isEmpty()) {
             try {
                 base64Image = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(file.getBytes());
             } catch (IOException e) {
-                e.printStackTrace(); // yoki logger.warn() ishlatishingiz mumkin
+                e.printStackTrace();
             }
         }
 

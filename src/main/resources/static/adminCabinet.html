@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Cabinet</title>
+    <title>Admin Kabinati</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -140,7 +140,7 @@
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
                         <a href="#" class="nav-link active" id="student-tab">
-                            <i class="fas fa-user-graduate"></i> Student
+                            <i class="fas fa-user-graduate"></i> Talaba
                         </a>
                     </li>
                     <li class="nav-item">
@@ -150,65 +150,65 @@
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link" id="group-tab">
-                            <i class="fas fa-users"></i> Group
+                            <i class="fas fa-users"></i> Guruh
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link" id="archive-tab">
-                            <i class="fas fa-archive"></i> Archive
+                            <i class="fas fa-archive"></i> Arxiv
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link" id="rating-tab">
-                            <i class="fas fa-star"></i> Rating
+                            <i class="fas fa-star"></i> Reyting
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link" id="role-change-tab">
-                            <i class="fas fa-user-cog"></i> Role Change
+                            <i class="fas fa-user-cog"></i> Rol O‘zgartirish
                         </a>
                     </li>
                 </ul>
             </div>
         </div>
 
-        <!-- Main Content -->
+        <!-- Asosiy Kontent -->
         <div class="col-md-9 col-lg-10 ms-sm-auto px-0">
             <!-- Topbar -->
             <nav class="navbar topbar sticky-top mb-4">
                 <div class="container-fluid">
                     <div class="search-box">
                         <i class="fas fa-search"></i>
-                        <input type="text" class="form-control" placeholder="Search..." id="search-input">
+                        <input type="text" class="form-control" placeholder="Qidirish..." id="search-input">
                     </div>
                     <div class="profile-dropdown">
                         <div class="d-flex align-items-center">
-                            <span class="me-2 d-none d-sm-inline" id="admin-name">Admin Name</span>
-                            <img src="" alt="Profile" class="profile-pic" id="admin-profile-pic">
+                            <span class="me-2 d-none d-sm-inline" id="admin-name">Admin Ismi</span>
+                            <img src="" alt="Profil" class="profile-pic" id="admin-profile-pic">
                         </div>
                         <div class="profile-dropdown-content">
                             <div class="text-center mb-2">
-                                <img src="" alt="Profile" class="profile-pic mb-2" id="dropdown-profile-pic" style="width: 80px; height: 80px;">
-                                <h6 id="dropdown-admin-name">Admin Name</h6>
+                                <img src="" alt="Profil" class="profile-pic mb-2" id="dropdown-profile-pic" style="width: 80px; height: 80px;">
+                                <h6 id="dropdown-admin-name">Admin Ismi</h6>
                             </div>
                             <hr>
                             <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#profileModal">
-                                <i class="fas fa-user-edit me-2"></i>Update Profile
+                                <i class="fas fa-user-edit me-2"></i>Profilni Yangilash
                             </button>
                         </div>
                     </div>
                 </div>
             </nav>
 
-            <!-- Main Content Area -->
+            <!-- Asosiy Kontent Maydoni -->
             <div class="container-fluid px-4">
-                <!-- Student Section -->
+                <!-- Talabalar Bo‘limi -->
                 <div class="tab-content" id="student-content">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5>Students</h5>
+                            <h5>Talabalar</h5>
                             <button class="btn btn-primary btn-sm" id="add-student-btn">
-                                <i class="fas fa-plus me-1"></i> Add Student
+                                <i class="fas fa-plus me-1"></i> Talaba Qo‘shish
                             </button>
                         </div>
                         <div class="card-body">
@@ -217,60 +217,60 @@
                                     <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Phone</th>
-                                        <th>Group</th>
-                                        <th>Actions</th>
+                                        <th>Ism</th>
+                                        <th>Telefon</th>
+                                        <th>Guruh</th>
+                                        <th>Amallar</th>
                                     </tr>
                                     </thead>
                                     <tbody id="student-table-body">
-                                    <!-- Students will be loaded here -->
+                                    <!-- Talabalar bu yerga yuklanadi -->
                                     </tbody>
                                 </table>
                             </div>
-                            <nav aria-label="Page navigation">
+                            <nav aria-label="Sahifalash">
                                 <ul class="pagination justify-content-center" id="student-pagination">
-                                    <!-- Pagination will be loaded here -->
+                                    <!-- Sahifalash bu yerga yuklanadi -->
                                 </ul>
                             </nav>
                         </div>
                     </div>
                 </div>
 
-                <!-- Mentor Section (hidden by default) -->
+                <!-- Mentor Bo‘limi (sukut bo‘yicha yashirin) -->
                 <div class="tab-content d-none" id="mentor-content">
-                    <!-- Similar structure to student section -->
+                    <!-- Talabalar bo‘limiga o‘xshash tuzilma -->
                 </div>
 
-                <!-- Group Section (hidden by default) -->
+                <!-- Guruh Bo‘limi (sukut bo‘yicha yashirin) -->
                 <div class="tab-content d-none" id="group-content">
-                    <!-- Similar structure to student section -->
+                    <!-- Talabalar bo‘limiga o‘xshash tuzilma -->
                 </div>
 
-                <!-- Archive Section (hidden by default) -->
+                <!-- Arxiv Bo‘limi (sukut bo‘yicha yashirin) -->
                 <div class="tab-content d-none" id="archive-content">
-                    <!-- Similar structure to student section -->
+                    <!-- Talabalar bo‘limiga o‘xshash tuzilma -->
                 </div>
 
-                <!-- Rating Section (hidden by default) -->
+                <!-- Reyting Bo‘limi (sukut bo‘yicha yashirin) -->
                 <div class="tab-content d-none" id="rating-content">
                     <div class="card">
                         <div class="card-header">
-                            <h5>Top Students</h5>
+                            <h5>Eng Yaxshi Talabalar</h5>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
-                                        <th>Rank</th>
-                                        <th>Name</th>
-                                        <th>Group</th>
-                                        <th>Score</th>
+                                        <th>O‘rin</th>
+                                        <th>Ism</th>
+                                        <th>Guruh</th>
+                                        <th>Ball</th>
                                     </tr>
                                     </thead>
                                     <tbody id="rating-table-body">
-                                    <!-- Top students will be loaded here -->
+                                    <!-- Eng yaxshi talabalar bu yerga yuklanadi -->
                                     </tbody>
                                 </table>
                             </div>
@@ -278,11 +278,11 @@
                     </div>
                 </div>
 
-                <!-- Role Change Section (hidden by default) -->
+                <!-- Rol O‘zgartirish Bo‘limi (sukut bo‘yicha yashirin) -->
                 <div class="tab-content d-none" id="role-change-content">
                     <div class="card">
                         <div class="card-header">
-                            <h5>Role Management</h5>
+                            <h5>Rol Boshqaruvi</h5>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -290,20 +290,20 @@
                                     <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Current Role</th>
-                                        <th>New Role</th>
-                                        <th>Actions</th>
+                                        <th>Ism</th>
+                                        <th>Joriy Rol</th>
+                                        <th>Yangi Rol</th>
+                                        <th>Amallar</th>
                                     </tr>
                                     </thead>
                                     <tbody id="role-change-table-body">
-                                    <!-- Users will be loaded here -->
+                                    <!-- Foydalanuvchilar bu yerga yuklanadi -->
                                     </tbody>
                                 </table>
                             </div>
-                            <nav aria-label="Page navigation">
+                            <nav aria-label="Sahifalash">
                                 <ul class="pagination justify-content-center" id="role-change-pagination">
-                                    <!-- Pagination will be loaded here -->
+                                    <!-- Sahifalash bu yerga yuklanadi -->
                                 </ul>
                             </nav>
                         </div>
@@ -314,64 +314,63 @@
     </div>
 </div>
 
-<!-- Profile Update Modal -->
+<!-- Profil Yangilash Modali -->
 <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="profileModalLabel">Update Profile</h5>
+                <h5 class="modal-title" id="profileModalLabel">Profilni Yangilash</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="profile-form">
                     <div class="mb-3 text-center">
-                        <img src="" alt="Profile" class="profile-pic mb-2" id="modal-profile-pic" style="width: 100px; height: 100px;">
+                        <img src="" alt="Profil" class="profile-pic mb-2" id="modal-profile-pic" style="width: 100px; height: 100px;">
                         <input type="file" class="form-control d-none" id="profile-image-input" accept="image/*">
                         <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="document.getElementById('profile-image-input').click()">
-                            Change Photo
+                            Rasmni O‘zgartirish
                         </button>
                     </div>
                     <div class="mb-3">
-                        <label for="first-name" class="form-label">First Name</label>
+                        <label for="first-name" class="form-label">Ism</label>
                         <input type="text" class="form-control" id="first-name" required>
                     </div>
                     <div class="mb-3">
-                        <label for="last-name" class="form-label">Last Name</label>
+                        <label for="last-name" class="form-label">Familiya</label>
                         <input type="text" class="form-control" id="last-name" required>
                     </div>
                     <div class="mb-3">
-                        <label for="phone-number" class="form-label">Phone Number</label>
+                        <label for="phone-number" class="form-label">Telefon Raqami</label>
                         <input type="tel" class="form-control" id="phone-number" required>
                     </div>
-                    <input type="hidden" id="user-id">
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="save-profile-btn">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                <button type="button" class="btn btn-primary" id="save-profile-btn">O‘zgarishlarni Saqlash</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Add Student Modal -->
+<!-- Talaba Qo‘shish Modali -->
 <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
-    <!-- Modal content for adding new student -->
+    <!-- Yangi talaba qo‘shish uchun modal kontenti -->
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-    // Get user data from localStorage or redirect to login
-    const userData = JSON.parse(localStorage.getItem('userData'));
+    // localStorage dan foydalanuvchi ma'lumotlarini olish yoki login sahifasiga yo‘naltirish
+    let userData = JSON.parse(localStorage.getItem('userData'));
 
-    if (!userData) {
+    if (!userData || !userData.userId) {
         window.location.href = '/login.html';
     }
 
-    // Set admin profile info
-    document.getElementById('admin-name').textContent = userData.firstName;
-    document.getElementById('dropdown-admin-name').textContent = `${userData.firstName} ${userData.lastName}`;
+    // Admin profil ma'lumotlarini o‘rnatish
+    document.getElementById('admin-name').textContent = userData.firstName || 'Admin';
+    document.getElementById('dropdown-admin-name').textContent = `${userData.firstName || ''} ${userData.lastName || ''}`.trim() || 'Admin';
 
     const profilePics = document.querySelectorAll('.profile-pic, #modal-profile-pic');
     profilePics.forEach(pic => {
@@ -382,61 +381,79 @@
         }
     });
 
-    // Set user ID for profile updates
-    document.getElementById('user-id').value = userData.userId;
-    document.getElementById('first-name').value = userData.firstName;
-    document.getElementById('last-name').value = userData.lastName;
-    document.getElementById('phone-number').value = userData.phoneNumber;
+    // Profil modali ochilganda formani to‘ldirish
+    const profileModal = document.getElementById('profileModal');
+    profileModal.addEventListener('show.bs.modal', () => {
+        document.getElementById('first-name').value = userData.firstName || '';
+        document.getElementById('last-name').value = userData.lastName || '';
+        document.getElementById('phone-number').value = userData.phoneNumber || '';
+        document.getElementById('modal-profile-pic').src = userData.image || 'https://via.placeholder.com/150';
+    });
 
-    // Tab switching functionality
+    // Modal yopilganda formani tozalash
+    profileModal.addEventListener('hidden.bs.modal', () => {
+        document.getElementById('profile-form').reset();
+        document.getElementById('modal-profile-pic').src = userData.image || 'https://via.placeholder.com/150';
+    });
+
+    // Tablar o‘tish funksiyasi
     const tabs = ['student', 'mentor', 'group', 'archive', 'rating', 'role-change'];
 
     tabs.forEach(tab => {
         document.getElementById(`${tab}-tab`).addEventListener('click', () => {
-            // Hide all content
+            // Barcha kontentni yashirish
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.add('d-none');
             });
 
-            // Show selected content
+            // Tanlangan kontentni ko‘rsatish
             document.getElementById(`${tab}-content`).classList.remove('d-none');
 
-            // Update active tab
+            // Faol tabni yangilash
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
             });
             document.getElementById(`${tab}-tab`).classList.add('active');
 
-            // Load data for the tab
+            // Tab uchun ma'lumotlarni yuklash
             loadTabData(tab);
         });
     });
 
-    // Function to load data for each tab
+    // Har bir tab uchun ma'lumotlarni yuklash funksiyasi
     function loadTabData(tab) {
-        console.log(`Loading data for ${tab} tab`);
+        console.log(`${tab} tab uchun ma'lumotlar yuklanmoqda`);
 
         if (tab === 'student') {
             loadStudents();
         } else if (tab === 'role-change') {
             loadUsersForRoleChange();
         }
-        // Add other tabs as needed
+        // Boshqa tablar kerak bo‘lsa qo‘shiladi
     }
 
-    // Load students with group assignment
+    // Talabalarni guruh bilan yuklash
     function loadStudents() {
-        axios.get('/api/students')
+        axios.get('/api/students', {
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        })
             .then(response => {
                 populateStudentTable(response.data);
             })
             .catch(error => {
-                console.error('Error fetching students:', error);
+                console.error('Talabalarni yuklashda xato:', error);
+                alert('Talabalarni yuklab bo‘lmadi');
             });
     }
 
     function populateStudentTable(students) {
-        axios.get('/api/groups')
+        axios.get('/api/groups', {
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        })
             .then(groupsResponse => {
                 const groups = groupsResponse.data;
                 const tableBody = document.getElementById('student-table-body');
@@ -450,7 +467,7 @@
                         <td>${student.phoneNumber}</td>
                         <td>
                             <select class="form-select group-select" data-student-id="${student.id}">
-                                <option value="">No Group</option>
+                                <option value="">Guruh Yo‘q</option>
                                 ${groups.map(group =>
                         `<option value="${group.id}" ${student.groupId === group.id ? 'selected' : ''}>
                                         ${group.name}
@@ -460,14 +477,14 @@
                         </td>
                         <td>
                             <button class="btn btn-primary btn-sm update-group-btn" data-student-id="${student.id}">
-                                Update
+                                Yangilash
                             </button>
                         </td>
                     `;
                     tableBody.appendChild(row);
                 });
 
-                // Add event listeners to all update buttons
+                // Barcha yangilash tugmalariga hodisa tinglovchilarini qo‘shish
                 document.querySelectorAll('.update-group-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const studentId = this.getAttribute('data-student-id');
@@ -478,30 +495,40 @@
                 });
             })
             .catch(error => {
-                console.error('Error fetching groups:', error);
+                console.error('Guruhlarni yuklashda xato:', error);
+                alert('Guruhlarni yuklab bo‘lmadi');
             });
     }
 
     function updateStudentGroup(studentId, groupId) {
-        axios.put(`/api/students/${studentId}/group`, { groupId: groupId || null })
+        axios.put(`/api/students/${studentId}/group`, { groupId: groupId || null }, {
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        })
             .then(response => {
-                alert('Group updated successfully');
-                loadStudents(); // Refresh the table
+                alert('Guruh muvaffaqiyatli yangilandi');
+                loadStudents(); // Jadvalni yangilash
             })
             .catch(error => {
-                console.error('Error updating student group:', error);
-                alert('Failed to update group');
+                console.error('Guruhni yangilashda xato:', error);
+                alert('Guruhni yangilab bo‘lmadi');
             });
     }
 
-    // Role change functionality
+    // Rol o‘zgartirish funksiyasi
     function loadUsersForRoleChange() {
-        axios.get('/api/users/for-role-change')
+        axios.get('/api/users/for-role-change', {
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        })
             .then(response => {
                 populateRoleChangeTable(response.data);
             })
             .catch(error => {
-                console.error('Error fetching users for role change:', error);
+                console.error('Rol o‘zgartirish uchun foydalanuvchilarni yuklashda xato:', error);
+                alert('Foydalanuvchilarni yuklab bo‘lmadi');
             });
     }
 
@@ -517,25 +544,25 @@
                 <td>${formatRole(user.currentRole)}</td>
                 <td>
                     <select class="form-select new-role-select" data-user-id="${user.id}">
-                        <option value="ROLE_STUDENT">Student</option>
+                        <option value="ROLE_STUDENT">Talaba</option>
                         <option value="ROLE_MENTOR">Mentor</option>
                         <option value="ROLE_ADMIN">Admin</option>
                     </select>
                 </td>
                 <td>
                     <button class="btn btn-primary btn-sm update-role-btn" data-user-id="${user.id}">
-                        Update Role
+                        Rolni Yangilash
                     </button>
                 </td>
             `;
             tableBody.appendChild(row);
 
-            // Set the current role as selected
+            // Joriy rolni tanlangan qilib o‘rnatish
             const select = row.querySelector('.new-role-select');
             select.value = user.currentRole;
         });
 
-        // Add event listeners to all update buttons
+        // Barcha yangilash tugmalariga hodisa tinglovchilarini qo‘shish
         document.querySelectorAll('.update-role-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const userId = this.getAttribute('data-user-id');
@@ -548,7 +575,7 @@
 
     function formatRole(role) {
         const roleMap = {
-            'ROLE_STUDENT': 'Student',
+            'ROLE_STUDENT': 'Talaba',
             'ROLE_MENTOR': 'Mentor',
             'ROLE_ADMIN': 'Admin'
         };
@@ -556,42 +583,57 @@
     }
 
     function updateUserRole(userId, newRole) {
-        axios.put(`/api/users/${userId}/role`, { role: newRole })
+        axios.put(`/api/users/${userId}/role`, { role: newRole }, {
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        })
             .then(response => {
-                alert('Role updated successfully');
-                loadUsersForRoleChange(); // Refresh the table
+                alert('Rol muvaffaqiyatli yangilandi');
+                loadUsersForRoleChange(); // Jadvalni yangilash
             })
             .catch(error => {
-                console.error('Error updating role:', error);
-                alert('Failed to update role');
+                console.error('Rolni yangilashda xato:', error);
+                alert('Rolni yangilab bo‘lmadi');
             });
     }
 
-    // Profile update functionality
+    // Profil yangilash funksiyasi
     document.getElementById('save-profile-btn').addEventListener('click', () => {
         const formData = new FormData();
         const imageInput = document.getElementById('profile-image-input');
+        const firstName = document.getElementById('first-name').value.trim();
+        const lastName = document.getElementById('last-name').value.trim();
+        const phoneNumber = document.getElementById('phone-number').value.trim();
 
-        formData.append('id', document.getElementById('user-id').value);
-        formData.append('firstName', document.getElementById('first-name').value);
-        formData.append('lastName', document.getElementById('last-name').value);
-        formData.append('phoneNumber', document.getElementById('phone-number').value);
+        // Validatsiya
+        if (!userData.userId || isNaN(userData.userId) || userData.userId <= 0) {
+            alert('Noto‘g‘ri foydalanuvchi ID. Iltimos, tizimga qayta kiring.');
+            return;
+        }
+        if (!firstName || !lastName || !phoneNumber) {
+            alert('Iltimos, barcha majburiy maydonlarni to‘ldiring (Ism, Familiya, Telefon Raqami).');
+            return;
+        }
+
+        formData.append('id', userData.userId);
+        formData.append('firstName', firstName);
+        formData.append('lastName', lastName);
+        formData.append('phoneNumber', phoneNumber);
 
         if (imageInput.files[0]) {
             formData.append('file', imageInput.files[0]);
         }
 
-        axios.post('/api/v1/auth/updateProfile', formData, {
+        axios.post('http://localhost:8080/api/v1/auth/updateProfile', formData, {
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${userData.token}`
             }
         })
             .then(response => {
-                // Update UI with new data
                 const updatedData = response.data;
-
-                // Update localStorage
-                const userData = JSON.parse(localStorage.getItem('userData'));
+                userData.userId = updatedData.id;
                 userData.firstName = updatedData.firstName;
                 userData.lastName = updatedData.lastName;
                 userData.phoneNumber = updatedData.phoneNumber;
@@ -600,30 +642,26 @@
                 }
                 localStorage.setItem('userData', JSON.stringify(userData));
 
-                // Update UI elements
                 document.getElementById('admin-name').textContent = updatedData.firstName;
                 document.getElementById('dropdown-admin-name').textContent =
-                    `${updatedData.firstName} ${updatedData.lastName}`;
+                    `${updatedData.firstName} ${updatedData.lastName}`.trim();
 
-                // Update all profile images
                 const profilePics = document.querySelectorAll('.profile-pic, #modal-profile-pic');
                 profilePics.forEach(pic => {
-                    if (updatedData.image) {
-                        pic.src = updatedData.image;
-                    }
+                    pic.src = updatedData.image || 'https://via.placeholder.com/150';
                 });
 
-                // Close modal
                 bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
-                alert('Profile updated successfully');
+                alert('Profil muvaffaqiyatli yangilandi');
             })
             .catch(error => {
-                console.error('Error updating profile:', error);
-                alert('Failed to update profile');
+                console.error('Profilni yangilashda xato:', error);
+                const errorMessage = error.response?.data?.message || 'Profilni yangilab bo‘lmadi';
+                alert(errorMessage);
             });
     });
 
-    // Image preview when selecting a new image
+    // Yangi rasm tanlanganda ko‘rish
     document.getElementById('profile-image-input').addEventListener('change', function(e) {
         if (e.target.files && e.target.files[0]) {
             const reader = new FileReader();
@@ -636,7 +674,7 @@
         }
     });
 
-    // Initialize with student tab active
+    // Talaba tabini faol qilish bilan boshlash
     document.getElementById('student-tab').click();
 </script>
 </body>

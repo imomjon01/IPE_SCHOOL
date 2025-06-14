@@ -16,11 +16,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,8 +38,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginRes login(LoginDto loginDto) {
         User user = userRepository.findByPhoneNumber(loginDto.getPhoneNumber());
-
-        if (user == null || !user.getActive()) {
+        if (user == null) {
+            throw new UsernameNotFoundException("Username not found");
+        } else if (user.getActive() == false) {
             throw new UsernameNotFoundException("Username not found");
         }
 
@@ -56,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
                     user.getLastName(), user.getPhoneNumber(), list,
                     null);
         }
-        return new LoginRes(token,user.getId(), user.getFirstName(),
+        return new LoginRes(token, user.getId(), user.getFirstName(),
                 user.getLastName(), user.getPhoneNumber(), list,
                 user.getAttachment().getContent());
     }
@@ -80,16 +81,16 @@ public class AuthServiceImpl implements AuthService {
 
     @SneakyThrows
     @Override
-    public UserRes updateUser(UserReq userReq) {
+    public UserRes updateUser(UserReq userReq, MultipartFile file) {
         Optional<User> byId = userRepository.findById(Long.valueOf(userReq.getId()));
         if (byId.isPresent()) {
             User user = byId.get();
             user.setFirstName(userReq.getFirstName());
             user.setLastName(userReq.getLastName());
             user.setPhoneNumber(userReq.getPhoneNumber());
-            if (userReq.getFile() != null) {
-                user.getAttachment().setContent(userReq.getFile().getBytes());
-                user.getAttachment().setContentType(userReq.getFile().getContentType());
+            if (file != null) {
+                user.getAttachment().setContent(file.getBytes());
+                user.getAttachment().setContentType(file.getContentType());
                 attachmentRepository.save(user.getAttachment());
             }
             User save = userRepository.save(user);
