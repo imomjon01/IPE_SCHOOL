@@ -1,6 +1,5 @@
 package ipe.school.ipe_school.models.repo;
 
-import ipe.school.ipe_school.models.entity.Module;
 import ipe.school.ipe_school.models.entity.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
