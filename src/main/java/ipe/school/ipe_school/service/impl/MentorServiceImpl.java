@@ -42,6 +42,7 @@ public class MentorServiceImpl implements MentorService {
         user.setLastName(mentorReq.getLastName());
         user.setPassword(passwordEncoder.encode(mentorReq.getPassword()));
         user.setPhoneNumber(mentorReq.getPhoneNumber());
+        user.set_active(true);
 
         ClassPathResource imgFile = new ClassPathResource("images/img.png");
         Attachment attachment = new Attachment();

@@ -53,12 +53,9 @@ public class GroupController {
         groupService.updateGroup_Active(groupId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-/*
-    @GetMapping("/{mentorId}")
+
+    /*@GetMapping("/{mentorId}")
     public ResponseEntity<GroupRes> getGroupByMentor(@PathVariable Long mentorId) {
-        List<Group> groupByMentorId = groupService.getGroupByMentorId(mentorId);
-        return new ResponseEntity<>()
 
     }*/
-
 }

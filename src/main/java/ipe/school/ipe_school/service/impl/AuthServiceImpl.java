@@ -42,6 +42,11 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtService.generateToken(loginDto.getPhoneNumber());
         List<String> list = user.getRoles().stream().map(Roles::getName).toList();
         System.out.println(list + "===============");
+        if (user.getAttachment() == null) {
+            return new LoginRes(token, user.getFirstName(),
+                    user.getLastName(), user.getPhoneNumber(), list,
+                    null);
+        }
         return new LoginRes(token, user.getFirstName(),
                 user.getLastName(), user.getPhoneNumber(), list,
                 user.getAttachment().getContent());
@@ -54,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
 //        String confirmPassword;
 //        String firstName;
 //        String lastName;
-        User user =User.builder()
+        User user = User.builder()
                 ._active(true)
                 .phoneNumber(registerDto.getPhoneNumber())
                 .password(passwordEncoder.encode(registerDto.getPassword()))
