@@ -81,7 +81,7 @@ public class AuthServiceImpl implements AuthService {
     @SneakyThrows
     @Override
     public UserRes updateUser(UserReq userReq) {
-        Optional<User> byId = userRepository.findById(userReq.getId());
+        Optional<User> byId = userRepository.findById(Long.valueOf(userReq.getId()));
         if (byId.isPresent()) {
             User user = byId.get();
             user.setFirstName(userReq.getFirstName());

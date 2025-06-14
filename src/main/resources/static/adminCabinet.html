@@ -163,6 +163,11 @@
                             <i class="fas fa-star"></i> Rating
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="role-change-tab">
+                            <i class="fas fa-user-cog"></i> Role Change
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -272,6 +277,38 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Role Change Section (hidden by default) -->
+                <div class="tab-content d-none" id="role-change-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Role Management</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Current Role</th>
+                                        <th>New Role</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="role-change-table-body">
+                                    <!-- Users will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center" id="role-change-pagination">
+                                    <!-- Pagination will be loaded here -->
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -338,7 +375,11 @@
 
     const profilePics = document.querySelectorAll('.profile-pic, #modal-profile-pic');
     profilePics.forEach(pic => {
-        pic.src = userData.image || 'https://via.placeholder.com/150';
+        if (userData.image && userData.image.startsWith('data:image')) {
+            pic.src = userData.image;
+        } else {
+            pic.src = 'https://via.placeholder.com/150';
+        }
     });
 
     // Set user ID for profile updates
@@ -348,7 +389,7 @@
     document.getElementById('phone-number').value = userData.phoneNumber;
 
     // Tab switching functionality
-    const tabs = ['student', 'mentor', 'group', 'archive', 'rating'];
+    const tabs = ['student', 'mentor', 'group', 'archive', 'rating', 'role-change'];
 
     tabs.forEach(tab => {
         document.getElementById(`${tab}-tab`).addEventListener('click', () => {
@@ -373,19 +414,157 @@
 
     // Function to load data for each tab
     function loadTabData(tab) {
-        // In a real implementation, you would make API calls here
         console.log(`Loading data for ${tab} tab`);
 
-        // Example for student tab
         if (tab === 'student') {
-            // axios.get('/api/students')
-            //     .then(response => {
-            //         populateStudentTable(response.data);
-            //     })
-            //     .catch(error => {
-            //         console.error('Error fetching students:', error);
-            //     });
+            loadStudents();
+        } else if (tab === 'role-change') {
+            loadUsersForRoleChange();
         }
+        // Add other tabs as needed
+    }
+
+    // Load students with group assignment
+    function loadStudents() {
+        axios.get('/api/students')
+            .then(response => {
+                populateStudentTable(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching students:', error);
+            });
+    }
+
+    function populateStudentTable(students) {
+        axios.get('/api/groups')
+            .then(groupsResponse => {
+                const groups = groupsResponse.data;
+                const tableBody = document.getElementById('student-table-body');
+                tableBody.innerHTML = '';
+
+                students.forEach(student => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${student.id}</td>
+                        <td>${student.firstName} ${student.lastName}</td>
+                        <td>${student.phoneNumber}</td>
+                        <td>
+                            <select class="form-select group-select" data-student-id="${student.id}">
+                                <option value="">No Group</option>
+                                ${groups.map(group =>
+                        `<option value="${group.id}" ${student.groupId === group.id ? 'selected' : ''}>
+                                        ${group.name}
+                                    </option>`
+                    ).join('')}
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary btn-sm update-group-btn" data-student-id="${student.id}">
+                                Update
+                            </button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                // Add event listeners to all update buttons
+                document.querySelectorAll('.update-group-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const studentId = this.getAttribute('data-student-id');
+                        const groupId = document.querySelector(`.group-select[data-student-id="${studentId}"]`).value;
+
+                        updateStudentGroup(studentId, groupId);
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching groups:', error);
+            });
+    }
+
+    function updateStudentGroup(studentId, groupId) {
+        axios.put(`/api/students/${studentId}/group`, { groupId: groupId || null })
+            .then(response => {
+                alert('Group updated successfully');
+                loadStudents(); // Refresh the table
+            })
+            .catch(error => {
+                console.error('Error updating student group:', error);
+                alert('Failed to update group');
+            });
+    }
+
+    // Role change functionality
+    function loadUsersForRoleChange() {
+        axios.get('/api/users/for-role-change')
+            .then(response => {
+                populateRoleChangeTable(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching users for role change:', error);
+            });
+    }
+
+    function populateRoleChangeTable(users) {
+        const tableBody = document.getElementById('role-change-table-body');
+        tableBody.innerHTML = '';
+
+        users.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.firstName} ${user.lastName}</td>
+                <td>${formatRole(user.currentRole)}</td>
+                <td>
+                    <select class="form-select new-role-select" data-user-id="${user.id}">
+                        <option value="ROLE_STUDENT">Student</option>
+                        <option value="ROLE_MENTOR">Mentor</option>
+                        <option value="ROLE_ADMIN">Admin</option>
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-primary btn-sm update-role-btn" data-user-id="${user.id}">
+                        Update Role
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+
+            // Set the current role as selected
+            const select = row.querySelector('.new-role-select');
+            select.value = user.currentRole;
+        });
+
+        // Add event listeners to all update buttons
+        document.querySelectorAll('.update-role-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const userId = this.getAttribute('data-user-id');
+                const newRole = document.querySelector(`.new-role-select[data-user-id="${userId}"]`).value;
+
+                updateUserRole(userId, newRole);
+            });
+        });
+    }
+
+    function formatRole(role) {
+        const roleMap = {
+            'ROLE_STUDENT': 'Student',
+            'ROLE_MENTOR': 'Mentor',
+            'ROLE_ADMIN': 'Admin'
+        };
+        return roleMap[role] || role;
+    }
+
+    function updateUserRole(userId, newRole) {
+        axios.put(`/api/users/${userId}/role`, { role: newRole })
+            .then(response => {
+                alert('Role updated successfully');
+                loadUsersForRoleChange(); // Refresh the table
+            })
+            .catch(error => {
+                console.error('Error updating role:', error);
+                alert('Failed to update role');
+            });
     }
 
     // Profile update functionality
@@ -393,43 +572,55 @@
         const formData = new FormData();
         const imageInput = document.getElementById('profile-image-input');
 
-        if (imageInput.files[0]) {
-            formData.append('image', imageInput.files[0]);
-        }
-
+        formData.append('id', document.getElementById('user-id').value);
         formData.append('firstName', document.getElementById('first-name').value);
         formData.append('lastName', document.getElementById('last-name').value);
         formData.append('phoneNumber', document.getElementById('phone-number').value);
-        formData.append('userId', document.getElementById('user-id').value);
 
-        // In a real implementation, you would send this to your backend
-        // axios.put('/api/profile', formData, {
-        //     headers: {
-        //         'Content-Type': 'multipart/form-data'
-        //     }
-        // })
-        // .then(response => {
-        //     // Update UI with new data
-        //     const updatedData = response.data;
-        //     updateProfileUI(updatedData);
-        //     // Close modal
-        //     bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
-        // })
-        // .catch(error => {
-        //     console.error('Error updating profile:', error);
-        // });
+        if (imageInput.files[0]) {
+            formData.append('file', imageInput.files[0]);
+        }
 
-        // For demo purposes
-        console.log('Profile update data:', {
-            firstName: document.getElementById('first-name').value,
-            lastName: document.getElementById('last-name').value,
-            phoneNumber: document.getElementById('phone-number').value,
-            userId: document.getElementById('user-id').value,
-            hasImage: !!imageInput.files[0]
-        });
+        axios.post('/api/v1/auth/updateProfile', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then(response => {
+                // Update UI with new data
+                const updatedData = response.data;
 
-        alert('Profile updated successfully (demo)');
-        bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
+                // Update localStorage
+                const userData = JSON.parse(localStorage.getItem('userData'));
+                userData.firstName = updatedData.firstName;
+                userData.lastName = updatedData.lastName;
+                userData.phoneNumber = updatedData.phoneNumber;
+                if (updatedData.image) {
+                    userData.image = updatedData.image;
+                }
+                localStorage.setItem('userData', JSON.stringify(userData));
+
+                // Update UI elements
+                document.getElementById('admin-name').textContent = updatedData.firstName;
+                document.getElementById('dropdown-admin-name').textContent =
+                    `${updatedData.firstName} ${updatedData.lastName}`;
+
+                // Update all profile images
+                const profilePics = document.querySelectorAll('.profile-pic, #modal-profile-pic');
+                profilePics.forEach(pic => {
+                    if (updatedData.image) {
+                        pic.src = updatedData.image;
+                    }
+                });
+
+                // Close modal
+                bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
+                alert('Profile updated successfully');
+            })
+            .catch(error => {
+                console.error('Error updating profile:', error);
+                alert('Failed to update profile');
+            });
     });
 
     // Image preview when selecting a new image
