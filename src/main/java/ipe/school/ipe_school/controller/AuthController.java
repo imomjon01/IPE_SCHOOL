@@ -54,12 +54,10 @@ public class AuthController {
                     "userId", loginRes.getUserId()
             ));
         } catch (UsernameNotFoundException | BadCredentialsException e) {
-            // Login xatolari uchun
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
                     "message", "Telefon raqam yoki parol noto‘g‘ri"
             ));
         } catch (Exception e) {
-            // Har qanday boshqa xatoliklar uchun
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
                     "message", "Tizimda xatolik yuz berdi"
             ));

@@ -1,5 +1,6 @@
 package ipe.school.ipe_school.models.dtos.req;
 
+import ipe.school.ipe_school.models.dtos.res.QuestionRes;
 import ipe.school.ipe_school.models.entity.Attachment;
 import jakarta.persistence.ElementCollection;
 import lombok.Value;
@@ -12,4 +13,6 @@ public class QuestionReq {
     String questionTest;
     List<String> variant;
     String currentAnswer;
+
+
 }

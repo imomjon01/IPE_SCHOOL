@@ -14,10 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 public class Task extends BaseEntity {
-    @OneToMany
-    private List<Question> questions;
+
     private String taskName;
+
+    private String youtubeURL;
     @ManyToMany
     private List<Attachment> attachment;
-    private String youtubeURL;
+    @OneToMany
+    private List<Question> questions;
 }

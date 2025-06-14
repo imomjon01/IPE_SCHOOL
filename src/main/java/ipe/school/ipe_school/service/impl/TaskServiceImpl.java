@@ -27,7 +27,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public TaskRes addTask(TaskReq taskReq) {
-        Task task=new Task();
+        Task task = new Task();
         if (taskReq.getAttachments() != null) {
             List<Attachment> attachments = taskReq.getAttachments().stream().map(item -> {
                 try {
@@ -71,5 +71,10 @@ public class TaskServiceImpl implements TaskService {
         }
         taskRepository.save(task);
         return new TaskRes(task.getId(), task.getTaskName());
+    }
+
+    @Override
+    public Task findByActiveTask(Long taskId) {
+        return taskRepository.findByIdActive(taskId, true);
     }
 }
