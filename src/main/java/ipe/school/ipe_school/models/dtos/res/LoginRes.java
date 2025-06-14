@@ -7,6 +7,7 @@ import java.util.List;
 @Value
 public class LoginRes {
     String token;
+    Long userId;
     String firstName;
     String lastName;
     String phoneNumber;

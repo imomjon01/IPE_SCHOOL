@@ -2,35 +2,45 @@ package ipe.school.ipe_school.service.impl;
 
 import ipe.school.ipe_school.models.dtos.req.LoginDto;
 import ipe.school.ipe_school.models.dtos.req.RegisterDto;
+import ipe.school.ipe_school.models.dtos.req.UserReq;
 import ipe.school.ipe_school.models.dtos.res.LoginRes;
+import ipe.school.ipe_school.models.dtos.res.UserRes;
 import ipe.school.ipe_school.models.entity.Roles;
 import ipe.school.ipe_school.models.entity.User;
+import ipe.school.ipe_school.models.repo.AttachmentRepository;
 import ipe.school.ipe_school.models.repo.UserRepository;
 import ipe.school.ipe_school.security.JwtService;
 import ipe.school.ipe_school.service.interfaces.AuthService;
+import jakarta.servlet.annotation.MultipartConfig;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@MultipartConfig
 public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AttachmentRepository attachmentRepository;
 
     @Override
     public LoginRes login(LoginDto loginDto) {
         User user = userRepository.findByPhoneNumber(loginDto.getPhoneNumber());
 
-        if (!user.get_active()) {
-            throw new DisabledException("User account is not active. Please contact administrator.");
+        if (user == null || user.get_active() == false) {
+            throw new UsernameNotFoundException("Username not found");
         }
 
         var auth = new UsernamePasswordAuthenticationToken(
@@ -41,13 +51,12 @@ public class AuthServiceImpl implements AuthService {
         authenticationManager.authenticate(auth);
         String token = jwtService.generateToken(loginDto.getPhoneNumber());
         List<String> list = user.getRoles().stream().map(Roles::getName).toList();
-        System.out.println(list + "===============");
         if (user.getAttachment() == null) {
-            return new LoginRes(token, user.getFirstName(),
+            return new LoginRes(token, user.getId(), user.getFirstName(),
                     user.getLastName(), user.getPhoneNumber(), list,
                     null);
         }
-        return new LoginRes(token, user.getFirstName(),
+        return new LoginRes(token,user.getId(), user.getFirstName(),
                 user.getLastName(), user.getPhoneNumber(), list,
                 user.getAttachment().getContent());
     }
@@ -67,5 +76,26 @@ public class AuthServiceImpl implements AuthService {
                 .lastName(registerDto.getLastName())
                 .build();
         userRepository.save(user);
+    }
+
+    @SneakyThrows
+    @Override
+    public UserRes updateUser(UserReq userReq) {
+        Optional<User> byId = userRepository.findById(userReq.getId());
+        if (byId.isPresent()) {
+            User user = byId.get();
+            user.setFirstName(userReq.getFirstName());
+            user.setLastName(userReq.getLastName());
+            user.setPhoneNumber(userReq.getPhoneNumber());
+            if (userReq.getFile() != null) {
+                user.getAttachment().setContent(userReq.getFile().getBytes());
+                user.getAttachment().setContentType(userReq.getFile().getContentType());
+                attachmentRepository.save(user.getAttachment());
+            }
+            User save = userRepository.save(user);
+            return new UserRes(save.getId(), save.getFirstName(), save.getLastName(), save.getPhoneNumber());
+        } else {
+            throw new ChangeSetPersister.NotFoundException();
+        }
     }
 }

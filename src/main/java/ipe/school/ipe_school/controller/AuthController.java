@@ -3,7 +3,9 @@ package ipe.school.ipe_school.controller;
 
 import ipe.school.ipe_school.models.dtos.req.LoginDto;
 import ipe.school.ipe_school.models.dtos.req.RegisterDto;
+import ipe.school.ipe_school.models.dtos.req.UserReq;
 import ipe.school.ipe_school.models.dtos.res.LoginRes;
+import ipe.school.ipe_school.models.dtos.res.UserRes;
 import ipe.school.ipe_school.service.interfaces.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static ipe.school.ipe_school.utils.ApiConstants.*;
 
@@ -27,7 +27,10 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
         LoginRes loginRes = authService.login(loginDto);
 
-        // Determine redirect URL based on roles
+        String base64Image = loginRes.getImage() != null
+                ? "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(loginRes.getImage())
+                : null;
+
         String redirectUrl = determineRedirectUrl(loginRes.getRoles());
 
         return ResponseEntity.ok(Map.of(
@@ -36,7 +39,9 @@ public class AuthController {
                 "lastName", loginRes.getLastName(),
                 "phoneNumber", loginRes.getPhoneNumber(),
                 "roles", loginRes.getRoles(),
-                "redirect", redirectUrl
+                "image", base64Image,
+                "redirect", redirectUrl,
+                "userId", loginRes.getUserId()
         ));
     }
 
@@ -54,5 +59,11 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody RegisterDto registerDto) {
         authService.register(registerDto);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/updateProfile")
+    public ResponseEntity<?> updateProfile(@RequestBody UserReq userReq) {
+        UserRes userRes = authService.updateUser(userReq);
+        return ResponseEntity.ok(userRes);
     }
 }
