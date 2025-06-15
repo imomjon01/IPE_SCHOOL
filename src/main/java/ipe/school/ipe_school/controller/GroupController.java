@@ -30,7 +30,7 @@ public class GroupController {
         return new ResponseEntity<>(groupRes, HttpStatus.CREATED);
     }
 
-    @GetMapping()
+    @GetMapping("/getAll")
     public ResponseEntity<List<GroupDetailsRes>> getAllGroups() {
         List<GroupDetailsRes> groups = groupService.getGroupsBy_Active();
         return new ResponseEntity<>(groups, HttpStatus.OK);

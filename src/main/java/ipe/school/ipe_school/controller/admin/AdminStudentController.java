@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.util.List;
+
 import static ipe.school.ipe_school.utils.ApiConstants.*;
 
 @MultipartConfig
@@ -30,9 +32,14 @@ public class AdminStudentController {
         return ResponseEntity.ok(students);
     }
 
+    @GetMapping("/getAll")
+    public ResponseEntity<List<StudentDetailsRes>> getAllStudents() {
+        List<StudentDetailsRes> studentDetailsRes = studentService.getAllStudents();
+        return ResponseEntity.ok(studentDetailsRes);
+    }
+
     @PostMapping("/save")
     public ResponseEntity<StudentRes> saveStudent(@RequestBody StudentDto studentDto) {
-        System.out.println("keldi =================");
         StudentRes studentRes = studentService.save(studentDto);
         return new ResponseEntity<>(studentRes, HttpStatus.CREATED);
     }

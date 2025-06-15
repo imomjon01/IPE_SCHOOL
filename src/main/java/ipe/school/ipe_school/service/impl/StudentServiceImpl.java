@@ -128,5 +128,15 @@ public class StudentServiceImpl implements StudentService {
         );
     }
 
+    @Override
+    public List<StudentDetailsRes> getAllStudents() {
+       List<User> users  = userRepository.findAllActiveStudents();
+       List<StudentDetailsRes> studentDetailsRes = new ArrayList<>();
+        for (User user : users) {
+            studentDetailsRes.add(new StudentDetailsRes(user.getId(), user.getFirstName(), user.getLastName(), user.getPhoneNumber()));
+        }
+        return studentDetailsRes;
+    }
+
 
 }

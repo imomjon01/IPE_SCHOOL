@@ -67,7 +67,7 @@
             right: 0;
             background-color: white;
             min-width: 200px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             z-index: 1;
             border-radius: 5px;
             padding: 10px;
@@ -209,7 +209,8 @@
                         </div>
                         <div class="profile-dropdown-content">
                             <div class="text-center mb-2">
-                                <img src="" alt="Profil" class="profile-pic mb-2" id="dropdown-profile-pic" style="width: 80px; height: 80px;">
+                                <img src="" alt="Profil" class="profile-pic mb-2" id="dropdown-profile-pic"
+                                     style="width: 80px; height: 80px;">
                                 <h6 id="dropdown-admin-name">Admin Ismi</h6>
                             </div>
                             <hr>
@@ -228,7 +229,8 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h5>Talabalar</h5>
-                            <button class="btn btn-primary btn-sm" id="add-student-btn" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                            <button class="btn btn-primary btn-sm" id="add-student-btn" data-bs-toggle="modal"
+                                    data-bs-target="#addStudentModal">
                                 <i class="fas fa-plus me-1"></i> Talaba Qo‘shish
                             </button>
                         </div>
@@ -346,9 +348,11 @@
             <div class="modal-body">
                 <form id="profile-form">
                     <div class="mb-3 text-center">
-                        <img src="" alt="https://profil" class="profile-pic mb-2" id="modal-profile-pic" style="width: 100px; height: auto;">
+                        <img src="" alt="https://profil" class="profile-pic mb-2" id="modal-profile-pic"
+                             style="width: 100px; height: auto;">
                         <input type="file" class="form-control d-none" id="profile-image-input" accept="image/*">
-                        <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="document.getElementById('profile-image-input').click()">
+                        <button type="button" class="btn btn-outline-primary btn-sm mt-2"
+                                onclick="document.getElementById('profile-image-input').click()">
                             Rasmni O‘zgartirish
                         </button>
                     </div>
@@ -396,12 +400,15 @@
                     </div>
                     <div class="mb-3">
                         <label for="student-phone-number" class="form-label">Telefon Raqami</label>
-                        <input type="tel" class="form-control" id="student-phone-number" placeholder="+998 99 999 99 99" required>
-                        <div class="invalid-feedback">Telefon raqami noto‘g‘ri formatda (masalan, +998 99 999 99 99).</div>
+                        <input type="tel" class="form-control" id="student-phone-number" placeholder="+998 99 999 99 99"
+                               required>
+                        <div class="invalid-feedback">Telefon raqami noto‘g‘ri formatda (masalan, +998 99 999 99 99).
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="student-password" class="form-label">Parol</label>
-                        <input type="password" class="form-control" id="student-password" placeholder="Kamida 6 belgi" required>
+                        <input type="password" class="form-control" id="student-password" placeholder="Kamida 6 belgi"
+                               required>
                         <div class="invalid-feedback">Parol kamida 6 belgidan iborat bo‘lishi kerak.</div>
                     </div>
                     <div id="alert-container"></div>
@@ -494,7 +501,7 @@
 
     // Talabalarni guruh bilan yuklash
     function loadStudents() {
-        axios.get('/api/students', {
+        axios.get('http://localhost:8080/api/v1/admin/student/getAll', {
             headers: {
                 Authorization: `Bearer ${userData.token}`
             }
@@ -509,7 +516,7 @@
     }
 
     function populateStudentTable(students) {
-        axios.get('/api/groups', {
+        axios.get('http://localhost:8080/api/v1/group/getAll', { //get ga
             headers: {
                 Authorization: `Bearer ${userData.token}`
             }
@@ -546,7 +553,7 @@
 
                 // Barcha yangilash tugmalariga hodisa tinglovchilarini qo‘shish
                 document.querySelectorAll('.update-group-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
+                    btn.addEventListener('click', function () {
                         const studentId = this.getAttribute('data-student-id');
                         const groupId = document.querySelector(`.group-select[data-student-id="${studentId}"]`).value;
 
@@ -561,7 +568,7 @@
     }
 
     function updateStudentGroup(studentId, groupId) {
-        axios.put(`/api/students/${studentId}/group`, { groupId: groupId || null }, {
+        axios.put(`/api/students/${studentId}/group`, {groupId: groupId || null}, {
             headers: {
                 Authorization: `Bearer ${userData.token}`
             }
@@ -624,7 +631,7 @@
 
         // Barcha yangilash tugmalariga hodisa tinglovchilarini qo‘shish
         document.querySelectorAll('.update-role-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 const userId = this.getAttribute('data-user-id');
                 const newRole = document.querySelector(`.new-role-select[data-user-id="${userId}"]`).value;
 
@@ -643,7 +650,7 @@
     }
 
     function updateUserRole(userId, newRole) {
-        axios.put(`/api/users/${userId}/role`, { role: newRole }, {
+        axios.put(`/api/users/${userId}/role`, {role: newRole}, {
             headers: {
                 Authorization: `Bearer ${userData.token}`
             }
@@ -745,10 +752,10 @@
     });
 
     // Yangi rasm tanlanganda ko‘rish
-    document.getElementById('profile-image-input').addEventListener('change', function(e) {
+    document.getElementById('profile-image-input').addEventListener('change', function (e) {
         if (e.target.files && e.target.files[0]) {
             const reader = new FileReader();
-            reader.onload = function(event) {
+            reader.onload = function (event) {
                 document.getElementById('modal-profile-pic').src = event.target.result;
             };
             reader.readAsDataURL(e.target.files[0]);
@@ -793,7 +800,7 @@
             phoneNumberInput.classList.remove('is-invalid');
         }
 
-        if (!password || password.length < 5 ) {
+        if (!password || password.length < 5) {
             passwordInput.classList.add('is-invalid');
             isValid = false;
         }
