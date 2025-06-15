@@ -516,7 +516,7 @@
     }
 
     function populateStudentTable(students) {
-        axios.get('http://localhost:8080/api/v1/group/getAll', { //get ga
+        axios.get('http://localhost:8080/api/v1/group/getAll', {
             headers: {
                 Authorization: `Bearer ${userData.token}`
             }
@@ -527,36 +527,38 @@
                 tableBody.innerHTML = '';
 
                 students.forEach(student => {
+                    const studentGroupId = student.groupId; // groupId ni olish
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${student.id}</td>
-                        <td>${student.firstName} ${student.lastName}</td>
-                        <td>${student.phoneNumber}</td>
-                        <td>
-                            <select class="form-select group-select" data-student-id="${student.id}">
-                                <option value="">Guruh Yo‘q</option>
-                                ${groups.map(group =>
-                        `<option value="${group.id}" ${student.groupId === group.id ? 'selected' : ''}>
-                                        ${group.name}
-                                    </option>`
-                    ).join('')}
-                            </select>
-                        </td>
-                        <td>
-                            <button class="btn btn-primary btn-sm update-group-btn" data-student-id="${student.id}">
-                                Yangilash
-                            </button>
-                        </td>
-                    `;
+                    <td>${student.id}</td>
+                    <td>${student.firstName} ${student.lastName}</td>
+                    <td>${student.phoneNumber}</td>
+                    <td>
+                        <select class="form-select group-select" data-student-id="${student.id}">
+                            <option value="">Guruh Yo‘q</option>
+                            ${groups.map(group => {
+                        // groupId null yoki undefined bo'lsa, 'selected' qo‘shilmaydi
+                        const isSelected = studentGroupId !== null && studentGroupId !== undefined && studentGroupId === group.id;
+                        return `<option value="${group.id}" ${isSelected ? 'selected' : ''}>
+                                    ${group.name}
+                                </option>`;
+                    }).join('')}
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-sm update-group-btn" data-student-id="${student.id}">
+                            Yangilash
+                        </button>
+                    </td>
+                `;
                     tableBody.appendChild(row);
                 });
 
                 // Barcha yangilash tugmalariga hodisa tinglovchilarini qo‘shish
                 document.querySelectorAll('.update-group-btn').forEach(btn => {
-                    btn.addEventListener('click', function () {
+                    btn.addEventListener('click', function() {
                         const studentId = this.getAttribute('data-student-id');
                         const groupId = document.querySelector(`.group-select[data-student-id="${studentId}"]`).value;
-
                         updateStudentGroup(studentId, groupId);
                     });
                 });

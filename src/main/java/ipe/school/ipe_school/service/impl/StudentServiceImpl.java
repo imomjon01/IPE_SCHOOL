@@ -10,6 +10,7 @@ import ipe.school.ipe_school.models.repo.AttachmentRepository;
 import ipe.school.ipe_school.models.repo.GroupRepository;
 import ipe.school.ipe_school.models.repo.RolesRepository;
 import ipe.school.ipe_school.models.repo.UserRepository;
+import ipe.school.ipe_school.service.interfaces.GroupService;
 import ipe.school.ipe_school.service.interfaces.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -34,6 +36,7 @@ public class StudentServiceImpl implements StudentService {
     private final PasswordEncoder passwordEncoder;
     private final RolesRepository rolesRepository;
     private final AttachmentRepository attachmentRepository;
+    private final GroupService groupService;
 
 
     @SneakyThrows
@@ -65,6 +68,7 @@ public class StudentServiceImpl implements StudentService {
         return new StudentRes(saved.getId(), saved.getFirstName(), saved.getLastName(), saved.getPhoneNumber(), saved.getPassword());
     }
 
+    @Transactional
     @Override
     public Page<StudentDetailsRes> findAllStudents_isActive(int page, int size, String search) {
         Pageable pageable = PageRequest.of(page, size);
@@ -81,7 +85,8 @@ public class StudentServiceImpl implements StudentService {
                 user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.getPhoneNumber()
+                user.getPhoneNumber(),
+                groupService.getGroupByStudentId(user.getId()).orElse(null)
         ));
     }
 
@@ -133,7 +138,7 @@ public class StudentServiceImpl implements StudentService {
        List<User> users  = userRepository.findAllActiveStudents();
        List<StudentDetailsRes> studentDetailsRes = new ArrayList<>();
         for (User user : users) {
-            studentDetailsRes.add(new StudentDetailsRes(user.getId(), user.getFirstName(), user.getLastName(), user.getPhoneNumber()));
+            studentDetailsRes.add(new StudentDetailsRes(user.getId(), user.getFirstName(), user.getLastName(), user.getPhoneNumber(), groupService.getGroupByStudentId(user.getId()).orElse(null)));
         }
         return studentDetailsRes;
     }

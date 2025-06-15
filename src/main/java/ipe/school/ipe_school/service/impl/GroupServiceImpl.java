@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -67,5 +68,10 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<Group> getAllGroup() {
         return groupRepository.findAll();
+    }
+
+    @Override
+    public Optional<Long> getGroupByStudentId(Long id) {
+        return Optional.ofNullable(groupRepository.findGroupIdByStudentId(id));
     }
 }

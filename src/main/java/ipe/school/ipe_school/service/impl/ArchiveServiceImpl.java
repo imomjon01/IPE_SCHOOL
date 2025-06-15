@@ -8,6 +8,7 @@ import ipe.school.ipe_school.models.entity.User;
 import ipe.school.ipe_school.models.repo.GroupRepository;
 import ipe.school.ipe_school.models.repo.UserRepository;
 import ipe.school.ipe_school.service.interfaces.ArchiveService;
+import ipe.school.ipe_school.service.interfaces.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class ArchiveServiceImpl implements ArchiveService {
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
+    private final GroupService groupService;
 
     @Override
     public Page<StudentDetailsRes> findAllStudents_isActive(int page, int size, String search) {
@@ -36,7 +38,8 @@ public class ArchiveServiceImpl implements ArchiveService {
                 user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.getPhoneNumber()
+                user.getPhoneNumber(),
+                groupService.getGroupByStudentId(user.getId()).orElse(null)
         ));
     }
 

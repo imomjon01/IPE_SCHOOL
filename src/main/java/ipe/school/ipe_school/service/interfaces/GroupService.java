@@ -6,6 +6,7 @@ import ipe.school.ipe_school.models.dtos.res.GroupRes;
 import ipe.school.ipe_school.models.entity.Group;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GroupService {
     GroupRes createGroup(GroupReq groupReq);
@@ -21,4 +22,6 @@ public interface GroupService {
     List<Group> getGroupByMentorId(Long mentorId);
 
     List<Group> getAllGroup();
+
+    Optional<Long> getGroupByStudentId(Long id);
 }

@@ -8,5 +8,6 @@ public class StudentDetailsRes {
     String firstName;
     String lastName;
     String phoneNumber;
+    Long groupId;
 }
 
