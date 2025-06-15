@@ -1,6 +1,7 @@
 package ipe.school.ipe_school.controller;
 
 import ipe.school.ipe_school.models.dtos.req.GroupReq;
+import ipe.school.ipe_school.models.dtos.req.UpdatetedStudentReq;
 import ipe.school.ipe_school.models.dtos.res.GroupDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.GroupRes;
 import ipe.school.ipe_school.models.entity.Group;
@@ -53,11 +54,6 @@ public class GroupController {
         groupService.updateGroup_Active(groupId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    /*@GetMapping("/{mentorId}")
-    public ResponseEntity<GroupRes> getGroupByMentor(@PathVariable Long mentorId) {
-
-    }*/
 
     @PutMapping("/updateStudents")
     public ResponseEntity<?> updateGroupInStudents(@RequestBody UpdatetedStudentReq updatetedStudentReq) {
