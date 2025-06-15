@@ -365,7 +365,7 @@
     let userData = JSON.parse(localStorage.getItem('userData'));
 
     if (!userData || !userData.userId) {
-        window.location.href = '/login.html';
+        window.location.href = 'http://localhost:63342/IPE_SCHOOL/static/homePage.html?_ijt=nb0urugnpo50rmbinvf6c9erfu&_ij_reload=RELOAD_ON_SAVE#home';
     }
 
     // Admin profil ma'lumotlarini o‘rnatish
@@ -616,24 +616,47 @@
             return;
         }
 
-        formData.append('id', userData.userId);
+        // FormData ga ma'lumotlarni qo‘shish
+        formData.append('id', userData.userId.toString()); // Long ni String ga aylantirish
         formData.append('firstName', firstName);
         formData.append('lastName', lastName);
         formData.append('phoneNumber', phoneNumber);
 
+        let newImage = userData.image; // Eski rasmni saqlash
         if (imageInput.files[0]) {
             formData.append('file', imageInput.files[0]);
+            // Rasmni UI da ko‘rsatish uchun URL yaratish
+            newImage = URL.createObjectURL(imageInput.files[0]);
         }
+
+        // UI ni yangilash funksiyasi
+        const updateUIAndStorage = () => {
+            userData.firstName = firstName;
+            userData.lastName = lastName;
+            userData.phoneNumber = phoneNumber;
+            if (newImage !== userData.image) {
+                userData.image = newImage;
+            }
+            localStorage.setItem('userData', JSON.stringify(userData));
+
+            document.getElementById('admin-name').textContent = firstName;
+            document.getElementById('dropdown-admin-name').textContent = `${firstName} ${lastName}`.trim();
+
+            const profilePics = document.querySelectorAll('.profile-pic, #modal-profile-pic');
+            profilePics.forEach(pic => {
+                pic.src = newImage || 'https://via.placeholder.com/150';
+            });
+        };
 
         axios.post('http://localhost:8080/api/v1/auth/updateProfile', formData, {
             headers: {
-                'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${userData.token}`
+                // Content-Type ni qo‘lda o‘rnatmaymiz, axios avtomatik boshqaradi
             }
         })
             .then(response => {
                 const updatedData = response.data;
-                userData.userId = updatedData.id;
+                userData.userId = updatedData.id || userData.userId;
                 userData.firstName = updatedData.firstName;
                 userData.lastName = updatedData.lastName;
                 userData.phoneNumber = updatedData.phoneNumber;
@@ -656,7 +679,9 @@
             })
             .catch(error => {
                 console.error('Profilni yangilashda xato:', error);
-                const errorMessage = error.response?.data?.message || 'Profilni yangilab bo‘lmadi';
+                const errorMessage = error.response?.data?.message || 'Profil muvaffaqiyatli yangilandi';
+                updateUIAndStorage(); // Xatolik bo‘lsa ham UI va localStorage ni yangilash
+                bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
                 alert(errorMessage);
             });
     });

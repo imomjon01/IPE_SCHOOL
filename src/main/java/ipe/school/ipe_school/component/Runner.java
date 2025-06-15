@@ -1,6 +1,9 @@
 package ipe.school.ipe_school.component;
 
+import ipe.school.ipe_school.models.dtos.req.MentorReq;
+import ipe.school.ipe_school.models.dtos.res.MentorRes;
 import ipe.school.ipe_school.models.entity.Roles;
+import ipe.school.ipe_school.service.interfaces.MentorService;
 import ipe.school.ipe_school.service.interfaces.RolesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -14,6 +17,7 @@ import java.util.List;
 public class Runner implements CommandLineRunner {
 
     private final RolesService rolesService;
+    private final MentorService mentorService;
 
     public void run(String... args) throws Exception {
         if (rolesService.findAll().isEmpty()) {
@@ -24,9 +28,9 @@ public class Runner implements CommandLineRunner {
             )));
         }
 
-  /*      MentorReq mentorReq = new MentorReq("Eshmant", "Toshmatov", "123", "123");
-        MentorRes mentor = mentorService.createMentor(mentorReq);
-        System.out.println("Mentor: " + mentor);*/
+//        MentorReq mentorReq = new MentorReq("Eshmant", "Toshmatov", "1234", "123");
+//        MentorRes mentor = mentorService.createMentor(mentorReq);
+//        System.out.println("Mentor: " + mentor);
     }
 }
 

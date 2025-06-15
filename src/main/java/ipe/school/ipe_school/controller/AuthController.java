@@ -82,30 +82,40 @@ public class AuthController {
 
     @PostMapping(value = "/updateProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateProfile(
-            @RequestPart("id") Long id,
+            @RequestPart("id") String id,
             @RequestPart("firstName") String firstName,
             @RequestPart("lastName") String lastName,
             @RequestPart("phoneNumber") String phoneNumber,
             @RequestPart(value = "file", required = false) MultipartFile file) {
 
-        UserReq userReq = new UserReq(id, firstName, lastName, phoneNumber);
-        UserRes userRes = authService.updateUser(userReq, file);
+        try {
+            UserReq userReq = new UserReq(
+                    Long.parseLong(id),
+                    firstName,
+                    lastName,
+                    phoneNumber
+            );
 
-        String base64Image = null;
-        if (file != null && !file.isEmpty()) {
-            try {
-                base64Image = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(file.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            UserRes userRes = authService.updateUser(userReq, file);
+
+            // Yangilangan foydalanuvchi ma'lumotlarini olish
+            String base64Image = file != null ?
+                    "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(file.getBytes()) :
+                    null;
+
+            return ResponseEntity.ok(Map.of(
+                    "id", userRes.getId(),
+                    "firstName", userRes.getFirstName(),
+                    "lastName", userRes.getLastName(),
+                    "phoneNumber", userRes.getPhoneNumber(),
+                    "image", base64Image,
+                    "roles", null
+            ));
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("Noto'g'ri ID formati");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Server xatosi: " + e.getMessage());
         }
-
-        return ResponseEntity.ok(Map.of(
-                "firstName", userRes.getFirstName(),
-                "lastName", userRes.getLastName(),
-                "phoneNumber", userRes.getPhoneNumber(),
-                "image", base64Image
-        ));
     }
 
 }
