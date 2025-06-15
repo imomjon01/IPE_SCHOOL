@@ -26,5 +26,6 @@ public interface GroupService {
 
     Optional<Long> getGroupByStudentId(Long id);
 
+    void updateStudent(UpdatetedStudentReq updatetedStudentReq);
     List<GroupRes> getMentorGroups(User mentorId);
 }
