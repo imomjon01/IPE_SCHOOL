@@ -1,6 +1,7 @@
 package ipe.school.ipe_school.models.repo;
 
 import ipe.school.ipe_school.models.entity.Group;
+import ipe.school.ipe_school.models.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,5 +31,6 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
     @Query("SELECT g.id FROM Group g JOIN g.students s WHERE s.id = :studentId")
     Long findGroupIdByStudentId(@Param("studentId") Long studentId);
 
+    List<Group> findByMentor(User mentor);
 
 }

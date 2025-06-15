@@ -928,15 +928,7 @@
 
             if (response.ok) {
                 // Store user data
-                localStorage.setItem('userData', JSON.stringify({
-                    token:data.token,
-                    userId: data.userId,
-                    firstName: data.firstName,
-                    lastName: data.lastName,
-                    phoneNumber: data.phoneNumber,
-                    roles: data.roles,
-                    image: data.image
-                }));
+                localStorage.setItem("authToken", data.token);
 
                 // Show success message
                 showMessage('Login successful! Redirecting...', 'success');

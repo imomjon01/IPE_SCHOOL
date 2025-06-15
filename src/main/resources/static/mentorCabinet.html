@@ -2,9 +2,138 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor Cabinet - IPE School</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+        .header-bg {
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+    </style>
 </head>
-<body>
-<h1> salom shef</h1>
+<body class="bg-gray-100">
+<!-- Header -->
+<header class="header-bg text-white py-4">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">IPE School</h1>
+        <nav>
+            <ul class="flex space-x-6">
+                <li><a href="/homePage.html" class="hover:underline">Home</a></li>
+                <li><a href="/about" class="hover:underline">About</a></li>
+                <li><a href="/mentors" class="hover:underline">Mentors</a></li>
+                <li><a href="/logout" class="hover:underline">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="container mx-auto px-4 py-8">
+    <section class="bg-white rounded-lg shadow-lg p-6 mb-8">
+        <h2 class="text-3xl font-semibold text-gray-800 mb-4">Mentor Dashboard</h2>
+        <p class="text-gray-600 mb-6">Welcome to your mentor cabinet. Below are the groups you are mentoring.</p>
+
+        <!-- Groups Section -->
+        <div id="groups-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Groups will be dynamically inserted here -->
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-white py-6">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <h3 class="text-lg font-semibold">About Us</h3>
+                <p class="text-sm">IPE School is a leading educational institution dedicated to providing quality education with expert mentors and modern facilities.</p>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold">Quick Links</h3>
+                <ul class="text-sm">
+                    <li><a href="/homePage.html" class="hover:underline">Home</a></li>
+                    <li><a href="/about" class="hover:underline">About</a></li>
+                    <li><a href="/mentors" class="hover:underline">Mentors</a></li>
+                    <li><a href="/login.html" class="hover:underline">Login</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold">Contact Info</h3>
+                <p class="text-sm">123 Education Street, Tashkent</p>
+                <p class="text-sm">+998 90 123 45 67</p>
+                <p class="text-sm">info@ipeschool.com</p>
+            </div>
+        </div>
+        <p class="text-center text-sm mt-6">© 2023 IPE School. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script>
+    // Function to fetch mentor groups
+    async function fetchMentorGroups() {
+        const token = localStorage.getItem('authToken'); // Retrieve token from localStorage
+        if (!token) {
+            alert('Please log in to view your groups.');
+            window.location.href = '/login.html';
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/mentor/group', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch groups');
+            }
+
+            const groups = await response.json();
+            displayGroups(groups);
+        } catch (error) {
+            console.error('Error fetching groups:', error);
+            alert('An error occurred while fetching your groups. Please try again.');
+        }
+    }
+
+    // Function to display groups
+    function displayGroups(groups) {
+        const container = document.getElementById('groups-container');
+        container.innerHTML = ''; // Clear existing content
+
+        if (groups.length === 0) {
+            container.innerHTML = '<p class="text-gray-600">No groups assigned to you.</p>';
+            return;
+        }
+
+        groups.forEach(group => {
+            const groupCard = document.createElement('div');
+            groupCard.className = 'bg-white p-6 rounded-lg shadow-md card-hover cursor-pointer';
+            groupCard.innerHTML = `
+                    <h3 class="text-xl font-semibold text-gray-800">${group.name}</h3>
+                    <p class="text-gray-600">Group ID: ${group.id}</p>
+                `;
+            groupCard.addEventListener('click', () => {
+                // Redirect to group details page (to be implemented later)
+                window.location.href = `/group-details.html?groupId=${group.id}`;
+            });
+            container.appendChild(groupCard);
+        });
+    }
+
+    // Load groups when the page loads
+    document.addEventListener('DOMContentLoaded', fetchMentorGroups);
+</script>
 </body>
 </html>

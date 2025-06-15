@@ -5,7 +5,9 @@ import ipe.school.ipe_school.models.dtos.req.GroupReq;
 import ipe.school.ipe_school.models.dtos.res.GroupDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.GroupRes;
 import ipe.school.ipe_school.models.entity.Group;
+import ipe.school.ipe_school.models.entity.User;
 import ipe.school.ipe_school.models.repo.GroupRepository;
+import ipe.school.ipe_school.models.repo.UserRepository;
 import ipe.school.ipe_school.service.interfaces.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,12 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
     private final GroupMapper groupMapper;
+    private final UserRepository userRepository;
 
     @Override
     public GroupRes createGroup(GroupReq groupReq) {
@@ -73,5 +77,12 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public Optional<Long> getGroupByStudentId(Long id) {
         return Optional.ofNullable(groupRepository.findGroupIdByStudentId(id));
+    }
+
+    @Override
+    public List<GroupRes> getMentorGroups(User mentor) {
+        User user = userRepository.findByPhoneNumber(mentor.getPhoneNumber());
+        List<Group> groups = groupRepository.findByMentorId(user.getId());
+        return groups.stream().map(item->new GroupRes(item.getId(), item.getName())).collect(Collectors.toList());
     }
 }
