@@ -125,6 +125,27 @@
             background-color: var(--accent-color);
             border-color: var(--accent-color);
         }
+
+        /* Qo‘shimcha CSS */
+        .is-invalid {
+            border-color: #dc3545 !important;
+        }
+
+        .invalid-feedback {
+            display: none;
+            color: #dc3545;
+            font-size: 0.875rem;
+        }
+
+        .was-validated .is-invalid ~ .invalid-feedback {
+            display: block;
+        }
+
+        .alert-dismissible {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -207,7 +228,7 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h5>Talabalar</h5>
-                            <button class="btn btn-primary btn-sm" id="add-student-btn">
+                            <button class="btn btn-primary btn-sm" id="add-student-btn" data-bs-toggle="modal" data-bs-target="#addStudentModal">
                                 <i class="fas fa-plus me-1"></i> Talaba Qo‘shish
                             </button>
                         </div>
@@ -325,21 +346,21 @@
             <div class="modal-body">
                 <form id="profile-form">
                     <div class="mb-3 text-center">
-                        <img src="" alt="Profil" class="profile-pic mb-2" id="modal-profile-pic" style="width: 100px; height: 100px;">
+                        <img src="" alt="https://profil" class="profile-pic mb-2" id="modal-profile-pic" style="width: 100px; height: auto;">
                         <input type="file" class="form-control d-none" id="profile-image-input" accept="image/*">
                         <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="document.getElementById('profile-image-input').click()">
                             Rasmni O‘zgartirish
                         </button>
                     </div>
-                    <div class="mb-3">
+                    <div class="form-group mb-4">
                         <label for="first-name" class="form-label">Ism</label>
                         <input type="text" class="form-control" id="first-name" required>
                     </div>
-                    <div class="mb-3">
+                    <div class="form-group mb-4">
                         <label for="last-name" class="form-label">Familiya</label>
                         <input type="text" class="form-control" id="last-name" required>
                     </div>
-                    <div class="mb-3">
+                    <div class="form-group mb-4">
                         <label for="phone-number" class="form-label">Telefon Raqami</label>
                         <input type="tel" class="form-control" id="phone-number" required>
                     </div>
@@ -355,17 +376,56 @@
 
 <!-- Talaba Qo‘shish Modali -->
 <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
-    <!-- Yangi talaba qo‘shish uchun modal kontenti -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addStudentModalLabel">Yangi Talaba Qo‘shish</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-student-form" class="was-validated">
+                    <div class="mb-3">
+                        <label for="student-first-name" class="form-label">Ismi</label>
+                        <input type="text" class="form-control" id="student-first-name" placeholder="Ism" required>
+                        <div class="invalid-feedback">Iltimos, talabaning ismini kiriting.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="student-last-name" class="form-label">Familiyasi</label>
+                        <input type="text" class="form-control" id="student-last-name" placeholder="Familiya" required>
+                        <div class="invalid-feedback">Iltimos, talabaning familiyasini kiriting.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="student-phone-number" class="form-label">Telefon Raqami</label>
+                        <input type="tel" class="form-control" id="student-phone-number" placeholder="+998 99 999 99 99" required>
+                        <div class="invalid-feedback">Telefon raqami noto‘g‘ri formatda (masalan, +998 99 999 99 99).</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="student-password" class="form-label">Parol</label>
+                        <input type="password" class="form-control" id="student-password" placeholder="Kamida 6 belgi" required>
+                        <div class="invalid-feedback">Parol kamida 6 belgidan iborat bo‘lishi kerak.</div>
+                    </div>
+                    <div id="alert-container"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                <button type="button" class="btn btn-primary" id="save-student-btn">
+                    <span class="spinner" role="status" aria-hidden="true"></span>
+                    Talaba Qo‘shish
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 <script>
     // localStorage dan foydalanuvchi ma'lumotlarini olish yoki login sahifasiga yo‘naltirish
     let userData = JSON.parse(localStorage.getItem('userData'));
 
     if (!userData || !userData.userId) {
-        window.location.href = 'http://localhost:63342/IPE_SCHOOL/static/homePage.html?_ijt=nb0urugnpo50rmbinvf6c9erfu&_ij_reload=RELOAD_ON_SAVE#home';
+        window.location.href = 'http://localhost:63342/IPE_SCHOOL/static/homePage.html?_ijt=nb0urugnpo50rmbinvfai9ce9r2?_ij_reload=true#home';
     }
 
     // Admin profil ma'lumotlarini o‘rnatish
@@ -393,7 +453,7 @@
     // Modal yopilganda formani tozalash
     profileModal.addEventListener('hidden.bs.modal', () => {
         document.getElementById('profile-form').reset();
-        document.getElementById('modal-profile-pic').src = userData.image || 'https://via.placeholder.com/150';
+        document.getElementById('modal-profile-pic').src = 'https://via.placeholder.com/150';
     });
 
     // Tablar o‘tish funksiyasi
@@ -617,15 +677,14 @@
         }
 
         // FormData ga ma'lumotlarni qo‘shish
-        formData.append('id', userData.userId.toString()); // Long ni String ga aylantirish
+        formData.append('id', userData.userId.toString());
         formData.append('firstName', firstName);
         formData.append('lastName', lastName);
         formData.append('phoneNumber', phoneNumber);
 
-        let newImage = userData.image; // Eski rasmni saqlash
+        let newImage = userData.image;
         if (imageInput.files[0]) {
             formData.append('file', imageInput.files[0]);
-            // Rasmni UI da ko‘rsatish uchun URL yaratish
             newImage = URL.createObjectURL(imageInput.files[0]);
         }
 
@@ -651,7 +710,6 @@
         axios.post('http://localhost:8080/api/v1/auth/updateProfile', formData, {
             headers: {
                 Authorization: `Bearer ${userData.token}`
-                // Content-Type ni qo‘lda o‘rnatmaymiz, axios avtomatik boshqaradi
             }
         })
             .then(response => {
@@ -680,7 +738,7 @@
             .catch(error => {
                 console.error('Profilni yangilashda xato:', error);
                 const errorMessage = error.response?.data?.message || 'Profil muvaffaqiyatli yangilandi';
-                updateUIAndStorage(); // Xatolik bo‘lsa ham UI va localStorage ni yangilash
+                updateUIAndStorage();
                 bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
                 alert(errorMessage);
             });
@@ -690,13 +748,137 @@
     document.getElementById('profile-image-input').addEventListener('change', function(e) {
         if (e.target.files && e.target.files[0]) {
             const reader = new FileReader();
-
             reader.onload = function(event) {
                 document.getElementById('modal-profile-pic').src = event.target.result;
             };
-
             reader.readAsDataURL(e.target.files[0]);
         }
+    });
+
+    // Talaba qo‘shish funksiyasi
+    document.getElementById('save-student-btn').addEventListener('click', () => {
+        const form = document.getElementById('add-student-form');
+        const firstNameInput = document.getElementById('student-first-name');
+        const lastNameInput = document.getElementById('student-last-name');
+        const phoneNumberInput = document.getElementById('student-phone-number');
+        const passwordInput = document.getElementById('student-password');
+        const alertContainer = document.getElementById('alert-container');
+
+        const firstName = firstNameInput.value.trim();
+        const lastName = lastNameInput.value.trim();
+        const phoneNumber = phoneNumberInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        // Validatsiya
+        let isValid = true;
+
+        if (!firstName) {
+            firstNameInput.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            firstNameInput.classList.remove('is-invalid');
+        }
+
+        if (!lastName) {
+            lastNameInput.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            lastNameInput.classList.remove('is-invalid');
+        }
+
+        if (!phoneNumber || !phoneNumber.match(/^\+\d{12}$/)) {
+            phoneNumberInput.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            phoneNumberInput.classList.remove('is-invalid');
+        }
+
+        if (!password || password.length < 5 ) {
+            passwordInput.classList.add('is-invalid');
+            isValid = false;
+        }
+
+        if (!isValid) {
+            showAlert('danger', 'Iltimos, barcha maydonlarni to‘g‘ri to‘ldiring!');
+            return;
+        }
+
+        const saveBtn = document.getElementById('save-student-btn');
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Yuklanmoqda...';
+
+        const studentData = {
+            firstName,
+            lastName,
+            phoneNumber,
+            password
+        };
+
+
+        axios.post('http://localhost:8080/api/v1/admin/student/save', studentData, {
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        })
+            .then(response => {
+                form.reset();
+                bootstrap.Modal.getInstance(document.getElementById('addStudentModal')).hide();
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-plus me-1"></i>Talaba Qo‘shish';
+                showAlert('success', 'Talaba muvaffaqiyatli qo‘shildi!');
+                loadStudents();
+            })
+            .catch(error => {
+                console.error('Talaba qo‘shishda xato:', error);
+                const errorMessage = error.response?.data?.message || 'Talaba muvaffaqiyatli qo‘shildi!';
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-plus me-1"></i>Talaba Qo‘shish';
+                showAlert('danger', errorMessage);
+            });
+    });
+
+    // Modal yopilganda formani tozalash
+    const addStudentModal = document.getElementById('addStudentModal');
+    addStudentModal.addEventListener('hidden.bs.modal', () => {
+        const form = document.getElementById('add-student-form');
+        form.reset();
+        form.classList.remove('was-validated');
+        document.getElementById('alert-container').innerHTML = '';
+        const inputs = form.querySelectorAll('input');
+        inputs.forEach(input => input.classList.remove('is-invalid'));
+    });
+
+    // Xabar ko‘rsatish funksiyasi
+    function showAlert(type, message) {
+        const alertContainer = document.getElementById('alert-container');
+        alertContainer.innerHTML = `
+            <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+        setTimeout(() => {
+            const alert = alertContainer.querySelector('.alert');
+            if (alert) {
+                bootstrap.Alert.getOrCreateInstance(alert).close();
+            }
+        }, 5000);
+    }
+
+    // Real vaqtda validatsiya
+    const inputs = document.querySelectorAll('#add-student-form input');
+    inputs.forEach(input => {
+        input.addEventListener('input', () => {
+            if (input.id === 'student-first-name' && input.value.trim()) {
+                input.classList.remove('is-invalid');
+            }
+            if (input.id === 'student-last-name' && input.value.trim()) {
+                input.classList.remove('is-invalid');
+            }
+            if (input.id === 'student-phone-number' && input.value.match(/^\+\d{12}$/)) {
+                input.classList.remove('is-invalid');
+            }
+        });
     });
 
     // Talaba tabini faol qilish bilan boshlash

@@ -30,8 +30,9 @@ public class AdminStudentController {
         return ResponseEntity.ok(students);
     }
 
-    @PostMapping()
+    @PostMapping("/save")
     public ResponseEntity<StudentRes> saveStudent(@RequestBody StudentDto studentDto) {
+        System.out.println("keldi =================");
         StudentRes studentRes = studentService.save(studentDto);
         return new ResponseEntity<>(studentRes, HttpStatus.CREATED);
     }

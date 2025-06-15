@@ -40,7 +40,10 @@ public class SecurityConfig {
                             "/swagger-ui/**",
                             "/v3/api-docs/**"
                     ).permitAll()
-                    .requestMatchers("/api/v1/auth/updateProfile/**", "/api/v1/auth/**","/api/v1/auth", "/api/v1/admin/mentor", "/api/v1/admin/mentor/**","/actuator/prometheus").permitAll()
+                    .requestMatchers("/api/v1/auth/updateProfile/**",
+                            "/api/v1/auth/**","/api/v1/auth",
+                            "/api/v1/admin/mentor", "/api/v1/admin/mentor/**",
+                            "/actuator/prometheus", "/api/v1/admin/student/save").permitAll()
                     .anyRequest().authenticated();
         });
         http.addFilterBefore(mySecurityFilter, UsernamePasswordAuthenticationFilter.class);

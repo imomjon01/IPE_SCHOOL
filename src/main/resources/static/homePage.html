@@ -928,8 +928,8 @@
 
             if (response.ok) {
                 // Store user data
-                localStorage.setItem('authToken', data.token);
                 localStorage.setItem('userData', JSON.stringify({
+                    token:data.token,
                     userId: data.userId,
                     firstName: data.firstName,
                     lastName: data.lastName,
