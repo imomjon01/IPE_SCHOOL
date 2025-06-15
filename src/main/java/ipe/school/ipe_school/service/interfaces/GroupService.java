@@ -1,6 +1,7 @@
 package ipe.school.ipe_school.service.interfaces;
 
 import ipe.school.ipe_school.models.dtos.req.GroupReq;
+import ipe.school.ipe_school.models.dtos.req.UpdatetedStudentReq;
 import ipe.school.ipe_school.models.dtos.res.GroupDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.GroupRes;
 import ipe.school.ipe_school.models.entity.Group;
@@ -24,4 +25,6 @@ public interface GroupService {
     List<Group> getAllGroup();
 
     Optional<Long> getGroupByStudentId(Long id);
+
+    void updateStudent(UpdatetedStudentReq updatetedStudentReq);
 }

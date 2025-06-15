@@ -534,10 +534,11 @@
                     <td>${student.firstName} ${student.lastName}</td>
                     <td>${student.phoneNumber}</td>
                     <td>
-                        <select class="form-select group-select" data-student-id="${student.id}">
+                        <select class="form-select group-select"
+                            data-student-id="${student.id}"
+                            data-old-group-id="${studentGroupId || ''}">
                             <option value="">Guruh Yo‘q</option>
                             ${groups.map(group => {
-                        // groupId null yoki undefined bo'lsa, 'selected' qo‘shilmaydi
                         const isSelected = studentGroupId !== null && studentGroupId !== undefined && studentGroupId === group.id;
                         return `<option value="${group.id}" ${isSelected ? 'selected' : ''}>
                                     ${group.name}
@@ -554,12 +555,15 @@
                     tableBody.appendChild(row);
                 });
 
-                // Barcha yangilash tugmalariga hodisa tinglovchilarini qo‘shish
+                // ✅ Faqat yangilash tugmasi uchun hodisalarni qo‘shish (to‘g‘rilangan qism)
                 document.querySelectorAll('.update-group-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
+                    btn.addEventListener('click', function () {
                         const studentId = this.getAttribute('data-student-id');
-                        const groupId = document.querySelector(`.group-select[data-student-id="${studentId}"]`).value;
-                        updateStudentGroup(studentId, groupId);
+                        const selectEl = document.querySelector(`.group-select[data-student-id="${studentId}"]`);
+                        const newGroupId = selectEl.value;
+                        const oldGroupId = selectEl.getAttribute('data-old-group-id');
+
+                        updateStudentGroup(studentId, newGroupId, oldGroupId);
                     });
                 });
             })
@@ -569,21 +573,28 @@
             });
     }
 
-    function updateStudentGroup(studentId, groupId) {
-        axios.put(`/api/students/${studentId}/group`, {groupId: groupId || null}, {
+    // ✅ To‘g‘ri ishlaydigan bitta updateStudentGroup funksiyasi
+    function updateStudentGroup(studentId, newGroupId, oldGroupId) {
+        axios.put('http://localhost:8080/api/v1/group/updateStudents', {
+            studentId: parseInt(studentId),
+            newGroupId: parseInt(newGroupId),
+            oldGroupId: oldGroupId ? parseInt(oldGroupId) : null
+        }, {
             headers: {
                 Authorization: `Bearer ${userData.token}`
             }
         })
-            .then(response => {
-                alert('Guruh muvaffaqiyatli yangilandi');
-                loadStudents(); // Jadvalni yangilash
+            .then(() => {
+                showAlert('success', 'Guruh muvaffaqiyatli yangilandi!');
+                loadStudents(); // Talabalarni qayta yuklash
             })
             .catch(error => {
                 console.error('Guruhni yangilashda xato:', error);
-                alert('Guruhni yangilab bo‘lmadi');
+                showAlert('danger', 'Guruhni yangilab bo‘lmadi');
             });
     }
+
+
 
     // Rol o‘zgartirish funksiyasi
     function loadUsersForRoleChange() {
