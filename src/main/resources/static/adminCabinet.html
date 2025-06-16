@@ -431,9 +431,9 @@
     // localStorage dan foydalanuvchi ma'lumotlarini olish yoki login sahifasiga yo‘naltirish
     let userData = JSON.parse(localStorage.getItem('userData'));
 
-    // if (!userData || !userData.userId) {
-    //     window.location.href = 'http://localhost:63342/IPE_SCHOOL/static/homePage.html?_ijt=nb0urugnpo50rmbinvfai9ce9r2?_ij_reload=true#home';
-    // }
+    if (!userData || !userData.userId) {
+        window.location.href = 'http://localhost:63342/IPE_SCHOOL/static/homePage.html?_ijt=nb0urugnpo50rmbinvfai9ce9r2?_ij_reload=true#home';
+    }
 
     // Admin profil ma'lumotlarini o‘rnatish
     document.getElementById('admin-name').textContent = userData.firstName || 'Admin';
