@@ -43,7 +43,6 @@ public class ModuleController {
     @GetMapping("/get/{moduleId}")
     public ResponseEntity<List<TaskRes>> getTasksByModule(@PathVariable Long moduleId) {
         List<TaskRes> taskRes = moduleService.getAllModuleById(moduleId);
-        taskRes.forEach(taskRes1 -> System.out.println(taskRes1.getTaskName()));
         return new ResponseEntity<>(taskRes, HttpStatus.OK);
     }
 

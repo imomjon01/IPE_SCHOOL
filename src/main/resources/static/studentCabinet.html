@@ -650,9 +650,9 @@
                 }
             );
 
-            console.log(response.data.taskRes);
+            console.log(response.data); // Haqiqiy javobni konsolga chiqarish
 
-            displayTasks(response.data.taskRes); // response.data.tasks deb chaqirish kerak
+            displayTasks(response.data); // To'g'ridan-to'g'ri ro'yxatni yuborish
 
         } catch (error) {
             console.error('Vazifalarni yuklashda xato:', error);
