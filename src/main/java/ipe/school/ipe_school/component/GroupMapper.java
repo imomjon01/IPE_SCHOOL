@@ -47,6 +47,7 @@ public class GroupMapper {
         ModuleRes res = new ModuleRes();
         res.setId(module.getId());
         res.setModuleName(module.getModuleName());
+        res.setActive(module.getActive());
         return res;
     }
 }

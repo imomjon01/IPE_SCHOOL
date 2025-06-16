@@ -12,4 +12,5 @@ import lombok.Value;
 public class ModuleRes {
     Long id;
     String moduleName;
+    Boolean active;
 }

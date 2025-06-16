@@ -3,83 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mentor Cabinet - IPE School</title>
+    <title>IPE School</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-        }
-        .header-bg {
-            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
-    </style>
 </head>
 <body class="bg-gray-100">
-<!-- Header -->
-<header class="header-bg text-white py-4">
-    <div class="container mx-auto px-4 flex justify-between items-center">
+<header class="bg-blue-600 text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
         <h1 class="text-2xl font-bold">IPE School</h1>
         <nav>
-            <ul class="flex space-x-6">
-                <li><a href="/homePage.html" class="hover:underline">Home</a></li>
-                <li><a href="/about" class="hover:underline">About</a></li>
-                <li><a href="/mentors" class="hover:underline">Mentors</a></li>
-                <li><a href="/logout" class="hover:underline">Logout</a></li>
-            </ul>
+            <a href="#" class="px-2">Home</a>
+            <a href="#" class="px-2">About</a>
+            <a href="#" class="px-2">Mentors</a>
+            <a href="#" class="px-2">Logout</a>
         </nav>
     </div>
 </header>
 
-<!-- Main Content -->
-<main class="container mx-auto px-4 py-8">
-    <section class="bg-white rounded-lg shadow-lg p-6 mb-8">
-        <h2 class="text-3xl font-semibold text-gray-800 mb-4">Mentor Dashboard</h2>
-        <p class="text-gray-600 mb-6">Welcome to your mentor cabinet. Below are the groups you are mentoring.</p>
+<main class="container mx-auto mt-8 px-4">
+    <h2 class="text-3xl font-bold mb-6">Mentor Dashboard</h2>
+    <p class="mb-4">Welcome to your mentor cabinet. Below are the groups you are mentoring.</p>
 
-        <!-- Groups Section -->
-        <div id="groups-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Groups will be dynamically inserted here -->
+    <div id="groups-container">
+        <!-- Groups will be dynamically inserted here -->
+    </div>
+
+    <div id="group-details" class="hidden mt-8">
+        <button id="back-to-groups" class="bg-blue-500 text-white p-2 rounded mb-4">Back to Groups</button>
+        <h3 id="group-name" class="text-2xl font-bold mb-4"></h3>
+        <div class="mb-6">
+            <h4 class="text-xl font-semibold">Students</h4>
+            <p id="students-list" class="mt-2"></p>
         </div>
-    </section>
+        <div>
+            <h4 class="text-xl font-semibold">Modules</h4>
+            <p id="modules-warning" class="text-yellow-600 mt-2"></p>
+            <div id="modules-list" class="mt-2 flex flex-wrap gap-2"></div>
+        </div>
+    </div>
+
+    <div id="module-details" class="hidden mt-8">
+        <button id="back-to-group" class="bg-blue-500 text-white p-2 rounded mb-4">Back to Group</button>
+        <h3 id="module-name" class="text-2xl font-bold mb-4"></h3>
+        <div>
+            <h4 class="text-xl font-semibold">Tasks</h4>
+            <p id="tasks-list" class="mt-2"></p>
+        </div>
+    </div>
 </main>
 
-<!-- Footer -->
-<footer class="bg-gray-800 text-white py-6">
-    <div class="container mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-                <h3 class="text-lg font-semibold">About Us</h3>
-                <p class="text-sm">IPE School is a leading educational institution dedicated to providing quality education with expert mentors and modern facilities.</p>
-            </div>
-            <div>
-                <h3 class="text-lg font-semibold">Quick Links</h3>
-                <ul class="text-sm">
-                    <li><a href="/homePage.html" class="hover:underline">Home</a></li>
-                    <li><a href="/about" class="hover:underline">About</a></li>
-                    <li><a href="/mentors" class="hover:underline">Mentors</a></li>
-                    <li><a href="/login.html" class="hover:underline">Login</a></li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="text-lg font-semibold">Contact Info</h3>
-                <p class="text-sm">123 Education Street, Tashkent</p>
-                <p class="text-sm">+998 90 123 45 67</p>
-                <p class="text-sm">info@ipeschool.com</p>
-            </div>
+<footer class="bg-gray-800 text-white p-4 mt-8">
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+            <h3 class="text-lg font-bold">About Us</h3>
+            <p>IPE School is a leading educational institution dedicated to providing quality education with expert mentors and modern facilities.</p>
         </div>
-        <p class="text-center text-sm mt-6">© 2023 IPE School. All Rights Reserved.</p>
+        <div>
+            <h3 class="text-lg font-bold">Quick Links</h3>
+            <ul>
+                <li><a href="#" class="hover:underline">Home</a></li>
+                <li><a href="#" class="hover:underline">About</a></li>
+                <li><a href="#" class="hover:underline">Mentors</a></li>
+                <li><a href="#" class="hover:underline">Login</a></li>
+            </ul>
+        </div>
+        <div>
+            <h3 class="text-lg font-bold">Contact Info</h3>
+            <p>123 Education Street, Tashkent</p>
+            <p>+998 90 123 45 67</p>
+            <p>info@ipeschool.com</p>
+        </div>
     </div>
+    <p class="text-center mt-4">© 2023 IPE School. All Rights Reserved.</p>
 </footer>
 
 <script>
-    // Function to fetch mentor groups
+    let currentGroup = null; // Store current group data for back navigation
+
+    // Utility: convert a byte[] array into a Base64 data-URL
+    function byteArrayToDataUrl(byteArray, mime = 'image/png') {
+        const uint8 = new Uint8Array(byteArray);
+        let binary = '';
+        for (let i = 0; i < uint8.length; i++) {
+            binary += String.fromCharCode(uint8[i]);
+        }
+        const base64 = window.btoa(binary);
+        return `data:${mime};base64,${base64}`;
+    }
+
+    // Display mentor profile
+    function displayMentorProfile() {
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        if (!userData) return;
+
+        const profileSection = document.createElement('div');
+        profileSection.className = 'bg-white rounded-lg shadow-lg p-6 mb-8 flex items-center space-x-6';
+
+        let imageSrc = 'https://via.placeholder.com/100';
+        if (Array.isArray(userData.image) && userData.image.length) {
+            try {
+                imageSrc = byteArrayToDataUrl(userData.image);
+            } catch (e) {
+                console.error('Error converting mentor image bytes:', e);
+            }
+        } else if (typeof userData.image === 'string' && userData.image.startsWith('data:image')) {
+            imageSrc = userData.image;
+        }
+
+        profileSection.innerHTML = `
+                <img src="${imageSrc}" alt="Mentor Image"
+                     class="w-24 h-24 rounded-full object-cover border-4 border-blue-500">
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800">
+                        ${userData.firstName} ${userData.lastName}
+                    </h3>
+                    <p class="text-gray-600">Phone: ${userData.phoneNumber}</p>
+                </div>
+            `;
+
+        const dashboardSection = document.querySelector('main');
+        dashboardSection.insertBefore(profileSection, dashboardSection.firstChild);
+    }
+
+    // Fetch mentor groups
     async function fetchMentorGroups() {
-        const token = localStorage.getItem('authToken'); // Retrieve token from localStorage
+        const token = localStorage.getItem('authToken');
         if (!token) {
             alert('Please log in to view your groups.');
             window.location.href = '/login.html';
@@ -94,10 +141,7 @@
                     'Content-Type': 'application/json'
                 }
             });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch groups');
-            }
+            if (!response.ok) throw new Error('Failed to fetch groups');
 
             const groups = await response.json();
             displayGroups(groups);
@@ -107,33 +151,147 @@
         }
     }
 
-    // Function to display groups
+    // Render group cards
     function displayGroups(groups) {
         const container = document.getElementById('groups-container');
-        container.innerHTML = ''; // Clear existing content
+        container.innerHTML = '';
 
-        if (groups.length === 0) {
+        if (!groups.length) {
             container.innerHTML = '<p class="text-gray-600">No groups assigned to you.</p>';
             return;
         }
 
         groups.forEach(group => {
             const groupCard = document.createElement('div');
-            groupCard.className = 'bg-white p-6 rounded-lg shadow-md card-hover cursor-pointer';
-            groupCard.innerHTML = `
-                    <h3 class="text-xl font-semibold text-gray-800">${group.name}</h3>
-                    <p class="text-gray-600">Group ID: ${group.id}</p>
-                `;
-            groupCard.addEventListener('click', () => {
-                // Redirect to group details page (to be implemented later)
-                window.location.href = `/group-details.html?groupId=${group.id}`;
-            });
+            groupCard.className = 'bg-white p-6 rounded-lg shadow-md cursor-pointer';
+            groupCard.innerHTML = `<h3 class="text-xl font-semibold text-gray-800">${group.name}</h3>`;
+            groupCard.addEventListener('click', () => showGroupDetails(group.id));
             container.appendChild(groupCard);
         });
     }
 
-    // Load groups when the page loads
-    document.addEventListener('DOMContentLoaded', fetchMentorGroups);
+    // Fetch group details
+    async function showGroupDetails(groupId) {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            alert('Please log in to view group details.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/v1/group/${groupId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) throw new Error('Failed to fetch group details');
+
+            currentGroup = await response.json();
+            displayGroupDetails(currentGroup);
+        } catch (error) {
+            console.error('Error fetching group details:', error);
+            alert('An error occurred while fetching group details. Please try again.');
+        }
+    }
+
+    // Display group details
+    function displayGroupDetails(group) {
+        document.getElementById('groups-container').classList.add('hidden');
+        document.getElementById('group-details').classList.remove('hidden');
+        document.getElementById('module-details').classList.add('hidden');
+
+        document.getElementById('group-name').textContent = group.name;
+
+        const studentsList = document.getElementById('students-list');
+        if (group.students && group.students.length > 0) {
+            studentsList.innerHTML = group.students.map(student =>
+                `${student.firstName} ${student.lastName} (${student.phoneNumber})`
+            ).join(', ');
+        } else {
+            studentsList.textContent = 'No students in this group.';
+        }
+
+        const modulesList = document.getElementById('modules-list');
+        const modulesWarning = document.getElementById('modules-warning');
+        modulesList.innerHTML = '';
+        if (group.modules && group.modules.length > 0) {
+            modulesWarning.textContent = '';
+            group.modules.forEach(module => {
+                const button = document.createElement('button');
+                button.className = module.active
+                    ? 'bg-green-500 text-white p-2 rounded hover:bg-green-600 m-1'
+                    : 'bg-gray-400 text-white p-2 rounded m-1 cursor-not-allowed';
+                button.textContent = module.active ? module.moduleName : `${module.moduleName} 🔒`;
+                button.disabled = !module.active;
+                if (module.active) {
+                    button.addEventListener('click', () => showModuleDetails(module.id));
+                }
+                modulesList.appendChild(button);
+            });
+        } else {
+            modulesWarning.textContent = 'Warning: No modules assigned to this group.';
+            modulesList.innerHTML = '';
+        }
+    }
+
+    // Fetch module details
+    async function showModuleDetails(moduleId) {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            alert('Please log in to view module details.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/v1/module/${moduleId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) throw new Error('Failed to fetch module details');
+
+            const module = await response.json();
+            displayModuleDetails(module);
+        } catch (error) {
+            console.error('Error fetching module details:', error);
+            alert('An error occurred while fetching module details. Please try again.');
+        }
+    }
+
+    // Display module details
+    function displayModuleDetails(module) {
+        document.getElementById('group-details').classList.add('hidden');
+        document.getElementById('module-details').classList.remove('hidden');
+
+        document.getElementById('module-name').textContent = module.moduleName;
+
+        const tasksList = document.getElementById('tasks-list');
+        if (module.tasks && module.tasks.length > 0) {
+            tasksList.innerHTML = module.tasks.map(task => task.taskName).join(', ');
+        } else {
+            tasksList.textContent = 'No tasks in this module.';
+        }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        displayMentorProfile();
+        fetchMentorGroups();
+        document.getElementById('back-to-groups').addEventListener('click', () => {
+            document.getElementById('group-details').classList.add('hidden');
+            document.getElementById('groups-container').classList.remove('hidden');
+            document.getElementById('module-details').classList.add('hidden');
+        });
+        document.getElementById('back-to-group').addEventListener('click', () => {
+            if (currentGroup) {
+                displayGroupDetails(currentGroup);
+            }
+        });
+    });
 </script>
 </body>
 </html>

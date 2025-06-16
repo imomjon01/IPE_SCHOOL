@@ -26,13 +26,13 @@ public class ModuleServiceImpl implements ModuleService {
                 .active(true)
                 .build();
         Module savedModule = moduleRepository.save(module);
-        return new ModuleRes(savedModule.getId(), savedModule.getModuleName());
+        return new ModuleRes(savedModule.getId(), savedModule.getModuleName(),savedModule.getActive());
     }
 
     @Override
     public List<ModuleRes> getAllModulesBy_active() {
         List<Module> modules = moduleRepository.findAllByActive(true);
-        return modules.stream().map(module -> new ModuleRes(module.getId(), module.getModuleName())).toList();
+        return modules.stream().map(module -> new ModuleRes(module.getId(), module.getModuleName(),module.getActive())).toList();
     }
 
     @Override

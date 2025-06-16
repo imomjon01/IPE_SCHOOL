@@ -15,7 +15,7 @@ public interface GroupService {
 
     List<GroupDetailsRes> getGroupsBy_Active();
 
-    GroupRes getGroupById(Long groupId);
+    GroupDetailsRes getGroupById(Long groupId);
 
     GroupDetailsRes updateGroup(Long groupId, GroupReq groupReq);
 

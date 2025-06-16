@@ -38,8 +38,8 @@ public class GroupController {
     }
 
     @GetMapping("/{groupId}")
-    public ResponseEntity<GroupRes> getGroupById(@PathVariable Long groupId) {
-        GroupRes groupDetailsRes = groupService.getGroupById(groupId);
+    public ResponseEntity<GroupDetailsRes> getGroupById(@PathVariable Long groupId) {
+        GroupDetailsRes groupDetailsRes = groupService.getGroupById(groupId);
         return new ResponseEntity<>(groupDetailsRes, HttpStatus.OK);
     }
 
