@@ -346,9 +346,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="profile-form">
+                <form id="profile-form" class="was-validated">
                     <div class="mb-3 text-center">
-                        <img src="" alt="https://profil" class="profile-pic mb-2" id="modal-profile-pic"
+                        <img src="" alt="Profil" class="profile-pic mb-2" id="modal-profile-pic"
                              style="width: 100px; height: auto;">
                         <input type="file" class="form-control d-none" id="profile-image-input" accept="image/*">
                         <button type="button" class="btn btn-outline-primary btn-sm mt-2"
@@ -359,14 +359,27 @@
                     <div class="form-group mb-4">
                         <label for="first-name" class="form-label">Ism</label>
                         <input type="text" class="form-control" id="first-name" required>
+                        <div class="invalid-feedback">Iltimos, ismingizni kiriting.</div>
                     </div>
                     <div class="form-group mb-4">
                         <label for="last-name" class="form-label">Familiya</label>
                         <input type="text" class="form-control" id="last-name" required>
+                        <div class="invalid-feedback">Iltimos, familiyangizni kiriting.</div>
                     </div>
                     <div class="form-group mb-4">
                         <label for="phone-number" class="form-label">Telefon Raqami</label>
                         <input type="tel" class="form-control" id="phone-number" required>
+                        <div class="invalid-feedback">Iltimos, telefon raqamingizni kiriting.</div>
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="password" class="form-label">Yangi Parol (ixtiyoriy)</label>
+                        <input type="password" class="form-control" id="password" placeholder="Kamida 6 belgi">
+                        <div class="invalid-feedback">Parol kamida 6 belgidan iborat bo‘lishi kerak.</div>
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="confirm-password" class="form-label">Parolni Tasdiqlash</label>
+                        <input type="password" class="form-control" id="confirm-password" placeholder="Parolni qayta kiriting">
+                        <div class="invalid-feedback">Parollar mos kelmaydi yoki bo‘sh.</div>
                     </div>
                 </form>
             </div>
@@ -454,6 +467,8 @@
         document.getElementById('first-name').value = userData.firstName || '';
         document.getElementById('last-name').value = userData.lastName || '';
         document.getElementById('phone-number').value = userData.phoneNumber || '';
+        document.getElementById('password').value = '';
+        document.getElementById('confirm-password').value = '';
         document.getElementById('modal-profile-pic').src = userData.image || 'https://via.placeholder.com/150';
     });
 
@@ -461,6 +476,9 @@
     profileModal.addEventListener('hidden.bs.modal', () => {
         document.getElementById('profile-form').reset();
         document.getElementById('modal-profile-pic').src = 'https://via.placeholder.com/150';
+        document.getElementById('profile-form').classList.remove('was-validated');
+        const inputs = document.getElementById('profile-form').querySelectorAll('input');
+        inputs.forEach(input => input.classList.remove('is-invalid'));
     });
 
     // Tablar o‘tish funksiyasi
@@ -500,14 +518,19 @@
     }
 
     // Talabalarni guruh bilan yuklash
-    function loadStudents() {
-        axios.get('http://localhost:8080/api/v1/admin/student/getAll', {
+    function loadStudents(page = 0, size = 10, search = '') {
+        axios.get(`http://localhost:8080/api/v1/admin/student`, {
             headers: {
-                Authorization: `Bearer ${userData.token}`
+                Authorization: `${userData.token}`
+            },
+            params: {
+                page: page,
+                size: size,
+                search: search
             }
         })
             .then(response => {
-                populateStudentTable(response.data);
+                populateStudentTable(response.data.content, response.data.totalPages, page, size, search);
             })
             .catch(error => {
                 console.error('Talabalarni yuklashda xato:', error);
@@ -515,10 +538,10 @@
             });
     }
 
-    function populateStudentTable(students) {
+    function populateStudentTable(students, totalPages, currentPage, size, search) {
         axios.get('http://localhost:8080/api/v1/group/getAll', {
             headers: {
-                Authorization: `Bearer ${userData.token}`
+                Authorization: `${userData.token}`
             }
         })
             .then(groupsResponse => {
@@ -527,7 +550,7 @@
                 tableBody.innerHTML = '';
 
                 students.forEach(student => {
-                    const studentGroupId = student.groupId; // groupId ni olish
+                    const studentGroupId = student.groupId;
                     const row = document.createElement('tr');
                     row.innerHTML = `
                     <td>${student.id}</td>
@@ -555,7 +578,42 @@
                     tableBody.appendChild(row);
                 });
 
-                // ✅ Faqat yangilash tugmasi uchun hodisalarni qo‘shish (to‘g‘rilangan qism)
+                // Pagination tugmalarini yaratish
+                const pagination = document.getElementById('student-pagination');
+                pagination.innerHTML = '';
+
+                // Oldingi sahifa tugmasi
+                const prevItem = document.createElement('li');
+                prevItem.className = `page-item ${currentPage === 0 ? 'disabled' : ''}`;
+                prevItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Oldingi</a>`;
+                pagination.appendChild(prevItem);
+
+                // Sahifa raqamlari
+                for (let i = 0; i < totalPages; i++) {
+                    const pageItem = document.createElement('li');
+                    pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                    pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i + 1}</a>`;
+                    pagination.appendChild(pageItem);
+                }
+
+                // Keyingi sahifa tugmasi
+                const nextItem = document.createElement('li');
+                nextItem.className = `page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`;
+                nextItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Keyingi</a>`;
+                pagination.appendChild(nextItem);
+
+                // Pagination tugmalariga hodisa qo‘shish
+                pagination.querySelectorAll('.page-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const page = parseInt(e.target.getAttribute('data-page'));
+                        if (!isNaN(page)) {
+                            loadStudents(page, size, search);
+                        }
+                    });
+                });
+
+                // Yangilash tugmasi hodisalari
                 document.querySelectorAll('.update-group-btn').forEach(btn => {
                     btn.addEventListener('click', function () {
                         const studentId = this.getAttribute('data-student-id');
@@ -573,6 +631,12 @@
             });
     }
 
+    // Qidiruv inputiga hodisa qo‘shish
+    document.getElementById('search-input').addEventListener('input', (e) => {
+        const searchTerm = e.target.value.trim();
+        loadStudents(0, 10, searchTerm); // Har bir qidiruvda 1-sahifadan boshlash
+    });
+
     // ✅ To‘g‘ri ishlaydigan bitta updateStudentGroup funksiyasi
     function updateStudentGroup(studentId, newGroupId, oldGroupId) {
         axios.put('http://localhost:8080/api/v1/group/updateStudents', {
@@ -581,7 +645,7 @@
             oldGroupId: oldGroupId ? parseInt(oldGroupId) : null
         }, {
             headers: {
-                Authorization: `Bearer ${userData.token}`
+                Authorization: `${userData.token}`
             }
         })
             .then(() => {
@@ -598,7 +662,7 @@
     function loadUsersForRoleChange() {
         axios.get('/api/users/for-role-change', {
             headers: {
-                Authorization: `Bearer ${userData.token}`
+                Authorization: `${userData.token}`
             }
         })
             .then(response => {
@@ -663,7 +727,7 @@
     function updateUserRole(userId, newRole) {
         axios.put(`/api/users/${userId}/role`, {role: newRole}, {
             headers: {
-                Authorization: `Bearer ${userData.token}`
+                Authorization: `${userData.token}`
             }
         })
             .then(response => {
@@ -678,19 +742,66 @@
 
     // Profil yangilash funksiyasi
     document.getElementById('save-profile-btn').addEventListener('click', () => {
+        const form = document.getElementById('profile-form');
         const formData = new FormData();
         const imageInput = document.getElementById('profile-image-input');
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
         const phoneNumber = document.getElementById('phone-number').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const confirmPassword = document.getElementById('confirm-password').value.trim();
 
         // Validatsiya
+        let isValid = true;
+
         if (!userData.userId || isNaN(userData.userId) || userData.userId <= 0) {
             alert('Noto‘g‘ri foydalanuvchi ID. Iltimos, tizimga qayta kiring.');
             return;
         }
-        if (!firstName || !lastName || !phoneNumber) {
-            alert('Iltimos, barcha majburiy maydonlarni to‘ldiring (Ism, Familiya, Telefon Raqami).');
+
+        if (!firstName) {
+            document.getElementById('first-name').classList.add('is-invalid');
+            isValid = false;
+        } else {
+            document.getElementById('first-name').classList.remove('is-invalid');
+        }
+
+        if (!lastName) {
+            document.getElementById('last-name').classList.add('is-invalid');
+            isValid = false;
+        } else {
+            document.getElementById('last-name').classList.remove('is-invalid');
+        }
+
+        if (!phoneNumber) {
+            document.getElementById('phone-number').classList.add('is-invalid');
+            isValid = false;
+        } else {
+            document.getElementById('phone-number').classList.remove('is-invalid');
+        }
+
+        // Parol validatsiyasi (ixtiyoriy)
+        if (password || confirmPassword) {
+            if (password.length < 6) {
+                document.getElementById('password').classList.add('is-invalid');
+                isValid = false;
+            } else {
+                document.getElementById('password').classList.remove('is-invalid');
+            }
+
+            if (password !== confirmPassword || !confirmPassword) {
+                document.getElementById('confirm-password').classList.add('is-invalid');
+                isValid = false;
+            } else {
+                document.getElementById('confirm-password').classList.remove('is-invalid');
+            }
+        } else {
+            document.getElementById('password').classList.remove('is-invalid');
+            document.getElementById('confirm-password').classList.remove('is-invalid');
+        }
+
+        if (!isValid) {
+            alert('Iltimos, barcha majburiy maydonlarni to‘g‘ri to‘ldiring!');
             return;
         }
 
@@ -699,11 +810,11 @@
         formData.append('firstName', firstName);
         formData.append('lastName', lastName);
         formData.append('phoneNumber', phoneNumber);
-
-        let newImage = userData.image;
+        if (password) {
+            formData.append('password', password);
+        }
         if (imageInput.files[0]) {
             formData.append('file', imageInput.files[0]);
-            newImage = URL.createObjectURL(imageInput.files[0]);
         }
 
         // UI ni yangilash funksiyasi
@@ -711,8 +822,8 @@
             userData.firstName = firstName;
             userData.lastName = lastName;
             userData.phoneNumber = phoneNumber;
-            if (newImage !== userData.image) {
-                userData.image = newImage;
+            if (imageInput.files[0]) {
+                userData.image = URL.createObjectURL(imageInput.files[0]);
             }
             localStorage.setItem('userData', JSON.stringify(userData));
 
@@ -721,13 +832,13 @@
 
             const profilePics = document.querySelectorAll('.profile-pic, #modal-profile-pic');
             profilePics.forEach(pic => {
-                pic.src = newImage || 'https://via.placeholder.com/150';
+                pic.src = userData.image || 'https://via.placeholder.com/150';
             });
         };
 
         axios.post('http://localhost:8080/api/v1/auth/updateProfile', formData, {
             headers: {
-                Authorization: `Bearer ${userData.token}`
+                Authorization: `${userData.token}`
             }
         })
             .then(response => {
@@ -771,6 +882,22 @@
             };
             reader.readAsDataURL(e.target.files[0]);
         }
+    });
+
+    // Real vaqtda parol validatsiyasi
+    const passwordInputs = document.querySelectorAll('#profile-form input[type="password"]');
+    passwordInputs.forEach(input => {
+        input.addEventListener('input', () => {
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirm-password').value.trim();
+
+            if (input.id === 'password' && (password.length >= 6 || !password)) {
+                input.classList.remove('is-invalid');
+            }
+            if (input.id === 'confirm-password' && (password === confirmPassword || !confirmPassword)) {
+                input.classList.remove('is-invalid');
+            }
+        });
     });
 
     // Talaba qo‘shish funksiyasi
@@ -832,10 +959,9 @@
             password
         };
 
-
         axios.post('http://localhost:8080/api/v1/admin/student/save', studentData, {
             headers: {
-                Authorization: `Bearer ${userData.token}`
+                Authorization: `${userData.token}`
             }
         })
             .then(response => {

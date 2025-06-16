@@ -43,9 +43,7 @@ public class SecurityConfig {
                     .requestMatchers("/api/v1/auth/updateProfile/**",
                             "/api/v1/auth/**","/api/v1/auth",
                             "/api/v1/admin/mentor", "/api/v1/admin/mentor/**",
-                            "/actuator/prometheus", "/api/v1/admin/student/save"
-                            ,"/api/v1/admin/student/getAll", "/api/v1/group/getAll",
-                            "/api/v1/group/updateStudents").permitAll()
+                            "/actuator/prometheus").permitAll()
 
                     .anyRequest().authenticated();
         });
