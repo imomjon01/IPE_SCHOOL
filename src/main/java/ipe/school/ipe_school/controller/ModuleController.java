@@ -3,6 +3,7 @@ package ipe.school.ipe_school.controller;
 import ipe.school.ipe_school.models.dtos.req.ModuleReq;
 import ipe.school.ipe_school.models.dtos.res.ModuleDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.ModuleRes;
+import ipe.school.ipe_school.models.dtos.res.TaskRes;
 import ipe.school.ipe_school.service.interfaces.ModuleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,8 @@ import java.util.List;
 import static ipe.school.ipe_school.utils.ApiConstants.*;
 
 @RestController
-@RequestMapping(API_PATH+API_VERSION+MODULE)
+//api/v1/module
+@RequestMapping(API_PATH + API_VERSION + MODULE)
 @RequiredArgsConstructor
 public class ModuleController {
 
@@ -22,25 +24,32 @@ public class ModuleController {
 
     @PostMapping
     public ResponseEntity<ModuleRes> createModule(@RequestBody ModuleReq moduleReq) {
-        ModuleRes moduleRes =moduleService.createModule(moduleReq);
+        ModuleRes moduleRes = moduleService.createModule(moduleReq);
         return new ResponseEntity<>(moduleRes, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<ModuleRes>> getModules() {
-        List<ModuleRes> moduleReses=moduleService.getAllModulesBy_active();
+        List<ModuleRes> moduleReses = moduleService.getAllModulesBy_active();
         return new ResponseEntity<>(moduleReses, HttpStatus.OK);
     }
 
     @GetMapping("/{moduleId}")
     public ResponseEntity<ModuleDetailsRes> getModuleById(@PathVariable Long moduleId) {
-        ModuleDetailsRes moduleDetailsRes=moduleService.getModuleById(moduleId);
+        ModuleDetailsRes moduleDetailsRes = moduleService.getModuleById(moduleId);
         return new ResponseEntity<>(moduleDetailsRes, HttpStatus.OK);
+    }
+
+    @GetMapping("/get/{moduleId}")
+    public ResponseEntity<List<TaskRes>> getTasksByModule(@PathVariable Long moduleId) {
+        List<TaskRes> taskRes = moduleService.getAllModuleById(moduleId);
+        taskRes.forEach(taskRes1 -> System.out.println(taskRes1.getTaskName()));
+        return new ResponseEntity<>(taskRes, HttpStatus.OK);
     }
 
     @PostMapping("/{moduleId}")
     public ResponseEntity<ModuleDetailsRes> updateModule(@PathVariable Long moduleId, @RequestBody ModuleReq moduleReq) {
-        ModuleDetailsRes moduleDetailsRes=moduleService.updateModule(moduleId,moduleReq);
+        ModuleDetailsRes moduleDetailsRes = moduleService.updateModule(moduleId, moduleReq);
         return new ResponseEntity<>(moduleDetailsRes, HttpStatus.OK);
     }
 

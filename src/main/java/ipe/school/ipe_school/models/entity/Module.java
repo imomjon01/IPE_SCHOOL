@@ -15,9 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 public class Module extends BaseEntity {
-
     private String moduleName;
     @OneToMany
     private List<Task> tasks;
-
 }

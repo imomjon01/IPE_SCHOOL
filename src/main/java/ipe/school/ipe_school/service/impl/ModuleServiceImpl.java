@@ -4,13 +4,16 @@ import ipe.school.ipe_school.component.ModuleMapper;
 import ipe.school.ipe_school.models.dtos.req.ModuleReq;
 import ipe.school.ipe_school.models.dtos.res.ModuleDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.ModuleRes;
+import ipe.school.ipe_school.models.dtos.res.TaskRes;
 import ipe.school.ipe_school.models.entity.Module;
+import ipe.school.ipe_school.models.entity.Task;
 import ipe.school.ipe_school.models.repo.ModuleRepository;
 import ipe.school.ipe_school.service.interfaces.ModuleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,13 +29,13 @@ public class ModuleServiceImpl implements ModuleService {
                 .active(true)
                 .build();
         Module savedModule = moduleRepository.save(module);
-        return new ModuleRes(savedModule.getId(), savedModule.getModuleName(),savedModule.getActive());
+        return new ModuleRes(savedModule.getId(), savedModule.getModuleName(), savedModule.getActive());
     }
 
     @Override
     public List<ModuleRes> getAllModulesBy_active() {
         List<Module> modules = moduleRepository.findAllByActive(true);
-        return modules.stream().map(module -> new ModuleRes(module.getId(), module.getModuleName(),module.getActive())).toList();
+        return modules.stream().map(module -> new ModuleRes(module.getId(), module.getModuleName(), module.getActive())).toList();
     }
 
     @Override
@@ -55,5 +58,16 @@ public class ModuleServiceImpl implements ModuleService {
     public void updateModule_Active(Long moduleId) {
         Module module = moduleRepository.findById(moduleId).orElseThrow(RuntimeException::new);
         module.setActive(false);
+    }
+
+    @Override
+    public List<TaskRes> getAllModuleById(Long moduleId) {
+        Module modules = moduleRepository.findAllByModuleId(moduleId);
+        List<Task> tasks = modules.getTasks();
+        List<TaskRes> taskResList = new ArrayList<>();
+        for (Task task : tasks) {
+            taskResList.add(new TaskRes(task.getId(), task.getTaskName()));
+        }
+        return taskResList;
     }
 }

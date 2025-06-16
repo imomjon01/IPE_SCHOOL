@@ -3,6 +3,7 @@ package ipe.school.ipe_school.service.interfaces;
 import ipe.school.ipe_school.models.dtos.req.ModuleReq;
 import ipe.school.ipe_school.models.dtos.res.ModuleDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.ModuleRes;
+import ipe.school.ipe_school.models.dtos.res.TaskRes;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface ModuleService {
     ModuleDetailsRes updateModule(Long moduleId, ModuleReq moduleReq);
 
     void updateModule_Active(Long moduleId);
+
+    List<TaskRes> getAllModuleById(Long moduleId);
 }

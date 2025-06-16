@@ -1,10 +1,838 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talaba Vazifalari Menedjeri</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+        }
+
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --danger: #e63946;
+            --task-color: #ff9e00;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        .student-bar {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            color: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 25px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .student-bar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            transform: rotate(30deg);
+        }
+
+        .student-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .student-info i {
+            background: rgba(255, 255, 255, 0.2);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        /* Level Bar */
+        .level-bar {
+            background: white;
+            padding: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            border-radius: 15px;
+            margin: 25px 0;
+            box-shadow: var(--shadow);
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .level-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+        }
+
+        .level-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
+        }
+
+        .level-btn.active {
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            transform: scale(1.05);
+        }
+
+        /* Main Content */
+        .task-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .task-container {
+                flex-direction: column;
+            }
+        }
+
+        /* Tasks Section */
+        .tasks {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            flex: 1;
+            min-height: 400px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            font-size: 22px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .task-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .task {
+            background: linear-gradient(135deg, var(--task-color), #ffb74d);
+            padding: 20px 10px;
+            border-radius: 12px;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 8px rgba(255, 158, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 120px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .task::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .task:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(255, 158, 0, 0.4);
+        }
+
+        .task i {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .task.completed {
+            background: linear-gradient(135deg, var(--success), #4cc9f0);
+        }
+
+        /* Question Section */
+        .question-section {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .question {
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            padding: 30px;
+            border-radius: 15px;
+            min-height: 300px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+        }
+
+        .question.active {
+            transform: scale(1.01);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .question-title {
+            font-size: 20px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .difficulty {
+            background: var(--accent);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .question-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+            font-size: 18px;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .question-text {
+            margin-bottom: 25px;
+            max-width: 600px;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .option {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .option:hover {
+            border-color: var(--accent);
+            background: rgba(67, 97, 238, 0.05);
+        }
+
+        .option.selected {
+            border-color: var(--success);
+            background: rgba(76, 201, 240, 0.1);
+        }
+
+        /* Action Buttons */
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
+        }
+
+        .action-btn.secondary {
+            background: linear-gradient(90deg, #6c757d, #495057);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-top: 25px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            font-size: 16px;
+            color: var(--primary);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: var(--primary);
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 <body>
-<h1> student cabinet</h1>
+<div class="container">
+    <!-- Student Info Bar -->
+    <div class="student-bar">
+        <div class="student-info">
+            <i class="fas fa-user-graduate"></i>
+            <div id="studentName">Yuklanmoqda...</div>
+        </div>
+    </div>
+
+    <!-- Level Selection -->
+    <div class="level-bar" id="levelBar">
+        <div class="loading" id="moduleLoading">
+            <div class="spinner"></div>
+            Modullar yuklanmoqda...
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="task-container">
+        <!-- Tasks Section -->
+        <div class="tasks">
+            <div class="section-title">
+                <i class="fas fa-tasks"></i>
+                <h2>Vazifalar Ro'yxati</h2>
+            </div>
+            <div class="loading" id="taskLoading">Yuklanmoqda...</div>
+            <div class="task-list" id="taskList">
+                <!-- Vazifalar dinamik ravishda qo'shiladi -->
+            </div>
+        </div>
+
+        <!-- Question Section -->
+        <div class="question-section">
+            <div class="question" id="questionBox">
+                <div class="question-header">
+                    <div class="question-title">Vazifa tanlanmadi</div>
+                    <div class="difficulty">Daraja tanlanmadi</div>
+                </div>
+                <div class="question-content">
+                    <div class="question-text">
+                        Iltimos, vazifa tanlang!
+                    </div>
+                    <div class="options">
+                        <!-- Variantlar dinamik ravishda qo'shiladi -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="actions">
+                <button class="action-btn" onclick="saveAnswer()">
+                    <i class="fas fa-save"></i>
+                    Saqlash
+                </button>
+                <button class="action-btn secondary" onclick="resetAnswer()">
+                    <i class="fas fa-redo"></i>
+                    Qayta yuklash
+                </button>
+                <button class="action-btn" onclick="submitAnswer()">
+                    <i class="fas fa-paper-plane"></i>
+                    Yuborish
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Section -->
+    <div class="progress-container">
+        <div class="progress-header">
+            <div>Umumiy progress</div>
+            <div id="progressText">0%</div>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Talaba Vazifalari Menedjeri © 2025 | Barcha huquqlar himoyalangan</p>
+    </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+<script>
+    // DOM elementlari
+    const levelBar = document.getElementById('levelBar');
+    const moduleLoading = document.getElementById('moduleLoading');
+    const taskLoading = document.getElementById('taskLoading');
+    const taskList = document.getElementById('taskList');
+    const questionBox = document.getElementById('questionBox');
+    const studentNameElement = document.getElementById('studentName');
+    const progressText = document.getElementById('progressText');
+    const progressFill = document.getElementById('progressFill');
+
+    // Tanlangan modul IDsi
+    let currentModuleId = null;
+
+    // Foydalanuvchi ma'lumotlari
+    let userData = JSON.parse(localStorage.getItem('userData'));
+
+    // Avtorizatsiyani tekshirish
+    function checkAuth() {
+        if (!userData || !userData.userId || !userData.token) {
+            window.location.href = '/homePage.html';
+            return false;
+        }
+        return true;
+    }
+
+    // Foydalanuvchi ismini ko'rsatish
+    function displayUserInfo() {
+        if (userData && userData.firstName && userData.lastName) {
+            studentNameElement.textContent = `${userData.firstName} ${userData.lastName}`;
+        } else {
+            studentNameElement.textContent = 'Foydalanuvchi';
+        }
+    }
+
+    // Modullarni yuklash funksiyasi
+    async function loadModules() {
+        moduleLoading.style.display = 'block';
+        try {
+            const token = userData.token;
+            const response = await axios.get('http://localhost:8080/api/v1/module', {
+                headers: {
+                    'Authorization': token
+                }
+            });
+            displayModules(response.data);
+        } catch (error) {
+            console.error('Xato:', error);
+            questionBox.innerHTML = `
+                <div class="question-content">
+                    <div class="question-text">Modullarni yuklashda xato yuz berdi</div>
+                </div>`;
+            questionBox.style.color = 'var(--danger)';
+        } finally {
+            moduleLoading.style.display = 'none';
+        }
+    }
+
+    // Modullarni ekranga chiqarish
+    function displayModules(modules) {
+        levelBar.innerHTML = ''; // Oldingi modullarni tozalash
+        if (modules.length === 0) {
+            questionBox.innerHTML = `
+                <div class="question-content">
+                    <div class="question-text">Modullar topilmadi</div>
+                </div>`;
+            return;
+        }
+
+        modules.forEach(module => {
+            const button = document.createElement('button');
+            button.className = 'level-btn';
+            button.innerHTML = `<i class="fas fa-book"></i> ${module.moduleName}`;
+            button.dataset.moduleId = module.id;
+            button.addEventListener('click', () => selectModule(module));
+            levelBar.appendChild(button);
+        });
+    }
+
+    // Modul tanlash funksiyasi
+    function selectModule(module) {
+        // Barcha tugmalardan active klassini olib tashlaymiz
+        document.querySelectorAll('.level-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Tanlangan tugmaga active klassini qo'shamiz
+        const selectedBtn = document.querySelector(`.level-btn[data-module-id="${module.id}"]`);
+        selectedBtn.classList.add('active');
+
+        // Tanlangan modul ID sini saqlaymiz
+        currentModuleId = module.id;
+
+        // Vazifalarni yuklash
+        loadTasks(module.id);
+    }
+
+    // Vazifalarni yuklash funksiyasi (to'g'rilangan versiya)
+    async function loadTasks(moduleId) {
+        taskLoading.style.display = 'block';
+        taskList.innerHTML = '';
+
+        try {
+            const response = await axios.get(
+                `http://localhost:8080/api/v1/module/get/${moduleId}`,
+                {
+                    headers: {
+                        'Authorization': userData.token
+                    }
+                }
+            );
+
+            console.log(response.data.taskRes);
+
+            displayTasks(response.data.taskRes); // response.data.tasks deb chaqirish kerak
+
+        } catch (error) {
+            console.error('Vazifalarni yuklashda xato:', error);
+            taskList.innerHTML = `
+            <div class="error-message">
+                Vazifalarni yuklashda xato: ${error.message}
+            </div>
+        `;
+        } finally {
+            taskLoading.style.display = 'none';
+        }
+    }
+
+    // Faqat bitta displayTasks funksiyasi qoldiramiz
+    function displayTasks(tasks) {
+        taskList.innerHTML = '';
+
+        console.log(tasks);
+
+        if (!tasks || tasks.length === 0) {
+            taskList.innerHTML = `
+            <div class="empty-message">
+                Ushbu modulda vazifalar mavjud emas
+            </div>
+        `;
+            return;
+        }
+
+        tasks.forEach(task => {
+            const taskElement = document.createElement('div');
+            taskElement.className = 'task';
+            taskElement.innerHTML = `
+            <i class="fas fa-tasks"></i>
+            <span>${task.taskName}</span>
+        `;
+            taskElement.addEventListener('click', () => selectTask(task));
+            taskList.appendChild(taskElement);
+        });
+    }
+
+    // Vazifa tanlash funksiyasi
+    async function selectTask(task) {
+        // Tanlangan vazifani belgilash uchun barcha tasklardan active klassini olib tashlaymiz
+        document.querySelectorAll('.task').forEach(t => t.classList.remove('active'));
+        const selectedTask = document.querySelector(`.task span:contains('${task.taskName}')`).parentElement;
+        selectedTask.classList.add('active');
+
+        // Vazifa ma'lumotlarini yuklash
+        try {
+            const response = await axios.get(`http://localhost:8080/api/v1/task/${task.id}`, {
+                headers: {
+                    'Authorization': userData.token
+                }
+            });
+
+            const taskDetails = response.data; // TaskDetailsRes obyekti
+            displayQuestion(taskDetails);
+        } catch (error) {
+            console.error('Savollarni yuklashda xato:', error);
+            questionBox.innerHTML = `
+            <div class="question-content">
+                <div class="question-text">Savollarni yuklashda xato yuz berdi: ${error.message}</div>
+            </div>`;
+            questionBox.style.color = 'var(--danger)';
+        }
+    }
+
+    // Savollarni ekranga chiqarish funksiyasi
+    function displayQuestion(taskDetails) {
+        const questionBox = document.getElementById('questionBox');
+        const questions = taskDetails.questionRes || []; // QuestionRes ro'yxati
+
+        if (!questions || questions.length === 0) {
+            questionBox.innerHTML = `
+            <div class="question-header">
+                <div class="question-title">${taskDetails.name}</div>
+                <div class="difficulty">Daraja tanlanmadi</div>
+            </div>
+            <div class="question-content">
+                <div class="question-text">Ushbu vazifa uchun savollar mavjud emas</div>
+            </div>`;
+            return;
+        }
+
+        // Faqat birinchi savolni ko'rsatamiz (agar bir nechta savol bo'lsa, navigatsiya qo'shish mumkin)
+        const question = questions[0];
+        const optionsHtml = question.variant
+            ? question.variant
+                .map(
+                    (variant, index) => `
+                <div class="option" data-index="${index}" onclick="selectOption(this, ${index})">
+                    ${variant}
+                </div>`
+                )
+                .join('')
+            : '';
+
+        questionBox.innerHTML = `
+        <div class="question-header">
+            <div class="question-title">${taskDetails.name}</div>
+            <div class="difficulty">Oson</div>
+        </div>
+        <div class="question-content">
+            <div class="question-text">${question.questionTest || 'Savol matni yuklanmoqda...'}</div>
+            <div class="options">
+                ${optionsHtml}
+            </div>
+        </div>
+    `;
+        questionBox.classList.add('active');
+
+        // YouTube linki mavjud bo'lsa ko'rsatish
+        if (taskDetails.youtubeURL) {
+            const youtubeLink = document.createElement('div');
+            youtubeLink.innerHTML = `<a href="${taskDetails.youtubeURL}" target="_blank" class="action-btn">
+            <i class="fab fa-youtube"></i> Video darslik
+        </a>`;
+            questionBox.querySelector('.question-content').appendChild(youtubeLink);
+        }
+    }
+
+    // Variant tanlash funksiyasi
+    function selectOption(element, index) {
+        document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+        element.classList.add('selected');
+        // Tanlangan javobni saqlash uchun qo'shimcha logika qo'shish mumkin
+    }
+
+    // Javobni saqlash funksiyasi
+    function saveAnswer() {
+        const selectedOption = document.querySelector('.option.selected');
+        if (selectedOption) {
+            alert('Javob saqlandi: ' + selectedOption.textContent);
+        } else {
+            alert('Iltimos, javob variantini tanlang!');
+        }
+    }
+
+    // Javobni qayta yuklash funksiyasi
+    function resetAnswer() {
+        document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+        alert('Javoblar qayta yuklandi');
+    }
+
+    // Javobni yuborish funksiyasi
+    async function submitAnswer() {
+        const selectedOption = document.querySelector('.option.selected');
+        if (!selectedOption) {
+            alert('Iltimos, javob variantini tanlang!');
+            return;
+        }
+
+        try {
+            // Backendga javob yuborish uchun API chaqiruvi (agar backendda endpoint mavjud bo'lsa)
+            alert('Javob yuborildi: ' + selectedOption.textContent);
+        } catch (error) {
+            console.error('Javob yuborishda xato:', error);
+            alert('Javob yuborishda xato yuz berdi');
+        }
+    }
+
+    // Dastur ishga tushganda
+    document.addEventListener('DOMContentLoaded', () => {
+        if (checkAuth()) {
+            displayUserInfo();
+            loadModules();
+        } else {
+            questionBox.innerHTML = `
+                <div class="question-content">
+                    <div class="question-text">Siz avtorizatsiyadan o'tmagansiz</div>
+                    <button onclick="window.location.href='/login.html'"
+                            style="padding: 10px 20px; margin-top: 15px;
+                                   background: var(--primary); color: white;
+                                   border: none; border-radius: 5px; cursor: pointer;">
+                        Login sahifasiga o'tish
+                    </button>
+                </div>
+            `;
+        }
+    });
+</script>
 </body>
 </html>

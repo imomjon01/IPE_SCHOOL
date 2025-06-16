@@ -8,11 +8,13 @@ import ipe.school.ipe_school.models.dtos.res.TaskRes;
 import ipe.school.ipe_school.models.entity.Task;
 import ipe.school.ipe_school.service.interfaces.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ipe.school.ipe_school.utils.ApiConstants.*;
 

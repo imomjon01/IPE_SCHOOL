@@ -1,6 +1,5 @@
 package ipe.school.ipe_school.models.dtos.res;
 
-import lombok.Builder;
 import lombok.Value;
 
 @Value

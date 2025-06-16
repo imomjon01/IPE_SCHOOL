@@ -3,7 +3,6 @@ package ipe.school.ipe_school.service.impl;
 import ipe.school.ipe_school.models.dtos.req.TaskReq;
 import ipe.school.ipe_school.models.dtos.res.TaskRes;
 import ipe.school.ipe_school.models.entity.Attachment;
-import ipe.school.ipe_school.models.entity.Module;
 import ipe.school.ipe_school.models.entity.Task;
 import ipe.school.ipe_school.models.repo.AttachmentRepository;
 import ipe.school.ipe_school.models.repo.ModuleRepository;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -77,4 +75,10 @@ public class TaskServiceImpl implements TaskService {
     public Task findByActiveTask(Long taskId) {
         return taskRepository.findByIdActive(taskId, true);
     }
+
+    @Override
+    public List<Task> getAllTask() {
+        return taskRepository.findAll();
+    }
+
 }

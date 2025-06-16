@@ -14,4 +14,7 @@ public interface TaskService {
     TaskRes updateTaskById(Long taskId, TaskReq taskReq);
 
     Task findByActiveTask(Long taskId);
+
+    List<Task> getAllTask();
+
 }
