@@ -88,6 +88,9 @@ public class AuthServiceImpl implements AuthService {
             user.setFirstName(userReq.getFirstName());
             user.setLastName(userReq.getLastName());
             user.setPhoneNumber(userReq.getPhoneNumber());
+            if (userReq.getPassword() != null) {
+                user.setPassword(passwordEncoder.encode(userReq.getPassword()));
+            }
             if (file != null) {
                 user.getAttachment().setContent(file.getBytes());
                 user.getAttachment().setContentType(file.getContentType());

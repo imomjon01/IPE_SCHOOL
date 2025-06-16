@@ -8,4 +8,5 @@ public class UserReq {
     String firstName;
     String lastName;
     String phoneNumber;
+    String password;
 }

@@ -17,13 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import java.util.*;
-
 import static ipe.school.ipe_school.utils.ApiConstants.*;
 
 @RestController
@@ -86,6 +82,7 @@ public class AuthController {
             @RequestPart("firstName") String firstName,
             @RequestPart("lastName") String lastName,
             @RequestPart("phoneNumber") String phoneNumber,
+            @RequestPart(value = "password", required = false) String password, // Optional password
             @RequestPart(value = "file", required = false) MultipartFile file) {
 
         try {
@@ -93,7 +90,8 @@ public class AuthController {
                     Long.parseLong(id),
                     firstName,
                     lastName,
-                    phoneNumber
+                    phoneNumber,
+                    password
             );
 
             UserRes userRes = authService.updateUser(userReq, file);
