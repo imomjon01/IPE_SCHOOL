@@ -3,1036 +3,548 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ipe School - Quality Education</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Mentor Cabinet - IPE School</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary: #6c5ce7;
-            --primary-dark: #5649c0;
-            --secondary: #00cec9;
-            --dark: #2d3436;
-            --darker: #1e272e;
-            --light: #f5f6fa;
-            --danger: #d63031;
-            --success: #00b894;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
         body {
-            background-color: var(--light);
-            color: var(--darker);
-            line-height: 1.6;
+            font-family: 'Arial', sans-serif;
         }
-
-        /* Header Styles */
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 1rem 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+        .header-bg {
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
         }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-        }
-
-        .logo i {
-            margin-right: 0.5rem;
-            color: var(--secondary);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-
-        .nav-links li {
-            margin-left: 2rem;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 0.5rem 0;
-            border-bottom: 2px solid transparent;
-        }
-
-        .nav-links a:hover {
-            border-bottom: 2px solid white;
-        }
-
-        .login-btn {
-            background-color: white;
-            color: var(--primary);
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .login-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            border-bottom: none;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
-            background-size: cover;
-            background-position: center;
-            height: 80vh;
-            display: flex;
-            align-items: center;
-            text-align: center;
-            color: white;
-        }
-
-        .hero-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 2rem;
-        }
-
-        .cta-btn {
-            display: inline-block;
-            background-color: var(--secondary);
-            color: white;
-            padding: 0.8rem 2.5rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            margin: 0 0.5rem;
-        }
-
-        .cta-btn:hover {
-            transform: translateY(-3px);
+        .card-hover:hover {
+            transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .cta-btn.outline {
-            background-color: transparent;
-            border: 2px solid white;
-        }
-
-        /* Stats Section */
-        .stats {
-            background-color: var(--primary);
-            color: white;
-            padding: 4rem 0;
-            text-align: center;
-        }
-
-        .stats-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            padding: 0 2rem;
-        }
-
-        .stat-item {
-            padding: 1.5rem;
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--secondary);
-        }
-
-        .stat-label {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        /* Features Section */
-        .features {
-            padding: 5rem 0;
-            background-color: white;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            color: var(--darker);
-            margin-bottom: 1rem;
-        }
-
-        .section-title p {
-            color: #666;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .features-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            padding: 0 2rem;
-        }
-
-        .feature-card {
-            background-color: var(--light);
-            border-radius: 10px;
-            padding: 2rem;
-            text-align: center;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--darker);
-        }
-
-        /* Mentors Section */
-        .mentors {
-            padding: 5rem 0;
-            background-color: var(--light);
-        }
-
-        .mentors-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            padding: 0 2rem;
-        }
-
-        .mentor-card {
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .mentor-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .mentor-img {
-            height: 250px;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .mentor-info {
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .mentor-info h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .mentor-info p {
-            color: var(--primary);
-            font-weight: 500;
-            margin-bottom: 1rem;
-        }
-
-        .mentor-social {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        .mentor-social a {
-            color: var(--darker);
-            transition: all 0.3s ease;
-        }
-
-        .mentor-social a:hover {
-            color: var(--primary);
-        }
-
-        /* Location Section */
-        .location {
-            padding: 5rem 0;
-            background-color: white;
-        }
-
-        .location-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            padding: 0 2rem;
-            align-items: center;
-        }
-
-        .location-info h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--darker);
-        }
-
-        .location-info p {
-            margin-bottom: 2rem;
-            color: #666;
-        }
-
-        .contact-info {
-            margin-top: 2rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .contact-icon {
-            width: 40px;
-            height: 40px;
-            background-color: var(--light);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
-            color: var(--primary);
-        }
-
-        .map-container {
-            height: 400px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .map-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* Login Modal */
-        .login-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .login-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .login-container {
-            background-color: white;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 450px;
-            padding: 2.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            position: relative;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #666;
-            transition: all 0.3s ease;
-        }
-
-        .close-modal:hover {
-            color: var(--danger);
-            transform: rotate(90deg);
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .login-header h2 {
-            font-size: 2rem;
-            color: var(--darker);
-            margin-bottom: 0.5rem;
-        }
-
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .input-group label {
-            font-weight: 500;
-            color: var(--darker);
-        }
-
-        .input-group input {
-            padding: 0.8rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
-        }
-
-        .login-btn {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            padding: 0.8rem;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 0.5rem;
-        }
-
-        .login-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
-        }
-
-        .login-footer {
-            text-align: center;
-            margin-top: 1.5rem;
-            color: #666;
-        }
-
-        .login-footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--darker);
-            color: white;
-            padding: 4rem 0 2rem;
-        }
-
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 3rem;
-            padding: 0 2rem;
-        }
-
-        .footer-col h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            padding-bottom: 0.5rem;
-        }
-
-        .footer-col h3::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 50px;
-            height: 2px;
-            background-color: var(--secondary);
-        }
-
-        .footer-col p {
-            margin-bottom: 1rem;
-            opacity: 0.8;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.8rem;
-        }
-
-        .footer-links a {
-            color: white;
-            opacity: 0.8;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            opacity: 1;
-            padding-left: 5px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .social-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            color: white;
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            background-color: var(--secondary);
-            transform: translateY(-3px);
-        }
-
-        .copyright {
-            text-align: center;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            opacity: 0.7;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 992px) {
-            .stats-container,
-            .features-container,
-            .mentors-container,
-            .footer-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .location-container {
-                grid-template-columns: 1fr;
-            }
-
-            .map-container {
-                height: 300px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                padding: 1rem;
-            }
-
-            .nav-links {
-                margin-top: 1rem;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .nav-links li {
-                margin: 0.5rem 0;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .stats-container,
-            .features-container,
-            .mentors-container,
-            .footer-container {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-100">
 <!-- Header -->
-<header>
-    <nav class="navbar">
-        <div class="logo">
-            <i class="fas fa-graduation-cap"></i>
-            <span>IPE School</span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#mentors">Mentors</a></li>
-            <li><a href="#location">Location</a></li>
-            <li><a href="#" class="login-btn" id="open-login">Login</a></li>
-        </ul>
-    </nav>
+<header class="header-bg text-white py-4">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">IPE School</h1>
+        <nav>
+            <ul class="flex space-x-6">
+                <li><a href="/homePage.html" class="hover:underline">Home</a></li>
+                <li><a href="/about" class="hover:underline">About</a></li>
+                <li><a href="/mentors" class="hover:underline">Mentors</a></li>
+                <li><a href="/logout" class="hover:underline">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
 </header>
 
-<!-- Hero Section -->
-<section class="hero" id="home">
-    <div class="hero-content">
-        <h1>Quality Education with Expert Mentors</h1>
-        <p>Join over 800 students who are transforming their futures with our specialized programs and experienced instructors.</p>
-        <div class="cta-buttons">
-            <a href="#about" class="cta-btn">Learn More</a>
-            <a href="#contact" class="cta-btn outline">Contact Us</a>
-        </div>
-    </div>
-</section>
+<!-- Main Content -->
+<main class="container mx-auto px-4 py-8">
+    <section class="bg-white rounded-lg shadow-lg p-6 mb-8">
+        <h2 class="text-3xl font-semibold text-gray-800 mb-4">Mentor Dashboard</h2>
+        <p class="text-gray-600 mb-6">Welcome to your mentor cabinet. Below are the groups you are mentoring.</p>
 
-<!-- Stats Section -->
-<section class="stats">
-    <div class="stats-container">
-        <div class="stat-item">
-            <div class="stat-number">800+</div>
-            <div class="stat-label">Students</div>
+        <!-- Groups Section -->
+        <div id="groups-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Groups will be dynamically inserted here -->
         </div>
-        <div class="stat-item">
-            <div class="stat-number">50+</div>
-            <div class="stat-label">Mentors</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-number">98%</div>
-            <div class="stat-label">Success Rate</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-number">10+</div>
-            <div class="stat-label">Years Experience</div>
-        </div>
-    </div>
-</section>
 
-<!-- Features Section -->
-<section class="features" id="about">
-    <div class="section-title">
-        <h2>Why Choose IPE School</h2>
-        <p>We provide the best learning environment with modern facilities and expert guidance</p>
-    </div>
-    <div class="features-container">
-        <div class="feature-card">
-            <div class="feature-icon">
-                <i class="fas fa-chalkboard-teacher"></i>
+        <!-- Group Details Section -->
+        <div id="group-details" class="hidden mt-8">
+            <button id="back-to-groups" class="bg-blue-500 text-white p-2 rounded mb-4">Back to Groups</button>
+            <h2 id="group-name" class="text-2xl font-semibold text-gray-800 mb-4"></h2>
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-800">Students</h3>
+                <div id="students-list" class="mt-2"></div>
             </div>
-            <h3>Expert Mentors</h3>
-            <p>Our mentors are highly qualified professionals with years of teaching experience in their respective fields.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">
-                <i class="fas fa-laptop-code"></i>
+            <div>
+                <h3 class="text-xl font-semibold text-gray-800">Modules</h3>
+                <p id="modules-warning" class="text-yellow-600 mt-2 hidden"></p>
+                <div id="modules-list" class="mt-2 flex flex-wrap gap-2"></div>
             </div>
-            <h3>Modern Curriculum</h3>
-            <p>We offer up-to-date courses that match current industry standards and requirements.</p>
         </div>
-        <div class="feature-card">
-            <div class="feature-icon">
-                <i class="fas fa-users"></i>
-            </div>
-            <h3>Community Learning</h3>
-            <p>Join a vibrant community of learners who support and motivate each other to succeed.</p>
-        </div>
-    </div>
-</section>
 
-<!-- Mentors Section -->
-<section class="mentors" id="mentors">
-    <div class="section-title">
-        <h2>Our Expert Mentors</h2>
-        <p>Meet some of our highly qualified and experienced mentors</p>
-    </div>
-    <div class="mentors-container">
-        <div class="mentor-card">
-            <div class="mentor-img" style="background-image: url('https://randomuser.me/api/portraits/men/32.jpg');"></div>
-            <div class="mentor-info">
-                <h3>John Smith</h3>
-                <p>Mathematics Expert</p>
-                <div class="mentor-social">
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
+        <!-- Module Details Section -->
+        <div id="module-details" class="hidden mt-8">
+            <button id="back-to-group" class="bg-blue-500 text-white p-2 rounded mb-4">Back to Group</button>
+            <h2 id="module-name" class="text-2xl font-semibold text-gray-800 mb-4"></h2>
+            <div>
+                <h3 class="text-xl font-semibold text-gray-800">Tasks</h3>
+                <button id="add-task-button" class="bg-green-500 text-white p-2 rounded mb-4">Add Task +</button>
+                <div id="add-task-form" class="hidden mt-4">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Add New Task</h3>
+                    <div class="mb-4">
+                        <label for="task-name" class="block text-gray-700">Task Name</label>
+                        <input type="text" id="task-name" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="youtube-url" class="block text-gray-700">YouTube URL</label>
+                        <input type="text" id="youtube-url" class="w-full p-2 border rounded">
+                    </div>
+                    <button id="submit-task" class="bg-blue-500 text-white p-2 rounded">Add Task</button>
                 </div>
+                <div id="tasks-list" class="mt-2 flex flex-wrap gap-2"></div>
             </div>
         </div>
-        <div class="mentor-card">
-            <div class="mentor-img" style="background-image: url('https://randomuser.me/api/portraits/women/44.jpg');"></div>
-            <div class="mentor-info">
-                <h3>Sarah Johnson</h3>
-                <p>Physics Specialist</p>
-                <div class="mentor-social">
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="mentor-card">
-            <div class="mentor-img" style="background-image: url('https://randomuser.me/api/portraits/men/75.jpg');"></div>
-            <div class="mentor-info">
-                <h3>Michael Chen</h3>
-                <p>Computer Science</p>
-                <div class="mentor-social">
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="mentor-card">
-            <div class="mentor-img" style="background-image: url('https://randomuser.me/api/portraits/women/68.jpg');"></div>
-            <div class="mentor-info">
-                <h3>Emily Wilson</h3>
-                <p>English Literature</p>
-                <div class="mentor-social">
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- Location Section -->
-<section class="location" id="location">
-    <div class="location-container">
-        <div class="location-info">
-            <h2>Our Location</h2>
-            <p>Visit our modern campus equipped with state-of-the-art facilities to enhance your learning experience.</p>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <div>
-                        <h4>Address</h4>
-                        <p>123 Education Street, Tashkent, Uzbekistan</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-phone-alt"></i>
-                    </div>
-                    <div>
-                        <h4>Phone</h4>
-                        <p>+998 90 123 45 67 (Administrator)</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <div>
-                        <h4>Email</h4>
-                        <p>info@ipeschool.uz</p>
-                    </div>
-                </div>
+        <!-- Task Details Section -->
+        <div id="task-details" class="hidden mt-8">
+            <button id="back-to-module" class="bg-blue-500 text-white p-2 rounded mb-4">Back to Module</button>
+            <h2 id="task-name" class="text-2xl font-semibold text-gray-800 mb-4"></h2>
+            <div id="task-video" class="mb-6"></div>
+            <div>
+                <h3 class="text-xl font-semibold text-gray-800">Questions</h3>
+                <div id="questions-list" class="mt-2"></div>
             </div>
         </div>
-        <div class="map-container">
-            <iframe
-                    src="https://www.google.com/maps?q=41.253506,69.375075&hl=en&z=17&output=embed"
-                    width="600"
-                    height="450"
-                    style="border:0;"
-                    allowfullscreen=""
-                    loading="lazy">
-            </iframe>
-        </div>
-    </div>
-</section>
-
-<!-- Login Modal -->
-<div class="login-modal" id="login-modal">
-    <div class="login-container">
-        <span class="close-modal" id="close-login">&times;</span>
-        <div class="login-header">
-            <h2>Login to Your Account</h2>
-            <p>Enter your credentials to access your dashboard</p>
-        </div>
-        <form class="login-form" id="login-form">
-            <div class="input-group">
-                <label for="phoneNumber">Phone Number</label>
-                <input type="text" id="phoneNumber" name="phoneNumber" placeholder="+998 XX XXX XX XX" required>
-            </div>
-            <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
-            </div>
-            <button type="submit" class="login-btn">Login</button>
-        </form>
-        <div class="login-footer">
-            <p>Don't have an account? <a href="#">Contact administrator</a></p>
-        </div>
-    </div>
-</div>
+    </section>
+</main>
 
 <!-- Footer -->
-<footer id="contact">
-    <div class="footer-container">
-        <div class="footer-col">
-            <h3>About Us</h3>
-            <p>Ipe School is a leading educational institution dedicated to providing quality education with expert mentors and modern facilities.</p>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+<footer class="bg-gray-800 text-white py-6">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <h3 class="text-lg font-semibold">About Us</h3>
+                <p class="text-sm">IPE School is a leading educational institution dedicated to providing quality education with expert mentors and modern facilities.</p>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold">Quick Links</h3>
+                <ul class="text-sm">
+                    <li><a href="/homePage.html" class="hover:underline">Home</a></li>
+                    <li><a href="/about" class="hover:underline">About</a></li>
+                    <li><a href="/mentors" class="hover:underline">Mentors</a></li>
+                    <li><a href="/login.html" class="hover:underline">Login</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold">Contact Info</h3>
+                <p class="text-sm">123 Education Street, Tashkent</p>
+                <p class="text-sm">+998 90 123 45 67</p>
+                <p class="text-sm">info@ipeschool.com</p>
             </div>
         </div>
-        <div class="footer-col">
-            <h3>Quick Links</h3>
-            <ul class="footer-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#mentors">Mentors</a></li>
-                <li><a href="#location">Location</a></li>
-                <li><a href="#">Login</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h3>Courses</h3>
-            <ul class="footer-links">
-                <li><a href="#">Mathematics</a></li>
-                <li><a href="#">Physics</a></li>
-                <li><a href="#">Computer Science</a></li>
-                <li><a href="#">English</a></li>
-                <li><a href="#">Chemistry</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h3>Contact Info</h3>
-            <p><i class="fas fa-map-marker-alt"></i> 123 Education Street, Tashkent</p>
-            <p><i class="fas fa-phone-alt"></i> +998 90 123 45 67</p>
-            <p><i class="fas fa-envelope"></i> info@ipeschool.uz</p>
-        </div>
-    </div>
-    <div class="copyright">
-        <p>&copy; 2023 Ipe School. All Rights Reserved.</p>
+        <p class="text-center text-sm mt-6">© 2023 IPE School. All Rights Reserved.</p>
     </div>
 </footer>
 
 <script>
-    // Login Modal Toggle
-    const loginModal = document.getElementById('login-modal');
-    const openLogin = document.getElementById('open-login');
-    const closeLogin = document.getElementById('close-login');
+    let currentGroup = null;
+    let currentModule = null;
 
-    openLogin.addEventListener('click', (e) => {
-        e.preventDefault();
-        loginModal.classList.add('active');
-    });
-
-    closeLogin.addEventListener('click', () => {
-        loginModal.classList.remove('active');
-    });
-
-    // Close modal when clicking outside
-    loginModal.addEventListener('click', (e) => {
-        if (e.target === loginModal) {
-            loginModal.classList.remove('active');
+    // Utility: convert a byte[] array into a Base64 data-URL
+    function byteArrayToDataUrl(byteArray, mime = 'image/png') {
+        const uint8 = new Uint8Array(byteArray);
+        let binary = '';
+        for (let i = 0; i < uint8.length; i++) {
+            binary += String.fromCharCode(uint8[i]);
         }
-    });
-
-    // Login Form Submission - Enhanced version
-    document.getElementById('login-form').addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        // Show loading state
-        const submitBtn = e.target.querySelector('button[type="submit"]');
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
-
-        const phoneNumber = e.target.phoneNumber.value;
-        const password = e.target.password.value;
-
-        try {
-            const response = await fetch('http://localhost:8080/api/v1/auth', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ phoneNumber, password })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                // Store user data
-                localStorage.setItem("authToken", data.token);
-                localStorage.setItem('userData', JSON.stringify({
-                token:data.token,
-                    userId: data.userId,
-                    firstName: data.firstName,
-                    lastName: data.lastName,
-                    phoneNumber: data.phoneNumber,
-                    roles: data.roles,
-                    image: data.image
-            }));
-
-                // Show success message
-                showMessage('Login successful! Redirecting...', 'success');
-
-                // Redirect after short delay
-                setTimeout(() => {
-                    window.location.href = data.redirect || determineRedirectUrl(data.roles);
-                }, 1500);
-            } else {
-                showMessage(data.message || 'Login failed. Please check your credentials.', 'error');
-            }
-        } catch (error) {
-            console.error('Login error:', error);
-            showMessage('Network error. Please try again later.', 'error');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Login';
-        }
-    });
-
-    // Determine redirect URL based on roles
-    function determineRedirectUrl(roles) {
-        if (roles.includes('ADMIN')) {
-            return '/adminCabinet';
-        } else if (roles.includes('MENTOR')) {
-            return '/mentorCabinet';
-        } else {
-            return '/studentCabinet';
-        }
+        return `data:${mime};base64,${window.btoa(binary)}`;
     }
 
-    // Show message function
-    function showMessage(message, type) {
-        // Remove any existing messages first
-        const existingAlert = document.querySelector('.login-header .alert');
-        if (existingAlert) {
-            existingAlert.remove();
+    // Utility: get image source
+    function getImageSrc(imageData) {
+        if (Array.isArray(imageData) && imageData.length) {
+            return byteArrayToDataUrl(imageData);
+        } else if (typeof imageData === 'string' && imageData.startsWith('data:image')) {
+            return imageData;
         }
-
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `alert alert-${type}`;
-        messageDiv.textContent = message;
-
-        const loginHeader = document.querySelector('.login-header');
-        loginHeader.appendChild(messageDiv);
-
-        setTimeout(() => {
-            messageDiv.remove();
-        }, 5000);
+        return 'https://via.placeholder.com/100';
     }
 
-    // Check authentication on page load for protected pages
-    // This should be included in your dashboard pages (studentCabinet.html, etc.)
-    function checkAuthentication() {
-        const token = localStorage.getItem('authToken');
+    // Display mentor profile
+    function displayMentorProfile() {
         const userData = JSON.parse(localStorage.getItem('userData'));
+        if (!userData) return;
 
+        const profileSection = document.createElement('div');
+        profileSection.className = 'bg-white rounded-lg shadow-lg p-6 mb-8 flex items-center space-x-6';
+        const imageSrc = getImageSrc(userData.image);
+        profileSection.innerHTML = `
+                <img src="${imageSrc}" alt="Mentor Image" class="w-24 h-24 rounded-full object-cover border-4 border-blue-500">
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800">${userData.firstName} ${userData.lastName}</h3>
+                    <p class="text-gray-600">Phone: ${userData.phoneNumber}</p>
+                </div>
+            `;
+        const dashboardSection = document.querySelector('main section');
+        dashboardSection.parentNode.insertBefore(profileSection, dashboardSection);
+    }
+
+    // Fetch mentor groups
+    async function fetchMentorGroups() {
+        const token = localStorage.getItem('authToken');
         if (!token) {
-            window.location.href = '/'; // Redirect to login if not authenticated
+            alert('Please log in to view your groups.');
+            window.location.href = '/login.html';
             return;
         }
 
-        // Display user info in dashboard
-        if (userData) {
-            const userNameElement = document.getElementById('user-name');
-            const userPhoneElement = document.getElementById('user-phone');
-
-            if (userNameElement) {
-                userNameElement.textContent = `${userData.firstName} ${userData.lastName}`;
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/mentor/group', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Failed to fetch groups: ${response.status} ${response.statusText} - ${errorText}`);
             }
-            if (userPhoneElement) {
-                userPhoneElement.textContent = userData.phoneNumber;
-            }
-        }
-
-        // Role-specific functionality
-        if (userData && userData.roles) {
-            if (userData.roles.includes('ADMIN')) {
-                // Show admin features
-                const adminElements = document.querySelectorAll('.admin-only');
-                adminElements.forEach(el => el.style.display = 'block');
-            } else if (userData.roles.includes('MENTOR')) {
-                // Show mentor features
-                const mentorElements = document.querySelectorAll('.mentor-only');
-                mentorElements.forEach(el => el.style.display = 'block');
-            } else {
-                // Show student features
-                const studentElements = document.querySelectorAll('.student-only');
-                studentElements.forEach(el => el.style.display = 'block');
-            }
+            const groups = await response.json();
+            console.log('Fetched groups:', groups);
+            displayGroups(groups);
+        } catch (error) {
+            console.error('Error fetching groups:', error);
+            alert(`An error occurred while fetching your groups: ${error.message}`);
         }
     }
 
-    // Call this function in your dashboard pages
-    // document.addEventListener('DOMContentLoaded', checkAuthentication);
+    // Render group cards
+    function displayGroups(groups) {
+        const container = document.getElementById('groups-container');
+        container.innerHTML = '';
+
+        if (!groups.length) {
+            container.innerHTML = '<p class="text-gray-600">No groups assigned to you.</p>';
+            return;
+        }
+
+        groups.forEach(group => {
+            const groupCard = document.createElement('div');
+            groupCard.className = 'bg-white p-6 rounded-lg shadow-md card-hover cursor-pointer';
+            groupCard.innerHTML = `<h3 class="text-xl font-semibold text-gray-800">${group.name}</h3>`;
+            groupCard.addEventListener('click', () => {
+                console.log('Group ID:', group.id, 'Type:', typeof group.id);
+                showGroupDetails(group.id);
+            });
+            container.appendChild(groupCard);
+        });
+    }
+
+    // Fetch group details
+    async function showGroupDetails(groupId) {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            alert('Please log in to view group details.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/v1/group/${groupId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Failed to fetch group details: ${response.status} ${response.statusText} - ${errorText}`);
+            }
+            currentGroup = await response.json();
+            console.log('Fetched group details:', currentGroup);
+            displayGroupDetails(currentGroup);
+        } catch (error) {
+            console.error('Error fetching group details:', error);
+            alert(`An error occurred while fetching group details: ${error.message}`);
+        }
+    }
+
+    // Display group details
+    function displayGroupDetails(group) {
+        document.getElementById('groups-container').classList.add('hidden');
+        document.getElementById('group-details').classList.remove('hidden');
+        document.getElementById('module-details').classList.add('hidden');
+        document.getElementById('task-details').classList.add('hidden');
+
+        document.getElementById('group-name').textContent = group.name;
+
+        const studentsList = document.getElementById('students-list');
+        studentsList.innerHTML = '';
+        if (group.students && group.students.length > 0) {
+            group.students.forEach(student => {
+                const studentDiv = document.createElement('div');
+                studentDiv.className = 'flex items-center bg-white p-4 rounded shadow mb-2';
+                const imageSrc = getImageSrc(student.image);
+                studentDiv.innerHTML = `
+                        <img src="${imageSrc}" alt="${student.firstName} ${student.lastName}" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <p class="font-semibold text-lg">${student.firstName} ${student.lastName}</p>
+                            <p class="text-gray-600">${student.phoneNumber}</p>
+                        </div>
+                    `;
+                studentsList.appendChild(studentDiv);
+            });
+        } else {
+            studentsList.textContent = 'No students in this group.';
+        }
+
+        const modulesList = document.getElementById('modules-list');
+        const modulesWarning = document.getElementById('modules-warning');
+        modulesList.innerHTML = '';
+        if (group.modules && group.modules.length > 0) {
+            modulesWarning.classList.add('hidden');
+            group.modules.forEach(module => {
+                const button = document.createElement('button');
+                button.className = module.active
+                    ? 'bg-green-500 text-white p-2 rounded hover:bg-green-600 m-1'
+                    : 'bg-gray-400 text-white p-2 rounded m-1 cursor-not-allowed';
+                button.textContent = module.active ? module.moduleName : `${module.moduleName} 🔒`;
+                button.disabled = !module.active;
+                if (module.active) {
+                    button.addEventListener('click', () => {
+                        console.log('Module ID:', module.id);
+                        showModuleDetails(module.id);
+                    });
+                }
+                modulesList.appendChild(button);
+            });
+        } else {
+            modulesWarning.textContent = 'Warning: No modules assigned to this group.';
+            modulesWarning.classList.remove('hidden');
+        }
+    }
+
+    // Fetch module details
+    async function showModuleDetails(moduleId) {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            alert('Please log in to view module details.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/v1/module/${moduleId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Failed to fetch module details: ${response.status} ${response.statusText} - ${errorText}`);
+            }
+            currentModule = await response.json();
+            console.log('Fetched module details:', currentModule);
+            displayModuleDetails(currentModule);
+        } catch (error) {
+            console.error('Error fetching module details:', error);
+            alert(`An error occurred while fetching module details: ${error.message}`);
+        }
+    }
+
+    // Display module details
+    function displayModuleDetails(module) {
+        document.getElementById('group-details').classList.add('hidden');
+        document.getElementById('module-details').classList.remove('hidden');
+        document.getElementById('task-details').classList.add('hidden');
+
+        document.getElementById('module-name').textContent = module.moduleName;
+
+        const tasksList = document.getElementById('tasks-list');
+        tasksList.innerHTML = '';
+        if (module.tasks && module.tasks.length > 0) {
+            module.tasks.forEach(task => {
+                const taskButton = document.createElement('button');
+                taskButton.className = 'bg-blue-500 text-white p-2 rounded m-1 hover:bg-blue-600';
+                taskButton.textContent = task.taskName;
+                taskButton.addEventListener('click', () => {
+                    console.log('Task ID:', task.id);
+                    showTaskDetails(task.id);
+                });
+                tasksList.appendChild(taskButton);
+            });
+        } else {
+            tasksList.textContent = 'No tasks in this module.';
+        }
+    }
+
+    // Fetch task details
+    async function showTaskDetails(taskId) {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            alert('Please log in to view task details.');
+            return;
+        }
+
+        try {
+            const taskResponse = await fetch(`http://localhost:8080/api/v1/task/${taskId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!taskResponse.ok) {
+                const errorText = await taskResponse.text();
+                throw new Error(`Failed to fetch task details: ${taskResponse.status} ${taskResponse.statusText} - ${errorText}`);
+            }
+            const task = await taskResponse.json();
+            console.log('Fetched task details:', task);
+
+            const attachmentIds = [...new Set(task.questionRes.map(q => q.attachmentId).filter(id => id != null))];
+            const attachments = await fetchAttachments(attachmentIds);
+            const attachmentMap = new Map(attachments.map(a => [a.id, a]));
+
+            displayTaskDetails(task, attachmentMap);
+        } catch (error) {
+            console.error('Error fetching task details or attachments:', error);
+            alert(`An error occurred while fetching task details: ${error.message}`);
+        }
+    }
+
+    // Fetch attachments by IDs
+    async function fetchAttachments(attachmentIds) {
+        const token = localStorage.getItem('authToken');
+        const promises = attachmentIds.map(id =>
+            fetch(`http://localhost:8080/api/v1/attachment/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (!response.ok) throw new Error(`Failed to fetch attachment ${id}`);
+                return response.json();
+            })
+        );
+        return Promise.all(promises);
+    }
+
+    // Display task details
+    function displayTaskDetails(task, attachmentMap) {
+        document.getElementById('module-details').classList.add('hidden');
+        document.getElementById('task-details').classList.remove('hidden');
+
+        document.getElementById('task-name').textContent = task.name;
+
+        const videoDiv = document.getElementById('task-video');
+        videoDiv.innerHTML = '';
+        if (task.youtubeURL) {
+            try {
+                const url = new URL(task.youtubeURL);
+                const videoId = url.searchParams.get('v');
+                if (videoId) {
+                    const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                    videoDiv.innerHTML = `
+                            <iframe width="560" height="315" src="${embedUrl}" title="YouTube video player"
+                                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen onerror="this.style.display='none'; document.getElementById('youtube-fallback').style.display='block';"></iframe>
+                            <p id="youtube-fallback" class="text-red-600" style="display:none;">Unable to load YouTube video. URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>
+                        `;
+                } else {
+                    videoDiv.innerHTML = `<p class="text-red-600">Invalid YouTube URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>`;
+                }
+            } catch (e) {
+                videoDiv.innerHTML = `<p class="text-red-600">Invalid YouTube URL: ${task.youtubeURL}</p>`;
+            }
+        }
+
+        const questionsList = document.getElementById('questions-list');
+        questionsList.innerHTML = '';
+        if (task.questionRes && task.questionRes.length > 0) {
+            task.questionRes.forEach(question => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'mb-4 p-4 bg-white rounded shadow';
+                let html = `
+                        <h4 class="text-lg font-semibold">${question.questionText}</h4>
+                        <ul class="list-disc list-inside">
+                            ${question.variant.map(v => `<li>${v}</li>`).join('')}
+                        </ul>
+                        <p class="mt-2"><strong>Current Answer:</strong> ${question.currentAnswer || 'N/A'}</p>
+                    `;
+                if (question.attachmentId) {
+                    const attachment = attachmentMap.get(question.attachmentId);
+                    if (attachment) {
+                        if (attachment.contentType.startsWith('image/')) {
+                            const imageSrc = `data:${attachment.contentType};base64,${attachment.content}`;
+                            html += `<img src="${imageSrc}" alt="Question Attachment" class="mt-2 max-w-full h-auto">`;
+                        } else {
+                            html += `<p class="mt-2">Attachment available (type: ${attachment.contentType})</p>`;
+                        }
+                    }
+                }
+                questionDiv.innerHTML = html;
+                questionsList.appendChild(questionDiv);
+            });
+        } else {
+            questionsList.textContent = 'No questions in this task.';
+        }
+    }
+
+    // Add task functionality
+    document.addEventListener('click', (event) => {
+        if (event.target.id === 'add-task-button') {
+            document.getElementById('add-task-form').classList.remove('hidden');
+        }
+        if (event.target.id === 'submit-task') {
+            const taskName = document.getElementById('task-name').value;
+            const youtubeURL = document.getElementById('youtube-url').value;
+            if (!taskName) {
+                alert('Task name is required.');
+                return;
+            }
+            const taskReq = {
+                moduleId: currentModule.id,
+                taskName: taskName,
+                youtubeURL: youtubeURL || null
+            };
+            addTask(taskReq);
+        }
+    });
+
+    async function addTask(taskReq) {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            alert('Please log in to add a task.');
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/task', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(taskReq)
+            });
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Failed to add task: ${response.status} ${response.statusText} - ${errorText}`);
+            }
+            await response.json();
+            showModuleDetails(currentModule.id);
+            document.getElementById('add-task-form').classList.add('hidden');
+            document.getElementById('task-name').value = '';
+            document.getElementById('youtube-url').value = '';
+        } catch (error) {
+            console.error('Error adding task:', error);
+            alert(`An error occurred while adding the task: ${error.message}`);
+        }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        displayMentorProfile();
+        fetchMentorGroups();
+        document.getElementById('back-to-groups').addEventListener('click', () => {
+            document.getElementById('group-details').classList.add('hidden');
+            document.getElementById('module-details').classList.add('hidden');
+            document.getElementById('task-details').classList.add('hidden');
+            document.getElementById('groups-container').classList.remove('hidden');
+        });
+        document.getElementById('back-to-group').addEventListener('click', () => {
+            if (currentGroup) {
+                displayGroupDetails(currentGroup);
+            }
+        });
+        document.getElementById('back-to-module').addEventListener('click', () => {
+            if (currentModule) {
+                displayModuleDetails(currentModule);
+            }
+        });
+    });
 </script>
 </body>
 </html>

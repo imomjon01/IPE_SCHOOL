@@ -1,4 +1,4 @@
-package ipe.school.ipe_school.controller;
+package ipe.school.ipe_school.controller.login;
 
 
 import ipe.school.ipe_school.models.dtos.req.LoginDto;

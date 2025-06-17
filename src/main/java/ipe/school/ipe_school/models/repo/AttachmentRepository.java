@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface AttachmentRepository extends JpaRepository<Attachment, Long> {
-    List<Attachment> findByIdIn(List<Long> ids);
+    Attachment findByIdAndActiveTrue(Long id);
+    List<Attachment> findAllByIdInAndActiveTrue(List<Long> ids);
 }

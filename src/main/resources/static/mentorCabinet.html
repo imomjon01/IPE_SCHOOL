@@ -3,81 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPE School</title>
+    <title>Mentor Cabinet - IPE School</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+        .header-bg {
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
-<header class="bg-blue-600 text-white p-4">
-    <div class="container mx-auto flex justify-between items-center">
+<!-- Header -->
+<header class="header-bg text-white py-4">
+    <div class="container mx-auto px-4 flex justify-between items-center">
         <h1 class="text-2xl font-bold">IPE School</h1>
         <nav>
-            <a href="#" class="px-2">Home</a>
-            <a href="#" class="px-2">About</a>
-            <a href="#" class="px-2">Mentors</a>
-            <a href="#" class="px-2">Logout</a>
+            <ul class="flex space-x-6">
+                <li><a href="/homePage.html" class="hover:underline">Home</a></li>
+                <li><a href="/about" class="hover:underline">About</a></li>
+                <li><a href="/mentors" class="hover:underline">Mentors</a></li>
+                <li><a href="/logout" class="hover:underline">Logout</a></li>
+            </ul>
         </nav>
     </div>
 </header>
 
-<main class="container mx-auto mt-8 px-4">
-    <h2 class="text-3xl font-bold mb-6">Mentor Dashboard</h2>
-    <p class="mb-4">Welcome to your mentor cabinet. Below are the groups you are mentoring.</p>
+<!-- Main Content -->
+<main class="container mx-auto px-4 py-8">
+    <section class="bg-white rounded-lg shadow-lg p-6 mb-8">
+        <h2 class="text-3xl font-semibold text-gray-800 mb-4">Mentor Dashboard</h2>
+        <p class="text-gray-600 mb-6">Welcome to your mentor cabinet. Below are the groups you are mentoring.</p>
 
-    <div id="groups-container">
-        <!-- Groups will be dynamically inserted here -->
-    </div>
+        <!-- Groups Section -->
+        <div id="groups-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Groups will be dynamically inserted here -->
+        </div>
 
-    <div id="group-details" class="hidden mt-8">
-        <button id="back-to-groups" class="bg-blue-500 text-white p-2 rounded mb-4">Back to Groups</button>
-        <h3 id="group-name" class="text-2xl font-bold mb-4"></h3>
-        <div class="mb-6">
-            <h4 class="text-xl font-semibold">Students</h4>
-            <p id="students-list" class="mt-2"></p>
+        <!-- Group Details Section -->
+        <div id="group-details" class="hidden mt-8">
+            <button id="back-to-groups" class="bg-blue-500 text-white p-2 rounded mb-4">Back to Groups</button>
+            <h2 id="group-name" class="text-2xl font-semibold text-gray-800 mb-4"></h2>
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-800">Students</h3>
+                <div id="students-list" class="mt-2"></div>
+            </div>
+            <div>
+                <h3 class="text-xl font-semibold text-gray-800">Modules</h3>
+                <p id="modules-warning" class="text-yellow-600 mt-2 hidden"></p>
+                <div id="modules-list" class="mt-2 flex flex-wrap gap-2"></div>
+            </div>
         </div>
-        <div>
-            <h4 class="text-xl font-semibold">Modules</h4>
-            <p id="modules-warning" class="text-yellow-600 mt-2"></p>
-            <div id="modules-list" class="mt-2 flex flex-wrap gap-2"></div>
-        </div>
-    </div>
 
-    <div id="module-details" class="hidden mt-8">
-        <button id="back-to-group" class="bg-blue-500 text-white p-2 rounded mb-4">Back to Group</button>
-        <h3 id="module-name" class="text-2xl font-bold mb-4"></h3>
-        <div>
-            <h4 class="text-xl font-semibold">Tasks</h4>
-            <p id="tasks-list" class="mt-2"></p>
+        <!-- Module Details Section -->
+        <div id="module-details" class="hidden mt-8">
+            <button id="back-to-group" class="bg-blue-500 text-white p-2 rounded mb-4">Back to Group</button>
+            <h2 id="module-name" class="text-2xl font-semibold text-gray-800 mb-4"></h2>
+            <div>
+                <h3 class="text-xl font-semibold text-gray-800">Tasks</h3>
+                <button id="add-task-button" class="bg-green-500 text-white p-2 rounded mb-4">Add Task +</button>
+                <div id="tasks-list" class="mt-2 flex flex-wrap gap-2"></div>
+                <div id="add-task-form" class="hidden mt-4">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Add New Task</h3>
+                    <form id="task-form">
+                        <div class="mb-4">
+                            <label for="task-name" class="block text-gray-700">Task Name</label>
+                            <input type="text" id="task-name" name="taskName" class="w-full p-2 border rounded" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="youtube-url" class="block text-gray-700">YouTube URL</label>
+                            <input type="text" id="youtube-url" name="youtubeURL" class="w-full p-2 border rounded">
+                        </div>
+                        <button type="submit" class="bg-blue-500 text-white p-2 rounded">Add Task</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
+
+        <!-- Task Details Section -->
+        <div id="task-details" class="hidden mt-8">
+            <button id="back-to-module" class="bg-blue-500 text-white p-2 rounded mb-4">Back to Module</button>
+            <h2 id="task-name" class="text-2xl font-semibold text-gray-800 mb-4"></h2>
+            <div id="task-video" class="mb-6"></div>
+            <div>
+                <h3 class="text-xl font-semibold text-gray-800">Questions</h3>
+                <div id="questions-list" class="mt-2"></div>
+            </div>
+        </div>
+    </section>
 </main>
 
-<footer class="bg-gray-800 text-white p-4 mt-8">
-    <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-            <h3 class="text-lg font-bold">About Us</h3>
-            <p>IPE School is a leading educational institution dedicated to providing quality education with expert mentors and modern facilities.</p>
+<!-- Footer -->
+<footer class="bg-gray-800 text-white py-6">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <h3 class="text-lg font-semibold">About Us</h3>
+                <p class="text-sm">IPE School is a leading educational institution dedicated to providing quality education with expert mentors and modern facilities.</p>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold">Quick Links</h3>
+                <ul class="text-sm">
+                    <li><a href="/homePage.html" class="hover:underline">Home</a></li>
+                    <li><a href="/about" class="hover:underline">About</a></li>
+                    <li><a href="/mentors" class="hover:underline">Mentors</a></li>
+                    <li><a href="/login.html" class="hover:underline">Login</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold">Contact Info</h3>
+                <p class="text-sm">123 Education Street, Tashkent</p>
+                <p class="text-sm">+998 90 123 45 67</p>
+                <p class="text-sm">info@ipeschool.com</p>
+            </div>
         </div>
-        <div>
-            <h3 class="text-lg font-bold">Quick Links</h3>
-            <ul>
-                <li><a href="#" class="hover:underline">Home</a></li>
-                <li><a href="#" class="hover:underline">About</a></li>
-                <li><a href="#" class="hover:underline">Mentors</a></li>
-                <li><a href="#" class="hover:underline">Login</a></li>
-            </ul>
-        </div>
-        <div>
-            <h3 class="text-lg font-bold">Contact Info</h3>
-            <p>123 Education Street, Tashkent</p>
-            <p>+998 90 123 45 67</p>
-            <p>info@ipeschool.com</p>
-        </div>
+        <p class="text-center text-sm mt-6">© 2023 IPE School. All Rights Reserved.</p>
     </div>
-    <p class="text-center mt-4">© 2023 IPE School. All Rights Reserved.</p>
 </footer>
 
 <script>
-    let currentGroup = null; // Store current group data for back navigation
+    let currentGroup = null;
+    let currentModule = null;
 
     // Utility: convert a byte[] array into a Base64 data-URL
     function byteArrayToDataUrl(byteArray, mime = 'image/png') {
@@ -86,8 +138,17 @@
         for (let i = 0; i < uint8.length; i++) {
             binary += String.fromCharCode(uint8[i]);
         }
-        const base64 = window.btoa(binary);
-        return `data:${mime};base64,${base64}`;
+        return `data:${mime};base64,${window.btoa(binary)}`;
+    }
+
+    // Utility: get image source
+    function getImageSrc(imageData) {
+        if (Array.isArray(imageData) && imageData.length) {
+            return byteArrayToDataUrl(imageData);
+        } else if (typeof imageData === 'string' && imageData.startsWith('data:image')) {
+            return imageData;
+        }
+        return 'https://via.placeholder.com/100';
     }
 
     // Display mentor profile
@@ -97,31 +158,16 @@
 
         const profileSection = document.createElement('div');
         profileSection.className = 'bg-white rounded-lg shadow-lg p-6 mb-8 flex items-center space-x-6';
-
-        let imageSrc = 'https://via.placeholder.com/100';
-        if (Array.isArray(userData.image) && userData.image.length) {
-            try {
-                imageSrc = byteArrayToDataUrl(userData.image);
-            } catch (e) {
-                console.error('Error converting mentor image bytes:', e);
-            }
-        } else if (typeof userData.image === 'string' && userData.image.startsWith('data:image')) {
-            imageSrc = userData.image;
-        }
-
+        const imageSrc = getImageSrc(userData.image);
         profileSection.innerHTML = `
-                <img src="${imageSrc}" alt="Mentor Image"
-                     class="w-24 h-24 rounded-full object-cover border-4 border-blue-500">
+                <img src="${imageSrc}" alt="Mentor Image" class="w-24 h-24 rounded-full object-cover border-4 border-blue-500">
                 <div>
-                    <h3 class="text-2xl font-semibold text-gray-800">
-                        ${userData.firstName} ${userData.lastName}
-                    </h3>
+                    <h3 class="text-2xl font-semibold text-gray-800">${userData.firstName} ${userData.lastName}</h3>
                     <p class="text-gray-600">Phone: ${userData.phoneNumber}</p>
                 </div>
             `;
-
-        const dashboardSection = document.querySelector('main');
-        dashboardSection.insertBefore(profileSection, dashboardSection.firstChild);
+        const dashboardSection = document.querySelector('main section');
+        dashboardSection.parentNode.insertBefore(profileSection, dashboardSection);
     }
 
     // Fetch mentor groups
@@ -142,7 +188,6 @@
                 }
             });
             if (!response.ok) throw new Error('Failed to fetch groups');
-
             const groups = await response.json();
             displayGroups(groups);
         } catch (error) {
@@ -163,9 +208,12 @@
 
         groups.forEach(group => {
             const groupCard = document.createElement('div');
-            groupCard.className = 'bg-white p-6 rounded-lg shadow-md cursor-pointer';
+            groupCard.className = 'bg-white p-6 rounded-lg shadow-md card-hover cursor-pointer';
             groupCard.innerHTML = `<h3 class="text-xl font-semibold text-gray-800">${group.name}</h3>`;
-            groupCard.addEventListener('click', () => showGroupDetails(group.id));
+            groupCard.addEventListener('click', () => {
+                currentGroup = null;
+                showGroupDetails(group.id);
+            });
             container.appendChild(groupCard);
         });
     }
@@ -179,7 +227,7 @@
         }
 
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/group/${groupId}`, {
+            const response = await fetch(`http://localhost:8080/api/v1/mentor/group/${groupId}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `${token}`,
@@ -187,7 +235,6 @@
                 }
             });
             if (!response.ok) throw new Error('Failed to fetch group details');
-
             currentGroup = await response.json();
             displayGroupDetails(currentGroup);
         } catch (error) {
@@ -201,14 +248,26 @@
         document.getElementById('groups-container').classList.add('hidden');
         document.getElementById('group-details').classList.remove('hidden');
         document.getElementById('module-details').classList.add('hidden');
+        document.getElementById('task-details').classList.add('hidden');
 
         document.getElementById('group-name').textContent = group.name;
 
         const studentsList = document.getElementById('students-list');
+        studentsList.innerHTML = '';
         if (group.students && group.students.length > 0) {
-            studentsList.innerHTML = group.students.map(student =>
-                `${student.firstName} ${student.lastName} (${student.phoneNumber})`
-            ).join(', ');
+            group.students.forEach(student => {
+                const studentDiv = document.createElement('div');
+                studentDiv.className = 'flex items-center bg-white p-4 rounded shadow mb-2';
+                const imageSrc = getImageSrc(student.image);
+                studentDiv.innerHTML = `
+                        <img src="${imageSrc}" alt="${student.firstName} ${student.lastName}" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <p class="font-semibold text-lg">${student.firstName} ${student.lastName}</p>
+                            <p class="text-gray-600">${student.phoneNumber}</p>
+                        </div>
+                    `;
+                studentsList.appendChild(studentDiv);
+            });
         } else {
             studentsList.textContent = 'No students in this group.';
         }
@@ -217,7 +276,7 @@
         const modulesWarning = document.getElementById('modules-warning');
         modulesList.innerHTML = '';
         if (group.modules && group.modules.length > 0) {
-            modulesWarning.textContent = '';
+            modulesWarning.classList.add('hidden');
             group.modules.forEach(module => {
                 const button = document.createElement('button');
                 button.className = module.active
@@ -232,7 +291,7 @@
             });
         } else {
             modulesWarning.textContent = 'Warning: No modules assigned to this group.';
-            modulesList.innerHTML = '';
+            modulesWarning.classList.remove('hidden');
         }
     }
 
@@ -253,9 +312,8 @@
                 }
             });
             if (!response.ok) throw new Error('Failed to fetch module details');
-
-            const module = await response.json();
-            displayModuleDetails(module);
+            currentModule = await response.json();
+            displayModuleDetails(currentModule);
         } catch (error) {
             console.error('Error fetching module details:', error);
             alert('An error occurred while fetching module details. Please try again.');
@@ -266,16 +324,174 @@
     function displayModuleDetails(module) {
         document.getElementById('group-details').classList.add('hidden');
         document.getElementById('module-details').classList.remove('hidden');
+        document.getElementById('task-details').classList.add('hidden');
 
         document.getElementById('module-name').textContent = module.moduleName;
 
         const tasksList = document.getElementById('tasks-list');
+        tasksList.innerHTML = '';
         if (module.tasks && module.tasks.length > 0) {
-            tasksList.innerHTML = module.tasks.map(task => task.taskName).join(', ');
+            module.tasks.forEach(task => {
+                const taskButton = document.createElement('button');
+                taskButton.className = 'bg-blue-500 text-white p-2 rounded m-1 hover:bg-blue-600';
+                taskButton.textContent = task.taskName;
+                taskButton.addEventListener('click', () => showTaskDetails(task.id));
+                tasksList.appendChild(taskButton);
+            });
         } else {
             tasksList.textContent = 'No tasks in this module.';
         }
     }
+
+    // Fetch task details
+    async function showTaskDetails(taskId) {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            alert('Please log in to view task details.');
+            return;
+        }
+
+        try {
+            const taskResponse = await fetch(`http://localhost:8080/api/v1/task/${taskId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!taskResponse.ok) throw new Error('Failed to fetch task details');
+            const task = await taskResponse.json();
+
+            const attachmentIds = [...new Set(task.questionRes.map(q => q.attachmentId).filter(id => id != null))];
+            const attachments = await fetchAttachments(attachmentIds);
+            const attachmentMap = new Map(attachments.map(a => [a.id, a]));
+
+            displayTaskDetails(task, attachmentMap);
+        } catch (error) {
+            console.error('Error fetching task details or attachments:', error);
+            alert('An error occurred while fetching task details. Please try again.');
+        }
+    }
+
+    // Fetch attachments by IDs
+    async function fetchAttachments(attachmentIds) {
+        const token = localStorage.getItem('authToken');
+        const promises = attachmentIds.map(id =>
+            fetch(`http://localhost:8080/api/v1/attachment/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (!response.ok) throw new Error(`Failed to fetch attachment ${id}`);
+                return response.json();
+            })
+        );
+        return Promise.all(promises);
+    }
+
+    // Display task details
+    function displayTaskDetails(task, attachmentMap) {
+        document.getElementById('module-details').classList.add('hidden');
+        document.getElementById('task-details').classList.remove('hidden');
+
+        document.getElementById('task-name').textContent = task.name;
+
+        const videoDiv = document.getElementById('task-video');
+        videoDiv.innerHTML = '';
+        if (task.youtubeURL) {
+            try {
+                const url = new URL(task.youtubeURL);
+                const videoId = url.searchParams.get('v');
+                if (videoId) {
+                    const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                    videoDiv.innerHTML = `
+                            <iframe width="560" height="315" src="${embedUrl}" title="YouTube video player"
+                                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen onerror="this.style.display='none'; document.getElementById('youtube-fallback').style.display='block';"></iframe>
+                            <p id="youtube-fallback" class="text-red-600" style="display:none;">Unable to load YouTube video. URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>
+                        `;
+                } else {
+                    videoDiv.innerHTML = `<p class="text-red-600">Invalid YouTube URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>`;
+                }
+            } catch (e) {
+                videoDiv.innerHTML = `<p class="text-red-600">Invalid YouTube URL: ${task.youtubeURL}</p>`;
+            }
+        }
+
+        const questionsList = document.getElementById('questions-list');
+        questionsList.innerHTML = '';
+        if (task.questionRes && task.questionRes.length > 0) {
+            task.questionRes.forEach(question => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'mb-4 p-4 bg-white rounded shadow';
+                let html = `
+                        <h4 class="text-lg font-semibold">${question.questionText}</h4>
+                        <ul class="list-disc list-inside">
+                            ${question.variant.map(v => `<li>${v}</li>`).join('')}
+                        </ul>
+                        <p class="mt-2"><strong>Current Answer:</strong> ${question.currentAnswer || 'N/A'}</p>
+                    `;
+                if (question.attachmentId) {
+                    const attachment = attachmentMap.get(question.attachmentId);
+                    if (attachment && attachment.contentType.startsWith('image/')) {
+                        const imageSrc = `data:${attachment.contentType};base64,${attachment.content}`;
+                        html += `<img src="${imageSrc}" alt="Question Attachment" class="mt-2 max-w-full h-auto">`;
+                    } else if (attachment) {
+                        html += `<p class="mt-2">Attachment available (type: ${attachment.contentType})</p>`;
+                    }
+                }
+                questionDiv.innerHTML = html;
+                questionsList.appendChild(questionDiv);
+            });
+        } else {
+            questionsList.textContent = 'No questions in this task.';
+        }
+    }
+
+    // Add task functionality
+    document.getElementById('add-task-button').addEventListener('click', () => {
+        document.getElementById('add-task-form').classList.remove('hidden');
+    });
+
+    document.getElementById('task-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const taskName = document.getElementById('task-name').value;
+        const youtubeURL = document.getElementById('youtube-url').value;
+        const taskReq = {
+            moduleId: currentModule.id,
+            taskName: taskName,
+            youtubeURL: youtubeURL
+        };
+        try {
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                alert('Please log in to add a task.');
+                return;
+            }
+            const response = await fetch('http://localhost:8080/api/v1/task', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(taskReq)
+            });
+            if (!response.ok) throw new Error('Failed to add task');
+            const newTask = await response.json();
+            // Refresh module details
+            showModuleDetails(currentModule.id);
+            // Hide the form
+            document.getElementById('add-task-form').classList.add('hidden');
+            // Clear the form
+            document.getElementById('task-name').value = '';
+            document.getElementById('youtube-url').value = '';
+        } catch (error) {
+            console.error('Error adding task:', error);
+            alert('An error occurred while adding the task. Please try again.');
+        }
+    });
 
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
@@ -283,12 +499,18 @@
         fetchMentorGroups();
         document.getElementById('back-to-groups').addEventListener('click', () => {
             document.getElementById('group-details').classList.add('hidden');
-            document.getElementById('groups-container').classList.remove('hidden');
             document.getElementById('module-details').classList.add('hidden');
+            document.getElementById('task-details').classList.add('hidden');
+            document.getElementById('groups-container').classList.remove('hidden');
         });
         document.getElementById('back-to-group').addEventListener('click', () => {
             if (currentGroup) {
                 displayGroupDetails(currentGroup);
+            }
+        });
+        document.getElementById('back-to-module').addEventListener('click', () => {
+            if (currentModule) {
+                displayModuleDetails(currentModule);
             }
         });
     });

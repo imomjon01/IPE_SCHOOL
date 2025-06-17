@@ -1,16 +1,13 @@
-package ipe.school.ipe_school.controller;
+package ipe.school.ipe_school.controller.crud;
 
 import ipe.school.ipe_school.models.dtos.req.GroupReq;
 import ipe.school.ipe_school.models.dtos.req.UpdatetedStudentReq;
 import ipe.school.ipe_school.models.dtos.res.GroupDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.GroupRes;
-import ipe.school.ipe_school.models.entity.Group;
-import ipe.school.ipe_school.models.entity.User;
 import ipe.school.ipe_school.service.interfaces.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
