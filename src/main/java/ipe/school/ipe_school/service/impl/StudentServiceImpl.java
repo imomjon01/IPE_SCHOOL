@@ -2,14 +2,13 @@ package ipe.school.ipe_school.service.impl;
 
 import ipe.school.ipe_school.models.dtos.req.StudentDto;
 import ipe.school.ipe_school.models.dtos.res.StudentDetailsRes;
+import ipe.school.ipe_school.models.dtos.res.StudentProcessRes;
 import ipe.school.ipe_school.models.dtos.res.StudentRes;
 import ipe.school.ipe_school.models.entity.Attachment;
 import ipe.school.ipe_school.models.entity.Roles;
+import ipe.school.ipe_school.models.entity.StudentProgress;
 import ipe.school.ipe_school.models.entity.User;
-import ipe.school.ipe_school.models.repo.AttachmentRepository;
-import ipe.school.ipe_school.models.repo.GroupRepository;
-import ipe.school.ipe_school.models.repo.RolesRepository;
-import ipe.school.ipe_school.models.repo.UserRepository;
+import ipe.school.ipe_school.models.repo.*;
 import ipe.school.ipe_school.service.interfaces.GroupService;
 import ipe.school.ipe_school.service.interfaces.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +36,7 @@ public class StudentServiceImpl implements StudentService {
     private final RolesRepository rolesRepository;
     private final AttachmentRepository attachmentRepository;
     private final GroupService groupService;
+    private final StudentProgressRepository studentProgressRepository;
 
 
     @SneakyThrows
@@ -141,6 +141,20 @@ public class StudentServiceImpl implements StudentService {
             studentDetailsRes.add(new StudentDetailsRes(user.getId(), user.getFirstName(), user.getLastName(), user.getPhoneNumber(), groupService.getGroupByStudentId(user.getId()).orElse(null)));
         }
         return studentDetailsRes;
+    }
+
+    @Override
+    public List<StudentProcessRes> getTop10StudentProgress() {
+        List<StudentProgress> studentProgresses = studentProgressRepository.findTop10Students();
+        List<StudentProcessRes> studentProcessRes = new ArrayList<>();
+        for (StudentProgress studentProgress : studentProgresses) {
+            studentProcessRes.add(new StudentProcessRes(
+                    studentProgress.getStudent().getFullName(),
+                    studentProgress.getGroupName(),
+                    studentProgress.getPassedQuery()
+            ));
+        }
+        return studentProcessRes;
     }
 
 

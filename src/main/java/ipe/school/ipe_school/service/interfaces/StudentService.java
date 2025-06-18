@@ -2,6 +2,7 @@ package ipe.school.ipe_school.service.interfaces;
 
 import ipe.school.ipe_school.models.dtos.req.StudentDto;
 import ipe.school.ipe_school.models.dtos.res.StudentDetailsRes;
+import ipe.school.ipe_school.models.dtos.res.StudentProcessRes;
 import ipe.school.ipe_school.models.dtos.res.StudentRes;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,4 +20,6 @@ public interface StudentService {
     StudentRes updateStudent(Long studentId, StudentDto studentDto, MultipartFile imageFile);
 
     List<StudentDetailsRes> getAllStudents();
+
+    List<StudentProcessRes> getTop10StudentProgress();
 }

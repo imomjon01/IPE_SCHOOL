@@ -4,5 +4,7 @@ import lombok.Value;
 
 @Value
 public class StudentProcessRes {
-     Double progress;
+     String studentName;
+     String groupName;
+     Integer passedTasks;
 }

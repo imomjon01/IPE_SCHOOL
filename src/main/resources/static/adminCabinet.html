@@ -513,8 +513,53 @@
             loadStudents();
         } else if (tab === 'role-change') {
             loadUsersForRoleChange();
+        } else if (tab === 'rating') {
+            loadTopStudents(); // Yangi funksiya chaqiriladi
         }
         // Boshqa tablar kerak bo‘lsa qo‘shiladi
+    }
+
+    // Eng yaxshi 10 talabani yuklash funksiyasi
+    function loadTopStudents() {
+        axios.get('http://localhost:8080/api/v1/admin/student/progress', {
+            headers: {
+                Authorization: `${userData.token}`
+            }
+        })
+            .then(response => {
+                const students = response.data;
+                const tableBody = document.getElementById('rating-table-body');
+                tableBody.innerHTML = '';
+
+                if (!students || students.length === 0) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="text-center">Hech qanday talaba topilmadi</td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                students.forEach((student, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${student.studentName}</td>
+                        <td>${student.groupName || 'Guruh yo‘q'}</td>
+                        <td>${student.passedTasks}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Talabalar reytingini yuklashda xato:', error);
+                const tableBody = document.getElementById('rating-table-body');
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center">Ma'lumotlarni yuklashda xato yuz berdi</td>
+                    </tr>
+                `;
+            });
     }
 
     // Talabalarni guruh bilan yuklash

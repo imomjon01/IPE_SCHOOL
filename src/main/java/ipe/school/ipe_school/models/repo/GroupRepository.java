@@ -33,4 +33,6 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
 
     List<Group> findByMentor(User mentor);
 
+    @Query("SELECT g.name FROM Group g JOIN g.students s WHERE s.id = :id")
+    String findGroupNameByStudentId(@Param("id") Long id);
 }

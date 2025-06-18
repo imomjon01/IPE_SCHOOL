@@ -2,6 +2,7 @@ package ipe.school.ipe_school.controller.admin;
 
 import ipe.school.ipe_school.models.dtos.req.StudentDto;
 import ipe.school.ipe_school.models.dtos.res.StudentDetailsRes;
+import ipe.school.ipe_school.models.dtos.res.StudentProcessRes;
 import ipe.school.ipe_school.models.dtos.res.StudentRes;
 import ipe.school.ipe_school.service.interfaces.StudentService;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -57,6 +58,12 @@ public class AdminStudentController {
         StudentRes studentRes = studentService.updateStudent(studentId, studentDto, imageFile);
         return new ResponseEntity<>(studentRes, HttpStatus.OK);
 
+    }
+
+    @GetMapping("/progress")
+    public ResponseEntity<List<StudentProcessRes>> getStudentsProgress() {
+        List<StudentProcessRes> studentProcessRes = studentService.getTop10StudentProgress();
+        return ResponseEntity.ok(studentProcessRes);
     }
 
 }

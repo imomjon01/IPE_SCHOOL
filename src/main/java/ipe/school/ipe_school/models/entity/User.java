@@ -42,4 +42,8 @@ public class User extends BaseEntity implements UserDetails {
         this.phoneNumber = phoneNumber;
         this.roles = roles;
     }
+
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
 }
