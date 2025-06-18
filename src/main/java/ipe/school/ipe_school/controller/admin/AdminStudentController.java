@@ -66,4 +66,10 @@ public class AdminStudentController {
         return ResponseEntity.ok(studentProcessRes);
     }
 
+    @GetMapping("/getSize")
+    public ResponseEntity<Integer> getStudentCount() {
+        Integer count = studentService.getStudentsCount();
+        return new ResponseEntity<>(count, HttpStatus.OK);
+    }
+
 }

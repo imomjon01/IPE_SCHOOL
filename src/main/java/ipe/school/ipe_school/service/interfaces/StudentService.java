@@ -22,4 +22,6 @@ public interface StudentService {
     List<StudentDetailsRes> getAllStudents();
 
     List<StudentProcessRes> getTop10StudentProgress();
+
+    Integer getStudentsCount();
 }

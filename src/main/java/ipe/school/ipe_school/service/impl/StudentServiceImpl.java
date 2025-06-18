@@ -157,5 +157,10 @@ public class StudentServiceImpl implements StudentService {
         return studentProcessRes;
     }
 
+    @Override
+    public Integer getStudentsCount() {
+        return userRepository.findAllCountStudentActive();
+    }
+
 
 }

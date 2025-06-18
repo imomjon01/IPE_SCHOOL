@@ -63,4 +63,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "WHERE u.active = :isActive")
     Page<User> findAllActiveUsers(@Param("isActive") Boolean isActive, Pageable pageable);
 
+    @Query("SELECT COUNT(u) FROM User u JOIN u.roles r WHERE r.name = 'ROLE_STUDENT' AND u.active = true")
+    Integer findAllCountStudentActive();
 }

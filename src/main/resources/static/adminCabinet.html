@@ -228,7 +228,7 @@
                 <div class="tab-content" id="student-content">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5>Talabalar</h5>
+                            <h5 id="student-count">Talabalar soni: Yuklanmoqda...</h5>
                             <button class="btn btn-primary btn-sm" id="add-student-btn" data-bs-toggle="modal"
                                     data-bs-target="#addStudentModal">
                                 <i class="fas fa-plus me-1"></i> Talaba Qo‘shish
@@ -519,6 +519,27 @@
         // Boshqa tablar kerak bo‘lsa qo‘shiladi
     }
 
+    // Talabalar sonini yuklash funksiyasi
+    let isStudentCountLoaded = false;
+    function loadStudentCount() {
+        if (isStudentCountLoaded) return;
+        axios.get('http://localhost:8080/api/v1/admin/student/getSize', {
+            headers: {
+                Authorization: `${userData.token}`
+            }
+        })
+            .then(response => {
+                const studentCount = response.data;
+                document.getElementById('student-count').innerHTML = `<p>Talabalar soni: ${studentCount}</p>`;
+                isStudentCountLoaded = true;
+            })
+            .catch(error => {
+                console.error('Talabalar sonini yuklashda xato:', error.response?.data || error);
+                document.getElementById('student-count').innerHTML = `<p>Talabalar soni: Yuklab bo‘lmadi</p>`;
+                showAlert('danger', 'Talabalar sonini yuklab bo‘lmadi');
+            });
+    }
+
     // Eng yaxshi 10 talabani yuklash funksiyasi
     function loadTopStudents() {
         axios.get('http://localhost:8080/api/v1/admin/student/progress', {
@@ -552,13 +573,14 @@
                 });
             })
             .catch(error => {
-                console.error('Talabalar reytingini yuklashda xato:', error);
+                console.error('Talabalar reytingini yuklashda xato:', error.response?.data || error);
                 const tableBody = document.getElementById('rating-table-body');
                 tableBody.innerHTML = `
                     <tr>
                         <td colspan="4" class="text-center">Ma'lumotlarni yuklashda xato yuz berdi</td>
                     </tr>
                 `;
+                showAlert('danger', 'Reytingni yuklab bo‘lmadi');
             });
     }
 
@@ -575,11 +597,12 @@
             }
         })
             .then(response => {
+                loadStudentCount(); // Talabalar sonini yuklash
                 populateStudentTable(response.data.content, response.data.totalPages, page, size, search);
             })
             .catch(error => {
-                console.error('Talabalarni yuklashda xato:', error);
-                alert('Talabalarni yuklab bo‘lmadi');
+                console.error('Talabalarni yuklashda xato:', error.response?.data || error);
+                showAlert('danger', 'Talabalarni yuklab bo‘lmadi');
             });
     }
 
@@ -598,28 +621,28 @@
                     const studentGroupId = student.groupId;
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                    <td>${student.id}</td>
-                    <td>${student.firstName} ${student.lastName}</td>
-                    <td>${student.phoneNumber}</td>
-                    <td>
-                        <select class="form-select group-select"
-                            data-student-id="${student.id}"
-                            data-old-group-id="${studentGroupId || ''}">
-                            <option value="">Guruh Yo‘q</option>
-                            ${groups.map(group => {
+                        <td>${student.id}</td>
+                        <td>${student.firstName} ${student.lastName}</td>
+                        <td>${student.phoneNumber}</td>
+                        <td>
+                            <select class="form-select group-select"
+                                data-student-id="${student.id}"
+                                data-old-group-id="${studentGroupId || ''}">
+                                <option value="">Guruh Yo‘q</option>
+                                ${groups.map(group => {
                         const isSelected = studentGroupId !== null && studentGroupId !== undefined && studentGroupId === group.id;
                         return `<option value="${group.id}" ${isSelected ? 'selected' : ''}>
-                                    ${group.name}
-                                </option>`;
+                                                ${group.name}
+                                            </option>`;
                     }).join('')}
-                        </select>
-                    </td>
-                    <td>
-                        <button class="btn btn-primary btn-sm update-group-btn" data-student-id="${student.id}">
-                            Yangilash
-                        </button>
-                    </td>
-                `;
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary btn-sm update-group-btn" data-student-id="${student.id}">
+                                Yangilash
+                            </button>
+                        </td>
+                    `;
                     tableBody.appendChild(row);
                 });
 
@@ -671,8 +694,8 @@
                 });
             })
             .catch(error => {
-                console.error('Guruhlarni yuklashda xato:', error);
-                alert('Guruhlarni yuklab bo‘lmadi');
+                console.error('Guruhlarni yuklashda xato:', error.response?.data || error);
+                showAlert('danger', 'Guruhlarni yuklab bo‘lmadi');
             });
     }
 
@@ -697,11 +720,11 @@
         });
     });
 
-    // ✅ To‘g‘ri ishlaydigan bitta updateStudentGroup funksiyasi
+    // Guruh yangilash funksiyasi
     function updateStudentGroup(studentId, newGroupId, oldGroupId) {
         axios.put('http://localhost:8080/api/v1/group/updateStudents', {
             studentId: parseInt(studentId),
-            newGroupId: parseInt(newGroupId),
+            newGroupId: newGroupId ? parseInt(newGroupId) : null,
             oldGroupId: oldGroupId ? parseInt(oldGroupId) : null
         }, {
             headers: {
@@ -713,8 +736,8 @@
                 loadStudents();
             })
             .catch(error => {
-                console.error('Guruhni yangilashda xato:', error);
-                showAlert('danger', 'Guruhni yangilab bo‘lmadi');
+                console.error('Guruhni yangilashda xato:', error.response?.data || error);
+                showAlert('danger', error.response?.data?.message || 'Guruhni yangilab bo‘lmadi');
             });
     }
 
@@ -734,7 +757,7 @@
                 populateRoleChangeTable(response.data.content, response.data.totalPages, page, size, search);
             })
             .catch(error => {
-                console.error('Rol o‘zgartirish uchun foydalanuvchilarni yuklashda xato:', error);
+                console.error('Rol o‘zgartirish uchun foydalanuvchilarni yuklashda xato:', error.response?.data || error);
                 showAlert('danger', 'Foydalanuvchilarni yuklab bo‘lmadi');
             });
     }
@@ -852,8 +875,12 @@
         };
         const roleId = roleIdMap[newRole];
 
+        if (!roleId) {
+            showAlert('danger', 'Noto‘g‘ri rol tanlandi!');
+            return;
+        }
+
         axios.post('http://localhost:8080/api/v1/admin/role', {
-            method: 'post',
             userId: parseInt(userId),
             roleId: roleId
         }, {
@@ -866,13 +893,13 @@
                 loadUsersForRoleChange();
             })
             .catch(error => {
-                console.error('Rolni yangilashda xato:', error);
-                showAlert('danger', 'Rolni yangilab bo‘lmadi');
+                console.error('Rolni yangilashda xato:', error.response?.data || error);
+                showAlert('danger', error.response?.data?.message || 'Rolni yangilab bo‘lmadi');
             });
     }
 
     function deleteUser(userId) {
-        axios.delete(`http://localhost:8080/api/v1/admin/mentor/${userId}`, {
+        axios.delete(`http://localhost:8080/api/v1/admin/user/${userId}`, {
             headers: {
                 Authorization: `${userData.token}`
             }
@@ -882,8 +909,8 @@
                 loadUsersForRoleChange();
             })
             .catch(error => {
-                console.error('Foydalanuvchini o‘chirishda xato:', error);
-                showAlert('danger', 'Foydalanuvchini o‘chirib bo‘lmadi');
+                console.error('Foydalanuvchini o‘chirishda xato:', error.response?.data || error);
+                showAlert('danger', error.response?.data?.message || 'Foydalanuvchini o‘chirib bo‘lmadi');
             });
     }
 
@@ -902,7 +929,7 @@
         let isValid = true;
 
         if (!userData.userId || isNaN(userData.userId) || userData.userId <= 0) {
-            alert('Noto‘g‘ri foydalanuvchi ID. Iltimos, tizimga qayta kiring.');
+            showAlert('danger', 'Noto‘g‘ri foydalanuvchi ID. Iltimos, tizimga qayta kiring.');
             return;
         }
 
@@ -948,7 +975,7 @@
         }
 
         if (!isValid) {
-            alert('Iltimos, barcha majburiy maydonlarni to‘g‘ri to‘ldiring!');
+            showAlert('danger', 'Iltimos, barcha majburiy maydonlarni to‘g‘ri to‘ldiring!');
             return;
         }
 
@@ -1009,14 +1036,14 @@
                 });
 
                 bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
-                alert('Profil muvaffaqiyatli yangilandi');
+                showAlert('success', 'Profil muvaffaqiyatli yangilandi');
             })
             .catch(error => {
-                console.error('Profilni yangilashda xato:', error);
-                const errorMessage = error.response?.data?.message || 'Profil muvaffaqiyatli yangilandi';
+                console.error('Profilni yangilashda xato:', error.response?.data || error);
+                const errorMessage = error.response?.data?.message || 'Profilni yangilashda xato yuz berdi';
                 updateUIAndStorage();
                 bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
-                alert(errorMessage);
+                showAlert('danger', errorMessage);
             });
     });
 
@@ -1085,9 +1112,11 @@
             phoneNumberInput.classList.remove('is-invalid');
         }
 
-        if (!password || password.length < 5) {
+        if (!password || password.length < 6) {
             passwordInput.classList.add('is-invalid');
             isValid = false;
+        } else {
+            passwordInput.classList.remove('is-invalid');
         }
 
         if (!isValid) {
@@ -1120,8 +1149,8 @@
                 loadStudents();
             })
             .catch(error => {
-                console.error('Talaba qo‘shishda xato:', error);
-                const errorMessage = error.response?.data?.message || 'Talaba qoshilmadi!(bunday tel raqam mavjud)';
+                console.error('Talaba qo‘shishda xato:', error.response?.data || error);
+                const errorMessage = error.response?.data?.message || 'Talaba qo‘shilmadi! (Bunday telefon raqami mavjud)';
                 saveBtn.disabled = false;
                 saveBtn.innerHTML = '<i class="fas fa-plus me-1"></i>Talaba Qo‘shish';
                 showAlert('danger', errorMessage);
@@ -1167,6 +1196,9 @@
                 input.classList.remove('is-invalid');
             }
             if (input.id === 'student-phone-number' && input.value.match(/^\+\d{12}$/)) {
+                input.classList.remove('is-invalid');
+            }
+            if (input.id === 'student-password' && input.value.trim().length >= 6) {
                 input.classList.remove('is-invalid');
             }
         });
