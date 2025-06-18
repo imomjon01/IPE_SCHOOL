@@ -24,12 +24,24 @@ public class MentorServiceImpl implements MentorService {
     private final AttachmentRepository attachmentRepository;
     private final PasswordEncoder passwordEncoder;
     private final GroupService groupService;
+    private final StudentProgressRepository studentProgressRepository;
+    private final GroupRepository groupRepository;
 
     @Transactional
     @Override
     public void updateMentor_Active(Long mentor_id) {
         Optional<User> byId = userRepository.findById(mentor_id);
         byId.get().setActive(false);
+        Optional<StudentProgress> byStudentId = studentProgressRepository.findByStudentId(byId.get().getId());
+        if (byStudentId.isPresent()) {
+            byStudentId.get().setActive(false);
+            studentProgressRepository.save(byStudentId.get());
+        }
+        List<Group> byMentor = groupRepository.findByMentor(byId.get());
+        for (Group group : byMentor) {
+            group.setMentor(null);
+        }
+        groupRepository.saveAll(byMentor);
         userRepository.save(byId.get());
     }
 
