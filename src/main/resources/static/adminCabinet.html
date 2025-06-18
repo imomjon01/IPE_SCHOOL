@@ -514,7 +514,7 @@
         } else if (tab === 'role-change') {
             loadUsersForRoleChange();
         } else if (tab === 'rating') {
-            loadTopStudents(); // Yangi funksiya chaqiriladi
+            loadTopStudents();
         }
         // Boshqa tablar kerak bo‘lsa qo‘shiladi
     }
@@ -677,9 +677,24 @@
     }
 
     // Qidiruv inputiga hodisa qo‘shish
+    let currentTab = 'student';
     document.getElementById('search-input').addEventListener('input', (e) => {
         const searchTerm = e.target.value.trim();
-        loadStudents(0, 10, searchTerm); // Har bir qidiruvda 1-sahifadan boshlash
+        if (currentTab === 'student') {
+            loadStudents(0, 10, searchTerm);
+        } else if (currentTab === 'role-change') {
+            loadUsersForRoleChange(0, 10, searchTerm);
+        }
+    });
+
+    // Tab o‘tishda currentTab ni yangilash
+    tabs.forEach(tab => {
+        document.getElementById(`${tab}-tab`).addEventListener('click', () => {
+            currentTab = tab;
+            if (tab !== 'student' && tab !== 'role-change') {
+                document.getElementById('search-input').value = '';
+            }
+        });
     });
 
     // ✅ To‘g‘ri ishlaydigan bitta updateStudentGroup funksiyasi
@@ -695,7 +710,7 @@
         })
             .then(() => {
                 showAlert('success', 'Guruh muvaffaqiyatli yangilandi!');
-                loadStudents(); // Talabalarni qayta yuklash
+                loadStudents();
             })
             .catch(error => {
                 console.error('Guruhni yangilashda xato:', error);
@@ -704,58 +719,118 @@
     }
 
     // Rol o‘zgartirish funksiyasi
-    function loadUsersForRoleChange() {
-        axios.get('/api/users/for-role-change', {
+    function loadUsersForRoleChange(page = 0, size = 10, search = '') {
+        axios.get('http://localhost:8080/api/v1/admin/role/getByPage', {
             headers: {
                 Authorization: `${userData.token}`
+            },
+            params: {
+                page: page,
+                size: size,
+                search: search
             }
         })
             .then(response => {
-                populateRoleChangeTable(response.data);
+                populateRoleChangeTable(response.data.content, response.data.totalPages, page, size, search);
             })
             .catch(error => {
                 console.error('Rol o‘zgartirish uchun foydalanuvchilarni yuklashda xato:', error);
-                alert('Foydalanuvchilarni yuklab bo‘lmadi');
+                showAlert('danger', 'Foydalanuvchilarni yuklab bo‘lmadi');
             });
     }
 
-    function populateRoleChangeTable(users) {
+    function populateRoleChangeTable(users, totalPages, currentPage, size, search) {
         const tableBody = document.getElementById('role-change-table-body');
         tableBody.innerHTML = '';
 
+        if (!users || users.length === 0) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="text-center">Hech qanday foydalanuvchi topilmadi</td>
+                </tr>
+            `;
+            return;
+        }
+
         users.forEach(user => {
+            const currentRole = user.roles && user.roles.length > 0 ? formatRole(user.roles[0]) : 'Rol yo‘q';
+            const currentRoleValue = user.roles && user.roles.length > 0 ? user.roles[0] : '';
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${user.id}</td>
                 <td>${user.firstName} ${user.lastName}</td>
-                <td>${formatRole(user.currentRole)}</td>
+                <td>${currentRole}</td>
                 <td>
                     <select class="form-select new-role-select" data-user-id="${user.id}">
-                        <option value="ROLE_STUDENT">Talaba</option>
-                        <option value="ROLE_MENTOR">Mentor</option>
-                        <option value="ROLE_ADMIN">Admin</option>
+                        <option value="ROLE_ADMIN" ${currentRoleValue === 'ROLE_ADMIN' ? 'selected' : ''}>Admin</option>
+                        <option value="ROLE_MENTOR" ${currentRoleValue === 'ROLE_MENTOR' ? 'selected' : ''}>Mentor</option>
+                        <option value="ROLE_STUDENT" ${currentRoleValue === 'ROLE_STUDENT' ? 'selected' : ''}>Talaba</option>
                     </select>
                 </td>
                 <td>
                     <button class="btn btn-primary btn-sm update-role-btn" data-user-id="${user.id}">
-                        Rolni Yangilash
+                        Yangilash
+                    </button>
+                    <button class="btn btn-danger btn-sm delete-user-btn ms-1" data-user-id="${user.id}">
+                        O‘chirish
                     </button>
                 </td>
             `;
             tableBody.appendChild(row);
-
-            // Joriy rolni tanlangan qilib o‘rnatish
-            const select = row.querySelector('.new-role-select');
-            select.value = user.currentRole;
         });
 
-        // Barcha yangilash tugmalariga hodisa tinglovchilarini qo‘shish
+        // Pagination tugmalarini yaratish
+        const pagination = document.getElementById('role-change-pagination');
+        pagination.innerHTML = '';
+
+        // Oldingi sahifa tugmasi
+        const prevItem = document.createElement('li');
+        prevItem.className = `page-item ${currentPage === 0 ? 'disabled' : ''}`;
+        prevItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Oldingi</a>`;
+        pagination.appendChild(prevItem);
+
+        // Sahifa raqamlari
+        for (let i = 0; i < totalPages; i++) {
+            const pageItem = document.createElement('li');
+            pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
+            pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i + 1}</a>`;
+            pagination.appendChild(pageItem);
+        }
+
+        // Keyingi sahifa tugmasi
+        const nextItem = document.createElement('li');
+        nextItem.className = `page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`;
+        nextItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Keyingi</a>`;
+        pagination.appendChild(nextItem);
+
+        // Pagination tugmalariga hodisa qo‘shish
+        pagination.querySelectorAll('.page-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = parseInt(e.target.getAttribute('data-page'));
+                if (!isNaN(page)) {
+                    loadUsersForRoleChange(page, size, search);
+                }
+            });
+        });
+
+        // Yangilash tugmalari hodisalari
         document.querySelectorAll('.update-role-btn').forEach(btn => {
             btn.addEventListener('click', function () {
                 const userId = this.getAttribute('data-user-id');
-                const newRole = document.querySelector(`.new-role-select[data-user-id="${userId}"]`).value;
-
+                const selectEl = document.querySelector(`.new-role-select[data-user-id="${userId}"]`);
+                const newRole = selectEl.value;
                 updateUserRole(userId, newRole);
+            });
+        });
+
+        // O‘chirish tugmalari hodisalari
+        document.querySelectorAll('.delete-user-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const userId = this.getAttribute('data-user-id');
+                if (confirm('Foydalanuvchini o‘chirishni tasdiqlaysizmi?')) {
+                    deleteUser(userId);
+                }
             });
         });
     }
@@ -770,18 +845,45 @@
     }
 
     function updateUserRole(userId, newRole) {
-        axios.put(`/api/users/${userId}/role`, {role: newRole}, {
+        const roleIdMap = {
+            'ROLE_ADMIN': 1,
+            'ROLE_MENTOR': 2,
+            'ROLE_STUDENT': 3
+        };
+        const roleId = roleIdMap[newRole];
+
+        axios.post('http://localhost:8080/api/v1/admin/role', {
+            method: 'post',
+            userId: parseInt(userId),
+            roleId: roleId
+        }, {
             headers: {
                 Authorization: `${userData.token}`
             }
         })
             .then(response => {
-                alert('Rol muvaffaqiyatli yangilandi');
-                loadUsersForRoleChange(); // Jadvalni yangilash
+                showAlert('success', 'Rol muvaffaqiyatli yangilandi!');
+                loadUsersForRoleChange();
             })
             .catch(error => {
                 console.error('Rolni yangilashda xato:', error);
-                alert('Rolni yangilab bo‘lmadi');
+                showAlert('danger', 'Rolni yangilab bo‘lmadi');
+            });
+    }
+
+    function deleteUser(userId) {
+        axios.delete(`http://localhost:8080/api/v1/admin/mentor/${userId}`, {
+            headers: {
+                Authorization: `${userData.token}`
+            }
+        })
+            .then(() => {
+                showAlert('success', 'Foydalanuvchi muvaffaqiyatli o‘chirildi!');
+                loadUsersForRoleChange();
+            })
+            .catch(error => {
+                console.error('Foydalanuvchini o‘chirishda xato:', error);
+                showAlert('danger', 'Foydalanuvchini o‘chirib bo‘lmadi');
             });
     }
 
@@ -1019,7 +1121,7 @@
             })
             .catch(error => {
                 console.error('Talaba qo‘shishda xato:', error);
-                const errorMessage = error.response?.data?.message || 'Talaba muvaffaqiyatli qo‘shildi!';
+                const errorMessage = error.response?.data?.message || 'Talaba qoshilmadi!(bunday tel raqam mavjud)';
                 saveBtn.disabled = false;
                 saveBtn.innerHTML = '<i class="fas fa-plus me-1"></i>Talaba Qo‘shish';
                 showAlert('danger', errorMessage);

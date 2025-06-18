@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -13,4 +15,5 @@ public class UserRes {
     String firstName;
     String lastName;
     String phoneNumber;
+    List<String> roles;
 }

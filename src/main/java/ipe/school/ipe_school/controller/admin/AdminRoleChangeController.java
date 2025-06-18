@@ -1,12 +1,17 @@
 package ipe.school.ipe_school.controller.admin;
 
+import ipe.school.ipe_school.models.dtos.req.UserIdReq;
+import ipe.school.ipe_school.models.dtos.req.UserReq;
+import ipe.school.ipe_school.models.dtos.res.StudentDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.UserRes;
 import ipe.school.ipe_school.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static ipe.school.ipe_school.utils.ApiConstants.*;
@@ -24,8 +29,19 @@ public class AdminRoleChangeController {
     }
 
     @PostMapping
-    public ResponseEntity<UserRes> changeUserRole(@RequestBody Long userId, @RequestBody List<Long> roleIds ) {
-        UserRes userRes=userService.changeUserRole(userId,roleIds);
+    public ResponseEntity<UserRes> changeUserRole(@RequestBody UserIdReq userIdReq) {
+        System.out.println(userIdReq);
+        List<Long> roleIds = new ArrayList<>(List.of(userIdReq.getRoleId()));
+        UserRes userRes=userService.changeUserRole(userIdReq.getUserId(), roleIds);
         return new ResponseEntity<>(userRes, HttpStatus.OK);
     }
+
+    @GetMapping("/getByPage")
+    public ResponseEntity<Page<UserRes>> getStudents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+                                                               @RequestParam(required = false) String search
+    ) {
+        Page<UserRes> users = userService.findAllUsersActive(page, size, search);
+        return ResponseEntity.ok(users);
+    }
+
 }

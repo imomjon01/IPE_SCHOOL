@@ -4,6 +4,7 @@ import ipe.school.ipe_school.models.dtos.res.GroupRes;
 import ipe.school.ipe_school.models.dtos.res.StudentDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.UserRes;
 import ipe.school.ipe_school.models.entity.Group;
+import ipe.school.ipe_school.models.entity.Roles;
 import ipe.school.ipe_school.models.entity.User;
 import ipe.school.ipe_school.models.repo.GroupRepository;
 import ipe.school.ipe_school.models.repo.UserRepository;
@@ -75,7 +76,8 @@ public class ArchiveServiceImpl implements ArchiveService {
                 mentor.getId(),
                 mentor.getFirstName(),
                 mentor.getLastName(),
-                mentor.getPhoneNumber()
+                mentor.getPhoneNumber(),
+                mentor.getRoles().stream().map(Roles::getName).toList()
         ));
     }
 }

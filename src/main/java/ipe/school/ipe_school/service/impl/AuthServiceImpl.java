@@ -97,7 +97,9 @@ public class AuthServiceImpl implements AuthService {
                 attachmentRepository.save(user.getAttachment());
             }
             User save = userRepository.save(user);
-            return new UserRes(save.getId(), save.getFirstName(), save.getLastName(), save.getPhoneNumber());
+            return new UserRes(save.getId(), save.getFirstName(),
+                    save.getLastName(), save.getPhoneNumber(),
+                    save.getRoles().stream().map(Roles::getName).toList());
         } else {
             throw new ChangeSetPersister.NotFoundException();
         }
