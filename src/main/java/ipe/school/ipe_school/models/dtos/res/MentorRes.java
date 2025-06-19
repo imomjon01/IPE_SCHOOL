@@ -12,5 +12,5 @@ public class MentorRes {
     String lastName;
     String phoneNumber;
     byte[] image;
-    List<Group> groups;
+    List<GroupRes> groups;
 }

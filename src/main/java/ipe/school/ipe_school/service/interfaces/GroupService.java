@@ -33,4 +33,6 @@ public interface GroupService {
     List<GroupRes> getMentorGroups(User mentorId);
 
     Page<GroupArxivedRes> getAllGroupsActiveFalse(int page, int size, String search);
+
+    void updateMentor(Long groupId, Long mentorId);
 }

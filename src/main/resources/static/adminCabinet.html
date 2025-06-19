@@ -126,7 +126,6 @@
             border-color: var(--accent-color);
         }
 
-        /* Qo‘shimcha CSS */
         .is-invalid {
             border-color: #dc3545 !important;
         }
@@ -260,20 +259,51 @@
                     </div>
                 </div>
 
-                <!-- Mentor Bo‘limi (sukut bo‘yicha yashirin) -->
+                <!-- Mentor Bo‘limi -->
                 <div class="tab-content d-none" id="mentor-content">
-                    <!-- Talabalar bo‘limiga o‘xshash tuzilma -->
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 id="mentor-count">Mentorlar soni: Yuklanmoqda...</h5>
+                            <button class="btn btn-primary btn-sm" id="assign-mentor-btn" data-bs-toggle="modal"
+                                    data-bs-target="#assignMentorModal">
+                                <i class="fas fa-plus me-1"></i> Mentor Tayinlash
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Ism</th>
+                                        <th>Telefon</th>
+                                        <th>Guruh</th>
+                                        <th>Amallar</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="mentor-table-body">
+                                    <!-- Mentorlar bu yerga yuklanadi -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <nav aria-label="Sahifalash">
+                                <ul class="pagination justify-content-center" id="mentor-pagination">
+                                    <!-- Sahifalash bu yerga yuklanadi -->
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Guruh Bo‘limi (sukut bo‘yicha yashirin) -->
                 <div class="tab-content d-none" id="group-content">
-                    <!-- Talabalar bo‘limiga o‘xshash tuzilma -->
+                    <!-- Guruhlar uchun tuzilma qo‘shilishi mumkin -->
                 </div>
 
-                <!-- Arxiv Bo‘limi (sukut bo‘yicha yashirin) -->
+                <!-- Arxiv Bo‘limi -->
                 <div class="tab-content d-none" id="archive-content">
                     <div class="row">
-                        <!-- Guruh Arxiv (33% kenglik) -->
+                        <!-- Guruh Arxiv -->
                         <div class="col-12 col-md-4">
                             <div class="card">
                                 <div class="card-header">
@@ -286,7 +316,7 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Nomi</th>
-                                                <th>Blok qilin sanasi</th>
+                                                <th>Blok qilingan sanasi</th>
                                             </tr>
                                             </thead>
                                             <tbody id="archived-group-table-body">
@@ -303,7 +333,7 @@
                             </div>
                         </div>
 
-                        <!-- Foydalanuvchi Arxiv (67% kenglik) -->
+                        <!-- Foydalanuvchi Arxiv -->
                         <div class="col-12 col-md-8">
                             <div class="card">
                                 <div class="card-header">
@@ -337,7 +367,7 @@
                     </div>
                 </div>
 
-                <!-- Reyting Bo‘limi (sukut bo‘yicha yashirin) -->
+                <!-- Reyting Bo‘limi -->
                 <div class="tab-content d-none" id="rating-content">
                     <div class="card">
                         <div class="card-header">
@@ -363,7 +393,7 @@
                     </div>
                 </div>
 
-                <!-- Rol O‘zgartirish Bo‘limi (sukut bo‘yicha yashirin) -->
+                <!-- Rol O‘zgartirish Bo‘limi -->
                 <div class="tab-content d-none" id="role-change-content">
                     <div class="card">
                         <div class="card-header">
@@ -500,944 +530,1119 @@
     </div>
 </div>
 
+<!-- Mentor Tayinlash Modali -->
+<div class="modal fade" id="assignMentorModal" tabindex="-1" aria-labelledby="assignMentorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assignMentorModalLabel">Mentor Tayinlash</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="assign-mentor-form" class="was-validated">
+                    <div class="mb-3">
+                        <label for="group-select" class="form-label">Guruh</label>
+                        <select class="form-select" id="group-select" required>
+                            <option value="">Guruh tanlang</option>
+                            <!-- Guruhlar bu yerga yuklanadi -->
+                        </select>
+                        <div class="invalid-feedback">Iltimos, guruh tanlang.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="mentor-select" class="form-label">Mentor</label>
+                        <select class="form-select" id="mentor-select">
+                            <option value="">Mentor yo‘q (O‘chirish)</option>
+                            <!-- Mentorlar bu yerga yuklanadi -->
+                        </select>
+                        <div class="invalid-feedback">Iltimos, mentor tanlang yoki o‘chirish uchun bo‘sh qoldiring.</div>
+                    </div>
+                    <div id="mentor-alert-container"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                <button type="button" class="btn btn-primary" id="save-mentor-btn">
+                    <span class="spinner" role="status" aria-hidden="true"></span>
+                    Tayinlash
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-<script>let userData = JSON.parse(localStorage.getItem('userData'));
+<script>
+    let userData = JSON.parse(localStorage.getItem('userData'));
 
-if (!userData || !userData.userId) {
-    window.location.href = 'http://localhost:63342/IPE_SCHOOL/static/homePage.html?_ijt=nb0urugnpo50rmbinvfai9ce9r2?_ij_reload=true#home';
-}
-
-// Admin profil ma'lumotlarini o‘rnatish
-document.getElementById('admin-name').textContent = userData.firstName || 'Admin';
-document.getElementById('dropdown-admin-name').textContent = `${userData.firstName || ''} ${userData.lastName || ''}`.trim() || 'Admin';
-
-const profilePics = document.querySelectorAll('.profile-pic, #modal-profile-pic');
-profilePics.forEach(pic => {
-    if (userData.image && userData.image.startsWith('data:image')) {
-        pic.src = userData.image;
-    } else {
-        pic.src = 'https://via.placeholder.com/150';
+    if (!userData || !userData.userId) {
+        window.location.href = 'http://localhost:63342/IPE_SCHOOL/static/homePage.html';
     }
-});
 
-// Profil modali ochilganda formani to‘ldirish
-const profileModal = document.getElementById('profileModal');
-profileModal.addEventListener('show.bs.modal', () => {
-    document.getElementById('first-name').value = userData.firstName || '';
-    document.getElementById('last-name').value = userData.lastName || '';
-    document.getElementById('phone-number').value = userData.phoneNumber || '';
-    document.getElementById('password').value = '';
-    document.getElementById('confirm-password').value = '';
-    document.getElementById('modal-profile-pic').src = userData.image || 'https://via.placeholder.com/150';
-});
+    // Admin profil ma'lumotlarini o‘rnatish
+    document.getElementById('admin-name').textContent = userData.firstName || 'Admin';
+    document.getElementById('dropdown-admin-name').textContent = `${userData.firstName || ''} ${userData.lastName || ''}`.trim() || 'Admin';
 
-// Modal yopilganda formani tozalash
-profileModal.addEventListener('hidden.bs.modal', () => {
-    document.getElementById('profile-form').reset();
-    document.getElementById('modal-profile-pic').src = 'https://via.placeholder.com/150';
-    document.getElementById('profile-form').classList.remove('was-validated');
-    const inputs = document.getElementById('profile-form').querySelectorAll('input');
-    inputs.forEach(input => input.classList.remove('is-invalid'));
-});
-
-// Tablar o‘tish funksiyasi
-const tabs = ['student', 'mentor', 'group', 'archive', 'rating', 'role-change'];
-
-tabs.forEach(tab => {
-    document.getElementById(`${tab}-tab`).addEventListener('click', () => {
-        // Barcha kontentni yashirish
-        document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.add('d-none');
-        });
-
-        // Tanlangan kontentni ko‘rsatish
-        document.getElementById(`${tab}-content`).classList.remove('d-none');
-
-        // Faol tabni yangilash
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.classList.remove('active');
-        });
-        document.getElementById(`${tab}-tab`).classList.add('active');
-
-        // Tab uchun ma'lumotlarni yuklash
-        loadTabData(tab);
+    const profilePics = document.querySelectorAll('.profile-pic, #modal-profile-pic');
+    profilePics.forEach(pic => {
+        pic.src = userData.image && userData.image.startsWith('data:image') ? userData.image : 'https://via.placeholder.com/150';
     });
-});
 
-// Tablar uchun ma'lumotlarni yuklash
-function loadTabData(tab) {
-    console.log(`${tab} tab uchun ma'lumotlar yuklanmoqda`);
+    // Profil modali ochilganda formani to‘ldirish
+    const profileModal = document.getElementById('profileModal');
+    profileModal.addEventListener('show.bs.modal', () => {
+        document.getElementById('first-name').value = userData.firstName || '';
+        document.getElementById('last-name').value = userData.lastName || '';
+        document.getElementById('phone-number').value = userData.phoneNumber || '';
+        document.getElementById('password').value = '';
+        document.getElementById('confirm-password').value = '';
+        document.getElementById('modal-profile-pic').src = userData.image || 'https://via.placeholder.com/150';
+    });
 
-    if (tab === 'student') {
-        loadStudents();
-    } else if (tab === 'archive') {
-        loadArchiveContent();
-    } else if (tab === 'rating') {
-        loadTopStudents();
-    } else if (tab === 'role-change') {
-        loadUsersForRoleChange();
-    }
-    // Mentor va Guruh tablariga funksiyalar qo‘shilishi mumkin
-}
+    // Modal yopilganda formani tozalash
+    profileModal.addEventListener('hidden.bs.modal', () => {
+        document.getElementById('profile-form').reset();
+        document.getElementById('modal-profile-pic').src = 'https://via.placeholder.com/150';
+        document.getElementById('profile-form').classList.remove('was-validated');
+        document.getElementById('profile-form').querySelectorAll('input').forEach(input => input.classList.remove('is-invalid'));
+    });
 
-// Arxiv bo‘limini yuklash
-function loadArchiveContent(page = 0, size = 10, search = '') {
-    loadArchivedGroups(page, size, search);
-    loadArchivedUsers(page, size, search);
-}
+    // Tablar o‘tish funksiyasi
+    const tabs = ['student', 'mentor', 'group', 'archive', 'rating', 'role-change'];
+    tabs.forEach(tab => {
+        document.getElementById(`${tab}-tab`).addEventListener('click', () => {
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('d-none'));
+            document.getElementById(`${tab}-content`).classList.remove('d-none');
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.getElementById(`${tab}-tab`).classList.add('active');
+            loadTabData(tab);
+        });
+    });
 
-// Arxivlangan guruhlarni yuklash
-function loadArchivedGroups(page = 0, size = 10, search = '') {
-    axios.get('http://localhost:8080/api/v1/group/archived', {
-        headers: {
-            Authorization: `${userData.token}`
-        },
-        params: {
-            page: page,
-            size: size,
-            search: search
+    // Tablar uchun ma'lumotlarni yuklash
+    function loadTabData(tab) {
+        console.log(`${tab} tab uchun ma'lumotlar yuklanmoqda`);
+        if (tab === 'student') {
+            loadStudents();
+        } else if (tab === 'mentor') {
+            loadMentors();
+        } else if (tab === 'archive') {
+            loadArchiveContent();
+        } else if (tab === 'rating') {
+            loadTopStudents();
+        } else if (tab === 'role-change') {
+            loadUsersForRoleChange();
         }
-    })
-        .then(response => {
-            populateArchivedGroupTable(response.data.content, response.data.totalPages, page, size, search);
+    }
+
+    // Mentorlar sonini yuklash
+    let isMentorCountLoaded = false;
+    function loadMentorCount() {
+        if (isMentorCountLoaded) return;
+        axios.get('http://localhost:8080/api/v1/admin/mentor/getMentorCount', {
+            headers: { Authorization: `${userData.token}` }
         })
-        .catch(error => {
-            console.error('Arxivlangan guruhlarni yuklashda xato:', error.response?.data || error);
-            showAlert('danger', 'Arxivlangan guruhlarni yuklab bo‘lmadi');
-        });
-}
-
-// Guruh arxiv jadvalini to‘ldirish
-function populateArchivedGroupTable(groups, totalPages, currentPage, size, search) {
-    const tableBody = document.getElementById('archived-group-table-body');
-    tableBody.innerHTML = '';
-
-    if (!groups || groups.length === 0) {
-        tableBody.innerHTML = `
-            <tr>
-                <td colspan="3" class="text-center">Hech qanday arxivlangan guruh topilmadi</td>
-            </tr>
-        `;
-        return;
-    }
-
-    groups.forEach(group => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${group.id}</td>
-            <td>${group.name}</td>
-            <td>${group.blockDate ? new Date(group.blockDate).toLocaleDateString('uz-UZ') : 'Noma\'lum'}</td>
-        `;
-        tableBody.appendChild(row);
-    });
-
-    const pagination = document.getElementById('archived-group-pagination');
-    pagination.innerHTML = '';
-
-    const prevItem = document.createElement('li');
-    prevItem.className = `page-item ${currentPage === 0 ? 'disabled' : ''}`;
-    prevItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Oldingi</a>`;
-    pagination.appendChild(prevItem);
-
-    for (let i = 0; i < totalPages; i++) {
-        const pageItem = document.createElement('li');
-        pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
-        pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i + 1}</a>`;
-        pagination.appendChild(pageItem);
-    }
-
-    const nextItem = document.createElement('li');
-    nextItem.className = `page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`;
-    nextItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Keyingi</a>`;
-    pagination.appendChild(nextItem);
-
-    pagination.querySelectorAll('.page-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const page = parseInt(e.target.getAttribute('data-page'));
-            if (!isNaN(page)) {
-                loadArchivedGroups(page, size, search);
-            }
-        });
-    });
-}
-
-// Arxivlangan foydalanuvchilarni yuklash
-function loadArchivedUsers(page = 0, size = 10, search = '') {
-    axios.get('http://localhost:8080/api/v1/admin/user/archived', {
-        headers: {
-            Authorization: `${userData.token}`
-        },
-        params: {
-            page: page,
-            size: size,
-            search: search
-        }
-    })
-        .then(response => {
-            populateArchivedUserTable(response.data.content, response.data.totalPages, page, size, search);
-        })
-        .catch(error => {
-            console.error('Arxivlangan foydalanuvchilarni yuklashda xato:', error.response?.data || error);
-            showAlert('danger', 'Arxivlangan foydalanuvchilarni yuklab bo‘lmadi');
-        });
-}
-
-// Foydalanuvchi arxiv jadvalini to‘ldirish
-function populateArchivedUserTable(users, totalPages, currentPage, size, search) {
-    const tableBody = document.getElementById('archived-user-table-body');
-    tableBody.innerHTML = '';
-
-    if (!users || users.length === 0) {
-        tableBody.innerHTML = `
-            <tr>
-                <td colspan="5" class="text-center">Hech qanday arxivlangan foydalanuvchi topilmadi</td>
-            </tr>
-        `;
-        return;
-    }
-
-    users.forEach(user => {
-        const currentRole = user.roles && user.roles.length > 0 ? formatRole(user.roles[0]) : 'Rol yo‘q';
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${user.id}</td>
-            <td>${user.firstName} ${user.lastName}</td>
-            <td>${user.phoneNumber}</td>
-            <td>${currentRole}</td>
-            <td>
-                <button class="btn btn-success btn-sm restore-user-btn" data-user-id="${user.id}">
-                    Qayta tiklash
-                </button>
-            </td>
-        `;
-        tableBody.appendChild(row);
-    });
-
-    const pagination = document.getElementById('archived-user-pagination');
-    pagination.innerHTML = '';
-
-    const prevItem = document.createElement('li');
-    prevItem.className = `page-item ${currentPage === 0 ? 'disabled' : ''}`;
-    prevItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Oldingi</a>`;
-    pagination.appendChild(prevItem);
-
-    for (let i = 0; i < totalPages; i++) {
-        const pageItem = document.createElement('li');
-        pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
-        pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i + 1}</a>`;
-        pagination.appendChild(pageItem);
-    }
-
-    const nextItem = document.createElement('li');
-    nextItem.className = `page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`;
-    nextItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Keyingi</a>`;
-    pagination.appendChild(nextItem);
-
-    pagination.querySelectorAll('.page-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const page = parseInt(e.target.getAttribute('data-page'));
-            if (!isNaN(page)) {
-                loadArchivedUsers(page, size, search);
-            }
-        });
-    });
-
-    document.querySelectorAll('.restore-user-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            const userId = this.getAttribute('data-user-id');
-            if (confirm('Foydalanuvchini arxivdan qayta tiklashni tasdiqlaysizmi?')) {
-                restoreUser(userId);
-            }
-        });
-    });
-}
-
-// Foydalanuvchini arxivdan qayta tiklash
-function restoreUser(userId) {
-    axios.put(`http://localhost:8080/api/v1/admin/user/restore/${userId}`, {}, {
-        headers: {
-            Authorization: `${userData.token}`
-        }
-    })
-        .then(() => {
-            showAlert('success', 'Foydalanuvchi muvaffaqiyatli qayta tiklandi!');
-            loadArchivedUsers();
-        })
-        .catch(error => {
-            console.error('Foydalanuvchini qayta tiklashda xato:', error.response?.data || error);
-            showAlert('danger', error.response?.data?.message || 'Foydalanuvchini qayta tiklab bo‘lmadi');
-        });
-}
-
-// Talabalar sonini yuklash
-let isStudentCountLoaded = false;
-function loadStudentCount() {
-    if (isStudentCountLoaded) return;
-    axios.get('http://localhost:8080/api/v1/admin/student/getSize', {
-        headers: {
-            Authorization: `${userData.token}`
-        }
-    })
-        .then(response => {
-            const studentCount = response.data;
-            document.getElementById('student-count').innerHTML = `<p>Talabalar soni: ${studentCount}</p>`;
-            isStudentCountLoaded = true;
-        })
-        .catch(error => {
-            console.error('Talabalar sonini yuklashda xato:', error.response?.data || error);
-            document.getElementById('student-count').innerHTML = `<p>Talabalar soni: Yuklab bo‘lmadi</p>`;
-            showAlert('danger', 'Talabalar sonini yuklab bo‘lmadi');
-        });
-}
-
-// Eng yaxshi 10 talabani yuklash
-function loadTopStudents() {
-    axios.get('http://localhost:8080/api/v1/admin/student/progress', {
-        headers: {
-            Authorization: `${userData.token}`
-        }
-    })
-        .then(response => {
-            const students = response.data;
-            const tableBody = document.getElementById('rating-table-body');
-            tableBody.innerHTML = '';
-
-            if (!students || students.length === 0) {
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="text-center">Hech qanday talaba topilmadi</td>
-                    </tr>
-                `;
-                return;
-            }
-
-            students.forEach((student, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${student.studentName}</td>
-                    <td>${student.groupName || 'Guruh yo‘q'}</td>
-                    <td>${student.passedTasks}</td>
-                `;
-                tableBody.appendChild(row);
+            .then(response => {
+                const mentorCount = response.data;
+                document.getElementById('mentor-count').innerHTML = `<p>Mentorlar soni: ${mentorCount}</p>`;
+                isMentorCountLoaded = true;
+            })
+            .catch(error => {
+                console.error('Mentorlar sonini yuklashda xato:', error.response?.data || error);
+                document.getElementById('mentor-count').innerHTML = `<p>Mentorlar soni: Yuklab bo‘lmadi</p>`;
+                showAlert('danger', 'Mentorlar sonini yuklab bo‘lmadi');
             });
+    }
+
+    // Mentorlarni yuklash
+    function loadMentors(page = 0, size = 10, search = '') {
+        axios.get('http://localhost:8080/api/v1/admin/mentor/getMentors', {
+            headers: { Authorization: `${userData.token}` },
+            params: { page, size, search }
         })
-        .catch(error => {
-            console.error('Talabalar reytingini yuklashda xato:', error.response?.data || error);
-            const tableBody = document.getElementById('rating-table-body');
+            .then(response => {
+                loadMentorCount();
+                populateMentorTable(response.data.content, response.data.totalPages, page, size, search);
+            })
+            .catch(error => {
+                console.error('Mentorlarni yuklashda xato:', error.response?.data || error);
+                showAlert('danger', 'Mentorlarni yuklab bo‘lmadi');
+            });
+    }
+
+    // Mentor jadvalini to‘ldirish
+    function populateMentorTable(mentors, totalPages, currentPage, size, search) {
+        const tableBody = document.getElementById('mentor-table-body');
+        tableBody.innerHTML = '';
+
+        console.log(mentors)
+
+        if (!mentors || mentors.length === 0) {
             tableBody.innerHTML = `
-                <tr>
-                    <td colspan="4" class="text-center">Ma'lumotlarni yuklashda xato yuz berdi</td>
-                </tr>
-            `;
-            showAlert('danger', 'Reytingni yuklab bo‘lmadi');
-        });
-}
-
-// Talabalarni guruh bilan yuklash
-function loadStudents(page = 0, size = 10, search = '') {
-    axios.get(`http://localhost:8080/api/v1/admin/student`, {
-        headers: {
-            Authorization: `${userData.token}`
-        },
-        params: {
-            page: page,
-            size: size,
-            search: search
-        }
-    })
-        .then(response => {
-            loadStudentCount();
-            populateStudentTable(response.data.content, response.data.totalPages, page, size, search);
-        })
-        .catch(error => {
-            console.error('Talabalarni yuklashda xato:', error.response?.data || error);
-            showAlert('danger', 'Talabalarni yuklab bo‘lmadi');
-        });
-}
-
-function populateStudentTable(students, totalPages, currentPage, size, search) {
-    axios.get('http://localhost:8080/api/v1/group/getAll', {
-        headers: {
-            Authorization: `${userData.token}`
-        }
-    })
-        .then(groupsResponse => {
-            const groups = groupsResponse.data;
-            const tableBody = document.getElementById('student-table-body');
-            tableBody.innerHTML = '';
-
-            students.forEach(student => {
-                const studentGroupId = student.groupId;
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${student.id}</td>
-                    <td>${student.firstName} ${student.lastName}</td>
-                    <td>${student.phoneNumber}</td>
-                    <td>
-                        <select class="form-select group-select"
-                            data-student-id="${student.id}"
-                            data-old-group-id="${studentGroupId || ''}">
-                            <option value="">Guruh Yo‘q</option>
-                            ${groups.map(group => {
-                    const isSelected = studentGroupId !== null && studentGroupId !== undefined && studentGroupId === group.id;
-                    return `<option value="${group.id}" ${isSelected ? 'selected' : ''}>
-                                                ${group.name}
-                                            </option>`;
-                }).join('')}
-                        </select>
-                    </td>
-                    <td>
-                        <button class="btn btn-primary btn-sm update-group-btn" data-student-id="${student.id}">
-                            Yangilash
-                        </button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-
-            const pagination = document.getElementById('student-pagination');
-            pagination.innerHTML = '';
-
-            const prevItem = document.createElement('li');
-            prevItem.className = `page-item ${currentPage === 0 ? 'disabled' : ''}`;
-            prevItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Oldingi</a>`;
-            pagination.appendChild(prevItem);
-
-            for (let i = 0; i < totalPages; i++) {
-                const pageItem = document.createElement('li');
-                pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
-                pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i + 1}</a>`;
-                pagination.appendChild(pageItem);
-            }
-
-            const nextItem = document.createElement('li');
-            nextItem.className = `page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`;
-            nextItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Keyingi</a>`;
-            pagination.appendChild(nextItem);
-
-            pagination.querySelectorAll('.page-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const page = parseInt(e.target.getAttribute('data-page'));
-                    if (!isNaN(page)) {
-                        loadStudents(page, size, search);
-                    }
-                });
-            });
-
-            document.querySelectorAll('.update-group-btn').forEach(btn => {
-                btn.addEventListener('click', function () {
-                    const studentId = this.getAttribute('data-student-id');
-                    const selectEl = document.querySelector(`.group-select[data-student-id="${studentId}"]`);
-                    const newGroupId = selectEl.value;
-                    const oldGroupId = selectEl.getAttribute('data-old-group-id');
-
-                    updateStudentGroup(studentId, newGroupId, oldGroupId);
-                });
-            });
-        })
-        .catch(error => {
-            console.error('Guruhlarni yuklashda xato:', error.response?.data || error);
-            showAlert('danger', 'Guruhlarni yuklab bo‘lmadi');
-        });
-}
-
-// Qidiruv inputiga hodisa qo‘shish
-let currentTab = 'student';
-document.getElementById('search-input').addEventListener('input', (e) => {
-    const searchTerm = e.target.value.trim();
-    if (currentTab === 'student') {
-        loadStudents(0, 10, searchTerm);
-    } else if (currentTab === 'archive') {
-        loadArchiveContent(0, 10, searchTerm);
-    } else if (currentTab === 'role-change') {
-        loadUsersForRoleChange(0, 10, searchTerm);
-    }
-});
-
-// Tab o‘tishda currentTab ni yangilash
-tabs.forEach(tab => {
-    document.getElementById(`${tab}-tab`).addEventListener('click', () => {
-        currentTab = tab;
-        if (tab !== 'student' && tab !== 'archive' && tab !== 'role-change') {
-            document.getElementById('search-input').value = '';
-        }
-    });
-});
-
-// Guruh yangilash
-function updateStudentGroup(studentId, newGroupId, oldGroupId) {
-    axios.put('http://localhost:8080/api/v1/group/updateStudents', {
-        studentId: parseInt(studentId),
-        newGroupId: newGroupId ? parseInt(newGroupId) : null,
-        oldGroupId: oldGroupId ? parseInt(oldGroupId) : null
-    }, {
-        headers: {
-            Authorization: `${userData.token}`
-        }
-    })
-        .then(() => {
-            showAlert('success', 'Guruh muvaffaqiyatli yangilandi!');
-            loadStudents();
-        })
-        .catch(error => {
-            console.error('Guruhni yangilashda xato:', error.response?.data || error);
-            showAlert('danger', error.response?.data?.message || 'Guruhni yangilab bo‘lmadi');
-        });
-}
-
-// Rol o‘zgartirish
-function loadUsersForRoleChange(page = 0, size = 10, search = '') {
-    axios.get('http://localhost:8080/api/v1/admin/role/getByPage', {
-        headers: {
-            Authorization: `${userData.token}`
-        },
-        params: {
-            page: page,
-            size: size,
-            search: search
-        }
-    })
-        .then(response => {
-            populateRoleChangeTable(response.data.content, response.data.totalPages, page, size, search);
-        })
-        .catch(error => {
-            console.error('Rol o‘zgartirish uchun foydalanuvchilarni yuklashda xato:', error.response?.data || error);
-            showAlert('danger', 'Foydalanuvchilarni yuklab bo‘lmadi');
-        });
-}
-
-function populateRoleChangeTable(users, totalPages, currentPage, size, search) {
-    const tableBody = document.getElementById('role-change-table-body');
-    tableBody.innerHTML = '';
-
-    if (!users || users.length === 0) {
-        tableBody.innerHTML = `
             <tr>
-                <td colspan="5" class="text-center">Hech qanday foydalanuvchi topilmadi</td>
+                <td colspan="5" class="text-center">Hech qanday mentor topilmadi</td>
             </tr>
         `;
-        return;
-    }
+            return;
+        }
 
-    users.forEach(user => {
-        const currentRole = user.roles && user.roles.length > 0 ? formatRole(user.roles[0]) : 'Rol yo‘q';
-        const currentRoleValue = user.roles && user.roles.length > 0 ? user.roles[0] : '';
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${user.id}</td>
-            <td>${user.firstName} ${user.lastName}</td>
-            <td>${currentRole}</td>
+        mentors.forEach(mentor => {
+            // Guruhlar ro‘yxatini formatlash (masalan, vergul bilan ajratilgan nomlar)
+            const groupNames = mentor.groups && mentor.groups.length > 0
+                ? mentor.groups.map(group => group.name).join(', ')
+                : 'Guruh yo‘q';
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+            <td>${mentor.id}</td>
+            <td>${mentor.firstName} ${mentor.lastName}</td>
+            <td>${mentor.phoneNumber}</td>
+            <td>${groupNames}</td>
             <td>
-                <select class="form-select new-role-select" data-user-id="${user.id}">
-                    <option value="ROLE_ADMIN" ${currentRoleValue === 'ROLE_ADMIN' ? 'selected' : ''}>Admin</option>
-                    <option value="ROLE_MENTOR" ${currentRoleValue === 'ROLE_MENTOR' ? 'selected' : ''}>Mentor</option>
-                    <option value="ROLE_STUDENT" ${currentRoleValue === 'ROLE_STUDENT' ? 'selected' : ''}>Talaba</option>
-                </select>
-            </td>
-            <td>
-                <button class="btn btn-primary btn-sm update-role-btn" data-user-id="${user.id}">
-                    Yangilash
-                </button>
-                <button class="btn btn-danger btn-sm delete-user-btn ms-1" data-user-id="${user.id}">
-                    O‘chirish
-                </button>
+                ${mentor.groups && mentor.groups.length > 0 ? mentor.groups.map(group => `
+                    <button class="btn btn-danger btn-sm remove-mentor-btn mb-1"
+                            data-mentor-id="${mentor.id}"
+                            data-group-id="${group.id}">
+                        ${group.name} dan O‘chirish
+                    </button>
+                `).join('') : '<button class="btn btn-danger btn-sm remove-mentor-btn" disabled>O‘chirish</button>'}
             </td>
         `;
-        tableBody.appendChild(row);
-    });
-
-    const pagination = document.getElementById('role-change-pagination');
-    pagination.innerHTML = '';
-
-    const prevItem = document.createElement('li');
-    prevItem.className = `page-item ${currentPage === 0 ? 'disabled' : ''}`;
-    prevItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Oldingi</a>`;
-    pagination.appendChild(prevItem);
-
-    for (let i = 0; i < totalPages; i++) {
-        const pageItem = document.createElement('li');
-        pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
-        pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i + 1}</a>`;
-        pagination.appendChild(pageItem);
-    }
-
-    const nextItem = document.createElement('li');
-    nextItem.className = `page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`;
-    nextItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Keyingi</a>`;
-    pagination.appendChild(nextItem);
-
-    pagination.querySelectorAll('.page-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const page = parseInt(e.target.getAttribute('data-page'));
-            if (!isNaN(page)) {
-                loadUsersForRoleChange(page, size, search);
-            }
+            tableBody.appendChild(row);
         });
-    });
 
-    document.querySelectorAll('.update-role-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            const userId = this.getAttribute('data-user-id');
-            const selectEl = document.querySelector(`.new-role-select[data-user-id="${userId}"]`);
-            const newRole = selectEl.value;
-            updateUserRole(userId, newRole);
-        });
-    });
+        const pagination = document.getElementById('mentor-pagination');
+        pagination.innerHTML = '';
 
-    document.querySelectorAll('.delete-user-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            const userId = this.getAttribute('data-user-id');
-            if (confirm('Foydalanuvchini o‘chirishni tasdiqlaysizmi?')) {
-                deleteUser(userId);
-            }
-        });
-    });
-}
+        const prevItem = document.createElement('li');
+        prevItem.className = `page-item ${currentPage === 0 ? 'disabled' : ''}`;
+        prevItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Oldingi</a>`;
+        pagination.appendChild(prevItem);
 
-function formatRole(role) {
-    const roleMap = {
-        'ROLE_STUDENT': 'Talaba',
-        'ROLE_MENTOR': 'Mentor',
-        'ROLE_ADMIN': 'Admin'
-    };
-    return roleMap[role] || role;
-}
-
-function updateUserRole(userId, newRole) {
-    const roleIdMap = {
-        'ROLE_ADMIN': 1,
-        'ROLE_MENTOR': 2,
-        'ROLE_STUDENT': 3
-    };
-    const roleId = roleIdMap[newRole];
-
-    if (!roleId) {
-        showAlert('danger', 'Noto‘g‘ri rol tanlandi!');
-        return;
-    }
-
-    axios.post('http://localhost:8080/api/v1/admin/role', {
-        userId: parseInt(userId),
-        roleId: roleId
-    }, {
-        headers: {
-            Authorization: `${userData.token}`
-        }
-    })
-        .then(response => {
-            showAlert('success', 'Rol muvaffaqiyatli yangilandi!');
-            loadUsersForRoleChange();
-        })
-        .catch(error => {
-            console.error('Rolni yangilashda xato:', error.response?.data || error);
-            showAlert('danger', error.response?.data?.message || 'Rolni yangilab bo‘lmadi');
-        });
-}
-
-function deleteUser(userId) {
-    axios.delete(`http://localhost:8080/api/v1/admin/user/${userId}`, {
-        headers: {
-            Authorization: `${userData.token}`
-        }
-    })
-        .then(() => {
-            showAlert('success', 'Foydalanuvchi muvaffaqiyatli o‘chirildi!');
-            loadUsersForRoleChange();
-        })
-        .catch(error => {
-            console.error('Foydalanuvchini o‘chirishda xato:', error.response?.data || error);
-            showAlert('danger', error.response?.data?.message || 'Foydalanuvchini o‘chirib bo‘lmadi');
-        });
-}
-
-// Profil yangilash
-document.getElementById('save-profile-btn').addEventListener('click', () => {
-    const form = document.getElementById('profile-form');
-    const formData = new FormData();
-    const imageInput = document.getElementById('profile-image-input');
-    const firstName = document.getElementById('first-name').value.trim();
-    const lastName = document.getElementById('last-name').value.trim();
-    const phoneNumber = document.getElementById('phone-number').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const confirmPassword = document.getElementById('confirm-password').value.trim();
-
-    let isValid = true;
-
-    if (!userData.userId || isNaN(userData.userId) || userData.userId <= 0) {
-        showAlert('danger', 'Noto‘g‘ri foydalanuvchi ID. Iltimos, tizimga qayta kiring.');
-        return;
-    }
-
-    if (!firstName) {
-        document.getElementById('first-name').classList.add('is-invalid');
-        isValid = false;
-    } else {
-        document.getElementById('first-name').classList.remove('is-invalid');
-    }
-
-    if (!lastName) {
-        document.getElementById('last-name').classList.add('is-invalid');
-        isValid = false;
-    } else {
-        document.getElementById('last-name').classList.remove('is-invalid');
-    }
-
-    if (!phoneNumber) {
-        document.getElementById('phone-number').classList.add('is-invalid');
-        isValid = false;
-    } else {
-        document.getElementById('phone-number').classList.remove('is-invalid');
-    }
-
-    if (password || confirmPassword) {
-        if (password.length < 6) {
-            document.getElementById('password').classList.add('is-invalid');
-            isValid = false;
-        } else {
-            document.getElementById('password').classList.remove('is-invalid');
+        for (let i = 0; i < totalPages; i++) {
+            const pageItem = document.createElement('li');
+            pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
+            pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i + 1}</a>`;
+            pagination.appendChild(pageItem);
         }
 
-        if (password !== confirmPassword || !confirmPassword) {
-            document.getElementById('confirm-password').classList.add('is-invalid');
-            isValid = false;
-        } else {
-            document.getElementById('confirm-password').classList.remove('is-invalid');
-        }
-    } else {
-        document.getElementById('password').classList.remove('is-invalid');
-        document.getElementById('confirm-password').classList.remove('is-invalid');
-    }
+        const nextItem = document.createElement('li');
+        nextItem.className = `page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`;
+        nextItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Keyingi</a>`;
+        pagination.appendChild(nextItem);
 
-    if (!isValid) {
-        showAlert('danger', 'Iltimos, barcha majburiy maydonlarni to‘g‘ri to‘ldiring!');
-        return;
-    }
-
-    formData.append('id', userData.userId.toString());
-    formData.append('firstName', firstName);
-    formData.append('lastName', lastName);
-    formData.append('phoneNumber', phoneNumber);
-    if (password) {
-        formData.append('password', password);
-    }
-    if (imageInput.files[0]) {
-        formData.append('file', imageInput.files[0]);
-    }
-
-    const updateUIAndStorage = () => {
-        userData.firstName = firstName;
-        userData.lastName = lastName;
-        userData.phoneNumber = phoneNumber;
-        if (imageInput.files[0]) {
-            userData.image = URL.createObjectURL(imageInput.files[0]);
-        }
-        localStorage.setItem('userData', JSON.stringify(userData));
-
-        document.getElementById('admin-name').textContent = firstName;
-        document.getElementById('dropdown-admin-name').textContent = `${firstName} ${lastName}`.trim();
-
-        const profilePics = document.querySelectorAll('.profile-pic, #modal-profile-pic');
-        profilePics.forEach(pic => {
-            pic.src = userData.image || 'https://via.placeholder.com/150';
-        });
-    };
-
-    axios.post('http://localhost:8080/api/v1/auth/updateProfile', formData, {
-        headers: {
-            Authorization: `${userData.token}`
-        }
-    })
-        .then(response => {
-            const updatedData = response.data;
-            userData.userId = updatedData.id || userData.userId;
-            userData.firstName = updatedData.firstName;
-            userData.lastName = updatedData.lastName;
-            userData.phoneNumber = updatedData.phoneNumber;
-            if (updatedData.image) {
-                userData.image = updatedData.image;
-            }
-            localStorage.setItem('userData', JSON.stringify(userData));
-
-            document.getElementById('admin-name').textContent = updatedData.firstName;
-            document.getElementById('dropdown-admin-name').textContent =
-                `${updatedData.firstName} ${updatedData.lastName}`.trim();
-
-            const profilePics = document.querySelectorAll('.profile-pic, #modal-profile-pic');
-            profilePics.forEach(pic => {
-                pic.src = updatedData.image || 'https://via.placeholder.com/150';
+        pagination.querySelectorAll('.page-link').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const page = parseInt(e.target.getAttribute('data-page'));
+                if (!isNaN(page)) loadMentors(page, size, search);
             });
-
-            bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
-            showAlert('success', 'Profil muvaffaqiyatli yangilandi');
-        })
-        .catch(error => {
-            console.error('Profilni yangilashda xato:', error.response?.data || error);
-            const errorMessage = error.response?.data?.message || 'Profilni yangilashda xato yuz berdi';
-            updateUIAndStorage();
-            bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
-            showAlert('danger', errorMessage);
         });
-});
 
-document.getElementById('profile-image-input').addEventListener('change', function (e) {
-    if (e.target.files && e.target.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function (event) {
-            document.getElementById('modal-profile-pic').src = event.target.result;
-        };
-        reader.readAsDataURL(e.target.files[0]);
+        document.querySelectorAll('.remove-mentor-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const mentorId = this.getAttribute('data-mentor-id');
+                const groupId = this.getAttribute('data-group-id');
+                if (groupId && confirm(`Mentorni ${this.textContent.replace('dan O‘chirish', '')} guruhidan o‘chirishni tasdiqlaysizmi?`)) {
+                    updateMentorGroup(groupId, null);
+                }
+            });
+        });
     }
-});
 
-const passwordInputs = document.querySelectorAll('#profile-form input[type="password"]');
-passwordInputs.forEach(input => {
-    input.addEventListener('input', () => {
-        const password = document.getElementById('password').value.trim();
-        const confirmPassword = document.getElementById('confirm-password').value.trim();
-
-        if (input.id === 'password' && (password.length >= 6 || !password)) {
-            input.classList.remove('is-invalid');
-        }
-        if (input.id === 'confirm-password' && (password === confirmPassword || !confirmPassword)) {
-            input.classList.remove('is-invalid');
-        }
+    // Mentor tayinlash modali ochilganda guruh va mentorlarni yuklash
+    const assignMentorModal = document.getElementById('assignMentorModal');
+    assignMentorModal.addEventListener('show.bs.modal', () => {
+        loadGroupsForModal();
+        loadMentorsForModal();
     });
-});
 
-// Talaba qo‘shish
-document.getElementById('save-student-btn').addEventListener('click', () => {
-    const form = document.getElementById('add-student-form');
-    const firstNameInput = document.getElementById('student-first-name');
-    const lastNameInput = document.getElementById('student-last-name');
-    const phoneNumberInput = document.getElementById('student-phone-number');
-    const passwordInput = document.getElementById('student-password');
-    const alertContainer = document.getElementById('alert-container');
+    // Modal yopilganda formani tozalash
+    assignMentorModal.addEventListener('hidden.bs.modal', () => {
+        const form = document.getElementById('assign-mentor-form');
+        form.reset();
+        form.classList.remove('was-validated');
+        document.getElementById('mentor-alert-container').innerHTML = '';
+        form.querySelectorAll('select').forEach(select => select.classList.remove('is-invalid'));
+    });
 
-    const firstName = firstNameInput.value.trim();
-    const lastName = lastNameInput.value.trim();
-    const phoneNumber = phoneNumberInput.value.trim();
-    const password = passwordInput.value.trim();
-
-    let isValid = true;
-
-    if (!firstName) {
-        firstNameInput.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        firstNameInput.classList.remove('is-invalid');
-    }
-
-    if (!lastName) {
-        lastNameInput.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        lastNameInput.classList.remove('is-invalid');
-    }
-
-    if (!phoneNumber || !phoneNumber.match(/^\+\d{12}$/)) {
-        phoneNumberInput.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        phoneNumberInput.classList.remove('is-invalid');
-    }
-
-    if (!password || password.length < 6) {
-        passwordInput.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        passwordInput.classList.remove('is-invalid');
-    }
-
-    if (!isValid) {
-        showAlert('danger', 'Iltimos, barcha maydonlarni to‘g‘ri to‘ldiring!');
-        return;
-    }
-
-    const saveBtn = document.getElementById('save-student-btn');
-    saveBtn.disabled = true;
-    saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Yuklanmoqda...';
-
-    const studentData = {
-        firstName,
-        lastName,
-        phoneNumber,
-        password
-    };
-
-    axios.post('http://localhost:8080/api/v1/admin/student/save', studentData, {
-        headers: {
-            Authorization: `${userData.token}`
-        }
-    })
-        .then(response => {
-            form.reset();
-            bootstrap.Modal.getInstance(document.getElementById('addStudentModal')).hide();
-            saveBtn.disabled = false;
-            saveBtn.innerHTML = '<i class="fas fa-plus me-1"></i>Talaba Qo‘shish';
-            showAlert('success', 'Talaba muvaffaqiyatli qo‘shildi!');
-            loadStudents();
+    // Guruhlarni modal uchun yuklash
+    function loadGroupsForModal() {
+        axios.get('http://localhost:8080/api/v1/group/getAll', {
+            headers: { Authorization: `${userData.token}` }
         })
-        .catch(error => {
-            console.error('Talaba qo‘shishda xato:', error.response?.data || error);
-            const errorMessage = error.response?.data?.message || 'Talaba qo‘shilmadi! (Bunday telefon raqami mavjud)';
-            saveBtn.disabled = false;
-            saveBtn.innerHTML = '<i class="fas fa-plus me-1"></i>Talaba Qo‘shish';
-            showAlert('danger', errorMessage);
-        });
-});
+            .then(response => {
+                const groups = response.data;
+                const groupSelect = document.getElementById('group-select');
+                groupSelect.innerHTML = '<option value="">Guruh tanlang</option>';
+                groups.forEach(group => {
+                    const option = document.createElement('option');
+                    option.value = group.id;
+                    option.textContent = group.name;
+                    groupSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Guruhlarni yuklashda xato:', error.response?.data || error);
+                showMentorAlert('danger', 'Guruhlarni yuklab bo‘lmadi');
+            });
+    }
 
-const addStudentModal = document.getElementById('addStudentModal');
-addStudentModal.addEventListener('hidden.bs.modal', () => {
-    const form = document.getElementById('add-student-form');
-    form.reset();
-    form.classList.remove('was-validated');
-    document.getElementById('alert-container').innerHTML = '';
-    const inputs = form.querySelectorAll('input');
-    inputs.forEach(input => input.classList.remove('is-invalid'));
-});
+    // Mentorlarni modal uchun yuklash
+    function loadMentorsForModal() {
+        axios.get('http://localhost:8080/api/v1/admin/mentor/getMentors', {
+            headers: { Authorization: `${userData.token}` },
+            params: { page: 0, size: 1000 }
+        })
+            .then(response => {
+                const mentors = response.data.content;
+                const mentorSelect = document.getElementById('mentor-select');
+                mentorSelect.innerHTML = '<option value="">Mentor yo‘q (O‘chirish)</option>';
+                mentors.forEach(mentor => {
+                    const option = document.createElement('option');
+                    option.value = mentor.id;
+                    option.textContent = `${mentor.firstName} ${mentor.lastName}`;
+                    mentorSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Mentorlarni yuklashda xato:', error.response?.data || error);
+                showMentorAlert('danger', 'Mentorlarni yuklab bo‘lmadi');
+            });
+    }
 
-// Xabar ko‘rsatish
-function showAlert(type, message) {
-    const alertContainer = document.getElementById('alert-container');
-    alertContainer.innerHTML = `
+    // Mentor tayinlash
+    document.getElementById('save-mentor-btn').addEventListener('click', () => {
+        const form = document.getElementById('assign-mentor-form');
+        const groupSelect = document.getElementById('group-select');
+        const mentorSelect = document.getElementById('mentor-select');
+        const groupId = groupSelect.value;
+        const mentorId = mentorSelect.value || null;
+
+        let isValid = true;
+
+        if (!groupId) {
+            groupSelect.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            groupSelect.classList.remove('is-invalid');
+        }
+
+        if (!isValid) {
+            showMentorAlert('danger', 'Iltimos, guruh tanlang!');
+            return;
+        }
+
+        const saveBtn = document.getElementById('save-mentor-btn');
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Yuklanmoqda...';
+
+        updateMentorGroup(groupId, mentorId);
+    });
+
+    // Mentor guruhini yangilash
+    function updateMentorGroup(groupId, mentorId) {
+        axios.put(`http://localhost:8080/api/v1/admin/mentor/updateGroup/${groupId}`, {}, {
+            headers: { Authorization: `${userData.token}` },
+            params: { mentorId }
+        })
+            .then(() => {
+                bootstrap.Modal.getInstance(document.getElementById('assignMentorModal')).hide();
+                showAlert('success', mentorId ? 'Mentor muvaffaqiyatli tayinlandi!' : 'Mentor guruhdan o‘chirildi!');
+                loadMentors();
+            })
+            .catch(error => {
+                console.error('Mentor guruhini yangilashda xato:', error.response?.data || error);
+                showMentorAlert('danger', error.response?.data?.message || 'Mentor tayinlashda xato yuz berdi');
+            })
+            .finally(() => {
+                const saveBtn = document.getElementById('save-mentor-btn');
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-plus me-1"></i>Tayinlash';
+            });
+    }
+
+    // Mentor modalida xabar ko‘rsatish
+    function showMentorAlert(type, message) {
+        const alertContainer = document.getElementById('mentor-alert-container');
+        alertContainer.innerHTML = `
         <div class="alert alert-${type} alert-dismissible fade show" role="alert">
             ${message}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     `;
-    setTimeout(() => {
-        const alert = alertContainer.querySelector('.alert');
-        if (alert) {
-            bootstrap.Alert.getOrCreateInstance(alert).close();
-        }
-    }, 5000);
-}
+        setTimeout(() => {
+            const alert = alertContainer.querySelector('.alert');
+            if (alert) {
+                bootstrap.Alert.getOrCreateInstance(alert).close();
+            }
+        }, 5000);
+    }
 
-const inputs = document.querySelectorAll('#add-student-form input');
-inputs.forEach(input => {
-    input.addEventListener('input', () => {
-        if (input.id === 'student-first-name' && input.value.trim()) {
-            input.classList.remove('is-invalid');
+    // Arxiv bo‘limini yuklash
+    function loadArchiveContent(page = 0, size = 10, search = '') {
+        loadArchivedGroups(page, size, search);
+        loadArchivedUsers(page, size, search);
+    }
+
+    // Arxivlangan guruhlarni yuklash
+    function loadArchivedGroups(page = 0, size = 10, search = '') {
+        axios.get('http://localhost:8080/api/v1/group/archived', {
+            headers: { Authorization: `${userData.token}` },
+            params: { page, size, search }
+        })
+            .then(response => {
+                populateArchivedGroupTable(response.data.content, response.data.totalPages, page, size, search);
+            })
+            .catch(error => {
+                console.error('Arxivlangan guruhlarni yuklashda xato:', error.response?.data || error);
+                showAlert('danger', 'Arxivlangan guruhlarni yuklab bo‘lmadi');
+            });
+    }
+
+    // Guruh arxiv jadvalini to‘ldirish
+    function populateArchivedGroupTable(groups, totalPages, currentPage, size, search) {
+        const tableBody = document.getElementById('archived-group-table-body');
+        tableBody.innerHTML = '';
+
+        if (!groups || groups.length === 0) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="3" class="text-center">Hech qanday arxivlangan guruh topilmadi</td>
+                </tr>
+            `;
+            return;
         }
-        if (input.id === 'student-last-name' && input.value.trim()) {
-            input.classList.remove('is-invalid');
+
+        groups.forEach(group => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${group.id}</td>
+                <td>${group.name}</td>
+                <td>${group.blockDate ? new Date(group.blockDate).toLocaleDateString('uz-UZ') : 'Noma\'lum'}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        const pagination = document.getElementById('archived-group-pagination');
+        pagination.innerHTML = '';
+
+        const prevItem = document.createElement('li');
+        prevItem.className = `page-item ${currentPage === 0 ? 'disabled' : ''}`;
+        prevItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Oldingi</a>`;
+        pagination.appendChild(prevItem);
+
+        for (let i = 0; i < totalPages; i++) {
+            const pageItem = document.createElement('li');
+            pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
+            pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i + 1}</a>`;
+            pagination.appendChild(pageItem);
         }
-        if (input.id === 'student-phone-number' && input.value.match(/^\+\d{12}$/)) {
-            input.classList.remove('is-invalid');
+
+        const nextItem = document.createElement('li');
+        nextItem.className = `page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`;
+        nextItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Keyingi</a>`;
+        pagination.appendChild(nextItem);
+
+        pagination.querySelectorAll('.page-link').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const page = parseInt(e.target.getAttribute('data-page'));
+                if (!isNaN(page)) loadArchivedGroups(page, size, search);
+            });
+        });
+    }
+
+    // Arxivlangan foydalanuvchilarni yuklash
+    function loadArchivedUsers(page = 0, size = 10, search = '') {
+        axios.get('http://localhost:8080/api/v1/admin/user/archived', {
+            headers: { Authorization: `${userData.token}` },
+            params: { page, size, search }
+        })
+            .then(response => {
+                populateArchivedUserTable(response.data.content, response.data.totalPages, page, size, search);
+            })
+            .catch(error => {
+                console.error('Arxivlangan foydalanuvchilarni yuklashda xato:', error.response?.data || error);
+                showAlert('danger', 'Arxivlangan foydalanuvchilarni yuklab bo‘lmadi');
+            });
+    }
+
+    // Foydalanuvchi arxiv jadvalini to‘ldirish
+    function populateArchivedUserTable(users, totalPages, currentPage, size, search) {
+        const tableBody = document.getElementById('archived-user-table-body');
+        tableBody.innerHTML = '';
+
+        if (!users || users.length === 0) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="text-center">Hech qanday arxivlangan foydalanuvchi topilmadi</td>
+                </tr>
+            `;
+            return;
         }
-        if (input.id === 'student-password' && input.value.trim().length >= 6) {
-            input.classList.remove('is-invalid');
+
+        users.forEach(user => {
+            const currentRole = user.roles && user.roles.length > 0 ? formatRole(user.roles[0]) : 'Rol yo‘q';
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.firstName} ${user.lastName}</td>
+                <td>${user.phoneNumber}</td>
+                <td>${currentRole}</td>
+                <td>
+                    <button class="btn btn-success btn-sm restore-user-btn" data-user-id="${user.id}">
+                        Qayta tiklash
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        const pagination = document.getElementById('archived-user-pagination');
+        pagination.innerHTML = '';
+
+        const prevItem = document.createElement('li');
+        prevItem.className = `page-item ${currentPage === 0 ? 'disabled' : ''}`;
+        prevItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Oldingi</a>`;
+        pagination.appendChild(prevItem);
+
+        for (let i = 0; i < totalPages; i++) {
+            const pageItem = document.createElement('li');
+            pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
+            pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i + 1}</a>`;
+            pagination.appendChild(pageItem);
+        }
+
+        const nextItem = document.createElement('li');
+        nextItem.className = `page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`;
+        nextItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Keyingi</a>`;
+        pagination.appendChild(nextItem);
+
+        pagination.querySelectorAll('.page-link').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const page = parseInt(e.target.getAttribute('data-page'));
+                if (!isNaN(page)) loadArchivedUsers(page, size, search);
+            });
+        });
+
+        document.querySelectorAll('.restore-user-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const userId = this.getAttribute('data-user-id');
+                if (confirm('Foydalanuvchini arxivdan qayta tiklashni tasdiqlaysizmi?')) {
+                    restoreUser(userId);
+                }
+            });
+        });
+    }
+
+    // Foydalanuvchini arxivdan qayta tiklash
+    function restoreUser(userId) {
+        axios.put(`http://localhost:8080/api/v1/admin/user/restore/${userId}`, {}, {
+            headers: { Authorization: `${userData.token}` }
+        })
+            .then(() => {
+                showAlert('success', 'Foydalanuvchi muvaffaqiyatli qayta tiklandi!');
+                loadArchivedUsers();
+            })
+            .catch(error => {
+                console.error('Foydalanuvchini qayta tiklashda xato:', error.response?.data || error);
+                showAlert('danger', error.response?.data?.message || 'Foydalanuvchini qayta tiklab bo‘lmadi');
+            });
+    }
+
+    // Talabalar sonini yuklash
+    let isStudentCountLoaded = false;
+    function loadStudentCount() {
+        if (isStudentCountLoaded) return;
+        axios.get('http://localhost:8080/api/v1/admin/student/getSize', {
+            headers: { Authorization: `${userData.token}` }
+        })
+            .then(response => {
+                const studentCount = response.data;
+                document.getElementById('student-count').innerHTML = `<p>Talabalar soni: ${studentCount}</p>`;
+                isStudentCountLoaded = true;
+            })
+            .catch(error => {
+                console.error('Talabalar sonini yuklashda xato:', error.response?.data || error);
+                document.getElementById('student-count').innerHTML = `<p>Talabalar soni: Yuklab bo‘lmadi</p>`;
+                showAlert('danger', 'Talabalar sonini yuklab bo‘lmadi');
+            });
+    }
+
+    // Eng yaxshi 10 talabani yuklash
+    function loadTopStudents() {
+        axios.get('http://localhost:8080/api/v1/admin/student/progress', {
+            headers: { Authorization: `${userData.token}` }
+        })
+            .then(response => {
+                const students = response.data;
+                const tableBody = document.getElementById('rating-table-body');
+                tableBody.innerHTML = '';
+
+                if (!students || students.length === 0) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="text-center">Hech qanday talaba topilmadi</td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                students.forEach((student, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${student.studentName}</td>
+                        <td>${student.groupName || 'Guruh yo‘q'}</td>
+                        <td>${student.passedTasks}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Talabalar reytingini yuklashda xato:', error.response?.data || error);
+                document.getElementById('rating-table-body').innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center">Ma'lumotlarni yuklashda xato yuz berdi</td>
+                    </tr>
+                `;
+                showAlert('danger', 'Reytingni yuklab bo‘lmadi');
+            });
+    }
+
+    // Talabalarni guruh bilan yuklash
+    function loadStudents(page = 0, size = 10, search = '') {
+        axios.get(`http://localhost:8080/api/v1/admin/student`, {
+            headers: { Authorization: `${userData.token}` },
+            params: { page, size, search }
+        })
+            .then(response => {
+                loadStudentCount();
+                populateStudentTable(response.data.content, response.data.totalPages, page, size, search);
+            })
+            .catch(error => {
+                console.error('Talabalarni yuklashda xato:', error.response?.data || error);
+                showAlert('danger', 'Talabalarni yuklab bo‘lmadi');
+            });
+    }
+
+    function populateStudentTable(students, totalPages, currentPage, size, search) {
+        axios.get('http://localhost:8080/api/v1/group/getAll', {
+            headers: { Authorization: `${userData.token}` }
+        })
+            .then(groupsResponse => {
+                const groups = groupsResponse.data;
+                const tableBody = document.getElementById('student-table-body');
+                tableBody.innerHTML = '';
+
+                students.forEach(student => {
+                    const studentGroupId = student.groupId;
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${student.id}</td>
+                        <td>${student.firstName} ${student.lastName}</td>
+                        <td>${student.phoneNumber}</td>
+                        <td>
+                            <select class="form-select group-select"
+                                    data-student-id="${student.id}"
+                                    data-old-group-id="${studentGroupId || ''}">
+                                <option value="">Guruh Yo‘q</option>
+                                ${groups.map(group => {
+                        const isSelected = studentGroupId && studentGroupId === group.id ? 'selected' : '';
+                        return `<option value="${group.id}" ${isSelected}>${group.name}</option>`;
+                    }).join('')}
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary btn-sm update-group-btn" data-student-id="${student.id}">
+                                Yangilash
+                            </button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                const pagination = document.getElementById('student-pagination');
+                pagination.innerHTML = '';
+
+                const prevItem = document.createElement('li');
+                prevItem.className = `page-item ${currentPage === 0 ? 'disabled' : ''}`;
+                prevItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Oldingi</a>`;
+                pagination.appendChild(prevItem);
+
+                for (let i = 0; i < totalPages; i++) {
+                    const pageItem = document.createElement('li');
+                    pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                    pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i + 1}</a>`;
+                    pagination.appendChild(pageItem);
+                }
+
+                const nextItem = document.createElement('li');
+                nextItem.className = `page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`;
+                nextItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Keyingi</a>`;
+                pagination.appendChild(nextItem);
+
+                pagination.querySelectorAll('.page-link').forEach(link => {
+                    link.addEventListener('click', e => {
+                        e.preventDefault();
+                        const page = parseInt(e.target.getAttribute('data-page'));
+                        if (!isNaN(page)) loadStudents(page, size, search);
+                    });
+                });
+
+                document.querySelectorAll('.update-group-btn').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const studentId = this.getAttribute('data-student-id');
+                        const selectEl = document.querySelector(`.group-select[data-student-id="${studentId}"]`);
+                        const newGroupId = selectEl.value;
+                        const oldGroupId = selectEl.getAttribute('data-old-group-id');
+                        updateStudentGroup(studentId, newGroupId, oldGroupId);
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Guruhlarni yuklashda xato:', error.response?.data || error);
+                showAlert('danger', 'Guruhlarni yuklab bo‘lmadi');
+            });
+    }
+
+    // Qidiruv inputiga hodisa qo‘shish
+    let currentTab = 'student';
+    document.getElementById('search-input').addEventListener('input', e => {
+        const searchTerm = e.target.value.trim();
+        if (currentTab === 'student') {
+            loadStudents(0, 10, searchTerm);
+        } else if (currentTab === 'mentor') {
+            loadMentors(0, 10, searchTerm);
+        } else if (currentTab === 'archive') {
+            loadArchiveContent(0, 10, searchTerm);
+        } else if (currentTab === 'role-change') {
+            loadUsersForRoleChange(0, 10, searchTerm);
         }
     });
-});
 
-// Talaba tabini faol qilish bilan boshlash
-document.getElementById('student-tab').click();</script>
+    // Tab o‘tishda currentTab ni yangilash
+    tabs.forEach(tab => {
+        document.getElementById(`${tab}-tab`).addEventListener('click', () => {
+            currentTab = tab;
+            if (tab !== 'student' && tab !== 'mentor' && tab !== 'archive' && tab !== 'role-change') {
+                document.getElementById('search-input').value = '';
+            }
+        });
+    });
+
+    // Guruh yangilash
+    function updateStudentGroup(studentId, newGroupId, oldGroupId) {
+        axios.put('http://localhost:8080/api/v1/group/updateStudents', {
+            studentId: parseInt(studentId),
+            newGroupId: newGroupId ? parseInt(newGroupId) : null,
+            oldGroupId: oldGroupId ? parseInt(oldGroupId) : null
+        }, {
+            headers: { Authorization: `${userData.token}` }
+        })
+            .then(() => {
+                showAlert('success', 'Guruh muvaffaqiyatli yangilandi!');
+                loadStudents();
+            })
+            .catch(error => {
+                console.error('Guruhni yangilashda xato:', error.response?.data || error);
+                showAlert('danger', error.response?.data?.message || 'Guruhni yangilab bo‘lmadi');
+            });
+    }
+
+    // Rol o‘zgartirish
+    function loadUsersForRoleChange(page = 0, size = 10, search = '') {
+        axios.get('http://localhost:8080/api/v1/admin/role/getByPage', {
+            headers: { Authorization: `${userData.token}` },
+            params: { page, size, search }
+        })
+            .then(response => {
+                populateRoleChangeTable(response.data.content, response.data.totalPages, page, size, search);
+            })
+            .catch(error => {
+                console.error('Rol o‘zgartirish uchun foydalanuvchilarni yuklashda xato:', error.response?.data || error);
+                showAlert('danger', 'Foydalanuvchilarni yuklab bo‘lmadi');
+            });
+    }
+
+    function populateRoleChangeTable(users, totalPages, currentPage, size, search) {
+        const tableBody = document.getElementById('role-change-table-body');
+        tableBody.innerHTML = '';
+
+        if (!users || users.length === 0) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="text-center">Hech qanday foydalanuvchi topilmadi</td>
+                </tr>
+            `;
+            return;
+        }
+
+        users.forEach(user => {
+            const currentRole = user.roles && user.roles.length > 0 ? formatRole(user.roles[0]) : 'Rol yo‘q';
+            const currentRoleValue = user.roles && user.roles.length > 0 ? user.roles[0] : '';
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.firstName} ${user.lastName}</td>
+                <td>${currentRole}</td>
+                <td>
+                    <select class="form-select new-role-select" data-user-id="${user.id}">
+                        <option value="ROLE_ADMIN" ${currentRoleValue === 'ROLE_ADMIN' ? 'selected' : ''}>Admin</option>
+                        <option value="ROLE_MENTOR" ${currentRoleValue === 'ROLE_MENTOR' ? 'selected' : ''}>Mentor</option>
+                        <option value="ROLE_STUDENT" ${currentRoleValue === 'ROLE_STUDENT' ? 'selected' : ''}>Talaba</option>
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-primary btn-sm update-role-btn" data-user-id="${user.id}">
+                        Yangilash
+                    </button>
+                    <button class="btn btn-danger btn-sm delete-user-btn ms-1" data-user-id="${user.id}">
+                        O‘chirish
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        const pagination = document.getElementById('role-change-pagination');
+        pagination.innerHTML = '';
+
+        const prevItem = document.createElement('li');
+        prevItem.className = `page-item ${currentPage === 0 ? 'disabled' : ''}`;
+        prevItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Oldingi</a>`;
+        pagination.appendChild(prevItem);
+
+        for (let i = 0; i < totalPages; i++) {
+            const pageItem = document.createElement('li');
+            pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
+            pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i + 1}</a>`;
+            pagination.appendChild(pageItem);
+        }
+
+        const nextItem = document.createElement('li');
+        nextItem.className = `page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`;
+        nextItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Keyingi</a>`;
+        pagination.appendChild(nextItem);
+
+        pagination.querySelectorAll('.page-link').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const page = parseInt(e.target.getAttribute('data-page'));
+                if (!isNaN(page)) loadUsersForRoleChange(page, size, search);
+            });
+        });
+
+        document.querySelectorAll('.update-role-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const userId = this.getAttribute('data-user-id');
+                const selectEl = document.querySelector(`.new-role-select[data-user-id="${userId}"]`);
+                const newRole = selectEl.value;
+                updateUserRole(userId, newRole);
+            });
+        });
+
+        document.querySelectorAll('.delete-user-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const userId = this.getAttribute('data-user-id');
+                if (confirm('Foydalanuvchini o‘chirishni tasdiqlaysizmi?')) {
+                    deleteUser(userId);
+                }
+            });
+        });
+    }
+
+    function formatRole(role) {
+        const roleMap = {
+            'ROLE_STUDENT': 'Talaba',
+            'ROLE_MENTOR': 'Mentor',
+            'ROLE_ADMIN': 'Admin'
+        };
+        return roleMap[role] || role;
+    }
+
+    function updateUserRole(userId, newRole) {
+        const roleIdMap = {
+            'ROLE_ADMIN': 1,
+            'ROLE_MENTOR': 2,
+            'ROLE_STUDENT': 3
+        };
+        const roleId = roleIdMap[newRole];
+
+        if (!roleId) {
+            showAlert('danger', 'Noto‘g‘ri rol tanlandi!');
+            return;
+        }
+
+        axios.post('http://localhost:8080/api/v1/admin/role', {
+            userId: parseInt(userId),
+            roleId
+        }, {
+            headers: { Authorization: `${userData.token}` }
+        })
+            .then(() => {
+                showAlert('success', 'Rol muvaffaqiyatli yangilandi!');
+                loadUsersForRoleChange();
+            })
+            .catch(error => {
+                console.error('Rolni yangilashda xato:', error.response?.data || error);
+                showAlert('danger', error.response?.data?.message || 'Rolni yangilab bo‘lmadi');
+            });
+    }
+
+    function deleteUser(userId) {
+        axios.delete(`http://localhost:8080/api/v1/admin/user/${userId}`, {
+            headers: { Authorization: `${userData.token}` }
+        })
+            .then(() => {
+                showAlert('success', 'Foydalanuvchi muvaffaqiyatli o‘chirildi!');
+                loadUsersForRoleChange();
+            })
+            .catch(error => {
+                console.error('Foydalanuvchini o‘chirishda xato:', error.response?.data || error);
+                showAlert('danger', error.response?.data?.message || 'Foydalanuvchini o‘chirib bo‘lmadi');
+            });
+    }
+
+    // Profil yangilash
+    document.getElementById('save-profile-btn').addEventListener('click', () => {
+        const form = document.getElementById('profile-form');
+        const formData = new FormData();
+        const imageInput = document.getElementById('profile-image-input');
+        const firstName = document.getElementById('first-name').value.trim();
+        const lastName = document.getElementById('last-name').value.trim();
+        const phoneNumber = document.getElementById('phone-number').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const confirmPassword = document.getElementById('confirm-password').value.trim();
+
+        let isValid = true;
+
+        if (!userData.userId || isNaN(userData.userId) || userData.userId <= 0) {
+            showAlert('danger', 'Noto‘g‘ri foydalanuvchi ID. Iltimos, tizimga qayta kiring.');
+            return;
+        }
+
+        if (!firstName) {
+            document.getElementById('first-name').classList.add('is-invalid');
+            isValid = false;
+        } else {
+            document.getElementById('first-name').classList.remove('is-invalid');
+        }
+
+        if (!lastName) {
+            document.getElementById('last-name').classList.add('is-invalid');
+            isValid = false;
+        } else {
+            document.getElementById('last-name').classList.remove('is-invalid');
+        }
+
+        if (!phoneNumber) {
+            document.getElementById('phone-number').classList.add('is-invalid');
+            isValid = false;
+        } else {
+            document.getElementById('phone-number').classList.remove('is-invalid');
+        }
+
+        if (password || confirmPassword) {
+            if (password.length < 6) {
+                document.getElementById('password').classList.add('is-invalid');
+                isValid = false;
+            } else {
+                document.getElementById('password').classList.remove('is-invalid');
+            }
+
+            if (password !== confirmPassword || !confirmPassword) {
+                document.getElementById('confirm-password').classList.add('is-invalid');
+                isValid = false;
+            } else {
+                document.getElementById('confirm-password').classList.remove('is-invalid');
+            }
+        } else {
+            document.getElementById('password').classList.remove('is-invalid');
+            document.getElementById('confirm-password').classList.remove('is-invalid');
+        }
+
+        if (!isValid) {
+            showAlert('danger', 'Iltimos, barcha majburiy maydonlarni to‘g‘ri to‘ldiring!');
+            return;
+        }
+
+        formData.append('id', userData.userId.toString());
+        formData.append('firstName', firstName);
+        formData.append('lastName', lastName);
+        formData.append('phoneNumber', phoneNumber);
+        if (password) formData.append('password', password);
+        if (imageInput.files[0]) formData.append('file', imageInput.files[0]);
+
+        axios.post('http://localhost:8080/api/v1/auth/updateProfile', formData, {
+            headers: { Authorization: `${userData.token}` }
+        })
+            .then(response => {
+                const updatedData = response.data;
+                userData.userId = updatedData.id || userData.userId;
+                userData.firstName = updatedData.firstName;
+                userData.lastName = updatedData.lastName;
+                userData.phoneNumber = updatedData.phoneNumber;
+                if (updatedData.image) userData.image = updatedData.image;
+                localStorage.setItem('userData', JSON.stringify(userData));
+
+                document.getElementById('admin-name').textContent = updatedData.firstName;
+                document.getElementById('dropdown-admin-name').textContent = `${updatedData.firstName} ${updatedData.lastName}`.trim();
+
+                profilePics.forEach(pic => {
+                    pic.src = updatedData.image || 'https://via.placeholder.com/150';
+                });
+
+                bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
+                showAlert('success', 'Profil muvaffaqiyatli yangilandi');
+            })
+            .catch(error => {
+                console.error('Profilni yangilashda xato:', error.response?.data || error);
+                showAlert('danger', error.response?.data?.message || 'Profilni yangilashda xato yuz berdi');
+            });
+    });
+
+    document.getElementById('profile-image-input').addEventListener('change', e => {
+        if (e.target.files && e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = event => {
+                document.getElementById('modal-profile-pic').src = event.target.result;
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        }
+    });
+
+    document.querySelectorAll('#profile-form input[type="password"]').forEach(input => {
+        input.addEventListener('input', () => {
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirm-password').value.trim();
+            if (input.id === 'password' && (password.length >= 6 || !password)) input.classList.remove('is-invalid');
+            if (input.id === 'confirm-password' && (password === confirmPassword || !confirmPassword)) input.classList.remove('is-invalid');
+        });
+    });
+
+    // Talaba qo‘shish
+    document.getElementById('save-student-btn').addEventListener('click', () => {
+        const form = document.getElementById('add-student-form');
+        const firstNameInput = document.getElementById('student-first-name');
+        const lastNameInput = document.getElementById('student-last-name');
+        const phoneNumberInput = document.getElementById('student-phone-number');
+        const passwordInput = document.getElementById('student-password');
+
+        const firstName = firstNameInput.value.trim();
+        const lastName = lastNameInput.value.trim();
+        const phoneNumber = phoneNumberInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        let isValid = true;
+
+        if (!firstName) {
+            firstNameInput.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            firstNameInput.classList.remove('is-invalid');
+        }
+
+        if (!lastName) {
+            lastNameInput.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            lastNameInput.classList.remove('is-invalid');
+        }
+
+        if (!phoneNumber || !phoneNumber.match(/^\+\d{12}$/)) {
+            phoneNumberInput.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            phoneNumberInput.classList.remove('is-invalid');
+        }
+
+        if (!password || password.length < 6) {
+            passwordInput.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            passwordInput.classList.remove('is-invalid');
+        }
+
+        if (!isValid) {
+            showAlert('danger', 'Iltimos, barcha maydonlarni to‘g‘ri to‘ldiring!');
+            return;
+        }
+
+        const saveBtn = document.getElementById('save-student-btn');
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Yuklanmoqda...';
+
+        axios.post('http://localhost:8080/api/v1/admin/student/save', {
+            firstName,
+            lastName,
+            phoneNumber,
+            password
+        }, {
+            headers: { Authorization: `${userData.token}` }
+        })
+            .then(() => {
+                form.reset();
+                bootstrap.Modal.getInstance(document.getElementById('addStudentModal')).hide();
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-plus me-1"></i>Talaba Qo‘shish';
+                showAlert('success', 'Talaba muvaffaqiyatli qo‘shildi!');
+                loadStudents();
+            })
+            .catch(error => {
+                console.error('Talaba qo‘shishda xato:', error.response?.data || error);
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-plus me-1"></i>Talaba Qo‘shish';
+                showAlert('danger', error.response?.data?.message || 'Talaba qo‘shilmadi! (Bunday telefon raqami mavjud)');
+            });
+    });
+
+    const addStudentModal = document.getElementById('addStudentModal');
+    addStudentModal.addEventListener('hidden.bs.modal', () => {
+        const form = document.getElementById('add-student-form');
+        form.reset();
+        form.classList.remove('was-validated');
+        document.getElementById('alert-container').innerHTML = '';
+        form.querySelectorAll('input').forEach(input => input.classList.remove('is-invalid'));
+    });
+
+    function showAlert(type, message) {
+        const alertContainer = document.getElementById('alert-container');
+        alertContainer.innerHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+        setTimeout(() => {
+            const alert = alertContainer.querySelector('.alert');
+            if (alert) {
+                bootstrap.Alert.getOrCreateInstance(alert).close();
+            }
+        }, 5000);
+    }
+
+    const inputs = document.querySelectorAll('#add-student-form input');
+    inputs.forEach(input => {
+        input.addEventListener('input', () => {
+            if (input.id === 'student-first-name' && input.value.trim()) {
+                input.classList.remove('is-invalid');
+            }
+            if (input.id === 'student-last-name' && input.value.trim()) {
+                input.classList.remove('is-invalid');
+            }
+            if (input.id === 'student-phone-number' && input.value.match(/^\+\d{12}$/)) {
+                input.classList.remove('is-invalid');
+            }
+            if (input.id === 'student-password' && input.value.trim().length >= 6) {
+                input.classList.remove('is-invalid');
+            }
+        });
+    });
+
+    // Talaba tabini faol qilish bilan boshlash
+    document.getElementById('student-tab').click();</script>
 </body>
 </html>

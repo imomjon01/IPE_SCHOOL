@@ -30,8 +30,8 @@ public class AdminUserController {
     }
 
     @GetMapping("/archived")
-    public ResponseEntity<Page<UserRes>> getStudents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
-                                                     @RequestParam(required = false) String search
+    public ResponseEntity<Page<UserRes>> getStudentsActiveFalse(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+                                                                @RequestParam(required = false) String search
     ) {
         Page<UserRes> users = userService.findAllUsersActive(page, size, search, false);
         return ResponseEntity.ok(users);

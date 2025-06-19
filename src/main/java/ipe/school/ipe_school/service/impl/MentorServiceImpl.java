@@ -1,6 +1,7 @@
 package ipe.school.ipe_school.service.impl;
 
 import ipe.school.ipe_school.models.dtos.req.*;
+import ipe.school.ipe_school.models.dtos.res.GroupRes;
 import ipe.school.ipe_school.models.dtos.res.MentorRes;
 import ipe.school.ipe_school.models.entity.*;
 import ipe.school.ipe_school.models.repo.*;
@@ -8,12 +9,17 @@ import ipe.school.ipe_school.service.interfaces.GroupService;
 import ipe.school.ipe_school.service.interfaces.MentorService;
 import lombok.*;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -81,33 +87,17 @@ public class MentorServiceImpl implements MentorService {
     @Override
     public List<MentorRes> getMentorsBy_Active() {
         List<User> users = userRepository.findByActiveTrueAndRoles_Name("ROLE_MENTOR");
-        List<Group> groups = groupService.getAllGroup();
-
-        Map<Long, List<Group>> mentorGroupsMap = new HashMap<>();
-        for (Group group : groups) {
-            Long mentorId = group.getMentor().getId();
-            mentorGroupsMap
-                    .computeIfAbsent(mentorId, k -> new ArrayList<>())
-                    .add(group);
-        }
-
-        List<MentorRes> mentors = new ArrayList<>();
-        for (User user : users) {
-            List<Group> groupList = mentorGroupsMap.getOrDefault(user.getId(), new ArrayList<>());
-            MentorRes mentorRes = new MentorRes(
-                    user.getId(),
-                    user.getFirstName(),
-                    user.getLastName(),
-                    user.getPhoneNumber(),
-                    user.getAttachment().getContent(),
-                    groupList
-            );
-            mentors.add(mentorRes);
-        }
-
-        return mentors;
+        return users.stream().map(user ->
+                new MentorRes(user.getId(), user.getFirstName(),
+                        user.getLastName(), user.getPhoneNumber(),
+                        user.getAttachment().getContent(),
+                        groupService.getGroupByMentorId(user.getId())
+                                .stream().map(item ->
+                                        new GroupRes(item.getId(),
+                                                item.getName()))
+                                .collect(Collectors.toList())))
+                .collect(Collectors.toList());
     }
-
 
     @Override
     public MentorRes getMentorId(Long mentorId) {
@@ -117,7 +107,11 @@ public class MentorServiceImpl implements MentorService {
                 List<Group> groups = groupService.getGroupByMentorId(mentorId);
                 return new MentorRes(user.getId(), user.getFirstName(),
                         user.getLastName(), user.getPhoneNumber(),
-                        user.getAttachment().getContent(), groups);
+                        user.getAttachment().getContent(),
+                        groups.stream().map(item ->
+                                new GroupRes(item.getId(),
+                                        item.getName())).
+                                collect(Collectors.toList()));
             }
         }
         return null;
@@ -133,6 +127,42 @@ public class MentorServiceImpl implements MentorService {
         return new MentorRes(save.getId(),save.getFirstName(),
                 save.getLastName(), save.getPhoneNumber(),
                 save.getAttachment().getContent(),
-                groupService.getGroupByMentorId(mentorId));
+                groupService.getGroupByMentorId(mentorId)
+                        .stream().map(item -> new GroupRes
+                                (item.getId(), item.getName()))
+                        .collect(Collectors.toList()));
+    }
+
+    @Transactional
+    @Override
+    public Page<MentorRes> getAllMentorsActive(int page, int size, String search) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<User> usersPage;
+
+        if (search != null && !search.trim().isEmpty()) {
+            usersPage = userRepository.findAllActiveMentorsWithSearch(search, true, pageable);
+        } else {
+            usersPage = userRepository.findAllActiveMentor(true, pageable);
+        }
+
+        List<MentorRes> content = usersPage.stream()
+                .map(user -> new MentorRes(
+                        user.getId(),
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getPhoneNumber(),
+                        null,
+                        groupRepository.findByMentor(user).stream()
+                                .map(item -> new GroupRes(item.getId(), item.getName()))
+                                .toList()
+                ))
+                .toList();
+
+        return new PageImpl<>(content, pageable, usersPage.getTotalElements());
+    }
+
+    @Override
+    public Integer getMentorCount() {
+        return userRepository.findAllCountMentorActive();
     }
 }

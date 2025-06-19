@@ -176,4 +176,21 @@ public class GroupServiceImpl implements GroupService {
         ));
 
     }
+
+    @Override
+    public void updateMentor(Long groupId, Long mentorId) {
+        Optional<Group> byId = groupRepository.findById(groupId);
+        if (byId.isPresent()) {
+            Group group = byId.get();
+            if (mentorId == null) {
+                group.setMentor(null);
+            }else {
+                User user = userRepository.findById(mentorId).get();
+                group.setMentor(user);
+            }
+            groupRepository.save(group);
+        }else  {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Group not found");
+        }
+    }
 }
