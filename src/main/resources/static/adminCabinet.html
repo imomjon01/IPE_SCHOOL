@@ -295,9 +295,32 @@
                     </div>
                 </div>
 
-                <!-- Guruh Bo‘limi (sukut bo‘yicha yashirin) -->
+                <!-- Guruh Bo‘limi -->
                 <div class="tab-content d-none" id="group-content">
-                    <!-- Guruhlar uchun tuzilma qo‘shilishi mumkin -->
+                    <!-- Yangi guruh qo‘shish tugmasi -->
+                    <div class="mb-3">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGroupModal">Yangi guruh qo‘shish</button>
+                    </div>
+
+                    <!-- Guruhlar jadvali -->
+                    <table class="table table-bordered" id="group-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nomi</th>
+                            <th>Mentor</th>
+                            <th>Talabalar</th>
+                            <th>Modullar</th>
+                            <th>Amallar</th>
+                        </tr>
+                        </thead>
+                        <tbody id="group-table-body"></tbody>
+                    </table>
+
+                    <!-- Sahifalash -->
+                    <nav>
+                        <ul class="pagination" id="group-pagination"></ul>
+                    </nav>
                 </div>
 
                 <!-- Arxiv Bo‘limi -->
@@ -570,13 +593,75 @@
     </div>
 </div>
 
+<!-- Yangi guruh qo‘shish modali -->
+<div class="modal fade" id="addGroupModal" tabindex="-1" aria-labelledby="addGroupModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addGroupModalLabel">Yangi guruh qo‘shish</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-group-form">
+                    <div class="mb-3">
+                        <label for="group-name" class="form-label">Guruh nomi</label>
+                        <input type="text" class="form-control" id="group-name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="group-mentor" class="form-label">Mentor</label>
+                        <select class="form-control" id="group-mentor" required>
+                            <option value="">Mentorni tanlang</option>
+                            <!-- Mentorlar JS orqali yuklanadi -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="group-students" class="form-label">Talabalar</label>
+                        <select class="form-control" id="group-students" multiple>
+                            <!-- Talabalar JS orqali yuklanadi -->
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                <button type="button" class="btn btn-primary" id="save-group-btn">Saqlash</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modul qo‘shish modali -->
+<div class="modal fade" id="addModuleModal" tabindex="-1" aria-labelledby="addModuleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModuleModalLabel">Yangi modul qo‘shish</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-module-form">
+                    <input type="hidden" id="module-group-id">
+                    <div class="mb-3">
+                        <label for="module-name" class="form-label">Modul nomi</label>
+                        <input type="text" class="form-control" id="module-name" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                <button type="button" class="btn btn-primary" id="save-module-btn">Saqlash</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 <script>
     let userData = JSON.parse(localStorage.getItem('userData'));
 
     if (!userData || !userData.userId) {
-        window.location.href = 'http://localhost:63342/IPE_SCHOOL/static/homePage.html';
+        window.location.href = 'index.html';
     }
 
     // Admin profil ma'lumotlarini o‘rnatish
@@ -639,7 +724,7 @@
     let isMentorCountLoaded = false;
     function loadMentorCount() {
         if (isMentorCountLoaded) return;
-        axios.get('http://localhost:8080/api/v1/admin/mentor/getMentorCount', {
+        axios.get('/api/v1/admin/mentor/getMentorCount', {
             headers: { Authorization: `${userData.token}` }
         })
             .then(response => {
@@ -656,7 +741,7 @@
 
     // Mentorlarni yuklash
     function loadMentors(page = 0, size = 10, search = '') {
-        axios.get('http://localhost:8080/api/v1/admin/mentor/getMentors', {
+        axios.get('/api/v1/admin/mentor/getMentors', {
             headers: { Authorization: `${userData.token}` },
             params: { page, size, search }
         })
@@ -768,7 +853,7 @@
 
     // Guruhlarni modal uchun yuklash
     function loadGroupsForModal() {
-        axios.get('http://localhost:8080/api/v1/group/getAll', {
+        axios.get('/api/v1/group/getAll', {
             headers: { Authorization: `${userData.token}` }
         })
             .then(response => {
@@ -790,7 +875,7 @@
 
     // Mentorlarni modal uchun yuklash
     function loadMentorsForModal() {
-        axios.get('http://localhost:8080/api/v1/admin/mentor/getMentors', {
+        axios.get('/api/v1/admin/mentor/getMentors', {
             headers: { Authorization: `${userData.token}` },
             params: { page: 0, size: 1000 }
         })
@@ -842,7 +927,7 @@
 
     // Mentor guruhini yangilash
     function updateMentorGroup(groupId, mentorId) {
-        axios.put(`http://localhost:8080/api/v1/admin/mentor/updateGroup/${groupId}`, {}, {
+        axios.put(`/api/v1/admin/mentor/updateGroup/${groupId}`, {}, {
             headers: { Authorization: `${userData.token}` },
             params: { mentorId }
         })
@@ -887,7 +972,7 @@
 
     // Arxivlangan guruhlarni yuklash
     function loadArchivedGroups(page = 0, size = 10, search = '') {
-        axios.get('http://localhost:8080/api/v1/group/archived', {
+        axios.get('/api/v1/group/archived', {
             headers: { Authorization: `${userData.token}` },
             params: { page, size, search }
         })
@@ -955,7 +1040,7 @@
 
     // Arxivlangan foydalanuvchilarni yuklash
     function loadArchivedUsers(page = 0, size = 10, search = '') {
-        axios.get('http://localhost:8080/api/v1/admin/user/archived', {
+        axios.get('/api/v1/admin/user/archived', {
             headers: { Authorization: `${userData.token}` },
             params: { page, size, search }
         })
@@ -1039,7 +1124,7 @@
 
     // Foydalanuvchini arxivdan qayta tiklash
     function restoreUser(userId) {
-        axios.put(`http://localhost:8080/api/v1/admin/user/restore/${userId}`, {}, {
+        axios.put(`/api/v1/admin/user/restore/${userId}`, {}, {
             headers: { Authorization: `${userData.token}` }
         })
             .then(() => {
@@ -1056,7 +1141,7 @@
     let isStudentCountLoaded = false;
     function loadStudentCount() {
         if (isStudentCountLoaded) return;
-        axios.get('http://localhost:8080/api/v1/admin/student/getSize', {
+        axios.get('/api/v1/admin/student/getSize', {
             headers: { Authorization: `${userData.token}` }
         })
             .then(response => {
@@ -1073,7 +1158,7 @@
 
     // Eng yaxshi 10 talabani yuklash
     function loadTopStudents() {
-        axios.get('http://localhost:8080/api/v1/admin/student/progress', {
+        axios.get('/api/v1/admin/student/progress', {
             headers: { Authorization: `${userData.token}` }
         })
             .then(response => {
@@ -1114,7 +1199,7 @@
 
     // Talabalarni guruh bilan yuklash
     function loadStudents(page = 0, size = 10, search = '') {
-        axios.get(`http://localhost:8080/api/v1/admin/student`, {
+        axios.get(`/api/v1/admin/student`, {
             headers: { Authorization: `${userData.token}` },
             params: { page, size, search }
         })
@@ -1129,7 +1214,7 @@
     }
 
     function populateStudentTable(students, totalPages, currentPage, size, search) {
-        axios.get('http://localhost:8080/api/v1/group/getAll', {
+        axios.get('/api/v1/group/getAll', {
             headers: { Authorization: `${userData.token}` }
         })
             .then(groupsResponse => {
@@ -1235,7 +1320,7 @@
 
     // Guruh yangilash
     function updateStudentGroup(studentId, newGroupId, oldGroupId) {
-        axios.put('http://localhost:8080/api/v1/group/updateStudents', {
+        axios.put('/api/v1/group/updateStudents', {
             studentId: parseInt(studentId),
             newGroupId: newGroupId ? parseInt(newGroupId) : null,
             oldGroupId: oldGroupId ? parseInt(oldGroupId) : null
@@ -1254,7 +1339,7 @@
 
     // Rol o‘zgartirish
     function loadUsersForRoleChange(page = 0, size = 10, search = '') {
-        axios.get('http://localhost:8080/api/v1/admin/role/getByPage', {
+        axios.get('/api/v1/admin/role/getByPage', {
             headers: { Authorization: `${userData.token}` },
             params: { page, size, search }
         })
@@ -1376,7 +1461,7 @@
             return;
         }
 
-        axios.post('http://localhost:8080/api/v1/admin/role', {
+        axios.post('/api/v1/admin/role', {
             userId: parseInt(userId),
             roleId
         }, {
@@ -1393,7 +1478,7 @@
     }
 
     function deleteUser(userId) {
-        axios.delete(`http://localhost:8080/api/v1/admin/user/${userId}`, {
+        axios.delete(`/api/v1/admin/user/${userId}`, {
             headers: { Authorization: `${userData.token}` }
         })
             .then(() => {
@@ -1476,7 +1561,7 @@
         if (password) formData.append('password', password);
         if (imageInput.files[0]) formData.append('file', imageInput.files[0]);
 
-        axios.post('http://localhost:8080/api/v1/auth/updateProfile', formData, {
+        axios.post('/api/v1/auth/updateProfile', formData, {
             headers: { Authorization: `${userData.token}` }
         })
             .then(response => {
@@ -1575,7 +1660,7 @@
         saveBtn.disabled = true;
         saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Yuklanmoqda...';
 
-        axios.post('http://localhost:8080/api/v1/admin/student/save', {
+        axios.post('/api/v1/admin/student/save', {
             firstName,
             lastName,
             phoneNumber,

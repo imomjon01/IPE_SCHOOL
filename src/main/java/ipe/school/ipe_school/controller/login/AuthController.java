@@ -62,11 +62,11 @@ public class AuthController {
 
     private String determineRedirectUrl(List<String> roles) {
         if (roles.contains("ROLE_ADMIN")) {
-            return "http://localhost:63342/IPE_SCHOOL/static/adminCabinet.html";
+            return "/adminCabinet.html";
         } else if (roles.contains("ROLE_MENTOR")) {
-            return "http://localhost:63342/IPE_SCHOOL/static/mentorCabinet.html";
+            return "/mentorCabinet.html";
         } else {
-            return "http://localhost:63342/IPE_SCHOOL/static/studentCabinet.html";
+            return "/studentCabinet.html";
         }
     }
 

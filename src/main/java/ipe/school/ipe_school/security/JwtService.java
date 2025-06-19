@@ -38,17 +38,6 @@ public class JwtService {
         return Keys.hmacShaKeyFor("123123123123123123123123123123123".getBytes());
     }
 
-    public String refreshToken(String phoneNumber) {
-        User user = userRepository.findByPhoneNumber(phoneNumber);
-        return "Bearer " + Jwts.builder()
-                .subject(phoneNumber)
-                .claim("roles", user.getRoles().stream().map(Roles::getName).collect(Collectors.joining(",")))
-                .issuedAt(new Date())
-                .expiration(new Date(new Date().getTime() + 1000 * 60 * 24*7))
-                .signWith(getSecretKey())
-                .compact();
-    }
-
     public boolean validateToken(String token) {
         try {
             Jwts.parser()

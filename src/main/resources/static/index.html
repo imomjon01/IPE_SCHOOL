@@ -822,7 +822,7 @@
         <form class="login-form" id="login-form">
             <div class="input-group">
                 <label for="phoneNumber">Phone Number</label>
-                <input type="text" id="phoneNumber" name="phoneNumber" placeholder="+998 XX XXX XX XX" required>
+                <input type="text" value="+998" id="phoneNumber" name="phoneNumber" placeholder="+998XXXXXXXXX" required>
             </div>
             <div class="input-group">
                 <label for="password">Password</label>
@@ -916,7 +916,7 @@
         const password = e.target.password.value;
 
         try {
-            const response = await fetch('http://localhost:8080/api/v1/auth', {
+            const response = await fetch('/api/v1/auth', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

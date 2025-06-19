@@ -22,6 +22,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @EnableMethodSecurity
 @Configuration
@@ -44,6 +45,9 @@ public class SecurityConfig {
                             "/api/v1/auth/**","/api/v1/auth",
                             "/api/v1/admin/mentor", "/api/v1/admin/mentor/**",
                             "/actuator/prometheus").permitAll()
+                    .requestMatchers("/", "/index.html","/adminCabinet.html"
+                            ,"/mentorCabinet.html" ,"/studentCabinet.html" , "/static/**",
+                            "/css/**", "/js/**", "/images/**").permitAll()
 
                     .anyRequest().authenticated();
         });
