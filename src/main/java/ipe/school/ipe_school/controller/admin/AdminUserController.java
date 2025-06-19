@@ -1,7 +1,6 @@
 package ipe.school.ipe_school.controller.admin;
 
-import ipe.school.ipe_school.models.dtos.res.GroupRes;
-import ipe.school.ipe_school.models.dtos.res.UserRes;
+import ipe.school.ipe_school.models.dtos.res.*;
 import ipe.school.ipe_school.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
