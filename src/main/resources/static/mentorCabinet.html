@@ -93,8 +93,30 @@
             <button id="back-to-module" class="bg-blue-500 text-white p-2 rounded mb-4">Back to Module</button>
             <h2 id="task-name" class="text-2xl font-semibold text-gray-800 mb-4"></h2>
             <div id="task-video" class="mb-6"></div>
+            <div id="task-attachments" class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-800">Attachments</h3>
+                <div id="attachments-list" class="mt-2"></div>
+            </div>
             <div>
                 <h3 class="text-xl font-semibold text-gray-800">Questions</h3>
+                <button id="add-question-button" class="bg-green-500 text-white p-2 rounded mb-4">Add Question +</button>
+                <div id="add-question-form" class="hidden mt-4">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Add New Question</h3>
+                    <div class="mb-4">
+                        <label for="question-test" class="block text-gray-700">Question Text</label>
+                        <input type="text" id="question-test" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="question-attachment" class="block text-gray-700">Attachment (Optional)</label>
+                        <input type="file" id="question-attachment" class="w-full p-2 border rounded">
+                    </div>
+                    <div class="mb-4">
+                        <h4 class="block text-gray-700 font-semibold">Answer Variants</h4>
+                        <div id="variants-container" class="mt-2"></div>
+                        <button id="add-variant-button" class="bg-blue-500 text-white p-2 rounded mt-2">+ Add Variant</button>
+                    </div>
+                    <button id="submit-question" class="bg-blue-500 text-white p-2 rounded">Add Question</button>
+                </div>
                 <div id="questions-list" class="mt-2"></div>
             </div>
         </div>
@@ -130,11 +152,13 @@
 </footer>
 
 <script>
+    const BASE_URL = 'http://localhost:8080';
     let currentGroup = null;
     let currentModule = null;
+    let currentTaskId = null;
 
     // Utility: convert a byte[] array into a Base64 data-URL
-    function byteArrayToDataUrl(byteArray, mime = 'image/png') {
+    function byteArrayToDataUrl(byteArray, mime = 'application/octet-stream') {
         const uint8 = new Uint8Array(byteArray);
         let binary = '';
         for (let i = 0; i < uint8.length; i++) {
@@ -146,7 +170,7 @@
     // Utility: get image source
     function getImageSrc(imageData) {
         if (Array.isArray(imageData) && imageData.length) {
-            return byteArrayToDataUrl(imageData);
+            return byteArrayToDataUrl(imageData, 'image/png');
         } else if (typeof imageData === 'string' && imageData.startsWith('data:image')) {
             return imageData;
         }
@@ -156,27 +180,140 @@
     // Helper function to get the correct Authorization header
     function getAuthHeader() {
         let token = localStorage.getItem('authToken');
-        if (token && token.startsWith('Bearer ')) {
-            token = token.substring(7); // Remove "Bearer "
+        if (!token) {
+            console.warn('No auth token found in localStorage');
+            return '';
         }
-        return `Bearer ${token}`;
+        // Handle JSON string or malformed token
+        try {
+            if (typeof token === 'string' && token.startsWith('{')) {
+                token = JSON.parse(token).token || token;
+            }
+        } catch (e) {
+            console.warn('Invalid token format in localStorage:', e.message);
+        }
+        // Remove "Bearer " prefix if present
+        const cleanToken = token.startsWith('Bearer ') ? token.substring(7) : token;
+        console.debug('Using auth token (obfuscated): Bearer ' + cleanToken.slice(0, 4) + '...');
+        return `Bearer ${cleanToken}`;
+    }
+
+    // Fetch with authentication
+    async function fetchWithAuth(url, options = {}) {
+        const authHeader = getAuthHeader();
+        if (!authHeader) {
+            alert('No authentication token found. Please log in again.');
+            window.location.href = '/login.html';
+            throw new Error('No authentication token');
+        }
+
+        console.debug(`Making request to ${BASE_URL}${url}`, {
+            method: options.method || 'GET',
+            headers: {
+                ...options.headers,
+                Authorization: authHeader
+            }
+        });
+
+        try {
+            const response = await fetch(`${BASE_URL}${url}`, {
+                ...options,
+                headers: {
+                    ...options.headers,
+                    'Authorization': authHeader,
+                    'Content-Type': options.headers?.['Content-Type'] || 'application/json'
+                }
+            });
+
+            console.debug(`Response from ${BASE_URL}${url}: ${response.status} ${response.statusText}`);
+
+            if (response.status === 401) {
+                console.error('Unauthorized request. Redirecting to login.');
+                alert('Session expired or invalid token. Please log in again.');
+                localStorage.removeItem('authToken');
+                window.location.href = '/login.html';
+                throw new Error('Unauthorized');
+            }
+
+            return response;
+        } catch (error) {
+            console.error(`Fetch error for ${BASE_URL}${url}:`, error);
+            throw error;
+        }
+    }
+
+    // Create attachment
+    async function createAttachment(file) {
+        if (!file || file.size === 0) {
+            throw new Error('No file selected or file is empty');
+        }
+        if (file.size > 5 * 1024 * 1024) { // 5MB limit
+            throw new Error('File size exceeds 5MB limit');
+        }
+        const formData = new FormData();
+        formData.append('attachment', file);
+        console.debug('Uploading attachment:', { fileName: file.name, size: file.size });
+        try {
+            const response = await fetchWithAuth('/api/v1/attachments', {
+                method: 'POST',
+                headers: {}, // FormData sets Content-Type automatically
+                body: formData
+            });
+            let errorText = 'Unknown error';
+            if (!response.ok) {
+                try {
+                    const errorData = await response.json();
+                    errorText = errorData.message || errorText;
+                } catch {
+                    errorText = await response.text() || errorText;
+                }
+                throw new Error(`Server error: ${response.status} - ${errorText}`);
+            }
+            const data = await response.json();
+            console.debug('Attachment uploaded successfully:', data);
+            return data; // Returns attachment ID
+        } catch (error) {
+            console.error('Attachment upload failed:', error);
+            throw error;
+        }
+    }
+
+    // Add variant input field
+    function addVariantInput(container, index) {
+        const variantDiv = document.createElement('div');
+        variantDiv.className = 'flex items-center space-x-2 mb-2';
+        variantDiv.innerHTML = `
+            <input type="text" id="variant-${index}" class="flex-1 p-2 border rounded" placeholder="Enter variant ${index + 1}" required>
+            <label class="flex items-center space-x-1">
+                <input type="checkbox" id="correct-${index}" class="form-checkbox">
+                <span>Correct</span>
+            </label>
+            <button type="button" class="bg-red-500 text-white p-2 rounded hover:bg-red-600 remove-variant">Remove</button>
+        `;
+        container.appendChild(variantDiv);
+        variantDiv.querySelector('.remove-variant').addEventListener('click', () => {
+            variantDiv.remove();
+        });
     }
 
     // Display mentor profile
     function displayMentorProfile() {
         const userData = JSON.parse(localStorage.getItem('userData'));
-        if (!userData) return;
+        if (!userData) {
+            console.warn('No user data found in localStorage');
+            return;
+        }
 
         const profileSection = document.createElement('div');
         profileSection.className = 'bg-white rounded-lg shadow-lg p-6 mb-8 flex items-center space-x-6';
         const imageSrc = getImageSrc(userData.image);
         profileSection.innerHTML = `
-                <img src="${imageSrc}" alt="Mentor Image" class="w-24 h-24 rounded-full object-cover border-4 border-blue-500">
-                <div>
-                    <h3 class="text-2xl font-semibold text-gray-800">${userData.firstName} ${userData.lastName}</h3>
-                    <p class="text-gray-600">Phone: ${userData.phoneNumber}</p>
-                </div>
-            `;
+            <img src="${imageSrc}" alt="Mentor Image" class="w-24 h-24 rounded-full object-cover border-4 border-blue-500">
+            <div>
+                <h3 class="text-2xl font-semibold text-gray-800">${userData.firstName} ${userData.lastName}</h3>
+                <p class="text-gray-600">Phone: ${userData.phoneNumber}</p>
+            </div>
+        `;
         const dashboardSection = document.querySelector('main section');
         dashboardSection.parentNode.insertBefore(profileSection, dashboardSection);
     }
@@ -185,25 +322,16 @@
     async function fetchMentorGroups() {
         const token = localStorage.getItem('authToken');
         if (!token) {
+            console.warn('No auth token found. Redirecting to login.');
             alert('Please log in to view your groups.');
             window.location.href = '/login.html';
             return;
         }
 
         try {
-            const response = await fetch('http://localhost:8080/api/v1/mentor/group', {
-                method: 'GET',
-                headers: {
-                    'Authorization': getAuthHeader(),
-                    'Content-Type': 'application/json'
-                }
-            });
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Failed to fetch groups: ${response.status} ${response.statusText} - ${errorText}`);
-            }
+            const response = await fetchWithAuth('/api/v1/mentor/group');
+            if (!response.ok) throw new Error(`Failed to fetch groups: ${response.statusText}`);
             const groups = await response.json();
-            console.log('Fetched groups:', groups);
             displayGroups(groups);
         } catch (error) {
             console.error('Error fetching groups:', error);
@@ -225,36 +353,17 @@
             const groupCard = document.createElement('div');
             groupCard.className = 'bg-white p-6 rounded-lg shadow-md card-hover cursor-pointer';
             groupCard.innerHTML = `<h3 class="text-xl font-semibold text-gray-800">${group.name}</h3>`;
-            groupCard.addEventListener('click', () => {
-                console.log('Group ID:', group.id, 'Type:', typeof group.id);
-                showGroupDetails(group.id);
-            });
+            groupCard.addEventListener('click', () => showGroupDetails(group.id));
             container.appendChild(groupCard);
         });
     }
 
     // Fetch group details
     async function showGroupDetails(groupId) {
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-            alert('Please log in to view group details.');
-            return;
-        }
-
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/group/${groupId}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': getAuthHeader(),
-                    'Content-Type': 'application/json'
-                }
-            });
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Failed to fetch group details: ${response.status} ${response.statusText} - ${errorText}`);
-            }
+            const response = await fetchWithAuth(`/api/v1/group/${groupId}`);
+            if (!response.ok) throw new Error(`Failed to fetch group details: ${response.statusText}`);
             currentGroup = await response.json();
-            console.log('Fetched group details:', currentGroup);
             displayGroupDetails(currentGroup);
         } catch (error) {
             console.error('Error fetching group details:', error);
@@ -279,12 +388,12 @@
                 studentDiv.className = 'flex items-center bg-white p-4 rounded shadow mb-2';
                 const imageSrc = getImageSrc(student.image);
                 studentDiv.innerHTML = `
-                        <img src="${imageSrc}" alt="${student.firstName} ${student.lastName}" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <p class="font-semibold text-lg">${student.firstName} ${student.lastName}</p>
-                            <p class="text-gray-600">${student.phoneNumber}</p>
-                        </div>
-                    `;
+                    <img src="${imageSrc}" alt="${student.firstName} ${student.lastName}" class="w-12 h-12 rounded-full mr-4">
+                    <div>
+                        <p class="font-semibold text-lg">${student.firstName} ${student.lastName}</p>
+                        <p class="text-gray-600">${student.phoneNumber}</p>
+                    </div>
+                `;
                 studentsList.appendChild(studentDiv);
             });
         } else {
@@ -304,10 +413,7 @@
                 button.textContent = module.active ? module.moduleName : `${module.moduleName} 🔒`;
                 button.disabled = !module.active;
                 if (module.active) {
-                    button.addEventListener('click', () => {
-                        console.log('Module ID:', module.id);
-                        showModuleDetails(module.id);
-                    });
+                    button.addEventListener('click', () => showModuleDetails(module.id));
                 }
                 modulesList.appendChild(button);
             });
@@ -319,26 +425,10 @@
 
     // Fetch module details
     async function showModuleDetails(moduleId) {
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-            alert('Please log in to view module details.');
-            return;
-        }
-
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/module/${moduleId}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': getAuthHeader(),
-                    'Content-Type': 'application/json'
-                }
-            });
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Failed to fetch module details: ${response.status} ${response.statusText} - ${errorText}`);
-            }
+            const response = await fetchWithAuth(`/api/v1/module/${moduleId}`);
+            if (!response.ok) throw new Error(`Failed to fetch module details: ${response.statusText}`);
             currentModule = await response.json();
-            console.log('Fetched module details:', currentModule);
             displayModuleDetails(currentModule);
         } catch (error) {
             console.error('Error fetching module details:', error);
@@ -361,10 +451,7 @@
                 const taskButton = document.createElement('button');
                 taskButton.className = 'bg-blue-500 text-white p-2 rounded m-1 hover:bg-blue-600';
                 taskButton.textContent = task.taskName;
-                taskButton.addEventListener('click', () => {
-                    console.log('Task ID:', task.id);
-                    showTaskDetails(task.id);
-                });
+                taskButton.addEventListener('click', () => showTaskDetails(task.id));
                 tasksList.appendChild(taskButton);
             });
         } else {
@@ -374,28 +461,13 @@
 
     // Fetch task details
     async function showTaskDetails(taskId) {
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-            alert('Please log in to view task details.');
-            return;
-        }
-
         try {
-            const taskResponse = await fetch(`http://localhost:8080/api/v1/task/${taskId}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': getAuthHeader(),
-                    'Content-Type': 'application/json'
-                }
-            });
-            if (!taskResponse.ok) {
-                const errorText = await taskResponse.text();
-                throw new Error(`Failed to fetch task details: ${taskResponse.status} ${taskResponse.statusText} - ${errorText}`);
-            }
+            const taskResponse = await fetchWithAuth(`/api/v1/task/${taskId}`);
+            if (!taskResponse.ok) throw new Error(`Failed to fetch task details: ${taskResponse.statusText}`);
             const task = await taskResponse.json();
-            console.log('Fetched task details:', task);
+            currentTaskId = taskId;
 
-            const attachmentIds = [...new Set(task.questionRes.map(q => q.attachmentId).filter(id => id != null))];
+            const attachmentIds = task.attachmentId.filter(id => id != null);
             const attachments = await fetchAttachments(attachmentIds);
             const attachmentMap = new Map(attachments.map(a => [a.id, a]));
 
@@ -409,18 +481,16 @@
     // Fetch attachments by IDs
     async function fetchAttachments(attachmentIds) {
         const promises = attachmentIds.map(id =>
-            fetch(`http://localhost:8080/api/v1/attachment/${id}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': getAuthHeader(),
-                    'Content-Type': 'application/json'
-                }
-            }).then(response => {
-                if (!response.ok) throw new Error(`Failed to fetch attachment ${id}`);
+            fetchWithAuth(`/api/v1/attachments/${id}`).then(response => {
+                if (!response.ok) return null;
                 return response.json();
+            }).catch(error => {
+                console.error(`Error fetching attachment ${id}:`, error);
+                return null;
             })
         );
-        return Promise.all(promises);
+        const results = await Promise.all(promises);
+        return results.filter(a => a != null);
     }
 
     // Display task details
@@ -435,21 +505,45 @@
         if (task.youtubeURL) {
             try {
                 const url = new URL(task.youtubeURL);
-                const videoId = url.searchParams.get('v');
+                const videoId = url.searchParams.get('v') || url.pathname.split('/').pop();
                 if (videoId) {
                     const embedUrl = `https://www.youtube.com/embed/${videoId}`;
                     videoDiv.innerHTML = `
-                            <iframe width="560" height="315" src="${embedUrl}" title="YouTube video player"
-                                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                    allowfullscreen onerror="this.style.display='none'; document.getElementById('youtube-fallback').style.display='block';"></iframe>
-                            <p id="youtube-fallback" class="text-red-600" style="display:none;">Unable to load YouTube video. URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>
-                        `;
+                        <iframe width="560" height="315" src="${embedUrl}" title="YouTube video player"
+                            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen class="max-w-full" onerror="this.style.display='none'; document.getElementById('youtube-fallback').style.display='block';"></iframe>
+                        <p id="youtube-fallback" class="text-red-600" style="display:none;">Unable to load YouTube video. URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>
+                    `;
                 } else {
                     videoDiv.innerHTML = `<p class="text-red-600">Invalid YouTube URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>`;
                 }
-            } catch (e) {
-                videoDiv.innerHTML = `<p class="text-red-600">Invalid YouTube URL: ${task.youtubeURL}</p>`;
+            } catch {
+                videoDiv.innerHTML = `<p class="text-red-600">Invalid YouTube URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>`;
             }
+        }
+
+        const attachmentsList = document.getElementById('attachments-list');
+        attachmentsList.innerHTML = '';
+        if (task.attachmentId && task.attachmentId.length > 0) {
+            task.attachmentId.forEach(id => {
+                const attachment = attachmentMap.get(id);
+                const attachmentDiv = document.createElement('div');
+                attachmentDiv.className = 'mb-2';
+                if (attachment) {
+                    if (attachment.contentType.startsWith('image/')) {
+                        const imageSrc = `data:${attachment.contentType};base64,${attachment.content}`;
+                        attachmentDiv.innerHTML = `<img src="${imageSrc}" alt="Attachment ${id}" class="max-w-full h-auto">`;
+                    } else {
+                        const dataUrl = `data:${attachment.contentType};base64,${attachment.content}`;
+                        attachmentDiv.innerHTML = `<a href="${dataUrl}" download class="text-blue-500 underline">Download Attachment ${id}</a>`;
+                    }
+                } else {
+                    attachmentDiv.innerHTML = `<p class="text-red-600">Attachment not found. URL: ${BASE_URL}/api/v1/attachments/${id}</p>`;
+                }
+                attachmentsList.appendChild(attachmentDiv);
+            });
+        } else {
+            attachmentsList.textContent = 'No attachments for this task.';
         }
 
         const questionsList = document.getElementById('questions-list');
@@ -459,12 +553,12 @@
                 const questionDiv = document.createElement('div');
                 questionDiv.className = 'mb-4 p-4 bg-white rounded shadow';
                 let html = `
-                        <h4 class="text-lg font-semibold">${question.questionText}</h4>
-                        <ul class="list-disc list-inside">
-                            ${question.variant.map(v => `<li>${v}</li>`).join('')}
-                        </ul>
-                        <p class="mt-2"><strong>Current Answer:</strong> ${question.currentAnswer || 'N/A'}</p>
-                    `;
+                    <h4 class="text-lg font-semibold">${question.questionTest}</h4>
+                    <ul class="list-disc list-inside">
+                        ${question.variant.map(v => `<li>${v}</li>`).join('')}
+                    </ul>
+                    <p class="mt-2"><strong>Correct Answer:</strong> ${question.currentAnswer || 'N/A'}</p>
+                `;
                 if (question.attachmentId) {
                     const attachment = attachmentMap.get(question.attachmentId);
                     if (attachment) {
@@ -474,6 +568,8 @@
                         } else {
                             html += `<p class="mt-2">Attachment available (type: ${attachment.contentType})</p>`;
                         }
+                    } else {
+                        html += `<p class="mt-2 text-red-600">Question attachment not found. URL: ${BASE_URL}/api/v1/attachments/${question.attachmentId}</p>`;
                     }
                 }
                 questionDiv.innerHTML = html;
@@ -485,15 +581,6 @@
     }
 
     // Add task functionality
-    document.addEventListener('click', (event) => {
-        if (event.target.id === 'add-task-button') {
-            document.getElementById('add-task-form').classList.remove('hidden');
-        }
-        if (event.target.id === 'submit-task') {
-            addTask();
-        }
-    });
-
     async function addTask() {
         const taskName = document.getElementById('task-name').value;
         const youtubeURL = document.getElementById('youtube-url').value;
@@ -513,23 +600,21 @@
             formData.append('attachments', attachments[i]);
         }
 
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-            alert('Please log in to add a task.');
-            return;
-        }
-
         try {
-            const response = await fetch('http://localhost:8080/api/v1/task', {
+            const response = await fetchWithAuth('/api/v1/task', {
                 method: 'POST',
-                headers: {
-                    'Authorization': getAuthHeader()
-                },
+                headers: {}, // FormData sets Content-Type automatically
                 body: formData
             });
             if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Failed to add task: ${response.status} ${response.statusText} - ${errorText}`);
+                let errorText = 'Unknown error';
+                try {
+                    const errorData = await response.json();
+                    errorText = errorData.message || errorText;
+                } catch {
+                    errorText = await response.text() || errorText;
+                }
+                throw new Error(`Failed to add task: ${response.status} - ${errorText}`);
             }
             await response.json();
             showModuleDetails(currentModule.id);
@@ -543,25 +628,140 @@
         }
     }
 
-    // Initialize
+    // Add question functionality
+    async function addQuestion() {
+        const questionTest = document.getElementById('question-test').value;
+        const attachmentInput = document.getElementById('question-attachment');
+        const attachment = attachmentInput.files[0]; // Single file
+        const variantsContainer = document.getElementById('variants-container');
+        const variantInputs = variantsContainer.querySelectorAll('input[type="text"]');
+        const correctCheckboxes = variantsContainer.querySelectorAll('input[type="checkbox"]');
+
+        if (!questionTest) {
+            alert('Question text is required.');
+            return;
+        }
+
+        const variants = Array.from(variantInputs)
+            .map(input => input.value.trim())
+            .filter(value => value);
+        if (variants.length === 0) {
+            alert('At least one variant is required.');
+            return;
+        }
+
+        const correctAnswers = Array.from(correctCheckboxes)
+            .map((checkbox, index) => checkbox.checked ? variants[index] : null)
+            .filter(answer => answer);
+        if (correctAnswers.length === 0) {
+            alert('At least one correct answer must be selected.');
+            return;
+        }
+
+        let attachmentId = null;
+        if (attachment) {
+            try {
+                attachmentId = await createAttachment(attachment);
+            } catch (error) {
+                console.error('Attachment error details:', error);
+                const proceed = confirm(`Failed to upload attachment: ${error.message}. Proceed without attachment?`);
+                if (!proceed) return;
+            }
+        }
+
+        const questionData = {
+            questionTest,
+            attachmentId,
+            variant: variants,
+            currentAnswer: correctAnswers.join(', ') // Comma-separated for QuestionReq
+        };
+
+        console.debug('Creating question with data:', questionData);
+
+        try {
+            const response = await fetchWithAuth('/api/v1/questions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(questionData)
+            });
+            let errorText = 'Unknown error';
+            if (!response.ok) {
+                try {
+                    const errorData = await response.json();
+                    errorText = errorData.message || errorText;
+                } catch {
+                    errorText = await response.text() || errorText;
+                }
+                throw new Error(`Failed to add question: ${response.status} - ${errorText}`);
+            }
+            console.debug('Question created successfully');
+            showTaskDetails(currentTaskId);
+            document.getElementById('add-question-form').classList.add('hidden');
+            document.getElementById('question-test').value = '';
+            document.getElementById('question-attachment').value = '';
+            variantsContainer.innerHTML = ''; // Clear variants
+            addVariantInput(variantsContainer, 0); // Add one default variant
+        } catch (error) {
+            console.error('Error adding question:', error);
+            alert(`An error occurred while adding the question: ${error.message}`);
+        }
+    }
+
+    // Event listeners
     document.addEventListener('DOMContentLoaded', () => {
-        displayMentorProfile();
-        fetchMentorGroups();
+        if (!localStorage.getItem('authToken')) {
+            console.warn('No auth token found on page load. Redirecting to login.');
+            window.location.href = '/login.html';
+        } else {
+            displayMentorProfile();
+            fetchMentorGroups();
+        }
+
+        const variantsContainer = document.getElementById('variants-container');
+        const addVariantButton = document.getElementById('add-variant-button');
+
+        // Initialize with one variant input
+        addVariantInput(variantsContainer, 0);
+
+        // Add new variant on button click
+        addVariantButton.addEventListener('click', () => {
+            const currentVariants = variantsContainer.querySelectorAll('input[type="text"]').length;
+            addVariantInput(variantsContainer, currentVariants);
+        });
+
         document.getElementById('back-to-groups').addEventListener('click', () => {
             document.getElementById('group-details').classList.add('hidden');
             document.getElementById('module-details').classList.add('hidden');
             document.getElementById('task-details').classList.add('hidden');
             document.getElementById('groups-container').classList.remove('hidden');
         });
+
         document.getElementById('back-to-group').addEventListener('click', () => {
-            if (currentGroup) {
-                displayGroupDetails(currentGroup);
-            }
+            if (currentGroup) displayGroupDetails(currentGroup);
         });
+
         document.getElementById('back-to-module').addEventListener('click', () => {
-            if (currentModule) {
-                displayModuleDetails(currentModule);
-            }
+            if (currentModule) displayModuleDetails(currentModule);
+        });
+
+        document.getElementById('add-task-button').addEventListener('click', () => {
+            document.getElementById('add-task-form').classList.remove('hidden');
+        });
+
+        document.getElementById('submit-task').addEventListener('click', (e) => {
+            e.preventDefault();
+            addTask();
+        });
+
+        document.getElementById('add-question-button').addEventListener('click', () => {
+            document.getElementById('add-question-form').classList.remove('hidden');
+            variantsContainer.innerHTML = ''; // Reset variants
+            addVariantInput(variantsContainer, 0); // Add one default variant
+        });
+
+        document.getElementById('submit-question').addEventListener('click', (e) => {
+            e.preventDefault();
+            addQuestion();
         });
     });
 </script>
