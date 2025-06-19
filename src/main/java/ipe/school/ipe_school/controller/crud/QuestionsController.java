@@ -16,7 +16,7 @@ import static ipe.school.ipe_school.utils.ApiConstants.*;
 public class QuestionsController {
     private final QuestionService questionService;
 
-    @GetMapping()
+    @PostMapping()
     public ResponseEntity<QuestionRes> createTask(@RequestBody QuestionReq questionReq) {
         QuestionRes questionRes = questionService.save(questionReq);
         return ResponseEntity.ok(questionRes);

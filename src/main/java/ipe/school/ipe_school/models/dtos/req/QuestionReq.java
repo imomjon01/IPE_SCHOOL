@@ -13,6 +13,6 @@ public class QuestionReq {
     String questionTest;
     List<String> variant;
     String currentAnswer;
-
+    Long taskId;
 
 }
