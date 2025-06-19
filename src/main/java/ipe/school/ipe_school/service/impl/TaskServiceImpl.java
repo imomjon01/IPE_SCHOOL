@@ -3,6 +3,7 @@ package ipe.school.ipe_school.service.impl;
 import ipe.school.ipe_school.models.dtos.req.TaskReq;
 import ipe.school.ipe_school.models.dtos.res.TaskRes;
 import ipe.school.ipe_school.models.entity.Attachment;
+import ipe.school.ipe_school.models.entity.Module;
 import ipe.school.ipe_school.models.entity.Task;
 import ipe.school.ipe_school.models.repo.AttachmentRepository;
 import ipe.school.ipe_school.models.repo.ModuleRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,7 +43,18 @@ public class TaskServiceImpl implements TaskService {
         task.setYoutubeURL(taskReq.getYoutubeURL());
         task.setActive(true);
         Task savedTask = taskRepository.save(task);
+        addCurrentModule(savedTask,taskReq.getModuleId());
         return new TaskRes(savedTask.getId(), savedTask.getTaskName());
+    }
+
+    private void addCurrentModule(Task savedTask, Long moduleId) {
+        Module currentModule = moduleRepository.findById(moduleId).orElseThrow(RuntimeException::new);
+        if (currentModule.getTasks() == null) {
+            currentModule.setTasks(new ArrayList<>(List.of(savedTask)));
+        }else{
+            currentModule.getTasks().add(savedTask);
+        }
+        moduleRepository.save(currentModule);
     }
 
 

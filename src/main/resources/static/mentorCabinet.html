@@ -68,21 +68,23 @@
             <div>
                 <h3 class="text-xl font-semibold text-gray-800">Tasks</h3>
                 <button id="add-task-button" class="bg-green-500 text-white p-2 rounded mb-4">Add Task +</button>
-                <div id="tasks-list" class="mt-2 flex flex-wrap gap-2"></div>
                 <div id="add-task-form" class="hidden mt-4">
                     <h3 class="text-xl font-semibold text-gray-800 mb-2">Add New Task</h3>
-                    <form id="task-form">
-                        <div class="mb-4">
-                            <label for="task-name" class="block text-gray-700">Task Name</label>
-                            <input type="text" id="task-name" name="taskName" class="w-full p-2 border rounded" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="youtube-url" class="block text-gray-700">YouTube URL</label>
-                            <input type="text" id="youtube-url" name="youtubeURL" class="w-full p-2 border rounded">
-                        </div>
-                        <button type="submit" class="bg-blue-500 text-white p-2 rounded">Add Task</button>
-                    </form>
+                    <div class="mb-4">
+                        <label for="task-name" class="block text-gray-700">Task Name</label>
+                        <input type="text" id="task-name" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="youtube-url" class="block text-gray-700">YouTube URL</label>
+                        <input type="text" id="youtube-url" class="w-full p-2 border rounded">
+                    </div>
+                    <div class="mb-4">
+                        <label for="attachments" class="block text-gray-700">Attachments</label>
+                        <input type="file" id="attachments" name="attachments" multiple class="w-full p-2 border rounded">
+                    </div>
+                    <button id="submit-task" class="bg-blue-500 text-white p-2 rounded">Add Task</button>
                 </div>
+                <div id="tasks-list" class="mt-2 flex flex-wrap gap-2"></div>
             </div>
         </div>
 
@@ -151,6 +153,15 @@
         return 'https://via.placeholder.com/100';
     }
 
+    // Helper function to get the correct Authorization header
+    function getAuthHeader() {
+        let token = localStorage.getItem('authToken');
+        if (token && token.startsWith('Bearer ')) {
+            token = token.substring(7); // Remove "Bearer "
+        }
+        return `Bearer ${token}`;
+    }
+
     // Display mentor profile
     function displayMentorProfile() {
         const userData = JSON.parse(localStorage.getItem('userData'));
@@ -183,16 +194,20 @@
             const response = await fetch('http://localhost:8080/api/v1/mentor/group', {
                 method: 'GET',
                 headers: {
-                    'Authorization': `${token}`,
+                    'Authorization': getAuthHeader(),
                     'Content-Type': 'application/json'
                 }
             });
-            if (!response.ok) throw new Error('Failed to fetch groups');
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Failed to fetch groups: ${response.status} ${response.statusText} - ${errorText}`);
+            }
             const groups = await response.json();
+            console.log('Fetched groups:', groups);
             displayGroups(groups);
         } catch (error) {
             console.error('Error fetching groups:', error);
-            alert('An error occurred while fetching your groups. Please try again.');
+            alert(`An error occurred while fetching your groups: ${error.message}`);
         }
     }
 
@@ -211,7 +226,7 @@
             groupCard.className = 'bg-white p-6 rounded-lg shadow-md card-hover cursor-pointer';
             groupCard.innerHTML = `<h3 class="text-xl font-semibold text-gray-800">${group.name}</h3>`;
             groupCard.addEventListener('click', () => {
-                currentGroup = null;
+                console.log('Group ID:', group.id, 'Type:', typeof group.id);
                 showGroupDetails(group.id);
             });
             container.appendChild(groupCard);
@@ -227,19 +242,23 @@
         }
 
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/mentor/group/${groupId}`, {
+            const response = await fetch(`http://localhost:8080/api/v1/group/${groupId}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `${token}`,
+                    'Authorization': getAuthHeader(),
                     'Content-Type': 'application/json'
                 }
             });
-            if (!response.ok) throw new Error('Failed to fetch group details');
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Failed to fetch group details: ${response.status} ${response.statusText} - ${errorText}`);
+            }
             currentGroup = await response.json();
+            console.log('Fetched group details:', currentGroup);
             displayGroupDetails(currentGroup);
         } catch (error) {
             console.error('Error fetching group details:', error);
-            alert('An error occurred while fetching group details. Please try again.');
+            alert(`An error occurred while fetching group details: ${error.message}`);
         }
     }
 
@@ -285,7 +304,10 @@
                 button.textContent = module.active ? module.moduleName : `${module.moduleName} 🔒`;
                 button.disabled = !module.active;
                 if (module.active) {
-                    button.addEventListener('click', () => showModuleDetails(module.id));
+                    button.addEventListener('click', () => {
+                        console.log('Module ID:', module.id);
+                        showModuleDetails(module.id);
+                    });
                 }
                 modulesList.appendChild(button);
             });
@@ -307,16 +329,20 @@
             const response = await fetch(`http://localhost:8080/api/v1/module/${moduleId}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `${token}`,
+                    'Authorization': getAuthHeader(),
                     'Content-Type': 'application/json'
                 }
             });
-            if (!response.ok) throw new Error('Failed to fetch module details');
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Failed to fetch module details: ${response.status} ${response.statusText} - ${errorText}`);
+            }
             currentModule = await response.json();
+            console.log('Fetched module details:', currentModule);
             displayModuleDetails(currentModule);
         } catch (error) {
             console.error('Error fetching module details:', error);
-            alert('An error occurred while fetching module details. Please try again.');
+            alert(`An error occurred while fetching module details: ${error.message}`);
         }
     }
 
@@ -335,7 +361,10 @@
                 const taskButton = document.createElement('button');
                 taskButton.className = 'bg-blue-500 text-white p-2 rounded m-1 hover:bg-blue-600';
                 taskButton.textContent = task.taskName;
-                taskButton.addEventListener('click', () => showTaskDetails(task.id));
+                taskButton.addEventListener('click', () => {
+                    console.log('Task ID:', task.id);
+                    showTaskDetails(task.id);
+                });
                 tasksList.appendChild(taskButton);
             });
         } else {
@@ -355,12 +384,16 @@
             const taskResponse = await fetch(`http://localhost:8080/api/v1/task/${taskId}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `${token}`,
+                    'Authorization': getAuthHeader(),
                     'Content-Type': 'application/json'
                 }
             });
-            if (!taskResponse.ok) throw new Error('Failed to fetch task details');
+            if (!taskResponse.ok) {
+                const errorText = await taskResponse.text();
+                throw new Error(`Failed to fetch task details: ${taskResponse.status} ${taskResponse.statusText} - ${errorText}`);
+            }
             const task = await taskResponse.json();
+            console.log('Fetched task details:', task);
 
             const attachmentIds = [...new Set(task.questionRes.map(q => q.attachmentId).filter(id => id != null))];
             const attachments = await fetchAttachments(attachmentIds);
@@ -369,18 +402,17 @@
             displayTaskDetails(task, attachmentMap);
         } catch (error) {
             console.error('Error fetching task details or attachments:', error);
-            alert('An error occurred while fetching task details. Please try again.');
+            alert(`An error occurred while fetching task details: ${error.message}`);
         }
     }
 
     // Fetch attachments by IDs
     async function fetchAttachments(attachmentIds) {
-        const token = localStorage.getItem('authToken');
         const promises = attachmentIds.map(id =>
             fetch(`http://localhost:8080/api/v1/attachment/${id}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `${token}`,
+                    'Authorization': getAuthHeader(),
                     'Content-Type': 'application/json'
                 }
             }).then(response => {
@@ -435,11 +467,13 @@
                     `;
                 if (question.attachmentId) {
                     const attachment = attachmentMap.get(question.attachmentId);
-                    if (attachment && attachment.contentType.startsWith('image/')) {
-                        const imageSrc = `data:${attachment.contentType};base64,${attachment.content}`;
-                        html += `<img src="${imageSrc}" alt="Question Attachment" class="mt-2 max-w-full h-auto">`;
-                    } else if (attachment) {
-                        html += `<p class="mt-2">Attachment available (type: ${attachment.contentType})</p>`;
+                    if (attachment) {
+                        if (attachment.contentType.startsWith('image/')) {
+                            const imageSrc = `data:${attachment.contentType};base64,${attachment.content}`;
+                            html += `<img src="${imageSrc}" alt="Question Attachment" class="mt-2 max-w-full h-auto">`;
+                        } else {
+                            html += `<p class="mt-2">Attachment available (type: ${attachment.contentType})</p>`;
+                        }
                     }
                 }
                 questionDiv.innerHTML = html;
@@ -451,47 +485,63 @@
     }
 
     // Add task functionality
-    document.getElementById('add-task-button').addEventListener('click', () => {
-        document.getElementById('add-task-form').classList.remove('hidden');
+    document.addEventListener('click', (event) => {
+        if (event.target.id === 'add-task-button') {
+            document.getElementById('add-task-form').classList.remove('hidden');
+        }
+        if (event.target.id === 'submit-task') {
+            addTask();
+        }
     });
 
-    document.getElementById('task-form').addEventListener('submit', async (event) => {
-        event.preventDefault();
+    async function addTask() {
         const taskName = document.getElementById('task-name').value;
         const youtubeURL = document.getElementById('youtube-url').value;
-        const taskReq = {
-            moduleId: currentModule.id,
-            taskName: taskName,
-            youtubeURL: youtubeURL
-        };
+        const attachmentsInput = document.getElementById('attachments');
+        const attachments = attachmentsInput.files;
+
+        if (!taskName) {
+            alert('Task name is required.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('taskName', taskName);
+        formData.append('youtubeURL', youtubeURL || '');
+        formData.append('moduleId', currentModule.id.toString());
+        for (let i = 0; i < attachments.length; i++) {
+            formData.append('attachments', attachments[i]);
+        }
+
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            alert('Please log in to add a task.');
+            return;
+        }
+
         try {
-            const token = localStorage.getItem('authToken');
-            if (!token) {
-                alert('Please log in to add a task.');
-                return;
-            }
             const response = await fetch('http://localhost:8080/api/v1/task', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `${token}`,
-                    'Content-Type': 'application/json'
+                    'Authorization': getAuthHeader()
                 },
-                body: JSON.stringify(taskReq)
+                body: formData
             });
-            if (!response.ok) throw new Error('Failed to add task');
-            const newTask = await response.json();
-            // Refresh module details
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Failed to add task: ${response.status} ${response.statusText} - ${errorText}`);
+            }
+            await response.json();
             showModuleDetails(currentModule.id);
-            // Hide the form
             document.getElementById('add-task-form').classList.add('hidden');
-            // Clear the form
             document.getElementById('task-name').value = '';
             document.getElementById('youtube-url').value = '';
+            document.getElementById('attachments').value = '';
         } catch (error) {
             console.error('Error adding task:', error);
-            alert('An error occurred while adding the task. Please try again.');
+            alert(`An error occurred while adding the task: ${error.message}`);
         }
-    });
+    }
 
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
