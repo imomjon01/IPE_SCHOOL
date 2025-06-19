@@ -25,7 +25,7 @@ public class TaskController {
     private final TaskMapper taskMapper;
 
     @PostMapping
-    public ResponseEntity<TaskRes> addTask(@RequestBody TaskReq task) {
+    public ResponseEntity<TaskRes> addTask(@RequestBody @ModelAttribute TaskReq task) {
         TaskRes taskRes = taskService.addTask(task);
         return new ResponseEntity<>(taskRes, HttpStatus.CREATED);
     }

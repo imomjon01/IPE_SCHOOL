@@ -14,4 +14,5 @@ public class TaskReq {
     List<MultipartFile> attachments;
     String taskName;
     String youtubeURL;
+    Long moduleId;
 }
