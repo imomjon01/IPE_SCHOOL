@@ -8,11 +8,14 @@ import java.util.List;
 
 public interface UserService {
     User save(User user);
-    List<User> findAll();
 
     List<UserRes> findByRole(Long roleId);
 
     UserRes changeUserRole(Long userId, List<Long> roleIds);
 
-    Page<UserRes> findAllUsersActive(int page, int size, String search);
+    Page<UserRes> findAllUsersActive(int page, int size, String search, Boolean isActive);
+
+    void updateUser_Active(Long userId);
+
+    UserRes restoration(Long userId);
 }

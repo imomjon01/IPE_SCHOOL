@@ -29,7 +29,7 @@ public class JwtService {
                 .subject(phoneNumber)
                 .claim("roles", user.getRoles().stream().map(Roles::getName).collect(Collectors.joining(",")))
                 .issuedAt(new Date())
-                .expiration(new Date(new Date().getTime() + 1000 * 60 * 60))
+                .expiration(new Date(new Date().getTime() + 1000L * 60 * 60 * 24 * 7)) // 7 kun
                 .signWith(getSecretKey())
                 .compact();
     }

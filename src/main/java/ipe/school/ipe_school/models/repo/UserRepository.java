@@ -65,4 +65,23 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT COUNT(u) FROM User u JOIN u.roles r WHERE r.name = 'ROLE_STUDENT' AND u.active = true")
     Integer findAllCountStudentActive();
+
+    @Query("SELECT u FROM User u JOIN u.roles r " +
+            "WHERE r.name = 'ROLE_MENTOR' AND u.active = :isActive " +
+            "AND (" +
+            "LOWER(u.firstName) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            "LOWER(u.lastName) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            "LOWER(u.phoneNumber) LIKE LOWER(CONCAT('%', :search, '%'))" +
+            ")")
+    Page<User> findAllActiveMentorsWithSearch(@Param("search") String search,
+                                               @Param("isActive") Boolean isActive,
+                                               Pageable pageable);
+
+
+    @Query("SELECT u FROM User u JOIN u.roles r " +
+            "WHERE r.name = 'ROLE_MENTOR' AND u.active = :isActive")
+    Page<User> findAllActiveMentor(@Param("isActive") Boolean isActive, Pageable pageable);
+
+    @Query("SELECT COUNT(u) FROM User u JOIN u.roles r WHERE r.name = 'ROLE_MENTOR' AND u.active = true")
+    Integer findAllCountMentorActive();
 }

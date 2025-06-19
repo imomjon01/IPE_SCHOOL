@@ -3,19 +3,25 @@ package ipe.school.ipe_school.service.impl;
 import ipe.school.ipe_school.component.GroupMapper;
 import ipe.school.ipe_school.models.dtos.req.GroupReq;
 import ipe.school.ipe_school.models.dtos.req.UpdatetedStudentReq;
+import ipe.school.ipe_school.models.dtos.res.GroupArxivedRes;
 import ipe.school.ipe_school.models.dtos.res.GroupDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.GroupRes;
+import ipe.school.ipe_school.models.dtos.res.StudentDetailsRes;
 import ipe.school.ipe_school.models.entity.Group;
 import ipe.school.ipe_school.models.entity.User;
 import ipe.school.ipe_school.models.repo.GroupRepository;
 import ipe.school.ipe_school.models.repo.UserRepository;
 import ipe.school.ipe_school.service.interfaces.GroupService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -146,6 +152,45 @@ public class GroupServiceImpl implements GroupService {
                 groupRepository.save(group);
             }
         }
+    }
 
+    @Transactional
+    @Override
+    public Page<GroupArxivedRes> getAllGroupsActiveFalse(int page, int size, String search) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Group> groupPage;
+
+        if (search != null && !search.trim().isEmpty()) {
+            groupPage = groupRepository.findAllActiveGroupsWithSearch(search, false, pageable);
+        } else {
+            groupPage = groupRepository.findAllActiveGroup(false, pageable);
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        return groupPage.map(group -> new GroupArxivedRes(
+                group.getId(),
+                group.getName(),
+                group.getUpdatedAt() != null ? group.getUpdatedAt().format(formatter) : null
+        ));
+
+    }
+
+    @Override
+    public void updateMentor(Long groupId, Long mentorId) {
+        Optional<Group> byId = groupRepository.findById(groupId);
+        if (byId.isPresent()) {
+            Group group = byId.get();
+            if (mentorId == null) {
+                group.setMentor(null);
+            }else {
+                User user = userRepository.findById(mentorId).get();
+                group.setMentor(user);
+            }
+            groupRepository.save(group);
+        }else  {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Group not found");
+        }
     }
 }
