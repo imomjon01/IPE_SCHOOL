@@ -35,4 +35,7 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
 
     @Query("SELECT g.name FROM Group g JOIN g.students s WHERE s.id = :id")
     String findGroupNameByStudentId(@Param("id") Long id);
+
+    @Query("SELECT g FROM Group g WHERE g.active = :isActive")
+    Page<Group> findAllActiveGroup(boolean isActive, Pageable pageable);
 }

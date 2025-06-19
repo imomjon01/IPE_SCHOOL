@@ -28,10 +28,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    @Override
-    public List<User> findAll() {
-        return List.of();
-    }
 
     @Override
     @Transactional
@@ -56,14 +52,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserRes> findAllUsersActive(int page, int size, String search) {
+    public Page<UserRes> findAllUsersActive(int page, int size, String search,  Boolean isActive) {
         Pageable pageable = PageRequest.of(page, size);
         Page<User> usersPage;
 
         if (search != null && !search.trim().isEmpty()) {
-            usersPage = userRepository.findAllActiveUsersWithSearch(search, true, pageable);
+            usersPage = userRepository.findAllActiveUsersWithSearch(search, isActive, pageable);
         } else {
-            usersPage = userRepository.findAllActiveUsers(true, pageable);
+            usersPage = userRepository.findAllActiveUsers(isActive, pageable);
         }
 
         return usersPage.map(user -> new UserRes(
@@ -73,5 +69,24 @@ public class UserServiceImpl implements UserService {
                 user.getPhoneNumber(),
                 user.getRoles().stream().map(Roles::getName).toList()
         ));
+    }
+
+    @Override
+    public void updateUser_Active(Long userId) {
+        User user = userRepository.findById(userId).get();
+        user.setActive(false);
+        userRepository.save(user);
+    }
+
+    @Override
+    public UserRes restoration(Long userId) {
+        User user = userRepository.findById(userId).get();
+        if (!user.getActive()) {
+            user.setActive(true);
+            userRepository.save(user);
+        }
+        return new UserRes(user.getId(), user.getFirstName(),
+                user.getLastName(), user.getPhoneNumber(),
+                user.getRoles().stream().map(Roles::getName).toList());
     }
 }

@@ -40,7 +40,7 @@ public class AdminRoleChangeController {
     public ResponseEntity<Page<UserRes>> getStudents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
                                                                @RequestParam(required = false) String search
     ) {
-        Page<UserRes> users = userService.findAllUsersActive(page, size, search);
+        Page<UserRes> users = userService.findAllUsersActive(page, size, search, true);
         return ResponseEntity.ok(users);
     }
 
