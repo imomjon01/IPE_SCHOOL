@@ -301,6 +301,10 @@
             transition: var(--transition);
             text-align: center;
             font-weight: 500;
+            ?w
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .option:hover {
@@ -492,11 +496,11 @@
                     <div class="question-title">Vazifa tanlanmadi</div>
                     <div class="difficulty">Daraja tanlanmadi</div>
                 </div>
-                <div class="question-content">
+                <div class="question-content" id="questionContent">
                     <div class="question-text">
                         Iltimos, vazifa tanlang!
                     </div>
-                    <div class="options">
+                    <div class="options" id="optionsContainer">
                         <!-- Variantlar dinamik ravishda qo'shiladi -->
                     </div>
                 </div>
@@ -538,6 +542,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
     // DOM elementlari
     const levelBar = document.getElementById('levelBar');
@@ -545,12 +550,21 @@
     const taskLoading = document.getElementById('taskLoading');
     const taskList = document.getElementById('taskList');
     const questionBox = document.getElementById('questionBox');
+    const questionContent = document.getElementById('questionContent');
+    const optionsContainer = document.getElementById('optionsContainer');
     const studentNameElement = document.getElementById('studentName');
     const progressText = document.getElementById('progressText');
     const progressFill = document.getElementById('progressFill');
 
-    // Tanlangan modul IDsi
+    // O'zgaruvchilar
     let currentModuleId = null;
+    let currentTaskId = null;
+    let currentQuestionIndex = 0;
+    let currentQuestions = [];
+    let currentTaskDetails = null;
+    let selectedAnswers = [];
+    let videoPlayer = null;
+    let videoCompleted = false;
 
     // Foydalanuvchi ma'lumotlari
     let userData = JSON.parse(localStorage.getItem('userData'));
@@ -573,15 +587,12 @@
         }
     }
 
-    // Modullarni yuklash funksiyasi
+    // Modullarni yuklash
     async function loadModules() {
         moduleLoading.style.display = 'block';
         try {
-            const token = userData.token;
-            const response = await axios.get('http://localhost:8080/api/v1/module', {
-                headers: {
-                    'Authorization': token
-                }
+            const response = await axios.get('http://localhost/api/v1/module', {
+                headers: { 'Authorization': userData.token }
             });
             displayModules(response.data);
         } catch (error) {
@@ -598,7 +609,7 @@
 
     // Modullarni ekranga chiqarish
     function displayModules(modules) {
-        levelBar.innerHTML = ''; // Oldingi modullarni tozalash
+        levelBar.innerHTML = '';
         if (modules.length === 0) {
             questionBox.innerHTML = `
                 <div class="question-content">
@@ -617,197 +628,306 @@
         });
     }
 
-    // Modul tanlash funksiyasi
+    // Modul tanlash
     function selectModule(module) {
-        // Barcha tugmalardan active klassini olib tashlaymiz
-        document.querySelectorAll('.level-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-
-        // Tanlangan tugmaga active klassini qo'shamiz
+        document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
         const selectedBtn = document.querySelector(`.level-btn[data-module-id="${module.id}"]`);
         selectedBtn.classList.add('active');
-
-        // Tanlangan modul ID sini saqlaymiz
         currentModuleId = module.id;
-
-        // Vazifalarni yuklash
         loadTasks(module.id);
     }
 
-    // Vazifalarni yuklash funksiyasi (to'g'rilangan versiya)
+    // Vazifalarni yuklash
     async function loadTasks(moduleId) {
         taskLoading.style.display = 'block';
         taskList.innerHTML = '';
-
         try {
-            const response = await axios.get(
-                `http://localhost:8080/api/v1/module/get/${moduleId}`,
-                {
-                    headers: {
-                        'Authorization': userData.token
-                    }
-                }
-            );
-
-            console.log(response.data); // Haqiqiy javobni konsolga chiqarish
-
-            displayTasks(response.data); // To'g'ridan-to'g'ri ro'yxatni yuborish
-
+            const response = await axios.get(`http://localhost/api/v1/module/get/${moduleId}`, {
+                headers: { 'Authorization': userData.token }
+            });
+            displayTasks(response.data);
         } catch (error) {
             console.error('Vazifalarni yuklashda xato:', error);
-            taskList.innerHTML = `
-            <div class="error-message">
-                Vazifalarni yuklashda xato: ${error.message}
-            </div>
-        `;
+            taskList.innerHTML = `<div class="error-message">Vazifalarni yuklashda xato: ${error.message}</div>`;
         } finally {
             taskLoading.style.display = 'none';
         }
     }
 
-    // Faqat bitta displayTasks funksiyasi qoldiramiz
+    // Vazifalarni ko'rsatish
     function displayTasks(tasks) {
         taskList.innerHTML = '';
-
-        console.log(tasks);
-
         if (!tasks || tasks.length === 0) {
-            taskList.innerHTML = `
-            <div class="empty-message">
-                Ushbu modulda vazifalar mavjud emas
-            </div>
-        `;
+            taskList.innerHTML = `<div class="empty-message">Ushbu modulda vazifalar mavjud emas</div>`;
             return;
         }
 
         tasks.forEach(task => {
             const taskElement = document.createElement('div');
             taskElement.className = 'task';
-            taskElement.innerHTML = `
-            <i class="fas fa-tasks"></i>
-            <span>${task.taskName}</span>
-        `;
+            taskElement.innerHTML = `<i class="fas fa-tasks"></i><span>${task.taskName}</span>`;
             taskElement.addEventListener('click', () => selectTask(task));
             taskList.appendChild(taskElement);
         });
     }
 
-    // Vazifa tanlash funksiyasi
+    // Vazifa tanlash
     async function selectTask(task) {
-        // Tanlangan vazifani belgilash uchun barcha tasklardan active klassini olib tashlaymiz
         document.querySelectorAll('.task').forEach(t => t.classList.remove('active'));
-        const selectedTask = document.querySelector(`.task span:contains('${task.taskName}')`).parentElement;
-        selectedTask.classList.add('active');
+        const taskElements = document.querySelectorAll('.task span');
+        taskElements.forEach(element => {
+            if (element.textContent === task.taskName) {
+                element.parentElement.classList.add('active');
+            }
+        });
 
-        // Vazifa ma'lumotlarini yuklash
+        currentTaskId = task.id;
         try {
-            const response = await axios.get(`http://localhost:8080/api/v1/task/${task.id}`, {
-                headers: {
-                    'Authorization': userData.token
-                }
+            const response = await axios.get(`http://localhost/api/v1/task/${task.id}`, {
+                headers: { 'Authorization': userData.token }
             });
-
-            const taskDetails = response.data; // TaskDetailsRes obyekti
-            displayQuestion(taskDetails);
+            currentTaskDetails = response.data;
+            currentQuestions = currentTaskDetails.questionRes || [];
+            currentQuestionIndex = 0;
+            selectedAnswers = new Array(currentQuestions.length).fill(null);
+            videoCompleted = false;
+            displayTaskDetails(currentTaskDetails);
         } catch (error) {
             console.error('Savollarni yuklashda xato:', error);
             questionBox.innerHTML = `
-            <div class="question-content">
-                <div class="question-text">Savollarni yuklashda xato yuz berdi: ${error.message}</div>
-            </div>`;
+                <div class="question-content">
+                    <div class="question-text">Savollarni yuklashda xato yuz berdi: ${error.message}</div>
+                </div>`;
             questionBox.style.color = 'var(--danger)';
         }
     }
 
-    // Savollarni ekranga chiqarish funksiyasi
-    function displayQuestion(taskDetails) {
-        const questionBox = document.getElementById('questionBox');
-        const questions = taskDetails.questionRes || []; // QuestionRes ro'yxati
+    // YouTube video ID olish
+    function getYouTubeVideoId(url) {
+        const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+        const match = url.match(regex);
+        return match ? match[1] : null;
+    }
 
-        if (!questions || questions.length === 0) {
-            questionBox.innerHTML = `
+    // Vazifa tafsilotlarini ko'rsatish
+    function displayTaskDetails(taskDetails) {
+        questionBox.innerHTML = `
             <div class="question-header">
-                <div class="question-title">${taskDetails.name}</div>
-                <div class="difficulty">Daraja tanlanmadi</div>
+                <div class="question-title">${taskDetails.name || 'Vazifa'}</div>
+                <div class="difficulty">${taskDetails.youtubeURL ? 'Video darslik' : 'Test savollar'}</div>
             </div>
-            <div class="question-content">
-                <div class="question-text">Ushbu vazifa uchun savollar mavjud emas</div>
-            </div>`;
+            <div class="question-content" id="questionContent">
+                <div id="videoContainer" style="display: none;"></div>
+                <div id="questionsContainer" style="display: none;"></div>
+            </div>
+        `;
+
+        const videoContainer = document.getElementById('videoContainer');
+        const questionsContainer = document.getElementById('questionsContainer');
+
+        if (taskDetails.youtubeURL) {
+            const videoId = getYouTubeVideoId(taskDetails.youtubeURL);
+            if (videoId) {
+                videoContainer.style.display = 'block';
+                videoContainer.innerHTML = `
+                    <div id="youtubePlayer"></div>
+                    <div style="margin-top: 20px; text-align: center;">
+                        <button class="action-btn secondary" onclick="skipVideo()">
+                            <i class="fas fa-forward"></i> Videoni o'tkazib yuborish
+                        </button>
+                    </div>
+                `;
+
+                videoPlayer = new YT.Player('youtubePlayer', {
+                    height: '360',
+                    width: '100%',
+                    videoId: videoId,
+                    events: { 'onStateChange': onPlayerStateChange }
+                });
+
+                questionsContainer.style.display = 'none';
+            } else {
+                videoContainer.innerHTML = `<div class="question-text">YouTube video URLi noto'g'ri</div>`;
+                displayQuestions(questionsContainer);
+            }
+        } else {
+            videoContainer.style.display = 'none';
+            questionsContainer.style.display = 'block';
+            displayQuestions(questionsContainer);
+        }
+
+        questionBox.classList.add('active');
+    }
+
+    // YouTube player holati o'zgarganda
+    function onPlayerStateChange(event) {
+        if (event.data === YT.PlayerState.ENDED) {
+            videoCompleted = true;
+            const videoContainer = document.getElementById('videoContainer');
+            const questionsContainer = document.getElementById('questionsContainer');
+            videoContainer.style.display = 'none';
+            questionsContainer.style.display = 'block';
+            displayQuestions(questionsContainer);
+        }
+    }
+
+    // Videoni o'tkazib yuborish
+    function skipVideo() {
+        videoCompleted = true;
+        const videoContainer = document.getElementById('videoContainer');
+        const questionsContainer = document.getElementById('questionsContainer');
+        videoContainer.style.display = 'none';
+        questionsContainer.style.display = 'block';
+        displayQuestions(questionsContainer);
+    }
+
+    // Savollarni ko'rsatish
+    function displayQuestions(questionsContainer) {
+        if (!currentQuestions || currentQuestions.length === 0) {
+            questionsContainer.innerHTML = `<div class="question-text">Ushbu vazifa uchun savollar mavjud emas</div>`;
             return;
         }
 
-        // Faqat birinchi savolni ko'rsatamiz (agar bir nechta savol bo'lsa, navigatsiya qo'shish mumkin)
-        const question = questions[0];
-        const optionsHtml = question.variant
-            ? question.variant
-                .map(
-                    (variant, index) => `
-                <div class="option" data-index="${index}" onclick="selectOption(this, ${index})">
-                    ${variant}
-                </div>`
-                )
-                .join('')
-            : '';
+        displayCurrentQuestion(questionsContainer);
 
-        questionBox.innerHTML = `
-        <div class="question-header">
-            <div class="question-title">${taskDetails.name}</div>
-            <div class="difficulty">Oson</div>
-        </div>
-        <div class="question-content">
-            <div class="question-text">${question.questionTest || 'Savol matni yuklanmoqda...'}</div>
-            <div class="options">
-                ${optionsHtml}
-            </div>
-        </div>
-    `;
-        questionBox.classList.add('active');
-
-        // YouTube linki mavjud bo'lsa ko'rsatish
-        if (taskDetails.youtubeURL) {
-            const youtubeLink = document.createElement('div');
-            youtubeLink.innerHTML = `<a href="${taskDetails.youtubeURL}" target="_blank" class="action-btn">
-            <i class="fab fa-youtube"></i> Video darslik
-        </a>`;
-            questionBox.querySelector('.question-content').appendChild(youtubeLink);
+        if (currentQuestions.length > 1) {
+            const navDiv = document.createElement('div');
+            navDiv.style.display = 'flex';
+            navDiv.style.justifyContent = 'space-between';
+            navDiv.style.marginTop = '20px';
+            navDiv.innerHTML = `
+                <button class="action-btn secondary" onclick="navigateQuestion(-1)">
+                    <i class="fas fa-arrow-left"></i> Oldingi
+                </button>
+                <span style="align-self: center;">
+                    Savol ${currentQuestionIndex + 1}/${currentQuestions.length}
+                </span>
+                <button class="action-btn" onclick="navigateQuestion(1)">
+                    Keyingi <i class="fas fa-arrow-right"></i>
+                </button>
+            `;
+            questionsContainer.appendChild(navDiv);
         }
     }
 
-    // Variant tanlash funksiyasi
-    function selectOption(element, index) {
-        document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
-        element.classList.add('selected');
-        // Tanlangan javobni saqlash uchun qo'shimcha logika qo'shish mumkin
+    // Joriy savolni ko'rsatish
+    function displayCurrentQuestion(questionsContainer) {
+        const question = currentQuestions[currentQuestionIndex];
+        if (!question) {
+            questionsContainer.innerHTML = `<div class="question-text">Savol yuklanmadi</div>`;
+            return;
+        }
+
+        const optionsHtml = question.variant && question.variant.length > 0
+            ? question.variant.map((variant, index) => `
+                <div class="option">
+                    <input type="radio" name="question_${question.id}" value="${variant}"
+                           id="option_${index}" ${selectedAnswers[currentQuestionIndex] === variant ? 'checked' : ''}>
+                    <label for="option_${index}">${variant}</label>
+                </div>
+            `).join('')
+            : '<div class="question-text">Variantlar mavjud emas</div>';
+
+        questionsContainer.innerHTML = `
+            <div class="question-text">${question.questionTest || 'Savol matni mavjud emas'}</div>
+            <div class="options">${optionsHtml}</div>
+        `;
+
+        // Radio tugmachalarni tanlash hodisasini qo'shish
+        document.querySelectorAll(`input[name="question_${question.id}"]`).forEach(input => {
+            input.addEventListener('change', (e) => {
+                selectedAnswers[currentQuestionIndex] = e.target.value;
+                document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                e.target.parentElement.classList.add('selected');
+            });
+        });
     }
 
-    // Javobni saqlash funksiyasi
+    // Savollar orasida harakatlanish
+    function navigateQuestion(direction) {
+        if (!currentQuestions || currentQuestions.length === 0) return;
+
+        currentQuestionIndex += direction;
+        if (currentQuestionIndex < 0) currentQuestionIndex = 0;
+        if (currentQuestionIndex >= currentQuestions.length) currentQuestionIndex = currentQuestions.length - 1;
+
+        displayQuestions(document.getElementById('questionsContainer'));
+
+        const counter = document.querySelector('#questionsContainer span');
+        if (counter) {
+            counter.textContent = `Savol ${currentQuestionIndex + 1}/${currentQuestions.length}`;
+        }
+    }
+
+    // Javobni saqlash
     function saveAnswer() {
-        const selectedOption = document.querySelector('.option.selected');
+        const selectedOption = selectedAnswers[currentQuestionIndex];
         if (selectedOption) {
-            alert('Javob saqlandi: ' + selectedOption.textContent);
+            alert('Javob saqlandi: ' + selectedOption);
         } else {
             alert('Iltimos, javob variantini tanlang!');
         }
     }
 
-    // Javobni qayta yuklash funksiyasi
+    // Javobni qayta yuklash
     function resetAnswer() {
+        selectedAnswers[currentQuestionIndex] = null;
         document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+        document.querySelectorAll(`input[name="question_${currentQuestions[currentQuestionIndex].id}"]`)
+            .forEach(input => input.checked = false);
         alert('Javoblar qayta yuklandi');
     }
 
-    // Javobni yuborish funksiyasi
+    // Javobni yuborish
     async function submitAnswer() {
-        const selectedOption = document.querySelector('.option.selected');
-        if (!selectedOption) {
-            alert('Iltimos, javob variantini tanlang!');
+        if (!selectedAnswers.some(answer => answer !== null)) {
+            alert('Iltimos, kamida bitta savolga javob bering!');
             return;
         }
 
+        const answers = selectedAnswers
+            .map((answer, index) => {
+                if (answer) {
+                    return {
+                        questionId: currentQuestions[index].id,
+                        selectedAnswer: answer
+                    };
+                }
+                return null;
+            })
+            .filter(answer => answer !== null);
+
         try {
-            // Backendga javob yuborish uchun API chaqiruvi (agar backendda endpoint mavjud bo'lsa)
-            alert('Javob yuborildi: ' + selectedOption.textContent);
+            const response = await axios.post('http://localhost/api/v1/answer/submission', answers, {
+                headers: {
+                    'Authorization': userData.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const result = response.data;
+            questionBox.innerHTML = `
+                <div class="question-header">
+                    <div class="question-title">Natijalar</div>
+                    <div class="difficulty">Umumiy</div>
+                </div>
+                <div class="question-content">
+                    <div class="question-text">
+                        Talaba: ${result.studentName}<br>
+                        Guruh: ${result.groupName}<br>
+                        To'g'ri javoblar: ${result.passedTasks}
+                    </div>
+                </div>
+            `;
+            questionBox.classList.add('active');
+
+            // Progressni yangilash
+            const totalQuestions = currentQuestions.length;
+            const progressPercentage = (result.passedTasks / totalQuestions) * 100;
+            progressText.textContent = `${Math.round(progressPercentage)}%`;
+            progressFill.style.width = `${progressPercentage}%`;
+
+            alert('Javoblar yuborildi!');
         } catch (error) {
             console.error('Javob yuborishda xato:', error);
             alert('Javob yuborishda xato yuz berdi');
