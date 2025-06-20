@@ -16,8 +16,8 @@ public class StudentProgress extends BaseEntity {
 
     @ManyToOne
     private User student;
-    private String groupName;
-    private Integer totalQuery;
-    private Integer passedQuery;
-    private Integer failedQuery;
+    private String groupName = "";
+    private Integer totalQuery = 0;
+    private Integer passedQuery = 0;
+    private Integer failedQuery = 0;
 }
