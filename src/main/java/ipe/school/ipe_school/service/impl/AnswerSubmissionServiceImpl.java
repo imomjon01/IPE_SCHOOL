@@ -31,13 +31,18 @@ public class AnswerSubmissionServiceImpl implements AnswerSubmissionService {
         User findUser = userRepository.findByPhoneNumber(user.getPhoneNumber());
         Optional<StudentProgress> byStudentId = studentProgressRepository.findByStudentId(findUser.getId());
         StudentProgress studentProgress;
-        studentProgress = byStudentId.orElseGet(() -> {
-            new StudentProgress();
-            return StudentProgress.builder()
+        if(byStudentId.isPresent()) {
+            studentProgress = byStudentId.get();
+
+        }else {
+            studentProgress = StudentProgress.builder()
                     .student(findUser)
                     .groupName(groupRepository.findGroupNameByStudentId(findUser.getId()))
                     .build();
-        });
+
+        }
+
+
         List<AnswerSubmission> allAnswers = new ArrayList<>();
         for (AnswerSubmissionReq item : answerSubmissionReqs) {
             AnswerSubmission answerSubmission = new AnswerSubmission();
@@ -48,8 +53,13 @@ public class AnswerSubmissionServiceImpl implements AnswerSubmissionService {
 
             boolean equals = question.getCurrentAnswer().equals(item.getSelectedAnswer());
             answerSubmission.setCorrect(equals);
-
-            studentProgress.setTotalQuery(studentProgress.getTotalQuery() + 1);
+            if (studentProgress.getTotalQuery() == null) {
+                studentProgress.setTotalQuery(0);
+                studentProgress.setFailedQuery(0);
+                studentProgress.setPassedQuery(0);
+            }
+            Integer totalQuery = studentProgress.getTotalQuery();
+            studentProgress.setTotalQuery(totalQuery + 1);
             studentProgress.setPassedQuery(studentProgress.getPassedQuery() + (equals ? 1 : 0));
             studentProgress.setFailedQuery(studentProgress.getFailedQuery() + (equals ? 0 : 1));
 
