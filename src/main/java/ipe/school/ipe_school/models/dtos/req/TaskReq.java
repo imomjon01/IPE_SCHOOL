@@ -1,18 +1,19 @@
 package ipe.school.ipe_school.models.dtos.req;
 
-import ipe.school.ipe_school.models.entity.Attachment;
-import ipe.school.ipe_school.models.entity.Question;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import lombok.Value;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Value
+@Getter
+@Setter
 public class TaskReq {
-    List<MultipartFile> attachments;
-    String taskName;
-    String youtubeURL;
-    Long moduleId;
+    private List<MultipartFile> attachments;
+    @NotNull(message = "Task name must not be null")
+    private String taskName;
+    private String youtubeURL;
+    @NotNull(message = "Module ID must not be null")
+    private Long moduleId;
 }

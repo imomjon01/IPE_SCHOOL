@@ -27,4 +27,7 @@ public class QuestionsController {
         questionService.delete(questionId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+//    @PostMapping("/{questionId}")
+//    public ResponseEntity<QuestionRes> updateTask(@PathVariable Long questionId,@RequestBody QuestionReq questionReq) {}
 }

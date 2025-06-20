@@ -9,7 +9,9 @@ import ipe.school.ipe_school.models.entity.Task;
 import ipe.school.ipe_school.service.interfaces.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,15 +26,14 @@ public class TaskController {
     private final TaskService taskService;
     private final TaskMapper taskMapper;
 
-    @PostMapping
-    public ResponseEntity<TaskRes> addTask(@RequestBody @ModelAttribute TaskReq task) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<TaskRes> addTask(@ModelAttribute @Validated TaskReq task) {
         TaskRes taskRes = taskService.addTask(task);
         return new ResponseEntity<>(taskRes, HttpStatus.CREATED);
     }
 
-
     @PostMapping("/{taskId}")
-    public ResponseEntity<TaskRes> updateTask(@PathVariable Long taskId, @RequestBody TaskReq taskReq) {
+    public ResponseEntity<TaskRes> updateTask(@PathVariable Long taskId,@ModelAttribute @Validated  TaskReq taskReq) {
         TaskRes taskRes = taskService.updateTaskById(taskId, taskReq);
         return new ResponseEntity<>(taskRes, HttpStatus.OK);
     }
