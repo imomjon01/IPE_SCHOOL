@@ -528,9 +528,9 @@
                     </div>
                     <div class="mb-3">
                         <label for="student-phone-number" class="form-label">Telefon Raqami</label>
-                        <input type="tel" class="form-control" id="student-phone-number" placeholder="+998 99 999 99 99"
+                        <input type="tel" value="+998" class="form-control" id="student-phone-number" placeholder="+998999999999"
                                required>
-                        <div class="invalid-feedback">Telefon raqami noto‘g‘ri formatda (masalan, +998 99 999 99 99).
+                        <div class="invalid-feedback">Telefon raqami noto‘g‘ri formatda (masalan, +998999999999).
                         </div>
                     </div>
                     <div class="mb-3">
@@ -1566,27 +1566,32 @@
         })
             .then(response => {
                 const updatedData = response.data;
+
+                // Preserve the existing token and update userData
                 userData.userId = updatedData.id || userData.userId;
                 userData.firstName = updatedData.firstName;
                 userData.lastName = updatedData.lastName;
                 userData.phoneNumber = updatedData.phoneNumber;
-                if (updatedData.image) userData.image = updatedData.image;
+                if (updatedData.image !== null && updatedData.image !== "") {
+                    userData.image = updatedData.image;
+                }
                 localStorage.setItem('userData', JSON.stringify(userData));
 
-                document.getElementById('admin-name').textContent = updatedData.firstName;
-                document.getElementById('dropdown-admin-name').textContent = `${updatedData.firstName} ${updatedData.lastName}`.trim();
+                // Update UI elements
+                document.getElementById('admin-name').textContent = updatedData.firstName || 'Admin';
+                document.getElementById('dropdown-admin-name').textContent = `${updatedData.firstName || ''} ${updatedData.lastName || ''}`.trim() || 'Admin';
 
+                const profilePics = document.querySelectorAll('.profile-pic, #modal-profile-pic');
                 profilePics.forEach(pic => {
-                    pic.src = updatedData.image || 'https://via.placeholder.com/150';
+                    pic.src = updatedData.image && updatedData.image !== ""
+                        ? updatedData.image
+                        : (userData.image || 'https://via.placeholder.com/150');
                 });
 
+                // Close the modal
                 bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
                 showAlert('success', 'Profil muvaffaqiyatli yangilandi');
             })
-            .catch(error => {
-                console.error('Profilni yangilashda xato:', error.response?.data || error);
-                showAlert('danger', error.response?.data?.message || 'Profilni yangilashda xato yuz berdi');
-            });
     });
 
     document.getElementById('profile-image-input').addEventListener('change', e => {

@@ -8,6 +8,7 @@ import ipe.school.ipe_school.models.dtos.res.LoginRes;
 import ipe.school.ipe_school.models.dtos.res.UserRes;
 import ipe.school.ipe_school.service.interfaces.AuthService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -76,6 +77,7 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
+    @SneakyThrows
     @PostMapping(value = "/updateProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateProfile(
             @RequestPart("id") String id,
@@ -100,19 +102,16 @@ public class AuthController {
             String base64Image = file != null ?
                     "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(file.getBytes()) :
                     null;
-
             return ResponseEntity.ok(Map.of(
                     "id", userRes.getId(),
                     "firstName", userRes.getFirstName(),
                     "lastName", userRes.getLastName(),
                     "phoneNumber", userRes.getPhoneNumber(),
-                    "image", base64Image,
-                    "roles", null
+                    "image", base64Image != null ? base64Image : "",
+                    "roles", ""
             ));
         } catch (NumberFormatException e) {
             return ResponseEntity.badRequest().body("Noto'g'ri ID formati");
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Server xatosi: " + e.getMessage());
         }
     }
 
