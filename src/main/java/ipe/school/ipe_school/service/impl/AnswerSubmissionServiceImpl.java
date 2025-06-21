@@ -28,23 +28,24 @@ public class AnswerSubmissionServiceImpl implements AnswerSubmissionService {
     @Override
     @Transactional
     public StudentProcessRes submitAnswer(User user, List<AnswerSubmissionReq> answerSubmissionReqs) {
+
         User findUser = userRepository.findByPhoneNumber(user.getPhoneNumber());
+
         Optional<StudentProgress> byStudentId = studentProgressRepository.findByStudentId(findUser.getId());
+
         StudentProgress studentProgress;
-        if(byStudentId.isPresent()) {
-            studentProgress = byStudentId.get();
 
-        }else {
-            studentProgress = StudentProgress.builder()
-                    .student(findUser)
-                    .groupName(groupRepository.findGroupNameByStudentId(findUser.getId()))
-                    .build();
-
-        }
-
+        studentProgress = byStudentId.orElseGet(() -> StudentProgress.builder()
+                .student(findUser)
+                .groupName(groupRepository.findGroupNameByStudentId(findUser.getId()))
+                .build());
 
         List<AnswerSubmission> allAnswers = new ArrayList<>();
         for (AnswerSubmissionReq item : answerSubmissionReqs) {
+            Optional<AnswerSubmission> existingSubmission = answerSubmissionRepository
+                    .findByStudentIdAndQuestionId(findUser.getId(), item.getQuestionId());
+            existingSubmission.ifPresent(System.out::println);
+
             AnswerSubmission answerSubmission = new AnswerSubmission();
             answerSubmission.setStudent(findUser);
             Question question = questionRepository.findById(item.getQuestionId()).orElse(null);
@@ -69,4 +70,5 @@ public class AnswerSubmissionServiceImpl implements AnswerSubmissionService {
         StudentProgress save = studentProgressRepository.save(studentProgress);
         return new StudentProcessRes(findUser.getFullName(), save.getGroupName(), save.getPassedQuery());
     }
+
 }

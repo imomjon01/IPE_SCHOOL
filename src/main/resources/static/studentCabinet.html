@@ -591,7 +591,7 @@
     async function loadModules() {
         moduleLoading.style.display = 'block';
         try {
-            const response = await axios.get('http://localhost/api/v1/module', {
+            const response = await axios.get('/api/v1/module', {
                 headers: { 'Authorization': userData.token }
             });
             displayModules(response.data);
@@ -642,7 +642,7 @@
         taskLoading.style.display = 'block';
         taskList.innerHTML = '';
         try {
-            const response = await axios.get(`http://localhost/api/v1/module/get/${moduleId}`, {
+            const response = await axios.get(`/api/v1/module/get/${moduleId}`, {
                 headers: { 'Authorization': userData.token }
             });
             displayTasks(response.data);
@@ -683,7 +683,7 @@
 
         currentTaskId = task.id;
         try {
-            const response = await axios.get(`http://localhost/api/v1/task/${task.id}`, {
+            const response = await axios.get(`/api/v1/task/${task.id}`, {
                 headers: { 'Authorization': userData.token }
             });
             currentTaskDetails = response.data;
@@ -898,7 +898,7 @@
             .filter(answer => answer !== null);
 
         try {
-            const response = await axios.post('http://localhost/api/v1/answer/submission', answers, {
+            const response = await axios.post('/api/v1/answer/submission', answers, {
                 headers: {
                     'Authorization': userData.token,
                     'Content-Type': 'application/json'
