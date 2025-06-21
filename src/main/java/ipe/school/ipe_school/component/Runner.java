@@ -27,7 +27,7 @@ public class Runner implements CommandLineRunner {
                     new Roles("ROLE_STUDENT")
             )));
         }
-/*        MentorReq mentorReq = new MentorReq("Eshmant", "Toshmatov", "1234", "123");
+      /*  MentorReq mentorReq = new MentorReq("Eshmant", "Toshmatov", "+99811", "root123");
         MentorRes mentor = mentorService.createMentor(mentorReq);
         System.out.println("Mentor: " + mentor);*/
     }
