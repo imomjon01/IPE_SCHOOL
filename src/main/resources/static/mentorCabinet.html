@@ -154,10 +154,7 @@
                 </div>
                 <div id="questions-list" class="mt-2"></div>
             </div>
-            <div class="flex space-x-2 mb-4">
-                <button id="update-task-button" class="bg-yellow-500 text-white p-2 rounded">Update Task</button>
-                <button id="delete-task-button-direct" class="bg-red-500 text-white p-2 rounded">Delete Task</button>
-            </div>
+            <button id="update-task-button" class="bg-yellow-500 text-white p-2 rounded mb-4">Update Task</button>
             <div id="update-task-form" class="hidden mt-4">
                 <h3 class="text-xl font-semibold text-gray-800 mb-2">Update Task</h3>
                 <div class="mb-4">
@@ -172,10 +169,7 @@
                     <label for="update-attachments" class="block text-gray-700">Attachments</label>
                     <input type="file" id="update-attachments" name="attachments" multiple class="w-full p-2 border rounded">
                 </div>
-                <div class="flex space-x-2">
-                    <button id="submit-update-task" class="bg-blue-500 text-white p-2 rounded">Update Task</button>
-                    <button id="delete-task-button" class="bg-red-500 text-white p-2 rounded">Delete Task</button>
-                </div>
+                <button id="submit-update-task" class="bg-blue-500 text-white p-2 rounded">Update Task</button>
             </div>
         </div>
     </section>
@@ -209,6 +203,7 @@
 </footer>
 
 <script>
+    const BASE_URL = 'http://localhost:';
     let currentGroup = null;
     let currentModule = null;
     let currentTaskId = null;
@@ -258,7 +253,7 @@
             throw new Error('No authentication token');
         }
 
-        console.debug(`Making request to ${url}`, {
+        console.debug(`Making request to ${BASE_URL}${url}`, {
             method: options.method || 'GET',
             headers: { Authorization: authHeader, ...options.headers }
         });
@@ -272,12 +267,12 @@
                 headers['Content-Type'] = options.headers?.['Content-Type'] || 'application/json';
             }
 
-            const response = await fetch(`${url}`, {
+            const response = await fetch(`${BASE_URL}${url}`, {
                 ...options,
                 headers
             });
 
-            console.debug(`Response from ${url}: ${response.status} ${response.statusText}`);
+            console.debug(`Response from ${BASE_URL}${url}: ${response.status} ${response.statusText}`);
 
             if (response.status === 401) {
                 console.error('Unauthorized request. Token may be invalid or expired.');
@@ -288,6 +283,7 @@
             }
 
             if (!response.ok) {
+                // Read response body once
                 const contentType = response.headers.get('content-type');
                 let errorText = 'Unknown error';
                 let responseBody;
@@ -310,7 +306,7 @@
 
             return response;
         } catch (error) {
-            console.error(`Fetch error for ${url}:`, error.message);
+            console.error(`Fetch error for ${BASE_URL}${url}:`, error.message);
             throw error;
         }
     }
@@ -378,7 +374,7 @@
         try {
             console.debug('Sending profile update:', Object.fromEntries(formData));
             const response = await fetchWithAuth('/api/v1/mentor/profile', {
-                method: 'POST',
+                method: 'PUT',
                 headers: {},
                 body: formData
             });
@@ -419,21 +415,18 @@
     function displayMentorProfile() {
         const userData = JSON.parse(localStorage.getItem('userData'));
         if (!userData) {
-            console.warn('No user data found in localStorage.');
+            console.warn('No user data found in localStorage');
             return;
         }
-        try {
-            const profilePicture = document.getElementById('profile-picture');
-            const profileName = document.getElementById('profile-name');
-            const profilePhone = document.getElementById('profile-phone');
 
-            const imageSrc = getImageSrc(userData.image);
-            profilePicture.src = imageSrc;
-            profileName.textContent = `${userData.firstName} ${userData.lastName}`;
-            profilePhone.textContent = `Phone: ${userData.phoneNumber}`;
-        } catch (error) {
-            console.error('Error displaying mentor profile:', error);
-        }
+        const profilePicture = document.getElementById('profile-picture');
+        const profileName = document.getElementById('profile-name');
+        const profilePhone = document.getElementById('profile-phone');
+
+        const imageSrc = getImageSrc(userData.image);
+        profilePicture.src = imageSrc;
+        profileName.textContent = `${userData.firstName} ${userData.lastName}`;
+        profilePhone.textContent = `Phone: ${userData.phoneNumber}`;
     }
 
     async function fetchMentorGroups() {
@@ -444,14 +437,15 @@
             window.location.href = '/login.html';
             return;
         }
-        console.log('Fetching groups with token (obfuscated):', token.slice(0, 20) + '...'); // Debug
+        console.debug('Fetching groups with token (obfuscated): ' + token.slice(0, 20) + '...');
+
         try {
-            const response = await fetchWithAuth('/api/v1/tenant/mentor/group');
+            const response = await fetchWithAuth('/api/v1/mentor/group');
             const groups = await response.json();
-            console.log('Groups fetched successfully:', groups); // Debug
+            console.debug('Groups fetched successfully:', groups);
             displayGroups(groups);
         } catch (error) {
-            console.error('Error fetching groups:', error);
+            console.error('Error fetching groups:', error.message);
             alert(`An error occurred while fetching your groups: ${error.message}`);
         }
     }
@@ -460,29 +454,25 @@
         const container = document.getElementById('groups-container');
         container.innerHTML = '';
 
-        try {
-            if (!groups || !groups.length) {
-                container.innerHTML = '<p class="text-gray-600">No groups assigned to you.</p>';
-                return;
-            }
-            groups.forEach(group => {
-                const groupCard = document.createElement('div');
-                groupCard.className = 'bg-white p-6 rounded-lg shadow-md card-hover cursor-pointer';
-                groupCard.innerHTML = `<h3 class="text-xl font-semibold text-gray-800">${group.name}</h3>`;
-                groupCard.addEventListener('click', () => showGroupDetails(group.id));
-                container.appendChild(groupCard);
-            });
-        } catch (error) {
-            console.error('Error displaying groups:', error);
-            container.innerHTML = '<p class="text-red-600">Error loading groups. Please try again.</p>';
+        if (!groups || !groups.length) {
+            container.innerHTML = '<p class="text-gray-600">No groups assigned to you.</p>';
+            return;
         }
+
+        groups.forEach(group => {
+            const groupCard = document.createElement('div');
+            groupCard.className = 'bg-white p-6 rounded-lg shadow-md card-hover cursor-pointer';
+            groupCard.innerHTML = `<h3 class="text-xl font-semibold text-gray-800">${group.name}</h3>`;
+            groupCard.addEventListener('click', () => showGroupDetails(group.id));
+            container.appendChild(groupCard);
+        });
     }
 
     async function showGroupDetails(groupId) {
         try {
             const response = await fetchWithAuth(`/api/v1/group/${groupId}`);
             currentGroup = await response.json();
-            console.log('Group details fetched:', currentGroup); // Debug
+            console.debug('Group details fetched:', currentGroup);
             displayGroupDetails(currentGroup);
         } catch (error) {
             console.error('Error fetching group details:', error);
@@ -491,58 +481,53 @@
     }
 
     function displayGroupDetails(group) {
-        try {
-            document.getElementById('groups-container').classList.add('hidden');
-            document.getElementById('group-details').classList.remove('hidden');
-            document.getElementById('module-details').classList.add('hidden');
-            document.getElementById('task-details').classList.add('hidden');
+        document.getElementById('groups-container').classList.add('hidden');
+        document.getElementById('group-details').classList.remove('hidden');
+        document.getElementById('module-details').classList.add('hidden');
+        document.getElementById('task-details').classList.add('hidden');
 
-            document.getElementById('group-name').textContent = group.name;
+        document.getElementById('group-name').textContent = group.name;
 
-            const studentsList = document.getElementById('students-list');
-            studentsList.innerHTML = '';
-            if (group.students && group.students.length > 0) {
-                group.students.forEach(student => {
-                    const studentDiv = document.createElement('div');
-                    studentDiv.className = 'flex items-center bg-white p-4 rounded shadow mb-2';
-                    const imageSrc = getImageSrc(student.image);
-                    studentDiv.innerHTML = `
-                        <img src="${imageSrc}" alt="${student.firstName} ${student.lastName}" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <p class="font-semibold text-lg">${student.firstName} ${student.lastName}</p>
-                            <p class="text-gray-600">${student.phoneNumber}</p>
-                        </div>
-                    `;
-                    studentsList.appendChild(studentDiv);
-                });
-            } else {
-                studentsList.textContent = 'No students in this group.';
-            }
+        const studentsList = document.getElementById('students-list');
+        studentsList.innerHTML = '';
+        if (group.students && group.students.length > 0) {
+            group.students.forEach(student => {
+                const studentDiv = document.createElement('div');
+                studentDiv.className = 'flex items-center bg-white p-4 rounded shadow mb-2';
+                const imageSrc = getImageSrc(student.image);
+                studentDiv.innerHTML = `
+                    <img src="${imageSrc}" alt="${student.firstName} ${student.lastName}" class="w-12 h-12 rounded-full mr-4">
+                    <div>
+                        <p class="font-semibold text-lg">${student.firstName} ${student.lastName}</p>
+                        <p class="text-gray-600">${student.phoneNumber}</p>
+                    </div>
+                `;
+                studentsList.appendChild(studentDiv);
+            });
+        } else {
+            studentsList.textContent = 'No students in this group.';
+        }
 
-            const modulesList = document.getElementById('modules-list');
-            const modulesWarning = document.getElementById('modules-warning');
-            modulesList.innerHTML = '';
-            if (group.modules && group.modules.length > 0) {
-                modulesWarning.classList.add('hidden');
-                group.modules.forEach(module => {
-                    const button = document.createElement('button');
-                    button.className = module.active
-                        ? 'bg-green-500 text-white p-2 rounded hover:bg-green-600 m-1'
-                        : 'bg-gray-400 text-white p-2 rounded m-1 cursor-not-allowed';
-                    button.textContent = module.active ? module.moduleName : `${module.moduleName} 🔒`;
-                    button.disabled = !module.active;
-                    if (module.active) {
-                        button.addEventListener('click', () => showModuleDetails(module.id));
-                    }
-                    modulesList.appendChild(button);
-                });
-            } else {
-                modulesWarning.textContent = 'Warning: No modules assigned to this group.';
-                modulesWarning.classList.remove('hidden');
-            }
-        } catch (error) {
-            console.error('Error displaying group details:', error);
-            alert('Failed to display group details. Please try again.');
+        const modulesList = document.getElementById('modules-list');
+        const modulesWarning = document.getElementById('modules-warning');
+        modulesList.innerHTML = '';
+        if (group.modules && group.modules.length > 0) {
+            modulesWarning.classList.add('hidden');
+            group.modules.forEach(module => {
+                const button = document.createElement('button');
+                button.className = module.active
+                    ? 'bg-green-500 text-white p-2 rounded hover:bg-green-600 m-1'
+                    : 'bg-gray-400 text-white p-2 rounded m-1 cursor-not-allowed';
+                button.textContent = module.active ? module.moduleName : `${module.moduleName} 🔒`;
+                button.disabled = !module.active;
+                if (module.active) {
+                    button.addEventListener('click', () => showModuleDetails(module.id));
+                }
+                modulesList.appendChild(button);
+            });
+        } else {
+            modulesWarning.textContent = 'Warning: No modules assigned to this group.';
+            modulesWarning.classList.remove('hidden');
         }
     }
 
@@ -550,14 +535,14 @@
         try {
             const response = await fetchWithAuth(`/api/v1/module/${moduleId}`);
             const moduleData = await response.json();
-            console.log('Raw module API response:', moduleData); // Debug
+            console.debug('Raw module API response:', moduleData);
             if (!moduleData.id || typeof moduleData.id !== 'number' || isNaN(moduleData.id) || moduleData.id <= 0 || !Number.isInteger(moduleData.id)) {
                 console.error('Invalid module id in response:', moduleData);
                 alert('Invalid module data received. Please try again.');
                 return;
             }
             currentModule = moduleData;
-            console.log('Set currentModule with id:', currentModule.id); // Debug
+            console.debug('Set currentModule with id:', currentModule.id);
             displayModuleDetails(currentModule);
         } catch (error) {
             console.error('Error fetching module details:', error);
@@ -566,44 +551,39 @@
     }
 
     function displayModuleDetails(module) {
-        try {
-            document.getElementById('group-details').classList.add('hidden');
-            document.getElementById('module-details').classList.remove('hidden');
-            document.getElementById('task-details').classList.add('hidden');
+        document.getElementById('group-details').classList.add('hidden');
+        document.getElementById('module-details').classList.remove('hidden');
+        document.getElementById('task-details').classList.add('hidden');
 
-            document.getElementById('module-name').textContent = module.moduleName;
+        document.getElementById('module-name').textContent = module.moduleName;
 
-            console.log('Module active status:', {
-                moduleId: module.id,
-                moduleName: module.moduleName,
-                active: module.active
-            }); // Debug
+        console.debug('Module active status:', {
+            moduleId: module.id,
+            moduleName: module.moduleName,
+            active: module.active
+        });
 
-            const closeModuleButton = document.getElementById('close-module-button');
-            if (module.active || module.active === undefined) {
-                closeModuleButton.classList.add('visible');
-                console.log('Showing Close Module button for module:', module.id); // Debug
-            } else {
-                closeModuleButton.classList.remove('visible');
-                console.log('Hiding Close Module button for module:', module.id); // Debug
-            }
+        const closeModuleButton = document.getElementById('close-module-button');
+        if (module.active || module.active === undefined) {
+            closeModuleButton.classList.add('visible');
+            console.debug('Showing Close Module button for module:', module.id);
+        } else {
+            closeModuleButton.classList.remove('visible');
+            console.debug('Hiding Close Module button for module:', module.id);
+        }
 
-            const tasksList = document.getElementById('tasks-list');
-            tasksList.innerHTML = '';
-            if (module.tasks && module.tasks.length > 0) {
-                module.tasks.forEach(task => {
-                    const taskButton = document.createElement('button');
-                    taskButton.className = 'bg-blue-500 text-white p-2 rounded m-1 hover:bg-blue-600';
-                    taskButton.textContent = task.taskName;
-                    taskButton.addEventListener('click', () => showTaskDetails(task.id));
-                    tasksList.appendChild(taskButton);
-                });
-            } else {
-                tasksList.textContent = 'No tasks in this module.';
-            }
-        } catch (error) {
-            console.error('Error displaying module details:', error);
-            alert('Failed to display module details. Please try again.');
+        const tasksList = document.getElementById('tasks-list');
+        tasksList.innerHTML = '';
+        if (module.tasks && module.tasks.length > 0) {
+            module.tasks.forEach(task => {
+                const taskButton = document.createElement('button');
+                taskButton.className = 'bg-blue-500 text-white p-2 rounded m-1 hover:bg-blue-600';
+                taskButton.textContent = task.taskName;
+                taskButton.addEventListener('click', () => showTaskDetails(task.id));
+                tasksList.appendChild(taskButton);
+            });
+        } else {
+            tasksList.textContent = 'No tasks in this module.';
         }
     }
 
@@ -613,12 +593,11 @@
             const task = await taskResponse.json();
             currentTaskId = taskId;
             currentTask = task;
-            console.log('currentTask set:', currentTask); // Debug
 
             const taskAttachmentIds = task.attachmentId?.filter(id => id != null) || [];
             const questionAttachmentIds = task.questionRes?.map(q => q.attachmentId).filter(id => id != null) || [];
             const attachmentIds = [...new Set([...taskAttachmentIds, ...questionAttachmentIds])];
-            console.log('Fetching attachments for IDs:', attachmentIds); // Debug
+            console.debug('Fetching attachments for IDs:', attachmentIds);
 
             const attachments = await fetchAttachments(attachmentIds);
             const attachmentMap = new Map(attachments.map(a => [a.id, a]));
@@ -633,117 +612,104 @@
     async function fetchAttachments(attachmentIds) {
         const promises = attachmentIds.map(id =>
             fetchWithAuth(`/api/v1/attachments/${id}`).then(response => {
-                if (!response.ok) {
-                    console.warn(`Failed to fetch attachment ${id}: ${response.status}`);
-                    return null;
-                }
+                if (!response.ok) return null;
                 return response.json();
             }).catch(error => {
                 console.error(`Error fetching attachment ${id}:`, error);
                 return null;
             })
         );
-        try {
-            const results = await Promise.all(promises);
-            return results.filter(a => a != null);
-        } catch (error) {
-            console.error('Error processing attachments:', error);
-            return [];
-        }
+        const results = await Promise.all(promises);
+        return results.filter(a => a != null);
     }
 
     function displayTaskDetails(task, attachmentMap) {
-        try {
-            document.getElementById('module-details').classList.add('hidden');
-            document.getElementById('task-details').classList.remove('hidden');
+        document.getElementById('module-details').classList.add('hidden');
+        document.getElementById('task-details').classList.remove('hidden');
 
-            document.getElementById('task-name').textContent = task.name || task.taskName;
+        document.getElementById('task-name').textContent = task.name || task.taskName;
 
-            const videoDiv = document.getElementById('task-video');
-            videoDiv.innerHTML = '';
-            if (task.youtubeURL) {
-                try {
-                    const url = new URL(task.youtubeURL);
-                    const videoId = url.searchParams.get('v') || url.pathname.split('/').pop();
-                    if (videoId) {
-                        const embedUrl = `https://www.youtube.com/embed/${videoId}`;
-                        videoDiv.innerHTML = `
-                            <iframe width="560" height="315" src="${embedUrl}" title="YouTube video player"
-                                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                allowfullscreen class="max-w-full" onerror="this.style.display='none'; document.getElementById('youtube-fallback').style.display='block';"></iframe>
-                            <p id="youtube-fallback" class="text-red-600" style="display:none;">Unable to load YouTube video. URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>
-                        `;
-                    } else {
-                        videoDiv.innerHTML = `<p class="text-red-600">Invalid YouTube URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>`;
-                    }
-                } catch {
+        const videoDiv = document.getElementById('task-video');
+        videoDiv.innerHTML = '';
+        if (task.youtubeURL) {
+            try {
+                const url = new URL(task.youtubeURL);
+                const videoId = url.searchParams.get('v') || url.pathname.split('/').pop();
+                if (videoId) {
+                    const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                    videoDiv.innerHTML = `
+                        <iframe width="560" height="315" src="${embedUrl}" title="YouTube video player"
+                            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen class="max-w-full" onerror="this.style.display='none'; document.getElementById('youtube-fallback').style.display='block';"></iframe>
+                        <p id="youtube-fallback" class="text-red-600" style="display:none;">Unable to load YouTube video. URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>
+                    `;
+                } else {
                     videoDiv.innerHTML = `<p class="text-red-600">Invalid YouTube URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>`;
                 }
+            } catch {
+                videoDiv.innerHTML = `<p class="text-red-600">Invalid YouTube URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>`;
             }
+        }
 
-            const attachmentsList = document.getElementById('attachments-list');
-            attachmentsList.innerHTML = '';
-            if (task.attachmentId && task.attachmentId.length > 0) {
-                task.attachmentId.forEach(id => {
-                    const attachment = attachmentMap.get(id);
-                    const attachmentDiv = document.createElement('div');
-                    attachmentDiv.className = 'mb-2';
+        const attachmentsList = document.getElementById('attachments-list');
+        attachmentsList.innerHTML = '';
+        if (task.attachmentId && task.attachmentId.length > 0) {
+            task.attachmentId.forEach(id => {
+                const attachment = attachmentMap.get(id);
+                const attachmentDiv = document.createElement('div');
+                attachmentDiv.className = 'mb-2';
+                if (attachment) {
+                    if (attachment.contentType?.startsWith('image/')) {
+                        const imageSrc = `data:${attachment.contentType};base64,${attachment.content}`;
+                        attachmentDiv.innerHTML = `<img src="${imageSrc}" alt="Attachment ${id}" class="max-w-full h-auto">`;
+                    } else {
+                        const dataUrl = `data:${attachment.contentType || 'application/octet-stream'};base64,${attachment.content}`;
+                        attachmentDiv.innerHTML = `<a href="${dataUrl}" download class="text-blue-500 underline">Download Attachment ${id}</a>`;
+                    }
+                } else {
+                    attachmentDiv.innerHTML = `<p class="text-red-600">Attachment not found. URL: ${BASE_URL}/api/v1/attachments/${id}</p>`;
+                }
+                attachmentsList.appendChild(attachmentDiv);
+            });
+        } else {
+            attachmentsList.textContent = 'No attachments for this task.';
+        }
+
+        const questionsList = document.getElementById('questions-list');
+        questionsList.innerHTML = '';
+        if (task.questionRes && task.questionRes.length > 0) {
+            task.questionRes.forEach(question => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'mb-4 p-4 bg-white rounded shadow';
+                let html = `
+                    <h4 class="text-lg font-semibold">${question.questionTest}</h4>
+                    <ul class="list-disc list-inside">
+                        ${question.variant.map(v => `<li>${v}</li>`).join('')}
+                    </ul>
+                    <p class="mt-2"><strong>Correct Answer:</strong> ${question.currentAnswer || 'N/A'}</p>
+                `;
+                if (question.attachmentId) {
+                    console.debug('Processing question attachment:', { questionId: question.id, attachmentId: question.attachmentId });
+                    const attachment = attachmentMap.get(Number(question.attachmentId));
                     if (attachment) {
                         if (attachment.contentType?.startsWith('image/')) {
                             const imageSrc = `data:${attachment.contentType};base64,${attachment.content}`;
-                            attachmentDiv.innerHTML = `<img src="${imageSrc}" alt="Attachment ${id}" class="max-w-full h-auto">`;
+                            html += `<img src="${imageSrc}" alt="Question Attachment ${question.attachmentId}" class="mt-2 max-w-full h-auto">`;
                         } else {
                             const dataUrl = `data:${attachment.contentType || 'application/octet-stream'};base64,${attachment.content}`;
-                            attachmentDiv.innerHTML = `<a href="${dataUrl}" download class="text-blue-500 underline">Download Attachment ${id}</a>`;
+                            html += `<a href="${dataUrl}" download class="text-blue-500 underline mt-2 block">Download Question Attachment ${question.attachmentId}</a>`;
                         }
                     } else {
-                        attachmentDiv.innerHTML = `<p class="text-red-600">Attachment not found. URL: /api/v1/attachments/${id}</p>`;
+                        html += `<p class="mt-2 text-red-600">Question attachment not found. URL: ${BASE_URL}/api/v1/attachments/${question.attachmentId}</p>`;
                     }
-                    attachmentsList.appendChild(attachmentDiv);
-                });
-            } else {
-                attachmentsList.textContent = 'No attachments for this task.';
-            }
-
-            const questionsList = document.getElementById('questions-list');
-            questionsList.innerHTML = '';
-            if (task.questionRes && task.questionRes.length > 0) {
-                task.questionRes.forEach(question => {
-                    const questionDiv = document.createElement('div');
-                    questionDiv.className = 'mb-4 p-4 bg-white rounded shadow';
-                    let html = `
-                        <h4 class="text-lg font-semibold">${question.questionTest}</h4>
-                        <ul class="list-disc list-inside">
-                            ${question.variant.map(v => `<li>${v}</li>`).join('')}
-                        </ul>
-                        <p class="mt-2"><strong>Correct Answer:</strong> ${question.currentAnswer || 'N/A'}</p>
-                    `;
-                    if (question.attachmentId) {
-                        console.log('Processing question attachment:', { questionId: question.id, attachmentId: question.attachmentId }); // Debug
-                        const attachment = attachmentMap.get(Number(question.attachmentId));
-                        if (attachment) {
-                            if (attachment.contentType?.startsWith('image/')) {
-                                const imageSrc = `data:${attachment.contentType};base64,${attachment.content}`;
-                                html += `<img src="${imageSrc}" alt="Question Attachment ${question.attachmentId}" class="mt-2 max-w-full h-auto">`;
-                            } else {
-                                const dataUrl = `data:${attachment.contentType || 'application/octet-stream'};base64,${attachment.content}`;
-                                html += `<a href="${dataUrl}" download class="text-blue-500 underline mt-2 block">Download Question Attachment ${question.attachmentId}</a>`;
-                            }
-                        } else {
-                            html += `<p class="mt-2 text-red-600">Question attachment not found. URL: /api/v1/attachments/${question.attachmentId}</p>`;
-                        }
-                    } else {
-                        console.log('No attachment for question:', { questionId: question.id }); // Debug
-                    }
-                    questionDiv.innerHTML = html;
-                    questionsList.appendChild(questionDiv);
-                });
-            } else {
-                questionsList.textContent = 'No questions in this task.';
-            }
-        } catch (error) {
-            console.error('Error displaying task details:', error);
-            alert('Failed to display task details. Please try again.');
+                } else {
+                    console.debug('No attachment for question:', { questionId: question.id });
+                }
+                questionDiv.innerHTML = html;
+                questionsList.appendChild(questionDiv);
+            });
+        } else {
+            questionsList.textContent = 'No questions in this task.';
         }
     }
 
@@ -765,7 +731,7 @@
         }
 
         const moduleId = currentModule.id;
-        console.log('Sending moduleId:', moduleId); // Debug
+        console.debug('Sending moduleId:', moduleId);
 
         const formData = new FormData();
         formData.append('taskName', taskName);
@@ -775,7 +741,7 @@
             formData.append('attachments', attachments[i]);
         }
 
-        console.log('FormData contents:', Object.fromEntries(formData)); // Debug
+        console.debug('FormData contents:', Object.fromEntries(formData));
 
         try {
             const response = await fetchWithAuth('/api/v1/task', {
@@ -785,7 +751,7 @@
             });
 
             const data = await response.json();
-            console.log('Task added successfully:', data); // Debug
+            console.debug('Task added successfully:', data);
             alert('Task added successfully!');
             await showModuleDetails(moduleId);
             document.getElementById('add-task-form').classList.add('hidden');
@@ -793,7 +759,7 @@
             document.getElementById('youtube-url').value = '';
             document.getElementById('attachments').value = '';
         } catch (error) {
-            console.error('Error adding task:', error);
+            console.error('Error adding task:', error.message);
             alert(`An error occurred while adding the task: ${error.message}`);
         }
     }
@@ -823,7 +789,7 @@
             formData.append('attachments', attachments[i]);
         }
 
-        console.log('FormData contents for update:', Object.fromEntries(formData)); // Debug
+        console.debug('FormData contents for update:', Object.fromEntries(formData));
 
         try {
             const response = await fetchWithAuth(`/api/v1/task/${currentTaskId}`, {
@@ -833,7 +799,7 @@
             });
 
             const data = await response.json();
-            console.log('Task updated successfully:', data); // Debug
+            console.debug('Task updated successfully:', data);
             alert('Task updated successfully!');
             const moduleId = currentModule.id;
             await showModuleDetails(moduleId);
@@ -843,45 +809,12 @@
             document.getElementById('update-youtube-url').value = '';
             document.getElementById('update-attachments').value = '';
         } catch (error) {
-            console.error('Error updating task:', error);
+            console.error('Error updating task:', error.message);
             alert(`An error occurred while updating the task: ${error.message}`);
         }
     }
 
-    async function deleteTask() {
-        console.log('deleteTask called, currentTaskId:', currentTaskId); // Debug
-        if (!currentTaskId) {
-            console.error('No task selected for deletion:', currentTaskId);
-            alert('Please select a task to delete.');
-            return;
-        }
-
-        if (!confirm('Are you sure you want to delete this task?')) {
-            return;
-        }
-
-        try {
-            const response = await fetchWithAuth(`/api/v1/task/${currentTaskId}`, {
-                method: 'DELETE',
-                headers: {}
-            });
-
-            console.log('Task deleted successfully:', { taskId: currentTaskId, status: response.status }); // Debug
-            alert('Task deleted successfully!');
-            if (currentModule && currentModule.id) {
-                await showModuleDetails(currentModule.id); // Navigate back to module
-            } else {
-                console.warn('No current module, refreshing groups');
-                await fetchMentorGroups();
-            }
-        } catch (error) {
-            console.error('Error deleting task:', error);
-            alert(`An error occurred while deleting the task: ${error.message}`);
-        }
-    }
-
     async function closeModule() {
-        console.log('closeModule called, currentModule:', currentModule); // Debug
         if (!currentModule || !currentModule.id) {
             console.error('No module selected for closing:', currentModule);
             alert('Please select a valid module to close.');
@@ -898,7 +831,7 @@
                 headers: {}
             });
 
-            console.log('Module closed successfully:', { moduleId: currentModule.id, status: response.status }); // Debug
+            console.debug('Module closed successfully:', { moduleId: currentModule.id, status: response.status });
             alert('Module closed successfully!');
 
             const groupId = currentGroup?.id;
@@ -957,7 +890,7 @@
                 if (!attachmentId) {
                     throw new Error('No attachment ID received from server');
                 }
-                console.log('Question attachment uploaded:', { attachmentId }); // Debug
+                console.debug('Question attachment uploaded:', { attachmentId });
             } catch (error) {
                 console.error('Attachment error details:', error);
                 alert(`Failed to upload attachment: ${error.message}. Please try again.`);
@@ -973,7 +906,7 @@
             taskId: currentTaskId
         };
 
-        console.log('Submitting question:', questionData); // Debug
+        console.debug('Submitting question:', questionData);
 
         try {
             const response = await fetchWithAuth('/api/v1/questions', {
@@ -983,7 +916,7 @@
             });
 
             const questionRes = await response.json();
-            console.log('Question added successfully:', questionRes); // Debug
+            console.debug('Question added successfully:', questionRes);
             await showTaskDetails(currentTaskId);
             document.getElementById('add-question-form').classList.add('hidden');
             document.getElementById('question-test').value = '';
@@ -1064,7 +997,7 @@
                 alert('Please select a valid module before adding a task.');
                 return;
             }
-            console.log('Opening task form for moduleId:', currentModule.id); // Debug
+            console.debug('Opening task form for moduleId:', currentModule.id);
             document.getElementById('add-task-form').classList.remove('hidden');
         });
 
@@ -1090,7 +1023,6 @@
         });
 
         document.getElementById('update-task-button').addEventListener('click', () => {
-            console.log('Update Task button clicked, currentTask:', currentTask); // Debug
             if (!currentTask) {
                 console.error('No task selected for updating.');
                 alert('Please select a task to update.');
@@ -1099,24 +1031,11 @@
             document.getElementById('update-task-name').value = currentTask.name || currentTask.taskName || '';
             document.getElementById('update-youtube-url').value = currentTask.youtubeURL || '';
             document.getElementById('update-task-form').classList.remove('hidden');
-            console.log('update-task-form hidden class removed:', !document.getElementById('update-task-form').classList.contains('hidden')); // Debug
         });
 
         document.getElementById('submit-update-task').addEventListener('click', (e) => {
             e.preventDefault();
             updateTask();
-        });
-
-        document.getElementById('delete-task-button').addEventListener('click', (e) => {
-            e.preventDefault();
-            console.log('Delete Task button (in form) clicked, currentTaskId:', currentTaskId); // Debug
-            deleteTask();
-        });
-
-        document.getElementById('delete-task-button-direct').addEventListener('click', (e) => {
-            e.preventDefault();
-            console.log('Delete Task button (direct) clicked, currentTaskId:', currentTaskId); // Debug
-            deleteTask();
         });
     });
 </script>
