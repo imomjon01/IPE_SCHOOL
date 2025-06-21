@@ -5,17 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mentor Cabinet - IPE School</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
         }
         .header-bg {
-            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
         }
         .card-hover:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        .sidebar-item {
+            transition: all 0.2s ease;
+        }
+        .sidebar-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
             transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4);
+        }
+        .nav-link {
+            position: relative;
+        }
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: white;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        .module-badge {
+            transition: all 0.3s ease;
+        }
+        .module-badge:hover {
+            transform: scale(1.05);
+        }
+        .student-card {
+            transition: all 0.3s ease;
+        }
+        .student-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .task-card {
+            transition: all 0.3s ease;
+        }
+        .task-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .question-card {
+            transition: all 0.3s ease;
+        }
+        .question-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
         #close-module-button {
             display: none;
@@ -23,187 +113,384 @@
         #close-module-button.visible {
             display: inline-block;
         }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+        .profile-pic {
+            border: 4px solid #3b82f6;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+        }
+        .attachment-icon {
+            color: #3b82f6;
+            transition: all 0.3s ease;
+        }
+        .attachment-icon:hover {
+            color: #1e40af;
+            transform: scale(1.1);
+        }
     </style>
 </head>
-<body class="bg-gray-100">
-<header class="header-bg text-white py-4">
+<body class="bg-gray-50">
+<header class="header-bg text-white py-4 shadow-lg">
     <div class="container mx-auto px-4 flex justify-between items-center">
-        <h1 class="text-2xl font-bold">IPE School</h1>
+        <div class="flex items-center space-x-2">
+            <i class="fas fa-graduation-cap text-2xl"></i>
+            <h1 class="text-2xl font-bold">IPE School</h1>
+        </div>
         <nav>
             <ul class="flex space-x-6">
-                <li><a href="/index.html" class="hover:underline">Home</a></li>
-                <li><a href="/about" class="hover:underline">About</a></li>
-                <li><a href="/mentors" class="hover:underline">Mentors</a></li>
-                <li><a href="/logout" class="hover:underline">Logout</a></li>
+                <li><a href="/index.html" class="nav-link hover:underline flex items-center space-x-1"><i class="fas fa-home"></i> <span>Home</span></a></li>
+                <li><a href="/about" class="nav-link hover:underline flex items-center space-x-1"><i class="fas fa-info-circle"></i> <span>About</span></a></li>
+                <li><a href="/mentors" class="nav-link hover:underline flex items-center space-x-1"><i class="fas fa-users"></i> <span>Mentors</span></a></li>
+                <li><a href="/logout" class="nav-link hover:underline flex items-center space-x-1"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
             </ul>
         </nav>
     </div>
 </header>
 
 <main class="container mx-auto px-4 py-8">
-    <section class="bg-white rounded-lg shadow-lg p-6 mb-8">
+    <section class="bg-white rounded-xl shadow-lg p-6 mb-8 animate-fade-in">
         <div id="mentor-profile" class="mb-8">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Mentor Profile</h2>
-            <div class="flex items-center space-x-6 mb-4">
-                <img id="profile-picture" src="" alt="Mentor Image" class="w-24 h-24 rounded-full object-cover border-4 border-blue-500">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-user-circle mr-2 text-blue-500"></i> Mentor Profile
+                </h2>
+                <button id="edit-profile-button" class="btn-warning text-white px-4 py-2 rounded-lg flex items-center">
+                    <i class="fas fa-edit mr-2"></i> Edit Profile
+                </button>
+            </div>
+            <div class="flex items-center space-x-6 mb-4 p-4 bg-blue-50 rounded-xl">
+                <img id="profile-picture" src="" alt="Mentor Image" class="w-24 h-24 rounded-full object-cover profile-pic">
                 <div>
                     <h3 id="profile-name" class="text-xl font-semibold text-gray-800"></h3>
-                    <p id="profile-phone" class="text-gray-600"></p>
+                    <p id="profile-phone" class="text-gray-600 flex items-center">
+                        <i class="fas fa-phone-alt mr-2 text-blue-500"></i>
+                        <span class="phone-number"></span>
+                    </p>
                 </div>
             </div>
-            <button id="edit-profile-button" class="bg-yellow-500 text-white p-2 rounded">Edit Profile</button>
-            <div id="edit-profile-form" class="hidden mt-4">
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">Edit Profile</h3>
-                <div class="mb-4">
-                    <label for="update-first-name" class="block text-gray-700">First Name</label>
-                    <input type="text" id="update-first-name" class="w-full p-2 border rounded" required>
+
+            <div id="edit-profile-form" class="hidden mt-6 p-6 bg-gray-50 rounded-xl border border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-user-edit mr-2 text-blue-500"></i> Edit Profile
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="update-first-name" class="block text-gray-700 font-medium mb-1">First Name</label>
+                        <input type="text" id="update-first-name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                    </div>
+                    <div>
+                        <label for="update-last-name" class="block text-gray-700 font-medium mb-1">Last Name</label>
+                        <input type="text" id="update-last-name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                    </div>
                 </div>
                 <div class="mb-4">
-                    <label for="update-last-name" class="block text-gray-700">Last Name</label>
-                    <input type="text" id="update-last-name" class="w-full p-2 border rounded" required>
+                    <label for="update-profile-phone" class="block text-gray-700 font-medium mb-1">Phone Number</label>
+                    <input type="text" id="update-profile-phone" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
                 </div>
                 <div class="mb-4">
-                    <label for="update-profile-phone" class="block text-gray-700">Phone Number</label>
-                    <input type="text" id="update-profile-phone" class="w-full p-2 border rounded" required>
+                    <label for="update-profile-picture" class="block text-gray-700 font-medium mb-1">Profile Picture</label>
+                    <div class="flex items-center space-x-4">
+                        <label class="flex flex-col items-center px-4 py-3 bg-white rounded-lg border border-blue-500 cursor-pointer hover:bg-blue-50">
+                            <i class="fas fa-cloud-upload-alt text-blue-500 text-2xl mb-1"></i>
+                            <span class="text-sm text-gray-600">Choose file</span>
+                            <input type="file" id="update-profile-picture" class="hidden">
+                        </label>
+                        <span id="file-name" class="text-sm text-gray-500">No file chosen</span>
+                    </div>
                 </div>
-                <div class="mb-4">
-                    <label for="update-profile-picture" class="block text-gray-700">Profile Picture</label>
-                    <input type="file" id="update-profile-picture" class="w-full p-2 border rounded">
-                </div>
-                <div class="flex space-x-2">
-                    <button id="cancel-profile-update" class="bg-gray-500 text-white p-2 rounded">Cancel</button>
-                    <button id="submit-profile-update" class="bg-blue-500 text-white p-2 rounded">Update Profile</button>
+                <div class="flex space-x-3 justify-end">
+                    <button id="cancel-profile-update" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 flex items-center">
+                        <i class="fas fa-times mr-2"></i> Cancel
+                    </button>
+                    <button id="submit-profile-update" class="btn-primary px-4 py-2 rounded-lg flex items-center">
+                        <i class="fas fa-save mr-2"></i> Update Profile
+                    </button>
                 </div>
             </div>
         </div>
-        <h2 class="text-3xl font-semibold text-gray-800 mb-4">Mentor Dashboard</h2>
-        <p class="text-gray-600 mb-6">Welcome to your mentor cabinet. Below are the groups you are mentoring.</p>
+
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-3xl font-semibold text-gray-800 flex items-center">
+                <i class="fas fa-tachometer-alt mr-3 text-blue-500"></i> Mentor Dashboard
+            </h2>
+            <div class="flex items-center space-x-2 bg-blue-100 px-4 py-2 rounded-full">
+                <i class="fas fa-users text-blue-500"></i>
+                <span id="groups-count" class="font-medium text-blue-800">0 Groups</span>
+            </div>
+        </div>
+
+        <p class="text-gray-600 mb-8 text-lg">Welcome to your mentor cabinet. Below are the groups you are mentoring.</p>
 
         <div id="groups-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
-        <div id="group-details" class="hidden mt-8">
-            <button id="back-to-groups" class="bg-blue-500 text-white p-2 rounded mb-4">Back to Groups</button>
-            <h2 id="group-name" class="text-2xl font-semibold text-gray-800 mb-4"></h2>
-            <div class="mb-6">
-                <h3 class="text-xl font-semibold text-gray-800">Students</h3>
-                <div id="students-list" class="mt-2"></div>
+        <div id="group-details" class="hidden mt-8 animate-fade-in">
+            <button id="back-to-groups" class="btn-primary text-white px-4 py-2 rounded-lg mb-6 flex items-center">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Groups
+            </button>
+
+            <div class="flex justify-between items-center mb-6">
+                <h2 id="group-name" class="text-2xl font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-users mr-3 text-blue-500"></i>
+                    <span class="group-name-text"></span>
+                </h2>
+                <div class="flex items-center space-x-2 bg-green-100 px-4 py-2 rounded-full">
+                    <i class="fas fa-user-graduate text-green-500"></i>
+                    <span id="students-count" class="font-medium text-green-800">0 Students</span>
+                </div>
             </div>
-            <div>
-                <h3 class="text-xl font-semibold text-gray-800">Modules</h3>
-                <p id="modules-warning" class="text-yellow-600 mt-2 hidden"></p>
-                <div id="modules-list" class="mt-2 flex flex-wrap gap-2"></div>
+
+            <div class="mb-8 bg-white p-6 rounded-xl shadow">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-user-friends mr-2 text-blue-500"></i> Students
+                </h3>
+                <div id="students-list" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-book mr-2 text-blue-500"></i> Modules
+                </h3>
+                <p id="modules-warning" class="text-yellow-600 mt-2 hidden flex items-center">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <span class="warning-text"></span>
+                </p>
+                <div id="modules-list" class="mt-4 flex flex-wrap gap-3"></div>
             </div>
         </div>
 
-        <div id="module-details" class="hidden mt-8">
-            <button id="back-to-group" class="bg-blue-500 text-white p-2 rounded mb-4">Back to Group</button>
-            <h2 id="module-name" class="text-2xl font-semibold text-gray-800 mb-4"></h2>
-            <div class="mb-4 flex space-x-2">
-                <button id="add-task-button" class="bg-green-500 text-white p-2 rounded">Add Task +</button>
-                <button id="close-module-button" class="bg-red-500 text-white p-2 rounded">Close Module</button>
-            </div>
-            <div>
-                <h3 class="text-xl font-semibold text-gray-800">Tasks</h3>
-                <div id="add-task-form" class="hidden mt-4">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Add New Task</h3>
-                    <div class="mb-4">
-                        <label for="task-name" class="block text-gray-700">Task Name</label>
-                        <input type="text" id="task-name" class="w-full p-2 border rounded" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="youtube-url" class="block text-gray-700">YouTube URL</label>
-                        <input type="text" id="youtube-url" class="w-full p-2 border rounded">
-                    </div>
-                    <div class="mb-4">
-                        <label for="attachments" class="block text-gray-700">Attachments</label>
-                        <input type="file" id="attachments" name="attachments" multiple class="w-full p-2 border rounded">
-                    </div>
-                    <button id="submit-task" class="bg-blue-500 text-white p-2 rounded">Add Task</button>
+        <div id="module-details" class="hidden mt-8 animate-fade-in">
+            <button id="back-to-group" class="btn-primary text-white px-4 py-2 rounded-lg mb-6 flex items-center">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Group
+            </button>
+
+            <div class="flex justify-between items-center mb-6">
+                <h2 id="module-name" class="text-2xl font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-book-open mr-3 text-blue-500"></i>
+                    <span class="module-name-text"></span>
+                </h2>
+                <div class="flex space-x-3">
+                    <button id="add-task-button" class="btn-success text-white px-4 py-2 rounded-lg flex items-center">
+                        <i class="fas fa-plus mr-2"></i> Add Task
+                    </button>
+                    <button id="close-module-button" class="btn-danger text-white px-4 py-2 rounded-lg flex items-center">
+                        <i class="fas fa-lock mr-2"></i> Close Module
+                    </button>
                 </div>
-                <div id="tasks-list" class="mt-2 flex flex-wrap gap-2"></div>
+            </div>
+
+            <div id="add-task-form" class="hidden mb-8 p-6 bg-gray-50 rounded-xl border border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-tasks mr-2 text-blue-500"></i> Add New Task
+                </h3>
+                <div class="mb-4">
+                    <label for="task-name" class="block text-gray-700 font-medium mb-1">Task Name</label>
+                    <input type="text" id="task-name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div class="mb-4">
+                    <label for="youtube-url" class="block text-gray-700 font-medium mb-1">YouTube URL</label>
+                    <input type="text" id="youtube-url" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="https://www.youtube.com/watch?v=...">
+                </div>
+                <div class="mb-4">
+                    <label for="attachments" class="block text-gray-700 font-medium mb-1">Attachments</label>
+                    <div class="flex items-center space-x-4">
+                        <label class="flex flex-col items-center px-4 py-3 bg-white rounded-lg border border-blue-500 cursor-pointer hover:bg-blue-50">
+                            <i class="fas fa-paperclip text-blue-500 text-2xl mb-1"></i>
+                            <span class="text-sm text-gray-600">Choose files</span>
+                            <input type="file" id="attachments" name="attachments" multiple class="hidden">
+                        </label>
+                        <span id="task-files-name" class="text-sm text-gray-500">No files chosen</span>
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <button id="submit-task" class="btn-primary text-white px-4 py-2 rounded-lg flex items-center">
+                        <i class="fas fa-save mr-2"></i> Add Task
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-list-check mr-2 text-blue-500"></i> Tasks
+                </h3>
+                <div id="tasks-list" class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
             </div>
         </div>
 
-        <div id="task-details" class="hidden mt-8">
-            <button id="back-to-module" class="bg-blue-500 text-white p-2 rounded mb-4">Back to Module</button>
-            <h2 id="task-name" class="text-2xl font-semibold text-gray-800 mb-4"></h2>
-            <div id="task-video" class="mb-6"></div>
-            <div id="task-attachments" class="mb-6">
-                <h3 class="text-xl font-semibold text-gray-800">Attachments</h3>
-                <div id="attachments-list" class="mt-2"></div>
+        <div id="task-details" class="hidden mt-8 animate-fade-in">
+            <button id="back-to-module" class="btn-primary text-white px-4 py-2 rounded-lg mb-6 flex items-center">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Module
+            </button>
+
+            <div class="flex justify-between items-center mb-6">
+                <h2 id="task-name" class="text-2xl font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-tasks mr-3 text-blue-500"></i>
+                    <span class="task-name-text"></span>
+                </h2>
+                <button id="update-task-button" class="btn-warning text-white px-4 py-2 rounded-lg flex items-center">
+                    <i class="fas fa-edit mr-2"></i> Update Task
+                </button>
             </div>
-            <div>
-                <h3 class="text-xl font-semibold text-gray-800">Questions</h3>
-                <button id="add-question-button" class="bg-green-500 text-white p-2 rounded mb-4">Add Question +</button>
-                <div id="add-question-form" class="hidden mt-4">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Add New Question</h3>
-                    <div class="mb-4">
-                        <label for="question-test" class="block text-gray-700">Question Text</label>
-                        <input type="text" id="question-test" class="w-full p-2 border rounded" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="question-attachment" class="block text-gray-700">Attachment (Optional)</label>
-                        <input type="file" id="question-attachment" class="w-full p-2 border rounded">
-                    </div>
-                    <div class="mb-4">
-                        <h4 class="block text-gray-700 font-semibold">Answer Variants</h4>
-                        <div id="variants-container" class="mt-2"></div>
-                        <button id="add-variant-button" class="bg-blue-500 text-white p-2 rounded mt-2">+ Add Variant</button>
-                    </div>
-                    <button id="submit-question" class="bg-blue-500 text-white p-2 rounded">Add Question</button>
+
+            <div id="update-task-form" class="hidden mb-8 p-6 bg-gray-50 rounded-xl border border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-edit mr-2 text-blue-500"></i> Update Task
+                </h3>
+                <div class="mb-4">
+                    <label for="update-task-name" class="block text-gray-700 font-medium mb-1">Task Name</label>
+                    <input type="text" id="update-task-name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
                 </div>
-                <div id="questions-list" class="mt-2"></div>
+                <div class="mb-4">
+                    <label for="update-youtube-url" class="block text-gray-700 font-medium mb-1">YouTube URL</label>
+                    <input type="text" id="update-youtube-url" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label for="update-attachments" class="block text-gray-700 font-medium mb-1">Attachments</label>
+                    <div class="flex items-center space-x-4">
+                        <label class="flex flex-col items-center px-4 py-3 bg-white rounded-lg border border-blue-500 cursor-pointer hover:bg-blue-50">
+                            <i class="fas fa-paperclip text-blue-500 text-2xl mb-1"></i>
+                            <span class="text-sm text-gray-600">Choose files</span>
+                            <input type="file" id="update-attachments" name="attachments" multiple class="hidden">
+                        </label>
+                        <span id="update-files-name" class="text-sm text-gray-500">No files chosen</span>
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <button id="submit-update-task" class="btn-primary text-white px-4 py-2 rounded-lg flex items-center">
+                        <i class="fas fa-save mr-2"></i> Update Task
+                    </button>
+                </div>
             </div>
-            <button id="update-task-button" class="bg-yellow-500 text-white p-2 rounded mb-4">Update Task</button>
-            <div id="update-task-form" class="hidden mt-4">
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">Update Task</h3>
-                <div class="mb-4">
-                    <label for="update-task-name" class="block text-gray-700">Task Name</label>
-                    <input type="text" id="update-task-name" class="w-full p-2 border rounded" required>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow">
+                        <div id="task-video" class="mb-6"></div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-paperclip mr-2 text-blue-500"></i> Attachments
+                        </h3>
+                        <div id="attachments-list" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                    </div>
                 </div>
-                <div class="mb-4">
-                    <label for="update-youtube-url" class="block text-gray-700">YouTube URL</label>
-                    <input type="text" id="update-youtube-url" class="w-full p-2 border rounded">
+
+                <div class="bg-white p-6 rounded-xl shadow h-fit sticky top-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-semibold text-gray-800 flex items-center">
+                            <i class="fas fa-question-circle mr-2 text-blue-500"></i> Questions
+                        </h3>
+                        <button id="add-question-button" class="btn-success text-white px-3 py-1 rounded-lg flex items-center text-sm">
+                            <i class="fas fa-plus mr-1"></i> Add
+                        </button>
+                    </div>
+
+                    <div id="add-question-form" class="hidden mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-plus-circle mr-2 text-blue-500"></i> New Question
+                        </h3>
+                        <div class="mb-3">
+                            <label for="question-test" class="block text-gray-700 font-medium mb-1">Question Text</label>
+                            <input type="text" id="question-test" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="question-attachment" class="block text-gray-700 font-medium mb-1">Attachment (Optional)</label>
+                            <div class="flex items-center space-x-2">
+                                <label class="flex items-center px-3 py-1 bg-white rounded-lg border border-blue-500 cursor-pointer hover:bg-blue-50 text-sm">
+                                    <i class="fas fa-paperclip text-blue-500 mr-1"></i>
+                                    <span>Choose file</span>
+                                    <input type="file" id="question-attachment" class="hidden">
+                                </label>
+                                <span id="question-file-name" class="text-xs text-gray-500">No file chosen</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <h4 class="block text-gray-700 font-semibold mb-1 flex items-center">
+                                <i class="fas fa-list-ol mr-2 text-blue-500"></i> Answer Variants
+                            </h4>
+                            <div id="variants-container" class="mt-2 space-y-2"></div>
+                            <button id="add-variant-button" class="btn-primary text-white px-2 py-1 rounded-lg mt-2 flex items-center text-sm">
+                                <i class="fas fa-plus mr-1"></i> Add Variant
+                            </button>
+                        </div>
+                        <div class="flex justify-end space-x-2">
+                            <button id="submit-question" class="btn-primary text-white px-3 py-1 rounded-lg flex items-center text-sm">
+                                <i class="fas fa-save mr-1"></i> Save
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="questions-list" class="space-y-4 custom-scrollbar" style="max-height: 500px; overflow-y: auto;"></div>
                 </div>
-                <div class="mb-4">
-                    <label for="update-attachments" class="block text-gray-700">Attachments</label>
-                    <input type="file" id="update-attachments" name="attachments" multiple class="w-full p-2 border rounded">
-                </div>
-                <button id="submit-update-task" class="bg-blue-500 text-white p-2 rounded">Update Task</button>
             </div>
         </div>
     </section>
 </main>
 
-<footer class="bg-gray-800 text-white py-6">
+<footer class="bg-gray-800 text-white py-8 mt-12">
     <div class="container mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-                <h3 class="text-lg font-semibold">About Us</h3>
-                <p class="text-sm">IPE School is a leading educational institution dedicated to providing quality education with expert mentors and modern facilities.</p>
+                <h3 class="text-lg font-semibold mb-4 flex items-center">
+                    <i class="fas fa-graduation-cap mr-2"></i> About Us
+                </h3>
+                <p class="text-sm text-gray-300">IPE School is a leading educational institution dedicated to providing quality education with expert mentors and modern facilities.</p>
+                <div class="flex space-x-4 mt-4">
+                    <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+                </div>
             </div>
             <div>
-                <h3 class="text-lg font-semibold">Quick Links</h3>
-                <ul class="text-sm">
-                    <li><a href="/index.html" class="hover:underline">Home</a></li>
-                    <li><a href="/about" class="hover:underline">About</a></li>
-                    <li><a href="/mentors" class="hover:underline">Mentors</a></li>
-                    <li><a href="/login.html" class="hover:underline">Login</a></li>
+                <h3 class="text-lg font-semibold mb-4 flex items-center">
+                    <i class="fas fa-link mr-2"></i> Quick Links
+                </h3>
+                <ul class="space-y-2">
+                    <li><a href="/index.html" class="text-gray-300 hover:text-white flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> Home</a></li>
+                    <li><a href="/about" class="text-gray-300 hover:text-white flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> About</a></li>
+                    <li><a href="/mentors" class="text-gray-300 hover:text-white flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> Mentors</a></li>
+                    <li><a href="/login.html" class="text-gray-300 hover:text-white flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> Login</a></li>
                 </ul>
             </div>
             <div>
-                <h3 class="text-lg font-semibold">Contact Info</h3>
-                <p class="text-sm">123 Education Street, Tashkent</p>
-                <p class="text-sm">+998 90 123 45 67</p>
-                <p class="text-sm">info@ipeschool.com</p>
+                <h3 class="text-lg font-semibold mb-4 flex items-center">
+                    <i class="fas fa-envelope mr-2"></i> Contact Info
+                </h3>
+                <ul class="space-y-2 text-gray-300">
+                    <li class="flex items-center"><i class="fas fa-map-marker-alt mr-3"></i> 123 Education Street, Tashkent</li>
+                    <li class="flex items-center"><i class="fas fa-phone-alt mr-3"></i> +998 90 123 45 67</li>
+                    <li class="flex items-center"><i class="fas fa-envelope mr-3"></i> info@ipeschool.com</li>
+                </ul>
             </div>
         </div>
-        <p class="text-center text-sm mt-6">© 2023 IPE School. All Rights Reserved.</p>
+        <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-400">
+            <p>© 2023 IPE School. All Rights Reserved.</p>
+        </div>
     </div>
 </footer>
 
 <script>
-    const BASE_URL = 'http://localhost:';
     let currentGroup = null;
     let currentModule = null;
     let currentTaskId = null;
@@ -253,7 +540,7 @@
             throw new Error('No authentication token');
         }
 
-        console.debug(`Making request to ${BASE_URL}${url}`, {
+        console.debug(`Making request to ${url}`, {
             method: options.method || 'GET',
             headers: { Authorization: authHeader, ...options.headers }
         });
@@ -267,12 +554,12 @@
                 headers['Content-Type'] = options.headers?.['Content-Type'] || 'application/json';
             }
 
-            const response = await fetch(`${BASE_URL}${url}`, {
+            const response = await fetch(`${url}`, {
                 ...options,
                 headers
             });
 
-            console.debug(`Response from ${BASE_URL}${url}: ${response.status} ${response.statusText}`);
+            console.debug(`Response from ${url}: ${response.status} ${response.statusText}`);
 
             if (response.status === 401) {
                 console.error('Unauthorized request. Token may be invalid or expired.');
@@ -306,7 +593,7 @@
 
             return response;
         } catch (error) {
-            console.error(`Fetch error for ${BASE_URL}${url}:`, error.message);
+            console.error(`Fetch error for ${url}:`, error.message);
             throw error;
         }
     }
@@ -667,7 +954,7 @@
                         attachmentDiv.innerHTML = `<a href="${dataUrl}" download class="text-blue-500 underline">Download Attachment ${id}</a>`;
                     }
                 } else {
-                    attachmentDiv.innerHTML = `<p class="text-red-600">Attachment not found. URL: ${BASE_URL}/api/v1/attachments/${id}</p>`;
+                    attachmentDiv.innerHTML = `<p class="text-red-600">Attachment not found. URL: /api/v1/attachments/${id}</p>`;
                 }
                 attachmentsList.appendChild(attachmentDiv);
             });
@@ -700,7 +987,7 @@
                             html += `<a href="${dataUrl}" download class="text-blue-500 underline mt-2 block">Download Question Attachment ${question.attachmentId}</a>`;
                         }
                     } else {
-                        html += `<p class="mt-2 text-red-600">Question attachment not found. URL: ${BASE_URL}/api/v1/attachments/${question.attachmentId}</p>`;
+                        html += `<p class="mt-2 text-red-600">Question attachment not found. URL: /api/v1/attachments/${question.attachmentId}</p>`;
                     }
                 } else {
                     console.debug('No attachment for question:', { questionId: question.id });
@@ -930,6 +1217,36 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+        // Add event listeners for file input changes to show file names
+        document.getElementById('update-profile-picture').addEventListener('change', function() {
+            const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+            document.getElementById('file-name').textContent = fileName;
+        });
+
+        document.getElementById('attachments').addEventListener('change', function() {
+            const files = this.files;
+            let fileName = 'No files chosen';
+            if (files.length > 0) {
+                fileName = files.length === 1 ? files[0].name : `${files.length} files selected`;
+            }
+            document.getElementById('task-files-name').textContent = fileName;
+        });
+
+        document.getElementById('update-attachments').addEventListener('change', function() {
+            const files = this.files;
+            let fileName = 'No files chosen';
+            if (files.length > 0) {
+                fileName = files.length === 1 ? files[0].name : `${files.length} files selected`;
+            }
+            document.getElementById('update-files-name').textContent = fileName;
+        });
+
+        document.getElementById('question-attachment').addEventListener('change', function() {
+            const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+            document.getElementById('question-file-name').textContent = fileName;
+        });
+
+        // Your existing DOMContentLoaded code
         if (!localStorage.getItem('authToken')) {
             console.warn('No auth token found. Setting default token for testing.');
             localStorage.setItem('authToken', 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0Iiwicm9sZXMiOiJST0xFX01FTlRPUiIsImlhdCI6MTc1MDQwNjc5NywiZXhwIjoxNzUxMDExNTk3fQ.R8CXGXqMrADhJSquC3NQtT2wj_owbcdUf_eaZ4yC74A');
