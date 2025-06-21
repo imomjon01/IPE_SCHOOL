@@ -3,6 +3,7 @@ package ipe.school.ipe_school.component;
 import ipe.school.ipe_school.models.dtos.req.MentorReq;
 import ipe.school.ipe_school.models.dtos.res.MentorRes;
 import ipe.school.ipe_school.models.entity.Roles;
+import ipe.school.ipe_school.models.repo.UserRepository;
 import ipe.school.ipe_school.service.interfaces.MentorService;
 import ipe.school.ipe_school.service.interfaces.RolesService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class Runner implements CommandLineRunner {
 
     private final RolesService rolesService;
     private final MentorService mentorService;
+    private final UserRepository userRepository;
 
     public void run(String... args) throws Exception {
         if (rolesService.findAll().isEmpty()) {
@@ -27,9 +29,14 @@ public class Runner implements CommandLineRunner {
                     new Roles("ROLE_STUDENT")
             )));
         }
-      /*  MentorReq mentorReq = new MentorReq("Eshmant", "Toshmatov", "+99811", "root123");
-        MentorRes mentor = mentorService.createMentor(mentorReq);
-        System.out.println("Mentor: " + mentor);*/
+        if (userRepository.findAll().isEmpty()) {
+            MentorReq mentorReq = new MentorReq("Imomjon", "Risqiboyev", "+99811", "root123");
+            MentorRes mentor = mentorService.createMentor(mentorReq);
+            System.out.println("Mentor: " + mentor);
+        }
+
+
+
     }
 }
 

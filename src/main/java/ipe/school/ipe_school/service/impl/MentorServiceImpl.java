@@ -72,7 +72,7 @@ public class MentorServiceImpl implements MentorService {
         attachment.setContentType(contentType);
         Attachment save1 = attachmentRepository.save(attachment);
         user.setAttachment(save1);
-        Optional<Roles> byId = rolesRepository.findById(2L);
+        Optional<Roles> byId = rolesRepository.findById(1L);
         List<Roles> roles = new ArrayList<>(List.of(byId.get()));
         user.setRoles(roles);
         User save = userRepository.save(user);
