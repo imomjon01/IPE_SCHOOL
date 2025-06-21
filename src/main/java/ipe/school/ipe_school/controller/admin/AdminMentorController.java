@@ -4,7 +4,6 @@ import ipe.school.ipe_school.models.dtos.req.MentorReq;
 import ipe.school.ipe_school.models.dtos.req.MentorUpdateReq;
 import ipe.school.ipe_school.models.dtos.res.GroupRes;
 import ipe.school.ipe_school.models.dtos.res.MentorRes;
-import ipe.school.ipe_school.models.dtos.res.UserRes;
 import ipe.school.ipe_school.service.interfaces.GroupService;
 import ipe.school.ipe_school.service.interfaces.MentorService;
 import lombok.RequiredArgsConstructor;
