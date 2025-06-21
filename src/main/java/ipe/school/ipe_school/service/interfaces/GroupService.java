@@ -5,7 +5,9 @@ import ipe.school.ipe_school.models.dtos.req.UpdatetedStudentReq;
 import ipe.school.ipe_school.models.dtos.res.GroupArxivedRes;
 import ipe.school.ipe_school.models.dtos.res.GroupDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.GroupRes;
+import ipe.school.ipe_school.models.dtos.res.GroupResToAdmin;
 import ipe.school.ipe_school.models.entity.Group;
+import ipe.school.ipe_school.models.entity.Module;
 import ipe.school.ipe_school.models.entity.User;
 import org.springframework.data.domain.Page;
 
@@ -35,4 +37,8 @@ public interface GroupService {
     Page<GroupArxivedRes> getAllGroupsActiveFalse(int page, int size, String search);
 
     void updateMentor(Long groupId, Long mentorId);
+
+    Page<GroupResToAdmin> getAllGroupsActiveTrue(int page, int size, String search);
+
+    Module createModule(Long groupId, String moduleName);
 }

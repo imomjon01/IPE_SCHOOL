@@ -145,6 +145,21 @@
             padding: 10px;
             border-radius: 5px;
         }
+
+        :root {
+            --module-active: #28a745; /* Faol modullar uchun yashil */
+            --module-inactive: #dc3545; /* Nofaol modullar uchun qizil */
+        }
+
+        .module-active {
+            color: var(--module-active); /* Faol modullar uchun yashil */
+            font-weight: bold;
+        }
+
+        .module-inactive {
+            color: var(--module-inactive); /* Nofaol modullar uchun qizil */
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -297,30 +312,35 @@
 
                 <!-- Guruh Bo‘limi -->
                 <div class="tab-content d-none" id="group-content">
-                    <!-- Yangi guruh qo‘shish tugmasi -->
-                    <div class="mb-3">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGroupModal">Yangi guruh qo‘shish</button>
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5>Guruhlar</h5>
+                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#addGroupModal">
+                                <i class="fas fa-plus me-1"></i> Yangi Guruh Qo‘shish
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="group-table">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nomi</th>
+                                        <th>Mentor</th>
+                                        <th>Talabalar</th>
+                                        <th>Modullar</th>
+                                        <th>Amallar</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="group-table-body"></tbody>
+                                </table>
+                            </div>
+                            <nav aria-label="Sahifalash">
+                                <ul class="pagination justify-content-center" id="group-pagination"></ul>
+                            </nav>
+                        </div>
                     </div>
-
-                    <!-- Guruhlar jadvali -->
-                    <table class="table table-bordered" id="group-table">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nomi</th>
-                            <th>Mentor</th>
-                            <th>Talabalar</th>
-                            <th>Modullar</th>
-                            <th>Amallar</th>
-                        </tr>
-                        </thead>
-                        <tbody id="group-table-body"></tbody>
-                    </table>
-
-                    <!-- Sahifalash -->
-                    <nav>
-                        <ul class="pagination" id="group-pagination"></ul>
-                    </nav>
                 </div>
 
                 <!-- Arxiv Bo‘limi -->
@@ -493,7 +513,8 @@
                     </div>
                     <div class="form-group mb-4">
                         <label for="confirm-password" class="form-label">Parolni Tasdiqlash</label>
-                        <input type="password" class="form-control" id="confirm-password" placeholder="Parolni qayta kiriting">
+                        <input type="password" class="form-control" id="confirm-password"
+                               placeholder="Parolni qayta kiriting">
                         <div class="invalid-feedback">Parollar mos kelmaydi yoki bo‘sh.</div>
                     </div>
                 </form>
@@ -528,7 +549,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="student-phone-number" class="form-label">Telefon Raqami</label>
-                        <input type="tel" value="+998" class="form-control" id="student-phone-number" placeholder="+998999999999"
+                        <input type="tel" value="+998" class="form-control" id="student-phone-number"
+                               placeholder="+998999999999"
                                required>
                         <div class="invalid-feedback">Telefon raqami noto‘g‘ri formatda (masalan, +998999999999).
                         </div>
@@ -554,7 +576,8 @@
 </div>
 
 <!-- Mentor Tayinlash Modali -->
-<div class="modal fade" id="assignMentorModal" tabindex="-1" aria-labelledby="assignMentorModalLabel" aria-hidden="true">
+<div class="modal fade" id="assignMentorModal" tabindex="-1" aria-labelledby="assignMentorModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -577,7 +600,8 @@
                             <option value="">Mentor yo‘q (O‘chirish)</option>
                             <!-- Mentorlar bu yerga yuklanadi -->
                         </select>
-                        <div class="invalid-feedback">Iltimos, mentor tanlang yoki o‘chirish uchun bo‘sh qoldiring.</div>
+                        <div class="invalid-feedback">Iltimos, mentor tanlang yoki o‘chirish uchun bo‘sh qoldiring.
+                        </div>
                     </div>
                     <div id="mentor-alert-container"></div>
                 </form>
@@ -606,20 +630,9 @@
                     <div class="mb-3">
                         <label for="group-name" class="form-label">Guruh nomi</label>
                         <input type="text" class="form-control" id="group-name" required>
+                        <div class="invalid-feedback">Iltimos, guruh nomini kiriting.</div>
                     </div>
-                    <div class="mb-3">
-                        <label for="group-mentor" class="form-label">Mentor</label>
-                        <select class="form-control" id="group-mentor" required>
-                            <option value="">Mentorni tanlang</option>
-                            <!-- Mentorlar JS orqali yuklanadi -->
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="group-students" class="form-label">Talabalar</label>
-                        <select class="form-control" id="group-students" multiple>
-                            <!-- Talabalar JS orqali yuklanadi -->
-                        </select>
-                    </div>
+                    <div id="group-alert-container"></div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -644,7 +657,9 @@
                     <div class="mb-3">
                         <label for="module-name" class="form-label">Modul nomi</label>
                         <input type="text" class="form-control" id="module-name" required>
+                        <div class="invalid-feedback">Iltimos, modul nomini kiriting.</div>
                     </div>
+                    <div id="module-alert-container"></div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -660,7 +675,8 @@
 <script>
     let userData = JSON.parse(localStorage.getItem('userData'));
 
-    if (!userData || !userData.userId) {
+    if (!userData || !userData.userId || !userData.token) {
+        console.log(userData.token)
         window.location.href = 'index.html';
     }
 
@@ -704,13 +720,14 @@
         });
     });
 
-    // Tablar uchun ma'lumotlarni yuklash
     function loadTabData(tab) {
         console.log(`${tab} tab uchun ma'lumotlar yuklanmoqda`);
         if (tab === 'student') {
             loadStudents();
         } else if (tab === 'mentor') {
             loadMentors();
+        } else if (tab === 'group') {
+            loadGroups();
         } else if (tab === 'archive') {
             loadArchiveContent();
         } else if (tab === 'rating') {
@@ -722,10 +739,11 @@
 
     // Mentorlar sonini yuklash
     let isMentorCountLoaded = false;
+
     function loadMentorCount() {
         if (isMentorCountLoaded) return;
         axios.get('/api/v1/admin/mentor/getMentorCount', {
-            headers: { Authorization: `${userData.token}` }
+            headers: {Authorization: `${userData.token}`}
         })
             .then(response => {
                 const mentorCount = response.data;
@@ -742,8 +760,8 @@
     // Mentorlarni yuklash
     function loadMentors(page = 0, size = 10, search = '') {
         axios.get('/api/v1/admin/mentor/getMentors', {
-            headers: { Authorization: `${userData.token}` },
-            params: { page, size, search }
+            headers: {Authorization: `${userData.token}`},
+            params: {page, size, search}
         })
             .then(response => {
                 loadMentorCount();
@@ -851,10 +869,10 @@
         form.querySelectorAll('select').forEach(select => select.classList.remove('is-invalid'));
     });
 
-    // Guruhlarni modal uchun yuklash
+    // Guruhlarni modal uchun yuklash organib chiq
     function loadGroupsForModal() {
         axios.get('/api/v1/group/getAll', {
-            headers: { Authorization: `${userData.token}` }
+            headers: {Authorization: `${userData.token}`}
         })
             .then(response => {
                 const groups = response.data;
@@ -876,8 +894,8 @@
     // Mentorlarni modal uchun yuklash
     function loadMentorsForModal() {
         axios.get('/api/v1/admin/mentor/getMentors', {
-            headers: { Authorization: `${userData.token}` },
-            params: { page: 0, size: 1000 }
+            headers: {Authorization: `${userData.token}`},
+            params: {page: 0, size: 1000}
         })
             .then(response => {
                 const mentors = response.data.content;
@@ -928,8 +946,8 @@
     // Mentor guruhini yangilash
     function updateMentorGroup(groupId, mentorId) {
         axios.put(`/api/v1/admin/mentor/updateGroup/${groupId}`, {}, {
-            headers: { Authorization: `${userData.token}` },
-            params: { mentorId }
+            headers: {Authorization: `${userData.token}`},
+            params: {mentorId}
         })
             .then(() => {
                 bootstrap.Modal.getInstance(document.getElementById('assignMentorModal')).hide();
@@ -973,8 +991,8 @@
     // Arxivlangan guruhlarni yuklash
     function loadArchivedGroups(page = 0, size = 10, search = '') {
         axios.get('/api/v1/group/archived', {
-            headers: { Authorization: `${userData.token}` },
-            params: { page, size, search }
+            headers: {Authorization: `${userData.token}`},
+            params: {page, size, search}
         })
             .then(response => {
                 populateArchivedGroupTable(response.data.content, response.data.totalPages, page, size, search);
@@ -1041,8 +1059,8 @@
     // Arxivlangan foydalanuvchilarni yuklash
     function loadArchivedUsers(page = 0, size = 10, search = '') {
         axios.get('/api/v1/admin/user/archived', {
-            headers: { Authorization: `${userData.token}` },
-            params: { page, size, search }
+            headers: {Authorization: `${userData.token}`},
+            params: {page, size, search}
         })
             .then(response => {
                 populateArchivedUserTable(response.data.content, response.data.totalPages, page, size, search);
@@ -1125,7 +1143,7 @@
     // Foydalanuvchini arxivdan qayta tiklash
     function restoreUser(userId) {
         axios.put(`/api/v1/admin/user/restore/${userId}`, {}, {
-            headers: { Authorization: `${userData.token}` }
+            headers: {Authorization: `${userData.token}`}
         })
             .then(() => {
                 showAlert('success', 'Foydalanuvchi muvaffaqiyatli qayta tiklandi!');
@@ -1139,10 +1157,11 @@
 
     // Talabalar sonini yuklash
     let isStudentCountLoaded = false;
+
     function loadStudentCount() {
         if (isStudentCountLoaded) return;
         axios.get('/api/v1/admin/student/getSize', {
-            headers: { Authorization: `${userData.token}` }
+            headers: {Authorization: `${userData.token}`}
         })
             .then(response => {
                 const studentCount = response.data;
@@ -1159,7 +1178,7 @@
     // Eng yaxshi 10 talabani yuklash
     function loadTopStudents() {
         axios.get('/api/v1/admin/student/progress', {
-            headers: { Authorization: `${userData.token}` }
+            headers: {Authorization: `${userData.token}`}
         })
             .then(response => {
                 const students = response.data;
@@ -1200,8 +1219,8 @@
     // Talabalarni guruh bilan yuklash
     function loadStudents(page = 0, size = 10, search = '') {
         axios.get(`/api/v1/admin/student`, {
-            headers: { Authorization: `${userData.token}` },
-            params: { page, size, search }
+            headers: {Authorization: `${userData.token}`},
+            params: {page, size, search}
         })
             .then(response => {
                 loadStudentCount();
@@ -1215,7 +1234,7 @@
 
     function populateStudentTable(students, totalPages, currentPage, size, search) {
         axios.get('/api/v1/group/getAll', {
-            headers: { Authorization: `${userData.token}` }
+            headers: {Authorization: `${userData.token}`}
         })
             .then(groupsResponse => {
                 const groups = groupsResponse.data;
@@ -1294,13 +1313,14 @@
     }
 
     // Qidiruv inputiga hodisa qo‘shish
-    let currentTab = 'student';
     document.getElementById('search-input').addEventListener('input', e => {
         const searchTerm = e.target.value.trim();
         if (currentTab === 'student') {
             loadStudents(0, 10, searchTerm);
         } else if (currentTab === 'mentor') {
             loadMentors(0, 10, searchTerm);
+        } else if (currentTab === 'group') {
+            loadGroups(0, 10, searchTerm);
         } else if (currentTab === 'archive') {
             loadArchiveContent(0, 10, searchTerm);
         } else if (currentTab === 'role-change') {
@@ -1325,7 +1345,7 @@
             newGroupId: newGroupId ? parseInt(newGroupId) : null,
             oldGroupId: oldGroupId ? parseInt(oldGroupId) : null
         }, {
-            headers: { Authorization: `${userData.token}` }
+            headers: {Authorization: `${userData.token}`}
         })
             .then(() => {
                 showAlert('success', 'Guruh muvaffaqiyatli yangilandi!');
@@ -1340,8 +1360,8 @@
     // Rol o‘zgartirish
     function loadUsersForRoleChange(page = 0, size = 10, search = '') {
         axios.get('/api/v1/admin/role/getByPage', {
-            headers: { Authorization: `${userData.token}` },
-            params: { page, size, search }
+            headers: {Authorization: `${userData.token}`},
+            params: {page, size, search}
         })
             .then(response => {
                 populateRoleChangeTable(response.data.content, response.data.totalPages, page, size, search);
@@ -1465,7 +1485,7 @@
             userId: parseInt(userId),
             roleId
         }, {
-            headers: { Authorization: `${userData.token}` }
+            headers: {Authorization: `${userData.token}`}
         })
             .then(() => {
                 showAlert('success', 'Rol muvaffaqiyatli yangilandi!');
@@ -1479,7 +1499,7 @@
 
     function deleteUser(userId) {
         axios.delete(`/api/v1/admin/user/${userId}`, {
-            headers: { Authorization: `${userData.token}` }
+            headers: {Authorization: `${userData.token}`}
         })
             .then(() => {
                 showAlert('success', 'Foydalanuvchi muvaffaqiyatli o‘chirildi!');
@@ -1489,6 +1509,231 @@
                 console.error('Foydalanuvchini o‘chirishda xato:', error.response?.data || error);
                 showAlert('danger', error.response?.data?.message || 'Foydalanuvchini o‘chirib bo‘lmadi');
             });
+    }
+
+    // Modul qo‘shish modali ochilganda formani tozalash
+    const addModuleModal = document.getElementById('addModuleModal');
+    addModuleModal.addEventListener('show.bs.modal', () => {
+        document.getElementById('add-module-form').reset();
+        document.getElementById('add-module-form').classList.remove('was-validated');
+    });
+
+    // Guruhlarni yuklash (pagination bilan)
+    function loadGroups(page = 0, size = 10, search = '') {
+        axios.get('/api/v1/group/getByPage', {
+            headers: { Authorization: `${userData.token}` },
+            params: { page, size, search }
+        })
+            .then(response => {
+                populateGroupTable(response.data.content, response.data.totalPages, page, size, search);
+            })
+            .catch(error => {
+                console.error('Guruhlarni yuklashda xato:', error.response?.data || error);
+                showAlert('danger', 'Guruhlarni yuklab bo‘lmadi');
+            });
+    }
+
+    // Guruh jadvalini to‘ldirish (yangi DTO ga moslashtirilgan)
+    function populateGroupTable(groups, totalPages, page, size, search) {
+        const tableBody = document.getElementById('group-table-body');
+        tableBody.innerHTML = '';
+
+        if (!groups || groups.length === 0) {
+            tableBody.innerHTML = `
+            <tr>
+                <td colspan="6" class="text-center">Hech qanday guruh topilmadi</td>
+            </tr>
+        `;
+            return;
+        }
+
+        groups.forEach(group => {
+            const mentorName = group.mentorName || 'Mentor yo‘q';
+            const studentNames = group.studentsName && group.studentsName.length > 0
+                ? group.studentsName.join(', ')
+                : 'Talaba yo‘q';
+            const moduleNames = group.moduleRes && group.moduleRes.length > 0
+                ? group.moduleRes.map(module => `
+                <span class="${module.active ? 'module-active' : 'module-inactive'}">
+                    ${module.moduleName}
+                </span>`).join(', ')
+                : 'Modul yo‘q';
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+            <td>${group.id}</td>
+            <td>${group.name}</td>
+            <td>${mentorName}</td>
+            <td>${studentNames}</td>
+            <td>${moduleNames}</td>
+            <td>
+                <button class="btn btn-primary btn-sm add-module-btn" data-group-id="${group.id}" data-bs-toggle="modal" data-bs-target="#addModuleModal">
+                    <i class="fas fa-plus me-1"></i> Modul Qo‘shish
+                </button>
+                <button class="btn btn-danger btn-sm delete-group-btn" data-group-id="${group.id}">
+                    O‘chirish
+                </button>
+            </td>
+        `;
+            tableBody.appendChild(row);
+        });
+
+        const pagination = document.getElementById('group-pagination');
+        pagination.innerHTML = '';
+
+        const prevItem = document.createElement('li');
+        prevItem.className = `page-item ${page === 0 ? 'disabled' : ''}`;
+        prevItem.innerHTML = `<a class="page-link" href="#" data-page="${page - 1}">Oldingi</a>`;
+        pagination.appendChild(prevItem);
+
+        for (let i = 0; i < totalPages; i++) {
+            const pageItem = document.createElement('li');
+            pageItem.className = `page-item ${i === page ? 'active' : ''}`;
+            pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i + 1}</a>`;
+            pagination.appendChild(pageItem);
+        }
+
+        const nextItem = document.createElement('li');
+        nextItem.className = `page-item ${page === totalPages - 1 ? 'disabled' : ''}`;
+        nextItem.innerHTML = `<a class="page-link" href="#" data-page="${page + 1}">Keyingi</a>`;
+        pagination.appendChild(nextItem);
+
+        pagination.querySelectorAll('.page-link').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const page = parseInt(e.target.getAttribute('data-page'));
+                if (!isNaN(page)) loadGroups(page, size, search);
+            });
+        });
+
+        document.querySelectorAll('.add-module-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const groupId = this.getAttribute('data-group-id');
+                document.getElementById('module-group-id').value = groupId;
+            });
+        });
+
+        document.querySelectorAll('.delete-group-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const groupId = this.getAttribute('data-group-id');
+                if (confirm('Guruhni o‘chirishni tasdiqlaysizmi?')) {
+                    deleteGroup(groupId);
+                }
+            });
+        });
+    }
+
+    // Guruh yaratish
+    const addGroupModal = document.getElementById('addGroupModal');
+    addGroupModal.addEventListener('show.bs.modal', () => {
+        document.getElementById('add-group-form').reset();
+        document.getElementById('add-group-form').classList.remove('was-validated');
+        document.getElementById('group-alert-container').innerHTML = '';
+    });
+
+    document.getElementById('save-group-btn').addEventListener('click', () => {
+        const form = document.getElementById('add-group-form');
+        const groupName = document.getElementById('group-name').value.trim();
+
+        if (!groupName) {
+            document.getElementById('group-name').classList.add('is-invalid');
+            showGroupAlert('danger', 'Iltimos, guruh nomini kiriting!');
+            return;
+        } else {
+            document.getElementById('group-name').classList.remove('is-invalid');
+        }
+
+        const saveBtn = document.getElementById('save-group-btn');
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Saqlanmoqda...';
+
+        axios.post('/api/v1/group', {
+            method: 'POST',
+            name: groupName
+        }, {
+            headers: { Authorization: `${userData.token}` }
+        })
+            .then(() => {
+                bootstrap.Modal.getInstance(addGroupModal).hide();
+                showAlert('success', 'Guruh muvaffaqiyatli yaratildi!');
+                loadGroups();
+            })
+            .catch(error => {
+                console.error('Guruh yaratishda xato:', error.response?.data || error);
+                showGroupAlert('danger', error.response?.data?.message || 'Guruh yaratilmadi!');
+            })
+            .finally(() => {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = 'Saqlash';
+            });
+    });
+
+    // Guruhni o‘chirish
+    function deleteGroup(groupId) {
+        axios.delete(`/api/v1/group/${groupId}`, {
+            headers: { Authorization: `${userData.token}` }
+        })
+            .then(() => {
+                showAlert('success', 'Guruh muvaffaqiyatli o‘chirildi!');
+                loadGroups();
+            })
+            .catch(error => {
+                console.error('Guruhni o‘chirishda xato:', error.response?.data || error);
+                showAlert('danger', error.response?.data?.message || 'Guruhni o‘chirib bo‘lmadi');
+            });
+    }
+
+    // Modul yaratish
+    document.getElementById('save-module-btn').addEventListener('click', () => {
+        const form = document.getElementById('add-module-form');
+        const groupId = document.getElementById('module-group-id').value;
+        const moduleName = document.getElementById('module-name').value.trim();
+
+        if (!moduleName) {
+            document.getElementById('module-name').classList.add('is-invalid');
+            showAlert('danger', 'Iltimos, modul nomini kiriting!');
+            return;
+        } else {
+            document.getElementById('module-name').classList.remove('is-invalid');
+        }
+
+        const saveBtn = document.getElementById('save-module-btn');
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Saqlanmoqda...';
+
+        axios.post(`/api/v1/group/createModule/${groupId}?moduleName=${encodeURIComponent(moduleName)}`, {}, {
+            headers: { Authorization: `${userData.token}` }
+        })
+            .then(() => {
+                bootstrap.Modal.getInstance(document.getElementById('addModuleModal')).hide();
+                showAlert('success', 'Modul muvaffaqiyatli qo‘shildi!');
+                loadGroups();
+            })
+            .catch(error => {
+                console.error('Modul qo‘shishda xato:', error.response?.data || error);
+                showAlert('danger', error.response?.data?.message || 'Modul qo‘shilmadi!');
+            })
+            .finally(() => {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = 'Saqlash';
+            });
+    });
+
+    // Guruh modalida xabar ko‘rsatish
+    function showGroupAlert(type, message) {
+        const alertContainer = document.getElementById('group-alert-container');
+        alertContainer.innerHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+        setTimeout(() => {
+            const alert = alertContainer.querySelector('.alert');
+            if (alert) {
+                bootstrap.Alert.getOrCreateInstance(alert).close();
+            }
+        }, 5000);
     }
 
     // Profil yangilash
@@ -1562,7 +1807,7 @@
         if (imageInput.files[0]) formData.append('file', imageInput.files[0]);
 
         axios.post('/api/v1/auth/updateProfile', formData, {
-            headers: { Authorization: `${userData.token}` }
+            headers: {Authorization: `${userData.token}`}
         })
             .then(response => {
                 const updatedData = response.data;
@@ -1671,7 +1916,7 @@
             phoneNumber,
             password
         }, {
-            headers: { Authorization: `${userData.token}` }
+            headers: {Authorization: `${userData.token}`}
         })
             .then(() => {
                 form.reset();
@@ -1733,6 +1978,7 @@
     });
 
     // Talaba tabini faol qilish bilan boshlash
-    document.getElementById('student-tab').click();</script>
+    document.getElementById('student-tab').click();
+</script>
 </body>
 </html>

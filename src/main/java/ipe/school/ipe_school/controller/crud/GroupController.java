@@ -2,10 +2,8 @@ package ipe.school.ipe_school.controller.crud;
 
 import ipe.school.ipe_school.models.dtos.req.GroupReq;
 import ipe.school.ipe_school.models.dtos.req.UpdatetedStudentReq;
-import ipe.school.ipe_school.models.dtos.res.GroupArxivedRes;
-import ipe.school.ipe_school.models.dtos.res.GroupDetailsRes;
-import ipe.school.ipe_school.models.dtos.res.GroupRes;
-import ipe.school.ipe_school.models.dtos.res.StudentDetailsRes;
+import ipe.school.ipe_school.models.dtos.res.*;
+import ipe.school.ipe_school.models.entity.Module;
 import ipe.school.ipe_school.service.interfaces.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -62,11 +60,26 @@ public class GroupController {
     }
 
     @GetMapping("/archived")
-    public ResponseEntity<Page<GroupArxivedRes>> getStudents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+    public ResponseEntity<Page<GroupArxivedRes>> getGroup(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
                                                              @RequestParam(required = false) String search
     ) {
         Page<GroupArxivedRes> groupArxivedRes = groupService.getAllGroupsActiveFalse(page, size, search);
         return ResponseEntity.ok(groupArxivedRes);
     }
 
+    @GetMapping("/getByPage")
+    public ResponseEntity<Page<GroupResToAdmin>> getGroupByPage(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+                                                             @RequestParam(required = false) String search
+    ) {
+        Page<GroupResToAdmin> groupResToAdmins = groupService.getAllGroupsActiveTrue( page, size, search);
+        return ResponseEntity.ok(groupResToAdmins);
+    }
+
+    @PostMapping("/createModule/{groupId}")
+    public ResponseEntity<?> createGroup(@PathVariable Long groupId, @RequestParam String moduleName) {
+        Module module = groupService.createModule(groupId, moduleName);
+        System.out.println(module);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+
+    }
 }

@@ -3,13 +3,11 @@ package ipe.school.ipe_school.service.impl;
 import ipe.school.ipe_school.component.GroupMapper;
 import ipe.school.ipe_school.models.dtos.req.GroupReq;
 import ipe.school.ipe_school.models.dtos.req.UpdatetedStudentReq;
-import ipe.school.ipe_school.models.dtos.res.GroupArxivedRes;
-import ipe.school.ipe_school.models.dtos.res.GroupDetailsRes;
-import ipe.school.ipe_school.models.dtos.res.GroupRes;
-import ipe.school.ipe_school.models.dtos.res.StudentDetailsRes;
-import ipe.school.ipe_school.models.entity.Group;
-import ipe.school.ipe_school.models.entity.User;
+import ipe.school.ipe_school.models.dtos.res.*;
+import ipe.school.ipe_school.models.entity.*;
+import ipe.school.ipe_school.models.entity.Module;
 import ipe.school.ipe_school.models.repo.GroupRepository;
+import ipe.school.ipe_school.models.repo.ModuleRepository;
 import ipe.school.ipe_school.models.repo.UserRepository;
 import ipe.school.ipe_school.service.interfaces.GroupService;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +30,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
     private final GroupMapper groupMapper;
     private final UserRepository userRepository;
+    private final ModuleRepository moduleRepository;
 
     @Override
     public GroupRes createGroup(GroupReq groupReq) {
@@ -70,6 +69,7 @@ public class GroupServiceImpl implements GroupService {
     public void updateGroup_Active(Long groupId) {
         Group group = groupRepository.getGroupById(groupId);
         group.setActive(false);
+        group.setMentor(null);
         groupRepository.save(group);
     }
 
@@ -93,34 +93,6 @@ public class GroupServiceImpl implements GroupService {
         User user = userRepository.findByPhoneNumber(mentor.getPhoneNumber());
         List<Group> groups = groupRepository.findByMentorId(user.getId());
         return groups.stream().map(item->new GroupRes(item.getId(), item.getName())).collect(Collectors.toList());
-    }
-
-    @Transactional
-    public void nmadur(UpdatetedStudentReq updatetedStudentReq) {
-        if (updatetedStudentReq.getOldGroupId() != null) {
-
-        }
-        Optional<Group> byId = groupRepository.findById(updatetedStudentReq.getOldGroupId());
-        if (byId.isPresent()) {
-            Group group = byId.get();
-            for (User student : group.getStudents()) {
-                if (student.getId().equals(updatetedStudentReq.getStudentId())) {
-                    group.getStudents().remove(student);
-                    break;
-                }
-            }
-            groupRepository.save(group);
-            Optional<User> byId1 = userRepository.findById(updatetedStudentReq.getStudentId());
-            Optional<Group> byId2 = groupRepository.findById(updatetedStudentReq.getNewGroupId());
-            if (byId1.isPresent() && byId2.isPresent()) {
-                User user = byId1.get();
-                byId2.get().getStudents().add(user);
-                groupRepository.save(byId2.get());
-                return;
-            }
-            return;
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Group not found");
     }
 
     @Transactional
@@ -193,4 +165,47 @@ public class GroupServiceImpl implements GroupService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Group not found");
         }
     }
+
+    @Transactional
+    @Override
+    public Page<GroupResToAdmin> getAllGroupsActiveTrue(int page, int size, String search) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Group> groupPage;
+
+        if (search != null && !search.trim().isEmpty()) {
+            groupPage = groupRepository.findAllActiveGroupsWithSearch(search, true, pageable);
+        } else {
+            groupPage = groupRepository.findAllActiveGroup(true, pageable);
+        }
+
+        return  groupPage.map(group -> new GroupResToAdmin(
+                group.getId(), group.getName(),
+                group.getMentor() != null ? group.getMentor().getFullName() : "Mentor yo‘q",
+                group.getStudents().stream().map(User::getFullName).toList(),
+                group.getModules()
+                        .stream().map(item ->
+                                new ModuleRes(item.getId(), item.getModuleName(),
+                                        item.getActive())).collect(Collectors.toList())
+        ));
+
+    }
+
+    @Override
+    public Module createModule(Long groupId, String moduleName) {
+        Module module = Module.builder()
+                .moduleName(moduleName)
+                .active(true)
+                .build();
+        Module save = moduleRepository.save(module);
+        Optional<Group> byId = groupRepository.findById(groupId);
+        if (byId.isPresent()) {
+            Group group = byId.get();
+            group.getModules().add(save);
+            groupRepository.save(group);
+        }
+        return save;
+    }
+
+
 }
