@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  app:
+    image: ipe-school:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=ipe_school
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root123
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db-data:
