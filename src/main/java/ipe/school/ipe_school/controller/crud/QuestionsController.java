@@ -28,6 +28,15 @@ public class QuestionsController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-//    @PostMapping("/{questionId}")
-//    public ResponseEntity<QuestionRes> updateTask(@PathVariable Long questionId,@RequestBody QuestionReq questionReq) {}
+    @PostMapping("/{questionId}")
+    public ResponseEntity<QuestionRes> updateTask(@PathVariable Long questionId,@RequestBody QuestionReq questionReq) {
+        QuestionRes questionRes=questionService.updateQuestionBYId(questionId,questionReq);
+        return ResponseEntity.ok(questionRes);
+    }
+
+    @GetMapping("/{questionId}")
+    public ResponseEntity<QuestionRes> getTask(@PathVariable Long questionId) {
+        QuestionRes questionRes=questionService.getQuestionById(questionId);
+        return ResponseEntity.ok(questionRes);
+    }
 }

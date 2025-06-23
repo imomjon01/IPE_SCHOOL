@@ -925,11 +925,11 @@
                 if (videoId) {
                     const embedUrl = `https://www.youtube.com/embed/${videoId}`;
                     videoDiv.innerHTML = `
-                        <iframe width="560" height="315" src="${embedUrl}" title="YouTube video player"
-                            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen class="max-w-full" onerror="this.style.display='none'; document.getElementById('youtube-fallback').style.display='block';"></iframe>
-                        <p id="youtube-fallback" class="text-red-600" style="display:none;">Unable to load YouTube video. URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>
-                    `;
+                    <iframe width="560" height="315" src="${embedUrl}" title="YouTube video player"
+                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen class="max-w-full" onerror="this.style.display='none'; document.getElementById('youtube-fallback').style.display='block';"></iframe>
+                    <p id="youtube-fallback" class="text-red-600" style="display:none;">Unable to load YouTube video. URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>
+                `;
                 } else {
                     videoDiv.innerHTML = `<p class="text-red-600">Invalid YouTube URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>`;
                 }
@@ -967,14 +967,19 @@
         if (task.questionRes && task.questionRes.length > 0) {
             task.questionRes.forEach(question => {
                 const questionDiv = document.createElement('div');
-                questionDiv.className = 'mb-4 p-4 bg-white rounded shadow';
+                questionDiv.className = 'mb-4 p-4 bg-white rounded shadow question-card';
                 let html = `
+                <div class="flex justify-between items-center">
                     <h4 class="text-lg font-semibold">${question.questionTest}</h4>
-                    <ul class="list-disc list-inside">
-                        ${question.variant.map(v => `<li>${v}</li>`).join('')}
-                    </ul>
-                    <p class="mt-2"><strong>Correct Answer:</strong> ${question.currentAnswer || 'N/A'}</p>
-                `;
+                    <button class="btn-primary text-white px-2 py-1 rounded-lg text-sm" onclick="populateUpdateQuestionForm(${question.id}, ${task.id})">
+                        <i class="fas fa-edit mr-1"></i> Edit
+                    </button>
+                </div>
+                <ul class="list-disc list-inside">
+                    ${question.variant.map(v => `<li>${v}</li>`).join('')}
+                </ul>
+                <p class="mt-2"><strong>Correct Answer:</strong> ${question.currentAnswer || 'N/A'}</p>
+            `;
                 if (question.attachmentId) {
                     console.debug('Processing question attachment:', { questionId: question.id, attachmentId: question.attachmentId });
                     const attachment = attachmentMap.get(Number(question.attachmentId));
@@ -1215,7 +1220,141 @@
             alert(`An error occurred while adding the question: ${error.message}`);
         }
     }
+    function addUpdateVariantInput(container, index, value = '', isCorrect = false) {
+        const variantDiv = document.createElement('div');
+        variantDiv.className = 'flex items-center space-x-2 mb-2';
+        variantDiv.innerHTML = `
+        <input type="text" id="update-variant-${index}" class="flex-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" value="${value}" required>
+        <label class="flex items-center space-x-1">
+            <input type="checkbox" id="update-correct-${index}" class="form-checkbox" ${isCorrect ? 'checked' : ''}>
+            <span>Correct</span>
+        </label>
+        <button type="button" class="bg-red-500 text-white p-2 rounded hover:bg-red-600 remove-variant">Remove</button>
+    `;
+        container.appendChild(variantDiv);
+        variantDiv.querySelector('.remove-variant').addEventListener('click', () => {
+            variantDiv.remove();
+        });
+    }
 
+    async function populateUpdateQuestionForm(questionId, taskId) {
+        try {
+            const response = await fetchWithAuth(`/api/v1/questions/${questionId}`);
+            const question = await response.json();
+            console.log('Question data:', question);
+
+            document.getElementById('update-question-test').value = question.questionTest || '';
+            document.getElementById('current-attachment-name').textContent = question.attachmentId ? `Attachment ID: ${question.attachmentId}` : 'None';
+            document.getElementById('update-question-id').value = questionId;
+            document.getElementById('update-task-id').value = taskId;
+            document.getElementById('update-question-attachment').value = '';
+            document.getElementById('update-question-file-name').textContent = 'No file chosen';
+
+            const variantsContainer = document.getElementById('update-variants-container');
+            variantsContainer.innerHTML = '';
+            const correctAnswers = question.currentAnswer ? question.currentAnswer.split(',') : [];
+            question.variant.forEach((variant, index) => {
+                const isCorrect = correctAnswers.includes(variant);
+                addUpdateVariantInput(variantsContainer, index, variant, isCorrect);
+            });
+
+            document.getElementById('update-question-form').classList.remove('hidden');
+        } catch (error) {
+            console.error('Error fetching question:', error);
+            alert(`Failed to load question details: ${error.message}`);
+        }
+    }
+    async function updateQuestion() {
+        const questionId = document.getElementById('update-question-id').value;
+        const taskId = document.getElementById('update-task-id').value;
+        const questionTest = document.getElementById('update-question-test').value;
+        const attachmentInput = document.getElementById('update-question-attachment').files[0];
+        const variantsContainer = document.getElementById('update-variants-container');
+        const variantInputs = variantsContainer.querySelectorAll('input[type="text"]');
+        const correctCheckboxes = variantsContainer.querySelectorAll('input[type="checkbox"]');
+
+        if (!questionTest) {
+            alert('Question text is required.');
+            return;
+        }
+
+        const variants = Array.from(variantInputs)
+            .map(input => input.value.trim())
+            .filter(value => value);
+        if (variants.length === 0) {
+            alert('At least one variant is required.');
+            return;
+        }
+
+        const correctAnswers = Array.from(correctCheckboxes)
+            .map((checkbox, index) => checkbox.checked ? variants[index] : null)
+            .filter(answer => answer);
+        if (correctAnswers.length === 0) {
+            alert('At least one correct answer must be selected.');
+            return;
+        }
+
+        let attachmentId = null;
+        if (attachmentInput) {
+            try {
+                const attachmentData = await createAttachment(attachmentInput);
+                attachmentId = attachmentData.id;
+                console.debug('Question attachment uploaded:', { attachmentId });
+            } catch (error) {
+                console.error('Attachment upload error:', error);
+                alert(`Failed to upload attachment: ${error.message}`);
+                return;
+            }
+        }
+
+        const questionData = {
+            questionTest,
+            attachmentId,
+            variant: variants,
+            currentAnswer: correctAnswers.join(','),
+            taskId
+        };
+
+        try {
+            const response = await fetchWithAuth(`/api/v1/questions/${questionId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(questionData)
+            });
+
+            const questionRes = await response.json();
+            console.debug('Question updated successfully:', questionRes);
+            alert('Question updated successfully!');
+            await showTaskDetails(taskId);
+            document.getElementById('update-question-form').classList.add('hidden');
+            document.getElementById('update-question-test').value = '';
+            document.getElementById('update-question-attachment').value = '';
+            document.getElementById('update-question-file-name').textContent = 'No file chosen';
+            document.getElementById('current-attachment-name').textContent = 'None';
+            variantsContainer.innerHTML = '';
+            addUpdateVariantInput(variantsContainer, 0);
+        } catch (error) {
+            console.error('Error updating question:', error);
+            alert(`An error occurred while updating the question: ${error.message}`);
+        }
+    }
+
+    function updateCorrectAnswerOptions() {
+        const select = document.getElementById('update-current-answer');
+        const currentValue = select.value;
+        select.innerHTML = '<option value="">Select Correct Answer</option>';
+        const variantInputs = document.querySelectorAll('#update-variants-container input[type="text"]');
+        const variants = Array.from(variantInputs).map(input => input.value).filter(v => v);
+        variants.forEach(variant => {
+            const option = document.createElement('option');
+            option.value = variant;
+            option.textContent = variant;
+            if (variant === currentValue) {
+                option.selected = true;
+            }
+            select.appendChild(option);
+        });
+    }
     document.addEventListener('DOMContentLoaded', () => {
         // Add event listeners for file input changes to show file names
         document.getElementById('update-profile-picture').addEventListener('change', function() {
@@ -1353,6 +1492,29 @@
         document.getElementById('submit-update-task').addEventListener('click', (e) => {
             e.preventDefault();
             updateTask();
+        });
+        document.getElementById('update-question-attachment').addEventListener('change', function() {
+            const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+            document.getElementById('update-question-file-name').textContent = fileName;
+        });
+
+        document.getElementById('update-add-variant-button').addEventListener('click', () => {
+            const variantsContainer = document.getElementById('update-variants-container');
+            const currentVariants = variantsContainer.querySelectorAll('input[type="text"]').length;
+            addUpdateVariantInput(variantsContainer, currentVariants);
+        });
+
+        document.getElementById('cancel-update-question').addEventListener('click', () => {
+            document.getElementById('update-question-form').classList.add('hidden');
+            document.getElementById('update-question-test').value = '';
+            document.getElementById('update-question-attachment').value = '';
+            document.getElementById('update-variants-container').innerHTML = '';
+            addUpdateVariantInput(document.getElementById('update-variants-container'), 0);
+        });
+
+        document.getElementById('submit-update-question').addEventListener('click', (e) => {
+            e.preventDefault();
+            updateQuestion();
         });
     });
 </script>

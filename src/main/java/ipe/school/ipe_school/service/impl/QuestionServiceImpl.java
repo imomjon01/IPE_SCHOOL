@@ -56,4 +56,27 @@ public class QuestionServiceImpl implements QuestionService {
     public void delete(Long questionId) {
         questionRepository.updateActive(questionId, false);
     }
+
+    @Override
+    public QuestionRes updateQuestionBYId(Long questionId, QuestionReq questionReq) {
+        Question question = questionRepository.findById(questionId).orElseThrow(RuntimeException::new);
+        question.setQuestionTest(questionReq.getQuestionTest());
+        question.setVariant(questionReq.getVariant());
+        question.setCurrentAnswer(questionReq.getCurrentAnswer());
+        question.setActive(true);
+        Question saved = questionRepository.save(question);
+        if (saved.getAttachment()!=null) {
+            return new QuestionRes(saved.getId(), saved.getAttachment().getId(), saved.getQuestionTest(), saved.getVariant(), saved.getCurrentAnswer());
+        }
+        return new QuestionRes(saved.getId(), null, saved.getQuestionTest(), saved.getVariant(), saved.getCurrentAnswer());
+    }
+
+    @Override
+    public QuestionRes getQuestionById(Long questionId) {
+        Question question=questionRepository.findById(questionId).orElseThrow(RuntimeException::new);
+        if (question.getAttachment()!=null) {
+            return new QuestionRes(question.getId(), question.getAttachment().getId(), question.getQuestionTest(), question.getVariant(), question.getCurrentAnswer());
+        }
+        return new QuestionRes(question.getId(), null, question.getQuestionTest(), question.getVariant(), question.getCurrentAnswer());
+    }
 }
