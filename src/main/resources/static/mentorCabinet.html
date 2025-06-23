@@ -624,6 +624,7 @@
     }
 
     async function updateProfile() {
+        let userData = JSON.parse(localStorage.getItem('userData'));
         const firstName = document.getElementById('update-first-name').value;
         const lastName = document.getElementById('update-last-name').value;
         const phoneNumber = document.getElementById('update-profile-phone').value;
@@ -651,6 +652,7 @@
         }
 
         const formData = new FormData();
+        formData.append("id",userData.userId);
         formData.append('firstName', firstName);
         formData.append('lastName', lastName);
         formData.append('phoneNumber', phoneNumber);
@@ -660,8 +662,8 @@
 
         try {
             console.debug('Sending profile update:', Object.fromEntries(formData));
-            const response = await fetchWithAuth('/api/v1/mentor/profile', {
-                method: 'PUT',
+            const response = await fetchWithAuth('/api/v1/auth/updateProfile', {
+                method: 'POST',
                 headers: {},
                 body: formData
             });
