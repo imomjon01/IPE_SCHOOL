@@ -88,6 +88,7 @@ public class AuthController {
             @RequestPart(value = "file", required = false) MultipartFile file) {
 
         try {
+            System.out.println(id);
             UserReq userReq = new UserReq(
                     Long.parseLong(id),
                     firstName,

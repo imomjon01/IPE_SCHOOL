@@ -50,8 +50,8 @@ jobs:
           chmod 600 ssh_key
           ssh -o StrictHostKeyChecking=no -i ssh_key ubuntu@$SERVER_IP << 'EOF'
             docker load -i /home/ubuntu/ipe-school.tar
-            docker-compose -f /home/ubuntu/docker-compose.yml down
-            docker-compose -f /home/ubuntu/docker-compose.yml up -d
+            docker compose -f /home/ubuntu/docker-compose.yml down
+            docker compose -f /home/ubuntu/docker-compose.yml up -d
             rm /home/ubuntu/ipe-school.tar
           EOF
           rm ssh_key
