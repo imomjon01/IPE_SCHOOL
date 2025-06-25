@@ -26,7 +26,8 @@ public class Runner implements CommandLineRunner {
             rolesService.saveAll(new ArrayList<>(List.of(
                     new Roles("ROLE_ADMIN"),
                     new Roles("ROLE_MENTOR"),
-                    new Roles("ROLE_STUDENT")
+                    new Roles("ROLE_STUDENT"),
+                    new Roles("ROLE_SUPER_MENTOR")
             )));
         }
         if (userRepository.findAll().isEmpty()) {
@@ -34,9 +35,6 @@ public class Runner implements CommandLineRunner {
             MentorRes mentor = mentorService.createMentor(mentorReq);
             System.out.println("Mentor: " + mentor);
         }
-
-
-
     }
 }
 
