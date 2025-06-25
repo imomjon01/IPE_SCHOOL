@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserRes> findAllUsersActive(int page, int size, String search,  Boolean isActive) {
+    public Page<UserRes> findAllUsersActive(int page, int size, String search, Boolean isActive) {
         Pageable pageable = PageRequest.of(page, size);
         Page<User> usersPage;
 
