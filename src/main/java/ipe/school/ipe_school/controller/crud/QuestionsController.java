@@ -29,14 +29,14 @@ public class QuestionsController {
     }
 
     @PostMapping("/{questionId}")
-    public ResponseEntity<QuestionRes> updateTask(@PathVariable Long questionId,@RequestBody QuestionReq questionReq) {
-        QuestionRes questionRes=questionService.updateQuestionBYId(questionId,questionReq);
+    public ResponseEntity<QuestionRes> updateTask(@PathVariable Long questionId, @RequestBody QuestionReq questionReq) {
+        QuestionRes questionRes = questionService.updateQuestionBYId(questionId, questionReq);
         return ResponseEntity.ok(questionRes);
     }
 
     @GetMapping("/{questionId}")
     public ResponseEntity<QuestionRes> getTask(@PathVariable Long questionId) {
-        QuestionRes questionRes=questionService.getQuestionById(questionId);
+        QuestionRes questionRes = questionService.getQuestionById(questionId);
         return ResponseEntity.ok(questionRes);
     }
 }

@@ -1,6 +1,5 @@
 package ipe.school.ipe_school.service.impl;
 
-import ipe.school.ipe_school.models.dtos.res.StudentDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.UserRes;
 import ipe.school.ipe_school.models.entity.Roles;
 import ipe.school.ipe_school.models.entity.User;
