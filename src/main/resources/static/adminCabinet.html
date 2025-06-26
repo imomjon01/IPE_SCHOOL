@@ -1397,10 +1397,10 @@
                 const isChecked = user.roles && user.roles.includes(role) ? 'checked' : '';
                 const label = formatRole(role);
                 return `
-            <div class="form-check">
+
                 <input class="form-check-input role-checkbox" type="checkbox" value="${role}" id="${role}-${user.id}" ${isChecked}>
                 <label class="form-check-label" for="${role}-${user.id}">${label}</label>
-            </div>
+
         `;
             }).join('');
 
