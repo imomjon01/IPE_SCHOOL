@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<UserRes> findAllUsersActive(int page, int size, String search, Boolean isActive) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
         Page<User> usersPage;
 
         if (search != null && !search.trim().isEmpty()) {
@@ -69,6 +70,7 @@ public class UserServiceImpl implements UserService {
                 user.getRoles().stream().map(Roles::getName).toList()
         ));
     }
+
 
     @Override
     public void updateUser_Active(Long userId) {
