@@ -48,7 +48,6 @@ public class AuthController {
                 redirectUrl = determineRedirectUrl(loginRes.getRoles());
             } else {
                 redirectUrl = "/chooseRole.html";
-
             }
 
             return ResponseEntity.ok(Map.of(
