@@ -9,5 +9,6 @@ public class StudentRes {
     String lastName;
     String phoneNumber;
     String password;
+    byte[] image;
 }
 
