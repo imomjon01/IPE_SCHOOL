@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Kabinati</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -108,7 +109,7 @@
         }
 
         .pagination .page-item.active .page-link {
-            background-color: var(--primary-color);
+            background-color: white;
             border-color: var(--primary-color);
         }
 
@@ -1386,29 +1387,40 @@
         }
 
         users.forEach(user => {
-            const currentRole = user.roles && user.roles.length > 0 ? formatRole(user.roles[0]) : 'Rol yo‘q';
-            const currentRoleValue = user.roles && user.roles.length > 0 ? user.roles[0] : '';
+            const currentRole = user.roles && user.roles.length > 0
+                ? user.roles.map(formatRole).join(', ')
+                : 'Rol yo‘q';
+
+            const allRoles = ['ROLE_SUPER_MENTOR', 'ROLE_ADMIN', 'ROLE_MENTOR', 'ROLE_STUDENT'];
+
+            const checkboxes = allRoles.map(role => {
+                const isChecked = user.roles && user.roles.includes(role) ? 'checked' : '';
+                const label = formatRole(role);
+                return `
+
+                <input class="form-check-input role-checkbox" type="checkbox" value="${role}" id="${role}-${user.id}" ${isChecked}>
+                <label class="form-check-label" for="${role}-${user.id}">${label}</label>
+
+        `;
+            }).join('');
+
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${user.id}</td>
-                <td>${user.firstName} ${user.lastName}</td>
-                <td>${currentRole}</td>
-                <td>
-                    <select class="form-select new-role-select" data-user-id="${user.id}">
-                        <option value="ROLE_ADMIN" ${currentRoleValue === 'ROLE_ADMIN' ? 'selected' : ''}>Admin</option>
-                        <option value="ROLE_MENTOR" ${currentRoleValue === 'ROLE_MENTOR' ? 'selected' : ''}>Mentor</option>
-                        <option value="ROLE_STUDENT" ${currentRoleValue === 'ROLE_STUDENT' ? 'selected' : ''}>Talaba</option>
-                    </select>
-                </td>
-                <td>
-                    <button class="btn btn-primary btn-sm update-role-btn" data-user-id="${user.id}">
-                        Yangilash
-                    </button>
-                    <button class="btn btn-danger btn-sm delete-user-btn ms-1" data-user-id="${user.id}">
-                        O‘chirish
-                    </button>
-                </td>
-            `;
+        <td>${user.id}</td>
+        <td>${user.firstName} ${user.lastName}</td>
+        <td>${currentRole}</td>
+        <td data-user-id="${user.id}">
+            ${checkboxes}
+        </td>
+        <td>
+            <button class="btn btn-primary btn-sm update-role-btn" data-user-id="${user.id}">
+                Yangilash
+            </button>
+            <button class="btn btn-danger btn-sm delete-user-btn ms-1" data-user-id="${user.id}">
+                O‘chirish
+            </button>
+        </td>
+    `;
             tableBody.appendChild(row);
         });
 
@@ -1443,9 +1455,9 @@
         document.querySelectorAll('.update-role-btn').forEach(btn => {
             btn.addEventListener('click', function () {
                 const userId = this.getAttribute('data-user-id');
-                const selectEl = document.querySelector(`.new-role-select[data-user-id="${userId}"]`);
-                const newRole = selectEl.value;
-                updateUserRole(userId, newRole);
+                const roleContainer = document.querySelector(`td[data-user-id="${userId}"]`);
+                const selectedRoles = Array.from(roleContainer.querySelectorAll('.role-checkbox:checked')).map(cb => cb.value);
+                updateUserRole(userId, selectedRoles);
             });
         });
 
@@ -1463,39 +1475,43 @@
         const roleMap = {
             'ROLE_STUDENT': 'Talaba',
             'ROLE_MENTOR': 'Mentor',
-            'ROLE_ADMIN': 'Admin'
+            'ROLE_ADMIN': 'Admin',
+            'ROLE_SUPER_MENTOR': 'Super Mentor'
         };
         return roleMap[role] || role;
     }
 
-    function updateUserRole(userId, newRole) {
+    function updateUserRole(userId, newRoles) {
         const roleIdMap = {
             'ROLE_ADMIN': 1,
             'ROLE_MENTOR': 2,
-            'ROLE_STUDENT': 3
+            'ROLE_STUDENT': 3,
+            'ROLE_SUPER_MENTOR': 4
         };
-        const roleId = roleIdMap[newRole];
 
-        if (!roleId) {
-            showAlert('danger', 'Noto‘g‘ri rol tanlandi!');
+        const roleIds = newRoles.map(role => roleIdMap[role]).filter(Boolean); // undefined ni tashlab yuboradi
+
+        if (roleIds.length === 0) {
+            showAlert('danger', 'Kamida bitta rol tanlanishi kerak!');
             return;
         }
 
         axios.post('/api/v1/admin/role', {
             userId: parseInt(userId),
-            roleId
+            roleIds
         }, {
             headers: {Authorization: `${userData.token}`}
         })
             .then(() => {
-                showAlert('success', 'Rol muvaffaqiyatli yangilandi!');
+                showAlert('success', 'Rollar muvaffaqiyatli yangilandi!');
                 loadUsersForRoleChange();
             })
             .catch(error => {
-                console.error('Rolni yangilashda xato:', error.response?.data || error);
-                showAlert('danger', error.response?.data?.message || 'Rolni yangilab bo‘lmadi');
+                console.error('Rollarni yangilashda xato:', error.response?.data || error);
+                showAlert('danger', error.response?.data?.message || 'Rollarni yangilab bo‘lmadi');
             });
     }
+
 
     function deleteUser(userId) {
         axios.delete(`/api/v1/admin/user/${userId}`, {

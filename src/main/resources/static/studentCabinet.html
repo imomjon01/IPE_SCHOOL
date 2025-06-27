@@ -20,83 +20,245 @@
             --light: #f8f9fa;
             --dark: #212529;
             --success: #4cc9f0;
-            --warning: #f72585;
-            --danger: #e63946;
             --task-color: #ff9e00;
+            --danger: #f72585;
+            --warning: #ffaa00;
             --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
         }
 
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #e0e7ff 0%, #c3cfe2 100%);
             min-height: 100vh;
             padding: 20px;
             color: var(--dark);
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Header Styles */
         .student-bar {
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             padding: 20px;
-            text-align: center;
-            font-size: 24px;
-            color: white;
             border-radius: 15px;
             box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 25px;
-            animation: fadeIn 0.8s ease-out;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 200px; /* Made profile section longer */
         }
 
-        .student-bar::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
-            transform: rotate(30deg);
+        .student-bar:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
         .student-info {
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 15px;
-            position: relative;
-            z-index: 2;
+            color: white;
+            margin-bottom: 15px;
         }
 
-        .student-info i {
-            background: rgba(255, 255, 255, 0.2);
-            width: 50px;
-            height: 50px;
+        .student-info img {
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+        }
+
+        .student-details {
+            flex-grow: 1;
+        }
+
+        .student-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .student-phone {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .student-progress {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .student-progress-fill {
+            height: 100%;
+            background: white;
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .student-info .error {
+            color: var(--danger);
+            font-size: 14px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        .update-profile form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .update-profile label {
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .update-profile input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .phone-group {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 24px;
+            gap: 10px;
+        }
+
+        .phone-prefix {
+            padding: 12px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            color: var(--dark);
+        }
+
+        .phone-input {
+            flex: 1;
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .image-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .image-upload-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            display: none;
+        }
+
+        .image-upload-btn {
+            padding: 8px 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .image-upload-btn:hover {
+            background: var(--secondary);
+        }
+
+        .update-profile button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        .update-profile button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
         }
 
         /* Level Bar */
         .level-bar {
             background: white;
-            padding: 15px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
+            padding: 20px;
             border-radius: 15px;
-            margin: 25px 0;
             box-shadow: var(--shadow);
-            animation: slideIn 0.6s ease-out;
+            margin-bottom: 20px;
         }
 
         .level-btn {
@@ -109,10 +271,7 @@
             transition: var(--transition);
             font-weight: 600;
             font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+            margin: 5px;
         }
 
         .level-btn:hover {
@@ -125,28 +284,13 @@
             transform: scale(1.05);
         }
 
-        /* Main Content */
-        .task-container {
-            display: flex;
-            gap: 30px;
-            margin-top: 20px;
-            animation: fadeIn 1s ease-out;
-        }
-
-        @media (max-width: 768px) {
-            .task-container {
-                flex-direction: column;
-            }
-        }
-
         /* Tasks Section */
         .tasks {
             background: white;
             padding: 20px;
             border-radius: 15px;
             box-shadow: var(--shadow);
-            flex: 1;
-            min-height: 400px;
+            margin-bottom: 20px;
         }
 
         .section-title {
@@ -168,7 +312,7 @@
 
         .task {
             background: linear-gradient(135deg, var(--task-color), #ffb74d);
-            padding: 20px 10px;
+            padding: 20px;
             border-radius: 12px;
             text-align: center;
             transition: var(--transition);
@@ -176,23 +320,6 @@
             color: white;
             font-weight: 600;
             box-shadow: 0 4px 8px rgba(255, 158, 0, 0.3);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 120px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .task::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.5);
         }
 
         .task:hover {
@@ -205,44 +332,18 @@
             margin-bottom: 10px;
         }
 
-        .task.completed {
-            background: linear-gradient(135deg, var(--success), #4cc9f0);
-        }
-
         /* Question Section */
         .question-section {
-            flex: 2;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
         }
 
         .question {
-            background: linear-gradient(135deg, #ffffff, #f8f9fa);
-            padding: 30px;
-            border-radius: 15px;
-            min-height: 300px;
-            box-shadow: var(--shadow);
+            min-height: 350px;
             display: flex;
             flex-direction: column;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .question::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--accent), var(--success));
-        }
-
-        .question.active {
-            transform: scale(1.01);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
         .question-header {
@@ -274,45 +375,135 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px 0;
-            font-size: 18px;
-            line-height: 1.6;
-            text-align: center;
+            padding: 30px 0;
         }
 
         .question-text {
-            margin-bottom: 25px;
-            max-width: 600px;
+            font-size: 24px;
+            color: var(--dark);
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            max-width: 800px;
         }
 
         .options {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            gap: 25px;
             width: 100%;
-            max-width: 500px;
+            max-width: 700px;
         }
 
         .option {
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            padding: 20px;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
             cursor: pointer;
             transition: var(--transition);
             text-align: center;
-            font-weight: 500;
-            ?w
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-weight: 600;
+            font-size: 18px;
+            background: white;
+            position: relative;
         }
 
         .option:hover {
             border-color: var(--accent);
-            background: rgba(67, 97, 238, 0.05);
+            background: rgba(67, 97, 238, 0.1);
         }
 
         .option.selected {
+            border-color: var(--success);
+            background: rgba(76, 201, 240, 0.2);
+            transform: scale(1.02);
+        }
+
+        .option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .option label {
+            display: block;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        /* Video Section */
+        #videoContainer {
+            position: relative;
+            padding-bottom: 62.5%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            width: 90%;
+            background: #000;
+            border-radius: 10px;
+            box-shadow: 0 4px 1px rgba(0, 0, 0, 0.2);
+            margin: 0 auto 20px;
+        }
+
+        #videoContainer iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-message {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 16px;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .questions-after-video {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid var(--primary);
+        }
+
+        .question-card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .question-card-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .question-card-option {
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .question-card-option:hover {
+            border-color: var(--accent);
+            background: rgba(72, 149, 239, 0.05);
+        }
+
+        .question-card-option.selected {
             border-color: var(--success);
             background: rgba(76, 201, 240, 0.1);
         }
@@ -322,7 +513,7 @@
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-top: 20px;
+            margin: 20px 0;
         }
 
         .action-btn {
@@ -338,16 +529,15 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+        }
+
+        .action-btn.secondary {
+            background: linear-gradient(90deg, var(--accent), var(--success));
         }
 
         .action-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
-        }
-
-        .action-btn.secondary {
-            background: linear-gradient(90deg, #6c757d, #495057);
         }
 
         /* Progress Bar */
@@ -356,7 +546,7 @@
             padding: 20px;
             border-radius: 15px;
             box-shadow: var(--shadow);
-            margin-top: 25px;
+            margin-top: 20px;
         }
 
         .progress-header {
@@ -378,6 +568,22 @@
             border-radius: 10px;
             width: 0%;
             transition: width 0.5s ease;
+        }
+
+        /* Navigation */
+        .question-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .question-counter {
+            font-size: 16px;
+            color: var(--dark);
+            font-weight: 500;
         }
 
         /* Animations */
@@ -403,24 +609,9 @@
             }
         }
 
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
         /* Footer */
         footer {
+            grid-column: 1 / -1;
             text-align: center;
             margin-top: 40px;
             padding: 20px;
@@ -459,36 +650,8 @@
 </head>
 <body>
 <div class="container">
-    <!-- Student Info Bar -->
-    <div class="student-bar">
-        <div class="student-info">
-            <i class="fas fa-user-graduate"></i>
-            <div id="studentName">Yuklanmoqda...</div>
-        </div>
-    </div>
-
-    <!-- Level Selection -->
-    <div class="level-bar" id="levelBar">
-        <div class="loading" id="moduleLoading">
-            <div class="spinner"></div>
-            Modullar yuklanmoqda...
-        </div>
-    </div>
-
     <!-- Main Content -->
-    <div class="task-container">
-        <!-- Tasks Section -->
-        <div class="tasks">
-            <div class="section-title">
-                <i class="fas fa-tasks"></i>
-                <h2>Vazifalar Ro'yxati</h2>
-            </div>
-            <div class="loading" id="taskLoading">Yuklanmoqda...</div>
-            <div class="task-list" id="taskList">
-                <!-- Vazifalar dinamik ravishda qo'shiladi -->
-            </div>
-        </div>
-
+    <div class="main-content">
         <!-- Question Section -->
         <div class="question-section">
             <div class="question" id="questionBox">
@@ -497,41 +660,130 @@
                     <div class="difficulty">Daraja tanlanmadi</div>
                 </div>
                 <div class="question-content" id="questionContent">
-                    <div class="question-text">
-                        Iltimos, vazifa tanlang!
-                    </div>
-                    <div class="options" id="optionsContainer">
-                        <!-- Variantlar dinamik ravishda qo'shiladi -->
-                    </div>
+                    <div class="question-text">Iltimos, vazifa tanlang!</div>
+                    <div class="options" id="optionsContainer"></div>
                 </div>
             </div>
 
             <!-- Actions -->
             <div class="actions">
-                <button class="action-btn" onclick="saveAnswer()">
-                    <i class="fas fa-save"></i>
-                    Saqlash
-                </button>
-                <button class="action-btn secondary" onclick="resetAnswer()">
-                    <i class="fas fa-redo"></i>
-                    Qayta yuklash
-                </button>
                 <button class="action-btn" onclick="submitAnswer()">
                     <i class="fas fa-paper-plane"></i>
                     Yuborish
                 </button>
             </div>
         </div>
+
+        <!-- Progress Section -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <div>Umumiy progress</div>
+                <div id="progressText">0%</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
     </div>
 
-    <!-- Progress Section -->
-    <div class="progress-container">
-        <div class="progress-header">
-            <div>Umumiy progress</div>
-            <div id="progressText">0%</div>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Student Info Bar -->
+        <div class="student-bar" onclick="showProfileModal()">
+            <div class="student-info">
+                <img id="studentImage" src="https://via.placeholder.com/50" alt="Student Image">
+                <div class="student-details">
+                    <div class="student-name" id="studentName">Yuklanmoqda...</div>
+                    <div class="student-phone" id="studentPhone">Telefon: Yuklanmoqda...</div>
+                    <div class="student-progress">
+                        <div class="student-progress-fill" id="studentProgressFill"></div>
+                    </div>
+                </div>
+                <div id="imageError" class="error" style="display: none;">Rasm yuklanmadi</div>
+            </div>
+            <div class="actions" style="margin-top: auto;">
+                <button class="action-btn secondary" style="width: 100%;">
+                    <i class="fas fa-user-edit"></i> Profilni yangilash
+                </button>
+            </div>
         </div>
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
+
+        <!-- Level Selection -->
+        <div class="level-bar" id="levelBar">
+            <div class="loading" id="moduleLoading">
+                <div class="spinner"></div>
+                Modullar yuklanmoqda...
+            </div>
+        </div>
+
+        <!-- Tasks Section -->
+        <div class="tasks">
+            <div class="section-title">
+                <i class="fas fa-tasks"></i>
+                <h2>Vazifalar Ro'yxati</h2>
+            </div>
+            <div class="loading" id="taskLoading">Yuklanmoqda...</div>
+            <div class="task-list" id="taskList"></div>
+        </div>
+
+        <!-- Students Levels Button -->
+        <div class="actions">
+            <button class="action-btn" onclick="viewStudentsLevels()">
+                <i class="fas fa-users"></i>
+                Talabalar Darajalari
+            </button>
+        </div>
+    </div>
+
+    <!-- Profile Update Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeProfileModal()">×</span>
+            <div class="update-profile">
+                <h3>Profilni Yangilash</h3>
+                <form id="updateProfileForm">
+                    <div class="image-upload">
+                        <img id="imagePreview" class="image-upload-preview" src="" alt="Profil rasmi">
+                        <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                        <button type="button" class="image-upload-btn"
+                                onclick="document.getElementById('imageUpload').click()">
+                            <i class="fas fa-camera"></i> Rasm yuklash
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="firstName">Ism</label>
+                        <input type="text" id="firstName" placeholder="Ism" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName">Familiya</label>
+                        <input type="text" id="lastName" placeholder="Familiya" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phoneNumber">Telefon raqami</label>
+                        <div class="phone-group">
+                            <span class="phone-prefix">+998</span>
+                            <input type="tel" id="phoneNumber" class="phone-input" placeholder="XX1234567"
+                                   pattern="^(90|91|93|94|95|97|98|99)[0-9]{7}$" required>
+                        </div>
+                        <div class="error-message" id="phoneError">Telefon raqami 90, 91, 93, 94, 95, 97, 98, 33, 77, 20, 88 yoki 99 bilan boshlanib, 7 raqamdan iborat bo'lishi kerak!</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Yangi parol</label>
+                        <input type="password" id="password" placeholder="Yangi parol">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Parolni tasdiqlash</label>
+                        <input type="password" id="confirmPassword" placeholder="Parolni tasdiqlash">
+                    </div>
+
+                    <button type="submit">Yangilash</button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -542,9 +794,30 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-<script src="https://www.youtube.com/iframe_api"></script>
 <script>
-    // DOM elementlari
+    // Ensure YouTube API is loaded
+    let youtubeApiLoaded = false;
+
+    function onYouTubeIframeAPIReady() {
+        youtubeApiLoaded = true;
+        console.log('YouTube IFrame API tayyor');
+    }
+
+    // Load YouTube API script dynamically
+    const youtubeScript = document.createElement('script');
+    youtubeScript.src = 'https://www.youtube.com/iframe_api';
+    youtubeScript.onerror = () => {
+        console.error('YouTube IFrame API yuklanmadi');
+        const videoContainer = document.getElementById('videoContainer');
+        if (videoContainer) {
+            videoContainer.innerHTML = `<div class="question-text" style="color: var(--danger);">YouTube API yuklanmadi. Iltimos, keyinroq qayta urining.</div>`;
+            videoCompleted = true;
+            displayQuestions(document.getElementById('questionsContainer'));
+        }
+    };
+    document.head.appendChild(youtubeScript);
+
+    // DOM elements
     const levelBar = document.getElementById('levelBar');
     const moduleLoading = document.getElementById('moduleLoading');
     const taskLoading = document.getElementById('taskLoading');
@@ -553,10 +826,20 @@
     const questionContent = document.getElementById('questionContent');
     const optionsContainer = document.getElementById('optionsContainer');
     const studentNameElement = document.getElementById('studentName');
+    const studentPhoneElement = document.getElementById('studentPhone');
+    const studentImageElement = document.getElementById('studentImage');
+    const studentProgressFill = document.getElementById('studentProgressFill');
+    const imageErrorElement = document.getElementById('imageError');
     const progressText = document.getElementById('progressText');
     const progressFill = document.getElementById('progressFill');
+    const updateProfileForm = document.getElementById('updateProfileForm');
+    const profileModal = document.getElementById('profileModal');
+    const imageUpload = document.getElementById('imageUpload');
+    const imagePreview = document.getElementById('imagePreview');
+    const phoneNumberInput = document.getElementById('phoneNumber');
+    const phoneError = document.getElementById('phoneError');
 
-    // O'zgaruvchilar
+    // Variables
     let currentModuleId = null;
     let currentTaskId = null;
     let currentQuestionIndex = 0;
@@ -565,96 +848,237 @@
     let selectedAnswers = [];
     let videoPlayer = null;
     let videoCompleted = false;
+    let userData = JSON.parse(localStorage.getItem('userData')) || {};
+    let newImageFile = null;
 
-    // Foydalanuvchi ma'lumotlari
-    let userData = JSON.parse(localStorage.getItem('userData'));
-
-    // Avtorizatsiyani tekshirish
+    // Check authorization
     function checkAuth() {
         if (!userData || !userData.userId || !userData.token) {
-            window.location.href = '/homePage.html';
+            questionBox.innerHTML = `
+                <div class="question-content">
+                    <div class="question-text">Avtorizatsiya ma'lumotlari topilmadi. Iltimos, qaytadan kiring.</div>
+                    <button onclick="logout()" style="padding: 10px 20px; margin-top: 15px; background: var(--primary); color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        Login sahifasiga o'tish
+                    </button>
+                </div>
+            `;
             return false;
         }
         return true;
     }
 
-    // Foydalanuvchi ismini ko'rsatish
+    // Logout function
+    function logout() {
+        localStorage.removeItem('userData');
+        userData = {};
+        window.location.href = '/login.html';
+    }
+
+    // Display user info
     function displayUserInfo() {
         if (userData && userData.firstName && userData.lastName) {
             studentNameElement.textContent = `${userData.firstName} ${userData.lastName}`;
+            studentPhoneElement.textContent = `Telefon: ${userData.phoneNumber || 'Noma\'lum'}`;
+
+            if (userData.image && typeof userData.image === 'string' && userData.image.startsWith('data:image')) {
+                studentImageElement.src = userData.image;
+                imagePreview.src = userData.image;
+                imagePreview.style.display = 'block';
+            } else {
+                studentImageElement.src = 'https://via.placeholder.com/50';
+                imageErrorElement.style.display = 'block';
+            }
+
+            if (userData.progress) {
+                studentProgressFill.style.width = `${userData.progress}%`;
+            }
         } else {
             studentNameElement.textContent = 'Foydalanuvchi';
+            studentPhoneElement.textContent = 'Telefon: Noma\'lum';
+            studentImageElement.src = 'https://via.placeholder.com/50';
+            imageErrorElement.style.display = 'block';
+        }
+
+        // Fill form fields with current data
+        if (userData) {
+            document.getElementById('firstName').value = userData.firstName || '';
+            document.getElementById('lastName').value = userData.lastName || '';
+            document.getElementById('phoneNumber').value = userData.phoneNumber?.replace('+998', '') || '';
         }
     }
 
-    // Modullarni yuklash
+    // Image upload handler
+    imageUpload.addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (file) {
+            if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                alert('Rasm hajmi 2MB dan katta bo\'lmasligi kerak!');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                imagePreview.src = event.target.result;
+                imagePreview.style.display = 'block';
+                newImageFile = file;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Phone number validation
+    phoneNumberInput.addEventListener('input', function () {
+        const phoneRegex = /^(90|91|93|94|95|97|98|99|33|77|20|88)[0-9]{7}$/;
+        if (!phoneRegex.test(this.value)) {
+            phoneError.style.display = 'block';
+            this.setCustomValidity('Telefon raqami 90, 91, 93, 94, 95, 97, 98, 33, 77, 20, 88 yoki 99 bilan boshlanib, 7 raqamdan iborat bo\'lishi kerak!');
+        } else {
+            phoneError.style.display = 'none';
+            this.setCustomValidity('');
+        }
+    });
+
+    // Modal controls
+    function showProfileModal() {
+        if (!checkAuth()) return;
+        profileModal.style.display = 'flex';
+    }
+
+    function closeProfileModal() {
+        profileModal.style.display = 'none';
+        updateProfileForm.reset();
+        newImageFile = null;
+        phoneError.style.display = 'none';
+        phoneNumberInput.setCustomValidity('');
+        if (userData.image) {
+            imagePreview.src = userData.image;
+            imagePreview.style.display = 'block';
+        } else {
+            imagePreview.style.display = 'none';
+        }
+    }
+
+    // View students' levels
+    async function viewStudentsLevels() {
+        if (!checkAuth()) return;
+        try {
+            const response = await axios.get('/api/v1/student/levels', {
+                headers: {'Authorization': userData.token}
+            });
+            const students = response.data;
+            questionBox.innerHTML = `
+                <div class="question-header">
+                    <div class="question-title">Talabalar Darajalari</div>
+                </div>
+                <div class="question-content">
+                    <div class="question-text">
+                        ${students && students.length > 0 ? students.map(student => `
+                            <div style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                                <strong>${student.name || 'Noma\'lum'}</strong><br>
+                                Guruh: ${student.groupName || 'Noma\'lum'}<br>
+                                Daraja: ${student.level || 'Noma\'lum'}<br>
+                                Progress: ${student.progress || 0}%
+                                <div style="height: 5px; background: #e9ecef; border-radius: 3px; margin-top: 5px;">
+                                    <div style="height: 100%; width: ${student.progress || 0}%; background: var(--success); border-radius: 3px;"></div>
+                                </div>
+                            </div>
+                        `).join('') : 'Talabalar ma\'lumotlari topilmadi'}
+                    </div>
+                </div>
+            `;
+        } catch (error) {
+            console.error('Talabalar darajasini yuklashda xato:', error);
+            questionBox.innerHTML = `
+                <div class="question-content">
+                    <div class="question-text" style="color: var(--danger);">
+                        Talabalar darajasini yuklashda xato: ${error.response?.data?.message || error.message}
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    // Load modules
     async function loadModules() {
+        if (!checkAuth()) return;
         moduleLoading.style.display = 'block';
         try {
             const response = await axios.get('/api/v1/module', {
-                headers: { 'Authorization': userData.token }
+                headers: {'Authorization': userData.token}
             });
+            if (!response.data || response.data.length === 0) {
+                throw new Error('Modullar topilmadi');
+            }
             displayModules(response.data);
         } catch (error) {
-            console.error('Xato:', error);
+            console.error('Modullarni yuklashda xato:', error);
             questionBox.innerHTML = `
                 <div class="question-content">
-                    <div class="question-text">Modullarni yuklashda xato yuz berdi</div>
+                    <div class="question-text" style="color: var(--danger);">
+                        Modullarni yuklashda xato yuz berdi: ${error.message}
+                    </div>
                 </div>`;
-            questionBox.style.color = 'var(--danger)';
-        } finally {
             moduleLoading.style.display = 'none';
         }
     }
 
-    // Modullarni ekranga chiqarish
+    // Display modules
     function displayModules(modules) {
         levelBar.innerHTML = '';
-        if (modules.length === 0) {
+        if (!modules || modules.length === 0) {
             questionBox.innerHTML = `
                 <div class="question-content">
                     <div class="question-text">Modullar topilmadi</div>
                 </div>`;
+            moduleLoading.style.display = 'none';
             return;
         }
 
         modules.forEach(module => {
             const button = document.createElement('button');
             button.className = 'level-btn';
-            button.innerHTML = `<i class="fas fa-book"></i> ${module.moduleName}`;
+            button.innerHTML = `<i class="fas fa-book"></i> ${module.moduleName || 'Noma\'lum modul'}`;
             button.dataset.moduleId = module.id;
             button.addEventListener('click', () => selectModule(module));
             levelBar.appendChild(button);
         });
+        moduleLoading.style.display = 'none';
     }
 
-    // Modul tanlash
+    // Select module
     function selectModule(module) {
+        if (!checkAuth()) return;
         document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
         const selectedBtn = document.querySelector(`.level-btn[data-module-id="${module.id}"]`);
-        selectedBtn.classList.add('active');
+        if (selectedBtn) {
+            selectedBtn.classList.add('active');
+        }
         currentModuleId = module.id;
         loadTasks(module.id);
     }
 
-    // Vazifalarni yuklash
+    // Load tasks
     async function loadTasks(moduleId) {
+        if (!checkAuth()) return;
         taskLoading.style.display = 'block';
         taskList.innerHTML = '';
         try {
             const response = await axios.get(`/api/v1/module/get/${moduleId}`, {
-                headers: { 'Authorization': userData.token }
+                headers: {'Authorization': userData.token}
             });
+            if (!response.data || response.data.length === 0) {
+                throw new Error('Vazifalar topilmadi');
+            }
             displayTasks(response.data);
         } catch (error) {
             console.error('Vazifalarni yuklashda xato:', error);
-            taskList.innerHTML = `<div class="error-message">Vazifalarni yuklashda xato: ${error.message}</div>`;
+            taskList.innerHTML = `<div class="error-message" style="color: var(--danger);">Vazifalarni yuklashda xato: ${error.message}</div>`;
         } finally {
             taskLoading.style.display = 'none';
         }
     }
 
-    // Vazifalarni ko'rsatish
+    // Display tasks
     function displayTasks(tasks) {
         taskList.innerHTML = '';
         if (!tasks || tasks.length === 0) {
@@ -665,14 +1089,15 @@
         tasks.forEach(task => {
             const taskElement = document.createElement('div');
             taskElement.className = 'task';
-            taskElement.innerHTML = `<i class="fas fa-tasks"></i><span>${task.taskName}</span>`;
+            taskElement.innerHTML = `<i class="fas fa-tasks"></i><span>${task.taskName || 'Noma\'lum vazifa'}</span>`;
             taskElement.addEventListener('click', () => selectTask(task));
             taskList.appendChild(taskElement);
         });
     }
 
-    // Vazifa tanlash
+    // Select task
     async function selectTask(task) {
+        if (!checkAuth()) return;
         document.querySelectorAll('.task').forEach(t => t.classList.remove('active'));
         const taskElements = document.querySelectorAll('.task span');
         taskElements.forEach(element => {
@@ -684,8 +1109,11 @@
         currentTaskId = task.id;
         try {
             const response = await axios.get(`/api/v1/task/${task.id}`, {
-                headers: { 'Authorization': userData.token }
+                headers: {'Authorization': userData.token}
             });
+            if (!response.data) {
+                throw new Error('Vazifa ma\'lumotlari topilmadi');
+            }
             currentTaskDetails = response.data;
             currentQuestions = currentTaskDetails.questionRes || [];
             currentQuestionIndex = 0;
@@ -696,20 +1124,26 @@
             console.error('Savollarni yuklashda xato:', error);
             questionBox.innerHTML = `
                 <div class="question-content">
-                    <div class="question-text">Savollarni yuklashda xato yuz berdi: ${error.message}</div>
+                    <div class="question-text" style="color: var(--danger);">Savollarni yuklashda xato yuz berdi: ${error.message}</div>
                 </div>`;
-            questionBox.style.color = 'var(--danger)';
         }
     }
 
-    // YouTube video ID olish
+    // Get YouTube video ID
     function getYouTubeVideoId(url) {
+        if (!url || typeof url !== 'string') {
+            console.error('YouTube URL noto\'g\'ri yoki mavjud emas:', url);
+            return null;
+        }
         const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
         const match = url.match(regex);
+        if (!match) {
+            console.error('YouTube video ID topilmadi:', url);
+        }
         return match ? match[1] : null;
     }
 
-    // Vazifa tafsilotlarini ko'rsatish
+    // Display task details
     function displayTaskDetails(taskDetails) {
         questionBox.innerHTML = `
             <div class="question-header">
@@ -718,168 +1152,221 @@
             </div>
             <div class="question-content" id="questionContent">
                 <div id="videoContainer" style="display: none;"></div>
-                <div id="questionsContainer" style="display: none;"></div>
+                <div id="questionsAfterVideo" class="questions-after-video"></div>
             </div>
         `;
 
         const videoContainer = document.getElementById('videoContainer');
-        const questionsContainer = document.getElementById('questionsContainer');
+        const questionsAfterVideo = document.getElementById('questionsAfterVideo');
 
         if (taskDetails.youtubeURL) {
             const videoId = getYouTubeVideoId(taskDetails.youtubeURL);
-            if (videoId) {
+            if (videoId && youtubeApiLoaded) {
                 videoContainer.style.display = 'block';
                 videoContainer.innerHTML = `
                     <div id="youtubePlayer"></div>
-                    <div style="margin-top: 20px; text-align: center;">
-                        <button class="action-btn secondary" onclick="skipVideo()">
-                            <i class="fas fa-forward"></i> Videoni o'tkazib yuborish
-                        </button>
+                    <div class="video-message" id="videoMessage">
+                        Iltimos, videoni to'liq ko'ring. Video tugagandan keyin savollar ko'rinadi.
                     </div>
                 `;
 
-                videoPlayer = new YT.Player('youtubePlayer', {
-                    height: '360',
-                    width: '100%',
-                    videoId: videoId,
-                    events: { 'onStateChange': onPlayerStateChange }
-                });
-
-                questionsContainer.style.display = 'none';
+                try {
+                    videoPlayer = new YT.Player('youtubePlayer', {
+                        height: '100%',
+                        width: '100%',
+                        videoId: videoId,
+                        playerVars: {
+                            'controls': 1,
+                            'disablekb': 1,
+                            'fs': 0,
+                            'modestbranding': 1,
+                            'rel': 0
+                        },
+                        events: {
+                            'onReady': onPlayerReady,
+                            'onStateChange': onPlayerStateChange,
+                            'onError': onPlayerError
+                        }
+                    });
+                    console.log('YouTube player initialized for video ID:', videoId);
+                } catch (error) {
+                    console.error('YouTube player yuklashda xato:', error);
+                    videoContainer.innerHTML = `<div class="question-text" style="color: var(--danger);">Video yuklanmadi: YouTube xatosi</div>`;
+                    videoContainer.style.display = 'block';
+                    questionsAfterVideo.style.display = 'none';
+                    videoCompleted = true;
+                    displayQuestionsAfterVideo(questionsAfterVideo);
+                }
             } else {
-                videoContainer.innerHTML = `<div class="question-text">YouTube video URLi noto'g'ri</div>`;
-                displayQuestions(questionsContainer);
+                videoContainer.innerHTML = `<div class="question-text" style="color: var(--danger);">
+                    ${youtubeApiLoaded ? 'YouTube video URLi noto\'g\'ri: ' + taskDetails.youtubeURL : 'YouTube API yuklanmadi'}
+                </div>`;
+                videoContainer.style.display = 'block';
+                questionsAfterVideo.style.display = 'none';
+                videoCompleted = true;
+                displayQuestionsAfterVideo(questionsAfterVideo);
             }
         } else {
             videoContainer.style.display = 'none';
-            questionsContainer.style.display = 'block';
-            displayQuestions(questionsContainer);
+            questionsAfterVideo.style.display = 'block';
+            videoCompleted = true;
+            displayQuestionsAfterVideo(questionsAfterVideo);
         }
 
         questionBox.classList.add('active');
     }
 
-    // YouTube player holati o'zgarganda
+    // YouTube player ready
+    function onPlayerReady(event) {
+        console.log('YouTube player tayyor:', event.target.getVideoUrl());
+    }
+
+    // YouTube player error
+    function onPlayerError(event) {
+        console.error('YouTube player xatosi, kod:', event.data);
+        const errorMessages = {
+            2: 'Noto\'g\'ri video ID',
+            5: 'HTML5 player xatosi',
+            100: 'Video topilmadi',
+            101: 'Video egasi tomonidan taqiqlangan',
+            150: 'Video egasi tomonidan taqiqlangan'
+        };
+        const videoContainer = document.getElementById('videoContainer');
+        videoContainer.innerHTML = `<div class="question-text" style="color: var(--danger);">Video yuklanmadi: ${errorMessages[event.data] || 'Noma\'lum xato'}</div>`;
+        videoContainer.style.display = 'block';
+        videoCompleted = true;
+        displayQuestionsAfterVideo(document.getElementById('questionsAfterVideo'));
+    }
+
+    // YouTube player state change
     function onPlayerStateChange(event) {
         if (event.data === YT.PlayerState.ENDED) {
+            console.log('Video tugadi');
             videoCompleted = true;
             const videoContainer = document.getElementById('videoContainer');
-            const questionsContainer = document.getElementById('questionsContainer');
+            const questionsAfterVideo = document.getElementById('questionsAfterVideo');
             videoContainer.style.display = 'none';
-            questionsContainer.style.display = 'block';
-            displayQuestions(questionsContainer);
+            questionsAfterVideo.style.display = 'block';
+            displayQuestionsAfterVideo(questionsAfterVideo);
         }
     }
 
-    // Videoni o'tkazib yuborish
-    function skipVideo() {
-        videoCompleted = true;
-        const videoContainer = document.getElementById('videoContainer');
-        const questionsContainer = document.getElementById('questionsContainer');
-        videoContainer.style.display = 'none';
-        questionsContainer.style.display = 'block';
-        displayQuestions(questionsContainer);
-    }
-
-    // Savollarni ko'rsatish
-    function displayQuestions(questionsContainer) {
-        if (!currentQuestions || currentQuestions.length === 0) {
-            questionsContainer.innerHTML = `<div class="question-text">Ushbu vazifa uchun savollar mavjud emas</div>`;
+    // Display questions after video
+    function displayQuestionsAfterVideo(container) {
+        if (!videoCompleted && currentTaskDetails.youtubeURL) {
+            container.innerHTML = `
+                <div class="question-card">
+                    <div class="question-card-title">Iltimos, avval videoni to'liq ko'ring!</div>
+                    <p>Video tugagandan keyin savollar ko'rinadi</p>
+                </div>
+            `;
             return;
         }
 
-        displayCurrentQuestion(questionsContainer);
-
-        if (currentQuestions.length > 1) {
-            const navDiv = document.createElement('div');
-            navDiv.style.display = 'flex';
-            navDiv.style.justifyContent = 'space-between';
-            navDiv.style.marginTop = '20px';
-            navDiv.innerHTML = `
-                <button class="action-btn secondary" onclick="navigateQuestion(-1)">
-                    <i class="fas fa-arrow-left"></i> Oldingi
-                </button>
-                <span style="align-self: center;">
-                    Savol ${currentQuestionIndex + 1}/${currentQuestions.length}
-                </span>
-                <button class="action-btn" onclick="navigateQuestion(1)">
-                    Keyingi <i class="fas fa-arrow-right"></i>
-                </button>
+        if (!currentQuestions || currentQuestions.length === 0) {
+            container.innerHTML = `
+                <div class="question-card">
+                    <div class="question-card-title">Ushbu vazifa uchun savollar mavjud emas</div>
+                </div>
             `;
-            questionsContainer.appendChild(navDiv);
+            return;
         }
-    }
 
-    // Joriy savolni ko'rsatish
-    function displayCurrentQuestion(questionsContainer) {
+        container.innerHTML = '';
+
+        // Display current question with new design
         const question = currentQuestions[currentQuestionIndex];
         if (!question) {
-            questionsContainer.innerHTML = `<div class="question-text">Savol yuklanmadi</div>`;
+            container.innerHTML = `
+                <div class="question-card">
+                    <div class="question-card-title">Savol yuklanmadi</div>
+                </div>
+            `;
             return;
         }
 
-        const optionsHtml = question.variant && question.variant.length > 0
-            ? question.variant.map((variant, index) => `
-                <div class="option">
+        const questionCard = document.createElement('div');
+        questionCard.className = 'question-card';
+
+        const questionTitle = document.createElement('div');
+        questionTitle.className = 'question-card-title';
+        questionTitle.textContent = question.questionTest || 'Savol matni mavjud emas';
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'question-card-options';
+
+        if (question.variant && question.variant.length > 0) {
+            question.variant.forEach((variant, index) => {
+                const option = document.createElement('div');
+                option.className = `question-card-option ${selectedAnswers[currentQuestionIndex] === variant ? 'selected' : ''}`;
+                option.innerHTML = `
                     <input type="radio" name="question_${question.id}" value="${variant}"
                            id="option_${index}" ${selectedAnswers[currentQuestionIndex] === variant ? 'checked' : ''}>
                     <label for="option_${index}">${variant}</label>
-                </div>
-            `).join('')
-            : '<div class="question-text">Variantlar mavjud emas</div>';
+                `;
 
-        questionsContainer.innerHTML = `
-            <div class="question-text">${question.questionTest || 'Savol matni mavjud emas'}</div>
-            <div class="options">${optionsHtml}</div>
-        `;
+                option.addEventListener('click', () => {
+                    selectedAnswers[currentQuestionIndex] = variant;
+                    document.querySelectorAll('.question-card-option').forEach(opt =>
+                        opt.classList.remove('selected')
+                    );
+                    option.classList.add('selected');
+                });
 
-        // Radio tugmachalarni tanlash hodisasini qo'shish
-        document.querySelectorAll(`input[name="question_${question.id}"]`).forEach(input => {
-            input.addEventListener('change', (e) => {
-                selectedAnswers[currentQuestionIndex] = e.target.value;
-                document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
-                e.target.parentElement.classList.add('selected');
+                optionsContainer.appendChild(option);
             });
-        });
+        } else {
+            optionsContainer.innerHTML = '<p>Variantlar mavjud emas</p>';
+        }
+
+        // Navigation controls
+        const navControls = document.createElement('div');
+        navControls.className = 'question-nav';
+
+        const prevButton = document.createElement('button');
+        prevButton.className = 'action-btn secondary';
+        prevButton.innerHTML = '<i class="fas fa-arrow-left"></i> Oldingi';
+        prevButton.addEventListener('click', () => navigateQuestionAfterVideo(-1));
+
+        const nextButton = document.createElement('button');
+        nextButton.className = 'action-btn';
+        nextButton.innerHTML = 'Keyingi <i class="fas fa-arrow-right"></i>';
+        nextButton.addEventListener('click', () => navigateQuestionAfterVideo(1));
+
+        const counter = document.createElement('div');
+        counter.className = 'question-counter';
+        counter.textContent = `Savol ${currentQuestionIndex + 1}/${currentQuestions.length}`;
+
+        navControls.appendChild(prevButton);
+        navControls.appendChild(counter);
+        navControls.appendChild(nextButton);
+
+        questionCard.appendChild(questionTitle);
+        questionCard.appendChild(optionsContainer);
+        questionCard.appendChild(navControls);
+
+        container.appendChild(questionCard);
     }
 
-    // Savollar orasida harakatlanish
-    function navigateQuestion(direction) {
+    // Navigate questions after video
+    function navigateQuestionAfterVideo(direction) {
         if (!currentQuestions || currentQuestions.length === 0) return;
 
         currentQuestionIndex += direction;
         if (currentQuestionIndex < 0) currentQuestionIndex = 0;
         if (currentQuestionIndex >= currentQuestions.length) currentQuestionIndex = currentQuestions.length - 1;
 
-        displayQuestions(document.getElementById('questionsContainer'));
-
-        const counter = document.querySelector('#questionsContainer span');
-        if (counter) {
-            counter.textContent = `Savol ${currentQuestionIndex + 1}/${currentQuestions.length}`;
-        }
+        displayQuestionsAfterVideo(document.getElementById('questionsAfterVideo'));
     }
 
-    // Javobni saqlash
-    function saveAnswer() {
-        const selectedOption = selectedAnswers[currentQuestionIndex];
-        if (selectedOption) {
-            alert('Javob saqlandi: ' + selectedOption);
-        } else {
-            alert('Iltimos, javob variantini tanlang!');
-        }
-    }
-
-    // Javobni qayta yuklash
-    function resetAnswer() {
-        selectedAnswers[currentQuestionIndex] = null;
-        document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
-        document.querySelectorAll(`input[name="question_${currentQuestions[currentQuestionIndex].id}"]`)
-            .forEach(input => input.checked = false);
-        alert('Javoblar qayta yuklandi');
-    }
-
-    // Javobni yuborish
+    // Submit answer
     async function submitAnswer() {
+        if (!checkAuth()) return;
+        if (!videoCompleted && currentTaskDetails.youtubeURL) {
+            alert('Iltimos, avval videoni to\'liq ko\'ring!');
+            return;
+        }
+
         if (!selectedAnswers.some(answer => answer !== null)) {
             alert('Iltimos, kamida bitta savolga javob bering!');
             return;
@@ -912,45 +1399,117 @@
                     <div class="difficulty">Umumiy</div>
                 </div>
                 <div class="question-content">
-                    <div class="question-text">
-                        Talaba: ${result.studentName}<br>
-                        Guruh: ${result.groupName}<br>
-                        To'g'ri javoblar: ${result.passedTasks}
+                    <div class="question-card">
+                        <div class="question-card-title">Test natijalari</div>
+                        <p><strong>Talaba:</strong> ${result.studentName || 'Noma\'lum'}</p>
+                        <p><strong>Guruh:</strong> ${result.groupName || 'Noma\'lum'}</p>
+                        <p><strong>To'g'ri javoblar:</strong> ${result.passedTasks || 0} / ${currentQuestions.length}</p>
+                        <div style="height: 10px; background: #e9ecef; border-radius: 5px; margin: 10px 0;">
+                            <div style="height: 100%; width: ${(result.passedTasks / currentQuestions.length) * 100}%; background: var(--success); border-radius: 5px;"></div>
+                        </div>
                     </div>
                 </div>
             `;
-            questionBox.classList.add('active');
 
-            // Progressni yangilash
+            // Update user progress
+            if (result.progress) {
+                userData.progress = result.progress;
+                localStorage.setItem('userData', JSON.stringify(userData));
+                displayUserInfo();
+            }
+
             const totalQuestions = currentQuestions.length;
-            const progressPercentage = (result.passedTasks / totalQuestions) * 100;
+            const progressPercentage = totalQuestions > 0 ? (result.passedTasks / totalQuestions) * 100 : 0;
             progressText.textContent = `${Math.round(progressPercentage)}%`;
             progressFill.style.width = `${progressPercentage}%`;
 
             alert('Javoblar yuborildi!');
         } catch (error) {
             console.error('Javob yuborishda xato:', error);
-            alert('Javob yuborishda xato yuz berdi');
+            questionBox.innerHTML = `
+                <div class="question-content">
+                    <div class="question-text" style="color: var(--danger);">
+                        Javob yuborishda xato: ${error.response?.data?.message || error.message}
+                    </div>
+                </div>
+            `;
         }
     }
 
-    // Dastur ishga tushganda
+    // Update profile
+    updateProfileForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!checkAuth()) return;
+
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        const phoneNumber = `+998${document.getElementById('phoneNumber').value}`;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password && password !== confirmPassword) {
+            alert('Parollar mos kelmadi!');
+            return;
+        }
+
+        const phoneRegex = /^\+998(90|91|93|94|95|97|98|99)[0-9]{7}$/;
+        if (!phoneRegex.test(phoneNumber)) {
+            phoneError.style.display = 'block';
+            phoneNumberInput.setCustomValidity('Telefon raqami 90, 91, 93, 94, 95, 97, 98, 33, 77, 20, 88 yoki 99 bilan boshlanib, 7 raqamdan iborat bo\'lishi kerak!');
+            return;
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append('id', userData.userId);
+            formData.append('firstName', firstName);
+            formData.append('lastName', lastName);
+            formData.append('phoneNumber', phoneNumber);
+            if (password) formData.append('password', password);
+            if (newImageFile) formData.append('file', newImageFile);
+
+            const response = await axios.post('/api/v1/auth/updateProfile', formData, {
+                headers: {
+                    'Authorization': `${userData.token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            // Update user data
+            userData.firstName = response.data.firstName;
+            userData.lastName = response.data.lastName;
+            userData.phoneNumber = response.data.phoneNumber;
+            if (response.data.image) {
+                userData.image = response.data.image;
+                imagePreview.src = response.data.image;
+                studentImageElement.src = response.data.image;
+            }
+
+            localStorage.setItem('userData', JSON.stringify(userData));
+            displayUserInfo();
+            alert('Profil muvaffaqiyatli yangilandi!');
+            closeProfileModal();
+        } catch (error) {
+            console.error('Profilni yangilashda xato:', error);
+            if (error.response && error.response.status === 403) {
+                alert('Ruxsat etilmagan amal! Iltimos, qaytadan kiring.');
+            } else {
+                alert(`Profilni yangilashda xato: ${error.response?.data?.message || error.message}`);
+            }
+        }
+    });
+
+    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
+        // Initialize userData if empty
+        if (!localStorage.getItem('userData')) {
+            userData = {};
+            localStorage.setItem('userData', JSON.stringify(userData));
+        }
+
         if (checkAuth()) {
             displayUserInfo();
             loadModules();
-        } else {
-            questionBox.innerHTML = `
-                <div class="question-content">
-                    <div class="question-text">Siz avtorizatsiyadan o'tmagansiz</div>
-                    <button onclick="window.location.href='/login.html'"
-                            style="padding: 10px 20px; margin-top: 15px;
-                                   background: var(--primary); color: white;
-                                   border: none; border-radius: 5px; cursor: pointer;">
-                        Login sahifasiga o'tish
-                    </button>
-                </div>
-            `;
         }
     });
 </script>

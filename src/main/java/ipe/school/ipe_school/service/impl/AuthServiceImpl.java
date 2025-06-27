@@ -40,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByPhoneNumber(loginDto.getPhoneNumber());
         if (user == null) {
             throw new UsernameNotFoundException("Username not found");
-        } else if (user.getActive() == false) {
+        } else if (!user.getActive()) {
             throw new UsernameNotFoundException("Username not found");
         }
 
@@ -82,7 +82,7 @@ public class AuthServiceImpl implements AuthService {
     @SneakyThrows
     @Override
     public UserRes updateUser(UserReq userReq, MultipartFile file) {
-        Optional<User> byId = userRepository.findById(Long.valueOf(userReq.getId()));
+        Optional<User> byId = userRepository.findById(userReq.getId());
         if (byId.isPresent()) {
             User user = byId.get();
             user.setFirstName(userReq.getFirstName());

@@ -31,8 +31,7 @@ public class AdminRoleChangeController {
     @PostMapping
     public ResponseEntity<UserRes> changeUserRole(@RequestBody UserIdReq userIdReq) {
         System.out.println(userIdReq);
-        List<Long> roleIds = new ArrayList<>(List.of(userIdReq.getRoleId()));
-        UserRes userRes=userService.changeUserRole(userIdReq.getUserId(), roleIds);
+        UserRes userRes=userService.changeUserRole(userIdReq.getUserId(), userIdReq.getRoleIds());
         return new ResponseEntity<>(userRes, HttpStatus.OK);
     }
 

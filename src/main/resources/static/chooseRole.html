@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Rolni tanlang</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="d-flex justify-content-center align-items-center vh-100 bg-light">
+<div class="card p-4 shadow-lg" style="min-width: 300px;">
+    <h4 class="mb-3 text-center">Kabinetni tanlang</h4>
+    <div id="role-buttons" class="d-grid gap-2"></div>
+</div>
+
+<script>
+    const userData = JSON.parse(localStorage.getItem('userData')) || {};
+    const roles = userData.roles || [];
+
+    const roleMap = {
+        "ROLE_ADMIN": {name: "Admin", url: "/adminCabinet.html"},
+        "ROLE_SUPER_MENTOR": {name: "Super Mentor", url: "/superMentorCabinet.html"},
+        "ROLE_MENTOR": {name: "Mentor", url: "/mentorCabinet.html"},
+        "ROLE_STUDENT": {name: "Talaba", url: "/studentCabinet.html"}
+    };
+
+    const roleButtons = document.getElementById('role-buttons');
+
+    if (roles.length === 0) {
+        roleButtons.innerHTML = `<div class="alert alert-danger">Sizga rol biriktirilmagan.</div>`;
+    } else {
+        roles.forEach(role => {
+            if (roleMap[role]) {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-primary';
+                btn.innerText = `${roleMap[role].name} sifatida kirish`;
+                btn.onclick = () => {
+                    window.location.href = roleMap[role].url;
+                };
+                roleButtons.appendChild(btn);
+            }
+        });
+    }
+</script>
+</body>
+</html>
