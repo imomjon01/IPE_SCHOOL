@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.util.*;
+
 import static ipe.school.ipe_school.utils.ApiConstants.*;
 
 @RestController
@@ -38,7 +40,15 @@ public class AuthController {
                     ? "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(loginRes.getImage())
                     : null;
 
-            String redirectUrl = determineRedirectUrl(loginRes.getRoles());
+            String redirectUrl = "";
+            int size = loginRes.getRoles().size();
+            if (size == 0) {
+                redirectUrl = "index.html";
+            } else if (size == 1) {
+                redirectUrl = determineRedirectUrl(loginRes.getRoles());
+            } else {
+                redirectUrl = "/chooseRole.html";
+            }
 
             return ResponseEntity.ok(Map.of(
                     "token", loginRes.getToken(),
@@ -64,6 +74,8 @@ public class AuthController {
     private String determineRedirectUrl(List<String> roles) {
         if (roles.contains("ROLE_ADMIN")) {
             return "/adminCabinet.html";
+        } else if (roles.contains("ROLE_SUPER_MENTOR")) {
+            return "/superMentorCabinet.html";
         } else if (roles.contains("ROLE_MENTOR")) {
             return "/mentorCabinet.html";
         } else {
