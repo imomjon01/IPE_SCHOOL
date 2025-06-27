@@ -18,4 +18,5 @@ public interface ApiConstants {
     String QUESTIONS = "/questions";
     String ATTACHMENTS = "/attachments";
     String USER  = "/user";
+    String SCIENCE = "/science";
 }
