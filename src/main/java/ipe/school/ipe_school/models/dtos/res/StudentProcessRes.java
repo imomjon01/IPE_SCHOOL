@@ -6,5 +6,7 @@ import lombok.Value;
 public class StudentProcessRes {
      String studentName;
      String groupName;
-     Integer passedTasks;
+     Integer totalQuery;
+     Integer passedQuery;
+     Integer failedQuery;
 }

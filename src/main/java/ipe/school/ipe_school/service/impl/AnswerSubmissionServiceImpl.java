@@ -28,14 +28,9 @@ public class AnswerSubmissionServiceImpl implements AnswerSubmissionService {
     @Override
     @Transactional
     public StudentProcessRes submitAnswer(User user, List<AnswerSubmissionReq> answerSubmissionReqs) {
-
         User findUser = userRepository.findByPhoneNumber(user.getPhoneNumber());
-
         Optional<StudentProgress> byStudentId = studentProgressRepository.findByStudentId(findUser.getId());
-
-        StudentProgress studentProgress;
-
-        studentProgress = byStudentId.orElseGet(() -> StudentProgress.builder()
+        StudentProgress studentProgress = byStudentId.orElseGet(() -> StudentProgress.builder()
                 .student(findUser)
                 .groupName(groupRepository.findGroupNameByStudentId(findUser.getId()))
                 .build());
@@ -44,16 +39,20 @@ public class AnswerSubmissionServiceImpl implements AnswerSubmissionService {
         for (AnswerSubmissionReq item : answerSubmissionReqs) {
             Optional<AnswerSubmission> existingSubmission = answerSubmissionRepository
                     .findByStudentIdAndQuestionId(findUser.getId(), item.getQuestionId());
-            existingSubmission.ifPresent(System.out::println);
+            if (existingSubmission.isPresent()) {
+                continue;
+            }
 
             AnswerSubmission answerSubmission = new AnswerSubmission();
             answerSubmission.setStudent(findUser);
             Question question = questionRepository.findById(item.getQuestionId()).orElse(null);
+            if (question == null) continue;
+
             answerSubmission.setQuestion(question);
             answerSubmission.setSelectedAnswer(item.getSelectedAnswer());
+            boolean isCorrect = question.getCurrentAnswer().equals(item.getSelectedAnswer());
+            answerSubmission.setCorrect(isCorrect);
 
-            boolean equals = question.getCurrentAnswer().equals(item.getSelectedAnswer());
-            answerSubmission.setCorrect(equals);
             if (studentProgress.getTotalQuery() == null) {
                 studentProgress.setTotalQuery(0);
                 studentProgress.setFailedQuery(0);
@@ -61,14 +60,24 @@ public class AnswerSubmissionServiceImpl implements AnswerSubmissionService {
             }
             Integer totalQuery = studentProgress.getTotalQuery();
             studentProgress.setTotalQuery(totalQuery + 1);
-            studentProgress.setPassedQuery(studentProgress.getPassedQuery() + (equals ? 1 : 0));
-            studentProgress.setFailedQuery(studentProgress.getFailedQuery() + (equals ? 0 : 1));
+            studentProgress.setPassedQuery(studentProgress.getPassedQuery() + (isCorrect ? 1 : 0));
+            studentProgress.setFailedQuery(studentProgress.getFailedQuery() + (isCorrect ? 0 : 1));
 
             allAnswers.add(answerSubmission);
         }
-        answerSubmissionRepository.saveAll(allAnswers);
-        StudentProgress save = studentProgressRepository.save(studentProgress);
-        return new StudentProcessRes(findUser.getFullName(), save.getGroupName(), save.getPassedQuery());
+
+        if (!allAnswers.isEmpty()) {
+            answerSubmissionRepository.saveAll(allAnswers);
+            studentProgressRepository.save(studentProgress);
+        }
+
+        return new StudentProcessRes(
+                findUser.getFullName(),
+                studentProgress.getGroupName(),
+                studentProgress.getTotalQuery(),
+                studentProgress.getPassedQuery(),
+                studentProgress.getFailedQuery()
+        );
     }
 
 }

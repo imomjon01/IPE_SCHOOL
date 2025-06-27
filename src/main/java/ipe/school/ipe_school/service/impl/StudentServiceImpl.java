@@ -1,13 +1,12 @@
 package ipe.school.ipe_school.service.impl;
 
+import ipe.school.ipe_school.component.AnswerMapper;
 import ipe.school.ipe_school.models.dtos.req.StudentDto;
 import ipe.school.ipe_school.models.dtos.res.StudentDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.StudentProcessRes;
 import ipe.school.ipe_school.models.dtos.res.StudentRes;
-import ipe.school.ipe_school.models.entity.Attachment;
-import ipe.school.ipe_school.models.entity.Roles;
-import ipe.school.ipe_school.models.entity.StudentProgress;
-import ipe.school.ipe_school.models.entity.User;
+import ipe.school.ipe_school.models.dtos.res.TopStudentByGroupRes;
+import ipe.school.ipe_school.models.entity.*;
 import ipe.school.ipe_school.models.repo.*;
 import ipe.school.ipe_school.service.interfaces.GroupService;
 import ipe.school.ipe_school.service.interfaces.StudentService;
@@ -37,6 +36,9 @@ public class StudentServiceImpl implements StudentService {
     private final AttachmentRepository attachmentRepository;
     private final GroupService groupService;
     private final StudentProgressRepository studentProgressRepository;
+    private final GroupRepository groupRepository;
+    private final AnswerSubmissionRepository answerSubmissionRepository;
+    private final AnswerMapper answerMapper;
 
 
     @SneakyThrows
@@ -65,7 +67,7 @@ public class StudentServiceImpl implements StudentService {
         List<Roles> roles = new ArrayList<>(List.of(byId.get()));
         user.setRoles(roles);
         User saved = userRepository.save(user);
-        return new StudentRes(saved.getId(), saved.getFirstName(), saved.getLastName(), saved.getPhoneNumber(), saved.getPassword());
+        return new StudentRes(saved.getId(), saved.getFirstName(), saved.getLastName(), saved.getPhoneNumber(), saved.getPassword(), saved.getAttachment().getContent());
     }
 
     @Transactional
@@ -94,7 +96,7 @@ public class StudentServiceImpl implements StudentService {
     public StudentRes activeUpdate(Long studentId) {
         User user = userRepository.findById(studentId).orElseThrow();
         user.setActive(false);
-        return new StudentRes(user.getId(), user.getFirstName(), user.getLastName(), user.getPhoneNumber(), user.getPassword());
+        return new StudentRes(user.getId(), user.getFirstName(), user.getLastName(), user.getPhoneNumber(), user.getPassword(), user.getAttachment().getContent());
     }
 
     @SneakyThrows
@@ -103,10 +105,18 @@ public class StudentServiceImpl implements StudentService {
         User user = userRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        user.setFirstName(studentDto.getFirstName());
-        user.setLastName(studentDto.getLastName());
-        user.setPhoneNumber(studentDto.getPhoneNumber());
-        user.setPassword(passwordEncoder.encode(studentDto.getPassword()));
+        if (studentDto.getFirstName() != null) {
+            user.setFirstName(studentDto.getFirstName());
+        }
+        if (studentDto.getLastName() != null) {
+            user.setLastName(studentDto.getLastName());
+        }
+        if (studentDto.getPhoneNumber() != null) {
+            user.setPhoneNumber(studentDto.getPhoneNumber());
+        }
+        if (studentDto.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(studentDto.getPassword()));
+        }
 
         if (imageFile != null && !imageFile.isEmpty()) {
             try {
@@ -129,14 +139,15 @@ public class StudentServiceImpl implements StudentService {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getPhoneNumber(),
-                user.getPassword()
+                user.getPassword(),
+                user.getAttachment().getContent()
         );
     }
 
     @Override
     public List<StudentDetailsRes> getAllStudents() {
-       List<User> users  = userRepository.findAllActiveStudents();
-       List<StudentDetailsRes> studentDetailsRes = new ArrayList<>();
+        List<User> users = userRepository.findAllActiveStudents();
+        List<StudentDetailsRes> studentDetailsRes = new ArrayList<>();
         for (User user : users) {
             studentDetailsRes.add(new StudentDetailsRes(user.getId(), user.getFirstName(), user.getLastName(), user.getPhoneNumber(), groupService.getGroupByStudentId(user.getId()).orElse(null)));
         }
@@ -151,7 +162,7 @@ public class StudentServiceImpl implements StudentService {
             studentProcessRes.add(new StudentProcessRes(
                     studentProgress.getStudent().getFullName(),
                     studentProgress.getGroupName(),
-                    studentProgress.getPassedQuery()
+                    studentProgress.getPassedQuery(), studentProgress.getPassedQuery(), studentProgress.getPassedQuery()
             ));
         }
         return studentProcessRes;
@@ -162,5 +173,15 @@ public class StudentServiceImpl implements StudentService {
         return userRepository.findAllCountStudentActive();
     }
 
+    @Override
+    public User findByUser(User user) {
+        return userRepository.findByPhoneNumber(user.getPhoneNumber());
+    }
 
+    @Override
+    public List<TopStudentByGroupRes> getTopStudentGroups(User byUser) {
+        List<User> list = groupRepository.findById(groupRepository.findGroupIdByStudentId(byUser.getId())).get().getStudents().stream().toList();
+        list.forEach(user -> System.out.println(user.getFullName()));
+        return answerMapper.users(list);
+    }
 }

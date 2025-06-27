@@ -4,6 +4,8 @@ import ipe.school.ipe_school.models.dtos.req.StudentDto;
 import ipe.school.ipe_school.models.dtos.res.StudentDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.StudentProcessRes;
 import ipe.school.ipe_school.models.dtos.res.StudentRes;
+import ipe.school.ipe_school.models.dtos.res.TopStudentByGroupRes;
+import ipe.school.ipe_school.models.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,4 +26,9 @@ public interface StudentService {
     List<StudentProcessRes> getTop10StudentProgress();
 
     Integer getStudentsCount();
+
+    User findByUser(User user);
+
+
+    List<TopStudentByGroupRes> getTopStudentGroups(User byUser);
 }

@@ -2,6 +2,7 @@ package ipe.school.ipe_school.controller.crud;
 
 import ipe.school.ipe_school.models.dtos.req.StudentDto;
 import ipe.school.ipe_school.models.dtos.res.StudentRes;
+import ipe.school.ipe_school.models.dtos.res.TopStudentByGroupRes;
 import ipe.school.ipe_school.models.entity.User;
 import ipe.school.ipe_school.models.repo.UserRepository;
 import ipe.school.ipe_school.service.interfaces.StudentService;
@@ -23,29 +24,9 @@ public class StudentController {
     private final StudentService studentService;
 
     @GetMapping("/levels")
-    public ResponseEntity<?> getLevels(@AuthenticationPrincipal User user) {
-        System.out.println(user.getPhoneNumber());
-        return ResponseEntity.ok("");
+    public ResponseEntity<List<TopStudentByGroupRes>> getLevels(@AuthenticationPrincipal User user) {
+        User byUser = studentService.findByUser(user);
+        List<TopStudentByGroupRes> studentRes = studentService.getTopStudentGroups(byUser);
+        return new ResponseEntity<>(studentRes, HttpStatus.OK);
     }
-
-
-    @PutMapping
-    public ResponseEntity<StudentRes> updateStudent(
-            @AuthenticationPrincipal User user,
-            @RequestPart("studentDto") StudentDto studentDto,
-            @RequestPart(value = "image", required = false) MultipartFile imageFile) {
-        if (user.getPhoneNumber() == null) {
-            System.err.println("Xatolik bo'ldi");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-        User findUser = studentService.findByUser(user);
-        if (findUser == null) {
-            System.err.println("Xatolik bo'ldi findUserda");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-
-        StudentRes studentRes = studentService.updateStudent(findUser.getId(), studentDto, imageFile);
-        return ResponseEntity.ok(studentRes);
-    }
-
 }
