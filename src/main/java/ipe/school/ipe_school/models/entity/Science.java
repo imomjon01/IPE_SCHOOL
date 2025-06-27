@@ -21,4 +21,6 @@ public class Science extends BaseEntity {
     private String name;
     @OneToMany
     private List<Group> groups;
+
+    private List<Module> modules;
 }
