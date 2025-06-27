@@ -40,5 +40,6 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
     @Query("SELECT g FROM Group g WHERE g.active = :isActive")
     Page<Group> findAllActiveGroup(boolean isActive, Pageable pageable);
 
-    List<Group> findAllByIdInAndActiveTrue(Collection<Long> ids, Boolean active);
+    List<Group> findAllByIdInAndActiveTrue(Collection<Long> ids);
+
 }

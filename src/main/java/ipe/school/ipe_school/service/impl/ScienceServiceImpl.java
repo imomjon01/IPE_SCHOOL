@@ -37,7 +37,7 @@ public class ScienceServiceImpl implements ScienceService {
         if (groupIds==null || groupIds.size()==0){
             return null;
         }
-        return groupRepository.findAllByIdInAndActiveTrue(groupIds,true);
+        return groupRepository.findAllByIdInAndActiveTrue(groupIds);
     }
 
     @Override
