@@ -1,9 +1,7 @@
 package ipe.school.ipe_school.service.impl;
 
 import ipe.school.ipe_school.models.dtos.req.ScienceReq;
-import ipe.school.ipe_school.models.dtos.res.GroupRes;
-import ipe.school.ipe_school.models.dtos.res.ScienceDetailsRes;
-import ipe.school.ipe_school.models.dtos.res.ScienceRes;
+import ipe.school.ipe_school.models.dtos.res.*;
 import ipe.school.ipe_school.models.entity.Group;
 import ipe.school.ipe_school.models.entity.Science;
 import ipe.school.ipe_school.models.repo.GroupRepository;
@@ -45,7 +43,9 @@ public class ScienceServiceImpl implements ScienceService {
     public ScienceDetailsRes getScienceByIdAndActive(Long scienceId) {
         Science science = scienceRepository.findScienceByIdAndActive(scienceId, true).orElseThrow(RuntimeException::new);
         List<GroupRes> groupRes = wrapGroupToGroupRes(science);
-        return new ScienceDetailsRes(science.getId(), science.getName(),groupRes);
+        return new ScienceDetailsRes(science.getId(), science.getName(),groupRes,
+                science.getModules().stream().map(item ->
+                        new ModuleDetalRes(item.getModuleName(), item.getTasks().size())).toList());
     }
 
     private static List<GroupRes> wrapGroupToGroupRes(Science science) {
@@ -66,7 +66,10 @@ public class ScienceServiceImpl implements ScienceService {
         return sciences.stream()
                 .map(science -> {
                     List<GroupRes> groupRes = wrapGroupToGroupRes(science);
-                    return new ScienceDetailsRes(science.getId(), science.getName(), groupRes);
+                    return new ScienceDetailsRes(science.getId(), science.getName(), groupRes,
+                            science.getModules().stream().map(item ->
+                                    new ModuleDetalRes(item.getModuleName(),
+                                            item.getTasks().size())).toList());
                 })
                 .toList();
     }
@@ -80,7 +83,10 @@ public class ScienceServiceImpl implements ScienceService {
         science.setGroups(groups);
         Science updatedScience = scienceRepository.save(science);
         List<GroupRes> groupRes = wrapGroupToGroupRes(updatedScience);
-        return new ScienceDetailsRes(science.getId(), science.getName(),groupRes);
+        return new ScienceDetailsRes(science.getId(), science.getName(),groupRes,
+                science.getModules().stream().map(item ->
+                        new ModuleDetalRes(item.getModuleName(),
+                                item.getTasks().size())).toList());
     }
 
     @Override
@@ -88,5 +94,10 @@ public class ScienceServiceImpl implements ScienceService {
     public void deleteScience(Long scienceId) {
         Science science = scienceRepository.findById(scienceId).orElseThrow(RuntimeException::new);
         science.setActive(false);
+    }
+
+    @Override
+    public Long getScienceCount() {
+        return scienceRepository.getCount();
     }
 }

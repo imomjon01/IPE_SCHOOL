@@ -41,4 +41,6 @@ public interface GroupService {
     Page<GroupResToAdmin> getAllGroupsActiveTrue(int page, int size, String search);
 
     Module createModule(Long groupId, String moduleName);
+
+    List<GroupRes> getGroupsForScience();
 }

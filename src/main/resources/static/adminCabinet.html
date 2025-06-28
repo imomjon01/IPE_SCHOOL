@@ -13,11 +13,13 @@
             --secondary-color: #f8f9fc;
             --accent-color: #2e59d9;
             --text-color: #5a5c69;
+            --module-active: #28a745;
+            --module-inactive: #dc3545;
         }
 
         body {
             font-family: 'Nunito', sans-serif;
-            background-color: #f8f9fc;
+            background-color: var(--secondary-color);
             color: var(--text-color);
         }
 
@@ -147,19 +149,18 @@
             border-radius: 5px;
         }
 
-        :root {
-            --module-active: #28a745; /* Faol modullar uchun yashil */
-            --module-inactive: #dc3545; /* Nofaol modullar uchun qizil */
-        }
-
         .module-active {
-            color: var(--module-active); /* Faol modullar uchun yashil */
+            color: var(--module-active);
             font-weight: bold;
         }
 
         .module-inactive {
-            color: var(--module-inactive); /* Nofaol modullar uchun qizil */
+            color: var(--module-inactive);
             font-weight: bold;
+        }
+
+        .details-row {
+            background-color: #f9f9f9;
         }
     </style>
 </head>
@@ -190,6 +191,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="#" class="nav-link" id="science-tab">
+                            <i class="fas fa-book"></i> Fan
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="#" class="nav-link" id="archive-tab">
                             <i class="fas fa-archive"></i> Arxiv
                         </a>
@@ -199,7 +205,6 @@
                             <i class="fas fa-star"></i> Reyting
                         </a>
                     </li>
-                    <!-- Conditionally show Role Change tab -->
                     <li class="nav-item" id="role-change-tab-li" style="display: none;">
                         <a href="#" class="nav-link" id="role-change-tab">
                             <i class="fas fa-user-cog"></i> Rol O‘zgartirish
@@ -262,15 +267,11 @@
                                         <th>Amallar</th>
                                     </tr>
                                     </thead>
-                                    <tbody id="student-table-body">
-                                    <!-- Talabalar bu yerga yuklanadi -->
-                                    </tbody>
+                                    <tbody id="student-table-body"></tbody>
                                 </table>
                             </div>
                             <nav aria-label="Sahifalash">
-                                <ul class="pagination justify-content-center" id="student-pagination">
-                                    <!-- Sahifalash bu yerga yuklanadi -->
-                                </ul>
+                                <ul class="pagination justify-content-center" id="student-pagination"></ul>
                             </nav>
                         </div>
                     </div>
@@ -298,15 +299,11 @@
                                         <th>Amallar</th>
                                     </tr>
                                     </thead>
-                                    <tbody id="mentor-table-body">
-                                    <!-- Mentorlar bu yerga yuklanadi -->
-                                    </tbody>
+                                    <tbody id="mentor-table-body"></tbody>
                                 </table>
                             </div>
                             <nav aria-label="Sahifalash">
-                                <ul class="pagination justify-content-center" id="mentor-pagination">
-                                    <!-- Sahifalash bu yerga yuklanadi -->
-                                </ul>
+                                <ul class="pagination justify-content-center" id="mentor-pagination"></ul>
                             </nav>
                         </div>
                     </div>
@@ -345,10 +342,39 @@
                     </div>
                 </div>
 
+                <!-- Fanlar Bo‘limi -->
+                <div class="tab-content d-none" id="science-content">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 id="science-count">Fanlar soni: Yuklanmoqda...</h5>
+                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#addScienceModal">
+                                <i class="fas fa-plus me-1"></i> Fan Qo‘shish
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nomi</th>
+                                        <th>Amallar</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="science-table-body"></tbody>
+                                </table>
+                            </div>
+                            <nav aria-label="Sahifalash">
+                                <ul class="pagination justify-content-center" id="science-pagination"></ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Arxiv Bo‘limi -->
                 <div class="tab-content d-none" id="archive-content">
                     <div class="row">
-                        <!-- Guruh Arxiv -->
                         <div class="col-12 col-md-4">
                             <div class="card">
                                 <div class="card-header">
@@ -364,21 +390,15 @@
                                                 <th>Blok qilingan sanasi</th>
                                             </tr>
                                             </thead>
-                                            <tbody id="archived-group-table-body">
-                                            <!-- Arxivlangan guruhlar bu yerga yuklanadi -->
-                                            </tbody>
+                                            <tbody id="archived-group-table-body"></tbody>
                                         </table>
                                     </div>
                                     <nav aria-label="Guruh arxiv sahifalash">
-                                        <ul class="pagination justify-content-center" id="archived-group-pagination">
-                                            <!-- Sahifalash bu yerga yuklanadi -->
-                                        </ul>
+                                        <ul class="pagination justify-content-center" id="archived-group-pagination"></ul>
                                     </nav>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Foydalanuvchi Arxiv -->
                         <div class="col-12 col-md-8">
                             <div class="card">
                                 <div class="card-header">
@@ -396,15 +416,11 @@
                                                 <th>Amallar</th>
                                             </tr>
                                             </thead>
-                                            <tbody id="archived-user-table-body">
-                                            <!-- Arxivlangan foydalanuvchilar bu yerga yuklanadi -->
-                                            </tbody>
+                                            <tbody id="archived-user-table-body"></tbody>
                                         </table>
                                     </div>
                                     <nav aria-label="Foydalanuvchi arxiv sahifalash">
-                                        <ul class="pagination justify-content-center" id="archived-user-pagination">
-                                            <!-- Sahifalash bu yerga yuklanadi -->
-                                        </ul>
+                                        <ul class="pagination justify-content-center" id="archived-user-pagination"></ul>
                                     </nav>
                                 </div>
                             </div>
@@ -429,9 +445,7 @@
                                         <th>Ball</th>
                                     </tr>
                                     </thead>
-                                    <tbody id="rating-table-body">
-                                    <!-- Eng yaxshi talabalar bu yerga yuklanadi -->
-                                    </tbody>
+                                    <tbody id="rating-table-body"></tbody>
                                 </table>
                             </div>
                         </div>
@@ -456,15 +470,11 @@
                                         <th>Amallar</th>
                                     </tr>
                                     </thead>
-                                    <tbody id="role-change-table-body">
-                                    <!-- Foydalanuvchilar bu yerga yuklanadi -->
-                                    </tbody>
+                                    <tbody id="role-change-table-body"></tbody>
                                 </table>
                             </div>
                             <nav aria-label="Sahifalash">
-                                <ul class="pagination justify-content-center" id="role-change-pagination">
-                                    <!-- Sahifalash bu yerga yuklanadi -->
-                                </ul>
+                                <ul class="pagination justify-content-center" id="role-change-pagination"></ul>
                             </nav>
                         </div>
                     </div>
@@ -552,10 +562,8 @@
                     <div class="mb-3">
                         <label for="student-phone-number" class="form-label">Telefon Raqami</label>
                         <input type="tel" value="+998" class="form-control" id="student-phone-number"
-                               placeholder="+998999999999"
-                               required>
-                        <div class="invalid-feedback">Telefon raqami noto‘g‘ri formatda (masalan, +998999999999).
-                        </div>
+                               placeholder="+998999999999" required>
+                        <div class="invalid-feedback">Telefon raqami noto‘g‘ri formatda (masalan, +998999999999).</div>
                     </div>
                     <div class="mb-3">
                         <label for="student-password" class="form-label">Parol</label>
@@ -592,7 +600,6 @@
                         <label for="group-select" class="form-label">Guruh</label>
                         <select class="form-select" id="group-select" required>
                             <option value="">Guruh tanlang</option>
-                            <!-- Guruhlar bu yerga yuklanadi -->
                         </select>
                         <div class="invalid-feedback">Iltimos, guruh tanlang.</div>
                     </div>
@@ -600,10 +607,8 @@
                         <label for="mentor-select" class="form-label">Mentor</label>
                         <select class="form-select" id="mentor-select">
                             <option value="">Mentor yo‘q (O‘chirish)</option>
-                            <!-- Mentorlar bu yerga yuklanadi -->
                         </select>
-                        <div class="invalid-feedback">Iltimos, mentor tanlang yoki o‘chirish uchun bo‘sh qoldiring.
-                        </div>
+                        <div class="invalid-feedback">Iltimos, mentor tanlang yoki o‘chirish uchun bo‘sh qoldiring.</div>
                     </div>
                     <div id="mentor-alert-container"></div>
                 </form>
@@ -672,13 +677,80 @@
     </div>
 </div>
 
+<!-- Fan Qo‘shish Modali -->
+<div class="modal fade" id="addScienceModal" tabindex="-1" aria-labelledby="addScienceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addScienceModalLabel">Yangi Fan Qo‘shish</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-science-form" class="was-validated">
+                    <div class="mb-3">
+                        <label for="science-name" class="form-label">Fan Nomi</label>
+                        <input type="text" class="form-control" id="science-name" placeholder="Fan nomi" required>
+                        <div class="invalid-feedback">Iltimos, fan nomini kiriting.</div>
+                    </div>
+                    <div id="science-alert-container"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                <button type="button" class="btn btn-primary" id="save-science-btn">
+                    <span class="spinner" role="status" aria-hidden="true"></span>
+                    Fan Qo‘shish
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Fan Yangilash Modali -->
+<div class="modal fade" id="updateScienceModal" tabindex="-1" aria-labelledby="updateScienceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateScienceModalLabel">Fan Yangilash</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="update-science-form" class="was-validated">
+                    <input type="hidden" id="science-id">
+                    <div class="mb-3">
+                        <label for="update-science-name" class="form-label">Fan Nomi</label>
+                        <input type="text" class="form-control" id="update-science-name" required>
+                        <div class="invalid-feedback">Iltimos, fan nomini kiriting.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="science-groups" class="form-label">Fanga Aloqador Guruhlar</label>
+                        <ul id="science-groups" class="list-group mb-2"></ul>
+                        <label for="available-groups" class="form-label">Mavjud Guruhlar</label>
+                        <select class="form-select" id="available-groups" multiple size="5">
+                            <option value="">Guruh tanlang</option>
+                        </select>
+                    </div>
+                    <div id="update-science-alert-container"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                <button type="button" class="btn btn-primary" id="save-update-science-btn">
+                    <span class="spinner" role="status" aria-hidden="true"></span>
+                    Saqlash
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 <script>
     let userData = JSON.parse(localStorage.getItem('userData'));
+    let currentTab = 'student';
 
     if (!userData || !userData.userId || !userData.token) {
-        console.log(userData.token)
         window.location.href = 'index.html';
     }
 
@@ -706,7 +778,6 @@
         document.getElementById('modal-profile-pic').src = userData.image || 'https://via.placeholder.com/150';
     });
 
-    // Modal yopilganda formani tozalash
     profileModal.addEventListener('hidden.bs.modal', () => {
         document.getElementById('profile-form').reset();
         document.getElementById('modal-profile-pic').src = 'https://via.placeholder.com/150';
@@ -715,13 +786,14 @@
     });
 
     // Tablar o‘tish funksiyasi
-    const tabs = ['student', 'mentor', 'group', 'archive', 'rating', 'role-change'];
+    const tabs = ['student', 'mentor', 'group', 'science', 'archive', 'rating', 'role-change'];
     tabs.forEach(tab => {
         document.getElementById(`${tab}-tab`).addEventListener('click', () => {
             document.querySelectorAll('.tab-content').forEach(content => content.classList.add('d-none'));
             document.getElementById(`${tab}-content`).classList.remove('d-none');
             document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
             document.getElementById(`${tab}-tab`).classList.add('active');
+            currentTab = tab;
             loadTabData(tab);
         });
     });
@@ -734,6 +806,8 @@
             loadMentors();
         } else if (tab === 'group') {
             loadGroups();
+        } else if (tab === 'science') {
+            loadSciences();
         } else if (tab === 'archive') {
             loadArchiveContent();
         } else if (tab === 'rating') {
@@ -742,6 +816,383 @@
             loadUsersForRoleChange();
         }
     }
+
+    // Fanlar sonini yuklash
+    let isScienceCountLoaded = false;
+
+    function loadScienceCount() {
+        if (isScienceCountLoaded) return;
+        axios.get('/api/v1/science/count', {
+            headers: {Authorization: `${userData.token}`}
+        })
+            .then(response => {
+                const scienceCount = response.data;
+                document.getElementById('science-count').innerHTML = `<p>Fanlar soni: ${scienceCount}</p>`;
+                isScienceCountLoaded = true;
+            })
+            .catch(error => {
+                console.error('Fanlar sonini yuklashda xato:', error.response?.data || error);
+                document.getElementById('science-count').innerHTML = `<p>Fanlar soni: Yuklab bo‘lmadi</p>`;
+                showAlert('danger', 'Fanlar sonini yuklab bo‘lmadi');
+            });
+    }
+
+    // Fanlarni yuklash
+    function loadSciences() {
+        axios.get('/api/v1/science', {
+            headers: {Authorization: `${userData.token}`}
+        })
+            .then(response => {
+                loadScienceCount();
+                populateScienceTable(response.data);
+            })
+            .catch(error => {
+                console.error('Fanlarni yuklashda xato:', error.response?.data || error);
+                showAlert('danger', 'Fanlarni yuklab bo‘lmadi');
+            });
+    }
+
+    // Fanlar jadvalini to‘ldirish
+    function populateScienceTable(sciences) {
+        const tableBody = document.getElementById('science-table-body');
+        tableBody.innerHTML = '';
+
+        if (!sciences || sciences.length === 0) {
+            tableBody.innerHTML = `
+            <tr>
+                <td colspan="3" class="text-center">Hech qanday fan topilmadi</td>
+            </tr>
+        `;
+            return;
+        }
+
+        sciences.forEach(science => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+            <td>${science.id}</td>
+            <td>${science.name}</td>
+            <td>
+                <button class="btn btn-primary btn-sm update-science-btn" data-science-id="${science.id}" data-bs-toggle="modal" data-bs-target="#updateScienceModal">
+                    Yangilash
+                </button>
+                <button class="btn btn-info btn-sm view-details-btn" data-science-id="${science.id}">
+                    View Details
+                </button>
+            </td>
+        `;
+            tableBody.appendChild(row);
+
+            // Details row
+            const detailsRow = document.createElement('tr');
+            detailsRow.id = `science-details-${science.id}`;
+            detailsRow.className = 'details-row d-none';
+            detailsRow.innerHTML = `
+            <td colspan="3">
+                <div class="p-4">
+                    <h6>Fan: ${science.name}</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Guruhlar</h6>
+                            <ul id="science-groups-${science.id}" class="list-group">
+                                ${science.groups && science.groups.length > 0 ? science.groups.map(group => `
+                                    <li class="list-group-item">
+                                        ${group.name}
+                                        <ul class="list-group mt-2">
+                                            ${group.students && group.students.length > 0 ? group.students.map(student => `
+                                                <li class="list-group-item">${student.name}: ${student.progress}% (${student.completedTasks}/${student.totalTasks} topshiriq bajarildi)</li>
+                                            `).join('') : '<li class="list-group-item">Talaba yo‘q</li>'}
+                                        </ul>
+                                    </li>
+                                `).join('') : '<li class="list-group-item">Guruh yo‘q</li>'}
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Modullar</h6>
+                            <ul id="science-modules-${science.id}" class="list-group">
+                                ${science.modules && science.modules.length > 0 ? science.modules.map(module => `
+                                    <li class="list-group-item">${module.name}: ${module.taskCount} topshiriq</li>
+                                `).join('') : '<li class="list-group-item">Modul yo‘q</li>'}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        `;
+            tableBody.appendChild(detailsRow);
+        });
+
+        // "View Details" tugmalari uchun event listener
+        document.querySelectorAll('.view-details-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const scienceId = this.getAttribute('data-science-id');
+                const detailsRow = document.getElementById(`science-details-${scienceId}`);
+                if (detailsRow.classList.contains('d-none')) {
+                    detailsRow.classList.remove('d-none');
+                } else {
+                    detailsRow.classList.add('d-none');
+                }
+            });
+        });
+
+        // "Yangilash" tugmalari uchun event listener
+        document.querySelectorAll('.update-science-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const scienceId = this.getAttribute('data-science-id');
+                loadScienceForUpdate(scienceId);
+            });
+        });
+    }
+
+    // Fan detallarini yuklash
+    function loadScienceDetails(scienceId) {
+        axios.get(`/api/v1/science/${scienceId}`, {
+            headers: {Authorization: `${userData.token}`}
+        })
+            .then(response => {
+                const science = response.data;
+                const groupsList = document.getElementById(`science-groups-${scienceId}`);
+                const modulesList = document.getElementById(`science-modules-${scienceId}`);
+                groupsList.innerHTML = '';
+                modulesList.innerHTML = '';
+
+                if (science.groups && science.groups.length > 0) {
+                    science.groups.forEach(group => {
+                        const groupItem = document.createElement('li');
+                        groupItem.className = 'list-group-item';
+                        groupItem.innerHTML = `
+                            ${group.name}
+                            <ul class="list-group mt-2">
+                                ${group.students && group.students.length > 0 ? group.students.map(student => `
+                                    <li class="list-group-item">${student.name}: ${student.progress}% (${student.completedTasks}/${student.totalTasks} topshiriq bajarildi)</li>
+                                `).join('') : '<li class="list-group-item">Talaba yo‘q</li>'}
+                            </ul>
+                        `;
+                        groupsList.appendChild(groupItem);
+                    });
+                } else {
+                    groupsList.innerHTML = '<li class="list-group-item">Guruh yo‘q</li>';
+                }
+
+                if (science.modules && science.modules.length > 0) {
+                    science.modules.forEach(module => {
+                        const moduleItem = document.createElement('li');
+                        moduleItem.className = 'list-group-item';
+                        moduleItem.textContent = `${module.name}: ${module.taskCount} topshiriq`;
+                        modulesList.appendChild(moduleItem);
+                    });
+                } else {
+                    modulesList.innerHTML = '<li class="list-group-item">Modul yo‘q</li>';
+                }
+            })
+            .catch(error => {
+                console.error('Fan detallarini yuklashda xato:', error.response?.data || error);
+                showAlert('danger', 'Fan detallarini yuklab bo‘lmadi');
+            });
+    }
+
+    // Fan yangilash uchun ma'lumotlarni yuklash
+    function loadScienceForUpdate(scienceId) {
+        axios.get(`/api/v1/science/${scienceId}`, {
+            headers: {Authorization: `${userData.token}`}
+        })
+            .then(response => {
+                const science = response.data;
+                document.getElementById('science-id').value = scienceId;
+                document.getElementById('update-science-name').value = science.name;
+                const groupsList = document.getElementById('science-groups');
+                groupsList.innerHTML = '';
+
+                if (science.groups && science.groups.length > 0) {
+                    science.groups.forEach(group => {
+                        const groupItem = document.createElement('li');
+                        groupItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                        groupItem.innerHTML = `
+                            ${group.name}
+                            <button class="btn btn-danger btn-sm remove-group-btn" data-group-id="${group.id}">
+                                O‘chirish
+                            </button>
+                        `;
+                        groupsList.appendChild(groupItem);
+                    });
+                } else {
+                    groupsList.innerHTML = '<li class="list-group-item">Guruh yo‘q</li>';
+                }
+
+                loadAvailableGroups(scienceId);
+            })
+            .catch(error => {
+                console.error('Fan ma\'lumotlarini yuklashda xato:', error.response?.data || error);
+                showScienceAlert('danger', 'Fan ma\'lumotlarini yuklab bo‘lmadi', 'update-science-alert-container');
+            });
+    }
+
+    // Mavjud guruhlarni yuklash
+    function loadAvailableGroups(scienceId) {
+        axios.get('/api/v1/group/getForScience', {
+            headers: {Authorization: `${userData.token}`}
+        })
+            .then(response => {
+                const groups = response.data;
+                const availableGroupsSelect = document.getElementById('available-groups');
+                availableGroupsSelect.innerHTML = '<option value="">Guruh tanlang</option>';
+
+                // Fanga aloqador guruhlarni olish
+                axios.get(`/api/v1/science/${scienceId}`, {
+                    headers: {Authorization: `${userData.token}`}
+                })
+                    .then(scienceResponse => {
+                        const currentGroupIds = scienceResponse.data.groups.map(g => g.id);
+                        groups.forEach(group => {
+                            if (!currentGroupIds.includes(group.id)) {
+                                const option = document.createElement('option');
+                                option.value = group.id;
+                                option.textContent = group.name;
+                                availableGroupsSelect.appendChild(option);
+                            }
+                        });
+                    });
+            })
+            .catch(error => {
+                console.error('Mavjud guruhlarni yuklashda xato:', error.response?.data || error);
+                showScienceAlert('danger', 'Guruhlarni yuklab bo‘lmadi', 'update-science-alert-container');
+            });
+    }
+
+    // Fan qo'shish
+    document.getElementById('save-science-btn').addEventListener('click', () => {
+        const form = document.getElementById('add-science-form');
+        const scienceName = document.getElementById('science-name').value.trim();
+
+        if (!scienceName) {
+            document.getElementById('science-name').classList.add('is-invalid');
+            showScienceAlert('danger', 'Iltimos, fan nomini kiriting!', 'science-alert-container');
+            return;
+        } else {
+            document.getElementById('science-name').classList.remove('is-invalid');
+        }
+
+        const saveBtn = document.getElementById('save-science-btn');
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Yuklanmoqda...';
+
+        axios.post('/api/v1/science', { name: scienceName }, {
+            headers: {Authorization: `${userData.token}`}
+        })
+            .then(() => {
+                bootstrap.Modal.getInstance(document.getElementById('addScienceModal')).hide();
+                showAlert('success', 'Fan muvaffaqiyatli qo‘shildi!');
+                loadSciences();
+            })
+            .catch(error => {
+                console.error('Fan qo‘shishda xato:', error.response?.data || error);
+                showScienceAlert('danger', error.response?.data?.message || 'Fan qo‘shilmadi!', 'science-alert-container');
+            })
+            .finally(() => {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-plus me-1"></i>Fan Qo‘shish';
+            });
+    });
+
+    // Fan yangilash
+    document.getElementById('save-update-science-btn').addEventListener('click', () => {
+        const scienceId = document.getElementById('science-id').value;
+        const scienceName = document.getElementById('update-science-name').value.trim();
+        const availableGroupsSelect = document.getElementById('available-groups');
+        const selectedGroupIds = Array.from(availableGroupsSelect.selectedOptions).map(option => parseInt(option.value));
+
+        if (!scienceName) {
+            document.getElementById('update-science-name').classList.add('is-invalid');
+            showScienceAlert('danger', 'Iltimos, fan nomini kiriting!', 'update-science-alert-container');
+            return;
+        } else {
+            document.getElementById('update-science-name').classList.remove('is-invalid');
+        }
+
+        // Joriy guruhlar IDlarini olish
+        axios.get(`/api/v1/science/${scienceId}`, {
+            headers: {Authorization: `${userData.token}`}
+        })
+            .then(response => {
+                const currentGroupIds = response.data.groups.map(g => g.id);
+                const groupIds = [...new Set([...currentGroupIds, ...selectedGroupIds])]; // Yangi va joriy guruhlarni birlashtirish
+
+                const saveBtn = document.getElementById('save-update-science-btn');
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Saqlanmoqda...';
+
+                axios.post(`/api/v1/science/${scienceId}`, {
+                    name: scienceName,
+                    groupIds
+                }, {
+                    headers: {Authorization: `${userData.token}`}
+                })
+                    .then(() => {
+                        bootstrap.Modal.getInstance(document.getElementById('updateScienceModal')).hide();
+                        showAlert('success', 'Fan muvaffaqiyatli yangilandi!');
+                        loadSciences();
+                    })
+                    .catch(error => {
+                        console.error('Fan yangilashda xato:', error.response?.data || error);
+                        showScienceAlert('danger', error.response?.data?.message || 'Fan yangilanmadi!', 'update-science-alert-container');
+                    })
+                    .finally(() => {
+                        saveBtn.disabled = false;
+                        saveBtn.innerHTML = '<i class="fas fa-plus me-1"></i>Saqlash';
+                    });
+            });
+    });
+
+    // Guruhni o'chirish
+    document.getElementById('science-groups').addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-group-btn')) {
+            const groupId = e.target.getAttribute('data-group-id');
+            const scienceId = document.getElementById('science-id').value;
+            if (confirm('Guruhni fandan o‘chirishni tasdiqlaysizmi?')) {
+                axios.get(`/api/v1/science/${scienceId}`, {
+                    headers: {Authorization: `${userData.token}`}
+                })
+                    .then(response => {
+                        const currentGroupIds = response.data.groups.map(g => g.id).filter(id => id !== parseInt(groupId));
+                        axios.put(`/api/v1/science/${scienceId}`, {
+                            name: document.getElementById('update-science-name').value,
+                            groupIds: currentGroupIds
+                        }, {
+                            headers: {Authorization: `${userData.token}`}
+                        })
+                            .then(() => {
+                                showScienceAlert('success', 'Guruh fandan o‘chirildi!', 'update-science-alert-container');
+                                loadScienceForUpdate(scienceId);
+                            })
+                            .catch(error => {
+                                console.error('Guruhni o‘chirishda xato:', error.response?.data || error);
+                                showScienceAlert('danger', error.response?.data?.message || 'Guruh o‘chirilmadi!', 'update-science-alert-container');
+                            });
+                    });
+            }
+        }
+    });
+
+    // Fan qo'shish modalini tozalash
+    const addScienceModal = document.getElementById('addScienceModal');
+    addScienceModal.addEventListener('hidden.bs.modal', () => {
+        const form = document.getElementById('add-science-form');
+        form.reset();
+        form.classList.remove('was-validated');
+        document.getElementById('science-alert-container').innerHTML = '';
+        document.getElementById('science-name').classList.remove('is-invalid');
+    });
+
+    // Fan yangilash modalini tozalash
+    const updateScienceModal = document.getElementById('updateScienceModal');
+    updateScienceModal.addEventListener('hidden.bs.modal', () => {
+        const form = document.getElementById('update-science-form');
+        form.reset();
+        form.classList.remove('was-validated');
+        document.getElementById('update-science-alert-container').innerHTML = '';
+        document.getElementById('update-science-name').classList.remove('is-invalid');
+        document.getElementById('science-groups').innerHTML = '';
+        document.getElementById('available-groups').innerHTML = '<option value="">Guruh tanlang</option>';
+    });
 
     // Mentorlar sonini yuklash
     let isMentorCountLoaded = false;
@@ -784,39 +1235,36 @@
         const tableBody = document.getElementById('mentor-table-body');
         tableBody.innerHTML = '';
 
-        console.log(mentors)
-
         if (!mentors || mentors.length === 0) {
             tableBody.innerHTML = `
-            <tr>
-                <td colspan="5" class="text-center">Hech qanday mentor topilmadi</td>
-            </tr>
-        `;
+                <tr>
+                    <td colspan="5" class="text-center">Hech qanday mentor topilmadi</td>
+                </tr>
+            `;
             return;
         }
 
         mentors.forEach(mentor => {
-            // Guruhlar ro‘yxatini formatlash (masalan, vergul bilan ajratilgan nomlar)
             const groupNames = mentor.groups && mentor.groups.length > 0
                 ? mentor.groups.map(group => group.name).join(', ')
                 : 'Guruh yo‘q';
 
             const row = document.createElement('tr');
             row.innerHTML = `
-            <td>${mentor.id}</td>
-            <td>${mentor.firstName} ${mentor.lastName}</td>
-            <td>${mentor.phoneNumber}</td>
-            <td>${groupNames}</td>
-            <td>
-                ${mentor.groups && mentor.groups.length > 0 ? mentor.groups.map(group => `
-                    <button class="btn btn-danger btn-sm remove-mentor-btn mb-1"
-                            data-mentor-id="${mentor.id}"
-                            data-group-id="${group.id}">
-                        ${group.name} dan O‘chirish
-                    </button>
-                `).join('') : '<button class="btn btn-danger btn-sm remove-mentor-btn" disabled>O‘chirish</button>'}
-            </td>
-        `;
+                <td>${mentor.id}</td>
+                <td>${mentor.firstName} ${mentor.lastName}</td>
+                <td>${mentor.phoneNumber}</td>
+                <td>${groupNames}</td>
+                <td>
+                    ${mentor.groups && mentor.groups.length > 0 ? mentor.groups.map(group => `
+                        <button class="btn btn-danger btn-sm remove-mentor-btn mb-1"
+                                data-mentor-id="${mentor.id}"
+                                data-group-id="${group.id}">
+                            ${group.name} dan O‘chirish
+                        </button>
+                    `).join('') : '<button class="btn btn-danger btn-sm remove-mentor-btn" disabled>O‘chirish</button>'}
+                </td>
+            `;
             tableBody.appendChild(row);
         });
 
@@ -866,7 +1314,6 @@
         loadMentorsForModal();
     });
 
-    // Modal yopilganda formani tozalash
     assignMentorModal.addEventListener('hidden.bs.modal', () => {
         const form = document.getElementById('assign-mentor-form');
         form.reset();
@@ -875,7 +1322,6 @@
         form.querySelectorAll('select').forEach(select => select.classList.remove('is-invalid'));
     });
 
-    // Guruhlarni modal uchun yuklash organib chiq
     function loadGroupsForModal() {
         axios.get('/api/v1/group/getAll', {
             headers: {Authorization: `${userData.token}`}
@@ -897,7 +1343,6 @@
             });
     }
 
-    // Mentorlarni modal uchun yuklash
     function loadMentorsForModal() {
         axios.get('/api/v1/admin/mentor/getMentors', {
             headers: {Authorization: `${userData.token}`},
@@ -920,36 +1365,6 @@
             });
     }
 
-    // Mentor tayinlash
-    document.getElementById('save-mentor-btn').addEventListener('click', () => {
-        const form = document.getElementById('assign-mentor-form');
-        const groupSelect = document.getElementById('group-select');
-        const mentorSelect = document.getElementById('mentor-select');
-        const groupId = groupSelect.value;
-        const mentorId = mentorSelect.value || null;
-
-        let isValid = true;
-
-        if (!groupId) {
-            groupSelect.classList.add('is-invalid');
-            isValid = false;
-        } else {
-            groupSelect.classList.remove('is-invalid');
-        }
-
-        if (!isValid) {
-            showMentorAlert('danger', 'Iltimos, guruh tanlang!');
-            return;
-        }
-
-        const saveBtn = document.getElementById('save-mentor-btn');
-        saveBtn.disabled = true;
-        saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Yuklanmoqda...';
-
-        updateMentorGroup(groupId, mentorId);
-    });
-
-    // Mentor guruhini yangilash
     function updateMentorGroup(groupId, mentorId) {
         axios.put(`/api/v1/admin/mentor/updateGroup/${groupId}`, {}, {
             headers: {Authorization: `${userData.token}`},
@@ -971,15 +1386,31 @@
             });
     }
 
-    // Mentor modalida xabar ko‘rsatish
     function showMentorAlert(type, message) {
         const alertContainer = document.getElementById('mentor-alert-container');
         alertContainer.innerHTML = `
-        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    `;
+            <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+        setTimeout(() => {
+            const alert = alertContainer.querySelector('.alert');
+            if (alert) {
+                bootstrap.Alert.getOrCreateInstance(alert).close();
+            }
+        }, 5000);
+    }
+
+    // Fanlar uchun xabar ko‘rsatish
+    function showScienceAlert(type, message, containerId) {
+        const alertContainer = document.getElementById(containerId);
+        alertContainer.innerHTML = `
+            <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
         setTimeout(() => {
             const alert = alertContainer.querySelector('.alert');
             if (alert) {
@@ -994,7 +1425,6 @@
         loadArchivedUsers(page, size, search);
     }
 
-    // Arxivlangan guruhlarni yuklash
     function loadArchivedGroups(page = 0, size = 10, search = '') {
         axios.get('/api/v1/group/archived', {
             headers: {Authorization: `${userData.token}`},
@@ -1009,7 +1439,6 @@
             });
     }
 
-    // Guruh arxiv jadvalini to‘ldirish
     function populateArchivedGroupTable(groups, totalPages, currentPage, size, search) {
         const tableBody = document.getElementById('archived-group-table-body');
         tableBody.innerHTML = '';
@@ -1062,7 +1491,6 @@
         });
     }
 
-    // Arxivlangan foydalanuvchilarni yuklash
     function loadArchivedUsers(page = 0, size = 10, search = '') {
         axios.get('/api/v1/admin/user/archived', {
             headers: {Authorization: `${userData.token}`},
@@ -1077,7 +1505,6 @@
             });
     }
 
-    // Foydalanuvchi arxiv jadvalini to‘ldirish
     function populateArchivedUserTable(users, totalPages, currentPage, size, search) {
         const tableBody = document.getElementById('archived-user-table-body');
         tableBody.innerHTML = '';
@@ -1146,7 +1573,6 @@
         });
     }
 
-    // Foydalanuvchini arxivdan qayta tiklash
     function restoreUser(userId) {
         axios.put(`/api/v1/admin/user/restore/${userId}`, {}, {
             headers: {Authorization: `${userData.token}`}

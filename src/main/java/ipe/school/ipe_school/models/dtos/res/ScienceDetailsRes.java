@@ -9,4 +9,5 @@ public class ScienceDetailsRes {
     Long id;
     String name;
     List<GroupRes> groups;
+    List<ModuleDetalRes> modules;
 }

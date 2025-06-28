@@ -2,8 +2,10 @@ package ipe.school.ipe_school.service.impl;
 
 import ipe.school.ipe_school.models.dtos.res.UserRes;
 import ipe.school.ipe_school.models.entity.Roles;
+import ipe.school.ipe_school.models.entity.StudentProgress;
 import ipe.school.ipe_school.models.entity.User;
 import ipe.school.ipe_school.models.repo.RolesRepository;
+import ipe.school.ipe_school.models.repo.StudentProgressRepository;
 import ipe.school.ipe_school.models.repo.UserRepository;
 import ipe.school.ipe_school.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RolesRepository rolesRepository;
+    private final StudentProgressRepository studentProgressRepository;
 
     @Override
     public User save(User user) {
@@ -77,20 +80,31 @@ public class UserServiceImpl implements UserService {
         ));
     }
 
-
+    @Transactional
     @Override
     public void updateUser_Active(Long userId) {
         User user = userRepository.findById(userId).get();
         user.setActive(false);
+        Optional<StudentProgress> byStudentId = studentProgressRepository.findByStudentId(user.getId());
+        if (byStudentId.isPresent()) {
+            byStudentId.get().setActive(false);
+            studentProgressRepository.save(byStudentId.get());
+        }
         userRepository.save(user);
     }
 
+    @Transactional
     @Override
     public UserRes restoration(Long userId) {
         User user = userRepository.findById(userId).get();
         if (!user.getActive()) {
             user.setActive(true);
             userRepository.save(user);
+            Optional<StudentProgress> byStudentId = studentProgressRepository.findByStudentId(userId);
+            if (byStudentId.isPresent()) {
+                byStudentId.get().setActive(true);
+                studentProgressRepository.save(byStudentId.get());
+            }
         }
         return new UserRes(user.getId(), user.getFirstName(),
                 user.getLastName(), user.getPhoneNumber(),

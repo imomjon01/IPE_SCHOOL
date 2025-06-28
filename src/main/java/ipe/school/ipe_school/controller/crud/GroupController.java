@@ -82,4 +82,10 @@ public class GroupController {
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
+
+    @GetMapping("/getForScience")
+    public ResponseEntity<List<GroupRes>> getGroup() {
+        List<GroupRes> groups = groupService.getGroupsForScience();
+        return new ResponseEntity<>(groups, HttpStatus.OK);
+    }
 }

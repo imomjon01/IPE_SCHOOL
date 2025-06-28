@@ -16,4 +16,6 @@ public interface ScienceService {
     ScienceDetailsRes updateScience(Long scienceId, ScienceReq scienceId1);
 
     void deleteScience(Long scienceId);
+
+    Long getScienceCount();
 }

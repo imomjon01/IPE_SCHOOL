@@ -218,5 +218,10 @@ public class GroupServiceImpl implements GroupService {
         return save;
     }
 
+    @Override
+    public List<GroupRes> getGroupsForScience() {
+        List<Group> groups = groupRepository.findAllByActive(true);
+        return groups.stream().map(item->new GroupRes(item.getId(), item.getName())).toList();
+    }
 
 }

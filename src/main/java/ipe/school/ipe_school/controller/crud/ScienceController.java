@@ -13,15 +13,15 @@ import java.util.List;
 import static ipe.school.ipe_school.utils.ApiConstants.*;
 
 @RestController
-@RequestMapping(API_PATH+API_VERSION+SCIENCE)
+@RequestMapping(API_PATH + API_VERSION + SCIENCE)
 @RequiredArgsConstructor
 public class ScienceController {
 
     private final ScienceService scienceService;
 
     @PostMapping
-    public ResponseEntity<ScienceRes> addScience(@RequestBody ScienceReq scienceReq){
-        ScienceRes scienceRes=scienceService.addScience(scienceReq);
+    public ResponseEntity<ScienceRes> addScience(@RequestBody ScienceReq scienceReq) {
+        ScienceRes scienceRes = scienceService.addScience(scienceReq);
         return ResponseEntity.ok().body(scienceRes);
     }
 
@@ -32,14 +32,14 @@ public class ScienceController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ScienceDetailsRes>> getAllSciences(){
-        List<ScienceDetailsRes> scienceDetailsResList=scienceService.getAllSciencesByActive();
+    public ResponseEntity<List<ScienceDetailsRes>> getAllSciences() {
+        List<ScienceDetailsRes> scienceDetailsResList = scienceService.getAllSciencesByActive();
         return ResponseEntity.ok().body(scienceDetailsResList);
     }
 
     @PostMapping("/{scienceId}")
-    public ResponseEntity<ScienceDetailsRes>  updateScience(@PathVariable Long scienceId,@RequestBody ScienceReq scienceReq){
-        ScienceDetailsRes scienceDetailedRes=scienceService.updateScience(scienceId,scienceReq);
+    public ResponseEntity<ScienceDetailsRes> updateScience(@PathVariable Long scienceId, @RequestBody ScienceReq scienceReq) {
+        ScienceDetailsRes scienceDetailedRes = scienceService.updateScience(scienceId, scienceReq);
         return ResponseEntity.ok().body(scienceDetailedRes);
     }
 
@@ -47,6 +47,12 @@ public class ScienceController {
     public ResponseEntity<Void> deleteScience(@PathVariable Long scienceId) {
         scienceService.deleteScience(scienceId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getScienceCount() {
+        Long count = scienceService.getScienceCount();
+        return ResponseEntity.ok().body(count);
     }
 
 }
