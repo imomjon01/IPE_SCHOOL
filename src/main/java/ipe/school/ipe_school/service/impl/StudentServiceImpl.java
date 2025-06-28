@@ -1,5 +1,6 @@
 package ipe.school.ipe_school.service.impl;
 
+import io.jsonwebtoken.lang.Collections;
 import ipe.school.ipe_school.component.AnswerMapper;
 import ipe.school.ipe_school.models.dtos.req.StudentDto;
 import ipe.school.ipe_school.models.dtos.res.StudentDetailsRes;
@@ -180,8 +181,31 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<TopStudentByGroupRes> getTopStudentGroups(User byUser) {
-        List<User> list = groupRepository.findById(groupRepository.findGroupIdByStudentId(byUser.getId())).get().getStudents().stream().toList();
-        list.forEach(user -> System.out.println(user.getFullName()));
-        return answerMapper.users(list);
+        User byPhoneNumber = userRepository.findByPhoneNumber(byUser.getPhoneNumber());
+        if (byPhoneNumber == null) {
+            return Collections.emptyList(); // Foydalanuvchi topilmadi
+        }
+
+        Long groupId = groupRepository.findGroupIdByStudentId(byPhoneNumber.getId());
+        if (groupId == null) {
+            return Collections.emptyList(); // Guruh topilmadi
+        }
+
+        Optional<Group> optionalGroup = groupRepository.findById(groupId);
+        if (optionalGroup.isEmpty()) {
+            return Collections.emptyList(); // Guruh mavjud emas
+        }
+
+        for (User student : optionalGroup.get().getStudents()) {
+            System.out.println(student.getFullName() + optionalGroup.get().getName());
+        }
+        List<User> students = optionalGroup.get().getStudents();
+
+        if (students == null || students.isEmpty()) {
+            return Collections.emptyList(); // Talabalar ro'yxati bo'sh
+        }
+
+        return answerMapper.users(students);
     }
+
 }

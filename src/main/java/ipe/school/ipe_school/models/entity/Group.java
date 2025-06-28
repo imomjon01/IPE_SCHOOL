@@ -24,7 +24,7 @@ public class Group extends BaseEntity {
     private User mentor;
     @ManyToMany
     private List<User> students = new ArrayList<>();
-    @OneToMany
+    @ManyToMany
     private List<Module> modules;
     @OneToMany
     private List<StudentProgress> studentProgresses;

@@ -331,7 +331,7 @@
 
         .task.completed:hover {
             transform: none;
-            box-shadow: 0 4px 8px rgba( Rankin, 0, 0, 0.3);
+            box-shadow: 0 4px 8px rgba(Rankin, 0, 0, 0.3);
         }
 
         .task.completed::after {
@@ -667,13 +667,25 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-30px); }
-            to { opacity: 1; transform: translateX(0); }
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         footer {
@@ -704,8 +716,12 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .task-results {
@@ -785,12 +801,14 @@
         </div>
         <div class="level-bar" id="levelBar">
             <div class="loading" id="moduleLoading">
-                <div class="spinner"></div> Modullar yuklanmoqda...
+                <div class="spinner"></div>
+                Modullar yuklanmoqda...
             </div>
         </div>
         <div class="tasks">
             <div class="section-title">
-                <i class="fas fa-tasks"></i> <h2>Vazifalar Ro'yxati</h2>
+                <i class="fas fa-tasks"></i>
+                <h2>Vazifalar Ro'yxati</h2>
             </div>
             <div class="loading" id="taskLoading">Yuklanmoqda...</div>
             <div class="task-list" id="taskList"></div>
@@ -810,7 +828,8 @@
                     <div class="image-upload">
                         <img id="imagePreview" class="image-upload-preview" src="" alt="Profil rasmi">
                         <input type="file" id="imageUpload" accept="image/*" style="display: none;">
-                        <button type="button" class="image-upload-btn" onclick="document.getElementById('imageUpload').click()">
+                        <button type="button" class="image-upload-btn"
+                                onclick="document.getElementById('imageUpload').click()">
                             <i class="fas fa-camera"></i> Rasm yuklash
                         </button>
                     </div>
@@ -826,9 +845,12 @@
                         <label for="phoneNumber">Telefon raqami</label>
                         <div class="phone-group">
                             <span class="phone-prefix">+998</span>
-                            <input type="tel" id="phoneNumber" class="phone-input" placeholder="XX1234567" pattern="^(90|91|93|94|95|97|98|99|33|77|20|88)[0-9]{7}$" required>
+                            <input type="tel" id="phoneNumber" class="phone-input" placeholder="XX1234567"
+                                   pattern="^(90|91|93|94|95|97|98|99|33|77|20|88)[0-9]{7}$" required>
                         </div>
-                        <div class="error-message" id="phoneError">Telefon raqami 90, 91, 93, 94, 95, 97, 98, 33, 77, 20, 88 yoki 99 bilan boshlanib, 7 raqamdan iborat bo'lishi kerak!</div>
+                        <div class="error-message" id="phoneError">Telefon raqami 90, 91, 93, 94, 95, 97, 98, 33, 77,
+                            20, 88 yoki 99 bilan boshlanib, 7 raqamdan iborat bo'lishi kerak!
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="password">Yangi parol</label>
@@ -851,10 +873,12 @@
 <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 <script>
     let youtubeApiLoaded = false;
+
     function onYouTubeIframeAPIReady() {
         youtubeApiLoaded = true;
         console.log('YouTube IFrame API tayyor');
     }
+
     const youtubeScript = document.createElement('script');
     youtubeScript.src = 'https://www.youtube.com/iframe_api';
     youtubeScript.onerror = () => {
@@ -1004,7 +1028,7 @@
         if (!checkAuth()) return;
         try {
             const response = await axios.get('/api/v1/student/levels', {
-                headers: { 'Authorization': userData.token }
+                headers: {'Authorization': userData.token}
             });
             const students = response.data;
             console.log('Backenddan kelgan ma\'lumotlar:', students);
@@ -1104,20 +1128,20 @@
         moduleLoading.style.display = 'block';
         try {
             const response = await axios.get('/api/v1/module', {
-                headers: { 'Authorization': userData.token }
+                headers: {'Authorization': userData.token}
             });
             if (!response.data || response.data.length === 0) {
-                throw new Error('Modullar topilmadi');
+                throw new Error('Hozirda siz uchun modullar mavjud emas');
             }
             displayModules(response.data);
         } catch (error) {
             console.error('Modullarni yuklashda xato:', error);
             questionBox.innerHTML = `
-                <div class="question-content">
-                    <div class="question-text" style="color: var(--danger);">
-                        Modullarni yuklashda xato yuz berdi: ${error.message}
-                    </div>
-                </div>`;
+            <div class="question-content">
+                <div class="question-text" style="color: var(--dark);">
+                    ${error.message}
+                </div>
+            </div>`;
             moduleLoading.style.display = 'none';
         }
     }
@@ -1126,9 +1150,9 @@
         levelBar.innerHTML = '';
         if (!modules || modules.length === 0) {
             questionBox.innerHTML = `
-                <div class="question-content">
-                    <div class="question-text">Modullar topilmadi</div>
-                </div>`;
+            <div class="question-content">
+                <div class="question-text">Hozirda siz uchun modullar mavjud emas</div>
+            </div>`;
             moduleLoading.style.display = 'none';
             return;
         }
@@ -1158,7 +1182,7 @@
         taskList.innerHTML = '';
         try {
             const response = await axios.get(`/api/v1/module/get/${moduleId}`, {
-                headers: { 'Authorization': userData.token }
+                headers: {'Authorization': userData.token}
             });
             if (!response.data || response.data.length === 0) {
                 throw new Error('Vazifalar topilmadi');
@@ -1198,7 +1222,7 @@
         if (!checkAuth()) return false;
         try {
             const response = await axios.get(`/api/v1/answer/submission/${taskId}/results`, {
-                headers: { 'Authorization': userData.token }
+                headers: {'Authorization': userData.token}
             });
             const submissions = response.data;
             isTaskSubmitted = submissions && submissions.totalQuery > 0;
@@ -1215,7 +1239,7 @@
         taskResultsContent.innerHTML = '';
         try {
             const response = await axios.get(`/api/v1/answer/submission/${taskId}/results`, {
-                headers: { 'Authorization': userData.token }
+                headers: {'Authorization': userData.token}
             });
             const result = response.data;
             if (result && result.totalQuery > 0) {
@@ -1267,7 +1291,7 @@
         if (!checkAuth()) return;
         try {
             const response = await axios.post(`/api/v1/task/unlock/${taskId}`, {}, {
-                headers: { 'Authorization': userData.token }
+                headers: {'Authorization': userData.token}
             });
             if (response.data.success) {
                 isTaskSubmitted = false;
@@ -1275,7 +1299,7 @@
                 alert('Vazifa muvaffaqiyatli ochildi!');
                 loadTasks(currentModuleId);
                 if (currentTaskId === taskId) {
-                    selectTask({ id: taskId });
+                    selectTask({id: taskId});
                 }
             } else {
                 alert('Vazifani ochish uchun ruxsat yo\'q: ' + response.data.message);
@@ -1307,7 +1331,7 @@
         }
         try {
             const response = await axios.get(`/api/v1/task/${task.id}`, {
-                headers: { 'Authorization': userData.token }
+                headers: {'Authorization': userData.token}
             });
             if (!response.data) {
                 throw new Error('Vazifa ma\'lumotlari topilmadi');

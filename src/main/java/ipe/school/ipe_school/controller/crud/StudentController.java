@@ -25,8 +25,7 @@ public class StudentController {
 
     @GetMapping("/levels")
     public ResponseEntity<List<TopStudentByGroupRes>> getLevels(@AuthenticationPrincipal User user) {
-        User byUser = studentService.findByUser(user);
-        List<TopStudentByGroupRes> studentRes = studentService.getTopStudentGroups(byUser);
+        List<TopStudentByGroupRes> studentRes = studentService.getTopStudentGroups(user);
         return new ResponseEntity<>(studentRes, HttpStatus.OK);
     }
 }

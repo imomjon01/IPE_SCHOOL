@@ -16,5 +16,6 @@ public interface StudentProgressRepository extends JpaRepository<StudentProgress
     @Query(value = "SELECT * FROM student_progress ORDER BY passed_query DESC LIMIT 10", nativeQuery = true)
     List<StudentProgress> findTop10Students();
 
+
     StudentProgress findByStudent(User user);
 }

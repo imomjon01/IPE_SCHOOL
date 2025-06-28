@@ -4,10 +4,14 @@ import ipe.school.ipe_school.models.dtos.req.ModuleReq;
 import ipe.school.ipe_school.models.dtos.res.ModuleDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.ModuleRes;
 import ipe.school.ipe_school.models.dtos.res.TaskRes;
+import ipe.school.ipe_school.models.entity.User;
+import ipe.school.ipe_school.models.repo.UserRepository;
 import ipe.school.ipe_school.service.interfaces.ModuleService;
+import ipe.school.ipe_school.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +25,7 @@ import static ipe.school.ipe_school.utils.ApiConstants.*;
 public class ModuleController {
 
     private final ModuleService moduleService;
+    private final UserRepository userRepository;
 
     @PostMapping
     public ResponseEntity<ModuleRes> createModule(@RequestBody ModuleReq moduleReq) {
@@ -29,8 +34,8 @@ public class ModuleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ModuleRes>> getModules() {
-        List<ModuleRes> moduleReses = moduleService.getAllModulesBy_active();
+    public ResponseEntity<List<ModuleRes>> getModules(@AuthenticationPrincipal User user) {
+        List<ModuleRes> moduleReses = moduleService.getAllModulesBy_active(user);
         return new ResponseEntity<>(moduleReses, HttpStatus.OK);
     }
 

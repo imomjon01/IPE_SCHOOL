@@ -7,20 +7,28 @@ import ipe.school.ipe_school.models.dtos.res.ModuleRes;
 import ipe.school.ipe_school.models.dtos.res.TaskRes;
 import ipe.school.ipe_school.models.entity.Module;
 import ipe.school.ipe_school.models.entity.Task;
+import ipe.school.ipe_school.models.entity.User;
+import ipe.school.ipe_school.models.repo.GroupRepository;
 import ipe.school.ipe_school.models.repo.ModuleRepository;
+import ipe.school.ipe_school.models.repo.UserRepository;
 import ipe.school.ipe_school.service.interfaces.ModuleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ModuleServiceImpl implements ModuleService {
     private final ModuleRepository moduleRepository;
     private final ModuleMapper moduleMapper;
+    private final GroupRepository groupRepository;
+    private final UserRepository userRepository;
 
     @Override
     public ModuleRes createModule(ModuleReq moduleReq) {
@@ -33,10 +41,19 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
-    public List<ModuleRes> getAllModulesBy_active() {
-        List<Module> modules = moduleRepository.findAllByActive(true);
-        return modules.stream().map(module -> new ModuleRes(module.getId(), module.getModuleName(), module.getActive())).toList();
+    public List<ModuleRes> getAllModulesBy_active(User user) {
+        return Optional.ofNullable(userRepository.findByPhoneNumber(user.getPhoneNumber()))
+                .map(u -> groupRepository.findGroupIdByStudentId(u.getId()))
+                .map(groupRepository::findById)
+                .flatMap(g -> g.map(group -> group.getModules().stream()
+                        .map(module -> new ModuleRes(
+                                module.getId(),
+                                module.getModuleName(),
+                                module.getActive()))
+                        .collect(Collectors.toList())))
+                .orElse(Collections.emptyList());
     }
+
 
     @Override
     public ModuleDetailsRes getModuleById(Long moduleId) {
