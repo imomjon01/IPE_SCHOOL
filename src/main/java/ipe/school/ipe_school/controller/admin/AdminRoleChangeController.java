@@ -4,11 +4,13 @@ import ipe.school.ipe_school.models.dtos.req.UserIdReq;
 import ipe.school.ipe_school.models.dtos.req.UserReq;
 import ipe.school.ipe_school.models.dtos.res.StudentDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.UserRes;
+import ipe.school.ipe_school.models.entity.User;
 import ipe.school.ipe_school.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -29,8 +31,11 @@ public class AdminRoleChangeController {
     }
 
     @PostMapping
-    public ResponseEntity<UserRes> changeUserRole(@RequestBody UserIdReq userIdReq) {
-        System.out.println(userIdReq);
+    public ResponseEntity<?> changeUserRole(@RequestBody UserIdReq userIdReq, Authentication authentication) {
+        User authenticatedUser = userService.getAuthenticatedUser(authentication);
+        if (authenticatedUser.getId() != 1) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only user with ID 1 can modify roles");
+        }
         UserRes userRes=userService.changeUserRole(userIdReq.getUserId(), userIdReq.getRoleIds());
         return new ResponseEntity<>(userRes, HttpStatus.OK);
     }

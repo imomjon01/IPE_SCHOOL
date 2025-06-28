@@ -3,6 +3,7 @@ package ipe.school.ipe_school.service.interfaces;
 import ipe.school.ipe_school.models.dtos.res.UserRes;
 import ipe.school.ipe_school.models.entity.User;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface UserService {
     void updateUser_Active(Long userId);
 
     UserRes restoration(Long userId);
+
+    User getAuthenticatedUser(Authentication authentication);
 }

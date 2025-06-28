@@ -7,16 +7,22 @@ import ipe.school.ipe_school.models.repo.RolesRepository;
 import ipe.school.ipe_school.models.repo.UserRepository;
 import ipe.school.ipe_school.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -89,5 +95,23 @@ public class UserServiceImpl implements UserService {
         return new UserRes(user.getId(), user.getFirstName(),
                 user.getLastName(), user.getPhoneNumber(),
                 user.getRoles().stream().map(Roles::getName).toList());
+    }
+
+    @Override
+    public User getAuthenticatedUser(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            log.error("e: ", new AccessDeniedException("User is not authenticated"));
+        }
+
+        Object principal = authentication.getPrincipal();
+        String username;
+
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+
+        return userRepository.findByPhoneNumber(username);
     }
 }

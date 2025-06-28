@@ -1,11 +1,13 @@
 package ipe.school.ipe_school.controller.admin;
 
 import ipe.school.ipe_school.models.dtos.res.*;
+import ipe.school.ipe_school.models.entity.User;
 import ipe.school.ipe_school.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import static ipe.school.ipe_school.utils.ApiConstants.*;
@@ -18,7 +20,11 @@ public class AdminUserController {
     private final UserService userService;
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<GroupRes> delete_mentor(@PathVariable Long userId) {
+    public ResponseEntity<?> delete_mentor(@PathVariable Long userId, Authentication authentication) {
+        User authenticatedUser = userService.getAuthenticatedUser(authentication);
+        if (authenticatedUser.getId() != 1) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only user with ID 1 can delete users");
+        }
         userService.updateUser_Active(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

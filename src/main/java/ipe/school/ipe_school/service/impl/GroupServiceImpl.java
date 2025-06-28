@@ -8,6 +8,7 @@ import ipe.school.ipe_school.models.entity.*;
 import ipe.school.ipe_school.models.entity.Module;
 import ipe.school.ipe_school.models.repo.GroupRepository;
 import ipe.school.ipe_school.models.repo.ModuleRepository;
+import ipe.school.ipe_school.models.repo.StudentProgressRepository;
 import ipe.school.ipe_school.models.repo.UserRepository;
 import ipe.school.ipe_school.service.interfaces.GroupService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupMapper groupMapper;
     private final UserRepository userRepository;
     private final ModuleRepository moduleRepository;
+    private final StudentProgressRepository studentProgressRepository;
 
     @Override
     public GroupRes createGroup(GroupReq groupReq) {
@@ -120,7 +122,16 @@ public class GroupServiceImpl implements GroupService {
             if (byId.isPresent()) {
                 Group group = byId.get();
                 Optional<User> byId1 = userRepository.findById(updatetedStudentReq.getStudentId());
-                group.getStudents().add(byId1.get());
+                if (byId1.isPresent()) {
+                    User user = byId1.get();
+                    group.getStudents().add(byId1.get());
+                    Optional<StudentProgress> byStudentId = studentProgressRepository.findByStudentId(user.getId());
+                    if (byStudentId.isPresent()) {
+                        StudentProgress studentProgress = byStudentId.get();
+                        studentProgress.setGroupName(group.getName());
+                        studentProgressRepository.save(studentProgress);
+                    }
+                }
                 groupRepository.save(group);
             }
         }

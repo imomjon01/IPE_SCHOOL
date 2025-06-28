@@ -14,6 +14,7 @@ import ipe.school.ipe_school.service.interfaces.AuthService;
 import jakarta.servlet.annotation.MultipartConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @MultipartConfig
@@ -64,11 +66,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void register(RegisterDto registerDto) {
-//        String phoneNumber;
-//        String password;
-//        String confirmPassword;
-//        String firstName;
-//        String lastName;
         User user = User.builder()
                 .active(true)
                 .phoneNumber(registerDto.getPhoneNumber())
@@ -101,7 +98,8 @@ public class AuthServiceImpl implements AuthService {
                     save.getLastName(), save.getPhoneNumber(),
                     save.getRoles().stream().map(Roles::getName).toList());
         } else {
-            throw new ChangeSetPersister.NotFoundException();
+            log.error("e: ", new ChangeSetPersister.NotFoundException());
+            return null;
         }
     }
 }
