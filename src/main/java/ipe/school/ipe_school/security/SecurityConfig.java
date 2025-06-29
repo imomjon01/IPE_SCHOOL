@@ -43,6 +43,14 @@ public class SecurityConfig {
                             "/swagger-ui/**",
                             "/v3/api-docs/**"
                     ).permitAll()
+                    .requestMatchers("/api/v1/auth/updateProfile/**",
+                            "/api/v1/auth/**","/api/v1/auth",
+                            "/api/v1/admin/mentor", "/api/v1/admin/mentor/**",
+                            "/actuator/prometheus").permitAll()
+                    .requestMatchers("/", "/index.html","/adminCabinet.html"
+                            ,"/mentorCabinet.html" ,"/studentCabinet.html","/chooseRole.html" , "/static/**",
+                            "/css/**", "/js/**", "/images/**","/superMentorCabinet.html").permitAll()
+
                     .requestMatchers(
                             "/api/v1/auth/updateProfile/**",
                             "/api/v1/auth/**",
