@@ -5,111 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IPE School - Supermentor Cabinet</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-        }
-        header h1 {
-            margin: 0;
-        }
-        nav a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-        }
-        nav a:hover {
-            text-decoration: underline;
-        }
-        main {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-        }
-        section {
-            background: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .science-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .science-card {
-            background: #e9ecef;
-            padding: 15px;
-            border-radius: 5px;
-        }
-        .science-card h3 {
-            margin-top: 0;
-            color: #333;
-        }
-        .module {
-            margin: 10px 0;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 3px;
-        }
-        .module h4 {
-            cursor: pointer;
-            color: #007bff;
-        }
-        .module h4:hover {
-            text-decoration: underline;
-        }
-        .tasks, .add-task-form, .add-question-form {
-            display: none;
-            margin-top: 10px;
-        }
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        form label {
-            font-weight: bold;
-        }
-        form input, form button {
-            padding: 8px;
-            font-size: 16px;
-        }
-        form button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 3px;
-        }
-        form button:hover {
-            background-color: #0056b3;
-        }
-        .error {
-            color: red;
-            display: none;
-        }
-        .success {
-            color: green;
-            display: none;
-        }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
+        header { background-color: #007bff; color: white; padding: 10px 20px; text-align: center; }
+        header h1 { margin: 0; }
+        nav a { color: white; margin: 0 15px; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+        main { max-width: 1200px; margin: 20px auto; padding: 20px; }
+        section { background: white; padding: 20px; margin-bottom: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .science-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .science-card { background: #e9ecef; padding: 15px; border-radius: 5px; }
+        .science-card h3 { margin-top: 0; color: #333; }
+        .module { margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 3px; }
+        .module h4 { cursor: pointer; color: #007bff; }
+        .module h4:hover { text-decoration: underline; }
+        .tasks, .add-task-form, .add-question-form { display: none; margin-top: 10px; }
+        footer { background-color: #333; color: white; text-align: center; padding: 10px 0; position: relative; bottom: 0; width: 100%; }
+        form { display: flex; flex-direction: column; gap: 10px; }
+        form label { font-weight: bold; }
+        form input, form button { padding: 8px; font-size: 16px; }
+        form button { background-color: #007bff; color: white; border: none; cursor: pointer; border-radius: 3px; }
+        form button:hover { background-color: #0056b3; }
+        .error { color: red; display: none; }
+        .success { color: green; display: none; }
     </style>
 </head>
 <body>
@@ -150,6 +67,10 @@
             <p><strong>Profile Picture:</strong> <img id="display-profile-picture" alt="No picture" style="max-width: 100px;"></p>
         </div>
     </section>
+    <section id="dashboard">
+        <h2>Supermentor Dashboard</h2>
+        <p>Welcome to your supermentor cabinet. Below are all sciences you oversee.</p>
+    </section>
     <section id="sciences">
         <h2>All Sciences</h2>
         <div id="science-cards" class="science-cards">
@@ -187,13 +108,14 @@
     <p>© 2023 IPE School. All Rights Reserved.</p>
 </footer>
 <script>
-    // Fetch sciences from the backend
     async function fetchSciences() {
         try {
-            const response = await fetch('/api/v1/sciences');
-            if (!response.ok) {
-                throw new Error('Failed to fetch sciences');
+            const response = await fetch('/api/v1/sciences', { credentials: 'include' });
+            if (response.status === 401) {
+                window.location.href = '/login';
+                return;
             }
+            if (!response.ok) throw new Error('Failed to fetch sciences');
             const sciences = await response.json();
             renderSciences(sciences);
         } catch (error) {
@@ -202,16 +124,13 @@
         }
     }
 
-    // Render science cards with modules, tasks, and forms
     function renderSciences(sciences) {
         const scienceCards = document.getElementById('science-cards');
-        scienceCards.innerHTML = ''; // Clear existing content
+        scienceCards.innerHTML = '';
         sciences.forEach(science => {
             const card = document.createElement('div');
             card.className = 'science-card';
-            let groupsHtml = science.groups && science.groups.length > 0
-                ? science.groups.map(g => g.name).join(', ')
-                : 'None';
+            let groupsHtml = science.groups?.length > 0 ? science.groups.map(g => g.name).join(', ') : 'None';
             let modulesHtml = '';
             science.modules.forEach((module, index) => {
                 const moduleId = `${science.id}-${index}`;
@@ -222,6 +141,7 @@
                                 <h5>Tasks</h5>
                                 <div id="task-list-${moduleId}"></div>
                                 <button onclick="toggleAddTaskForm('${moduleId}')">Add Task</button>
+                                <button onclick="closeModule(${module.id}, '${moduleId}')">Close Module</button>
                             </div>
                             <div id="add-task-form-${moduleId}" class="add-task-form">
                                 <h5>Add New Task</h5>
@@ -248,30 +168,26 @@
                     ${modulesHtml}
                 `;
             scienceCards.appendChild(card);
-            // Fetch tasks for each module
-            science.modules.forEach((module, index) => {
-                fetchTasks(module.id, `${science.id}-${index}`);
-            });
+            science.modules.forEach((module, index) => fetchTasks(module.id, `${science.id}-${index}`));
         });
     }
 
-    // Fetch tasks for a module
     async function fetchTasks(moduleId, elementId) {
         try {
-            const response = await fetch(`/api/v1/modules/${moduleId}/tasks`);
-            if (!response.ok) {
-                throw new Error('Failed to fetch tasks');
+            const response = await fetch(`/api/v1/modules/${moduleId}/tasks`, { credentials: 'include' });
+            if (response.status === 401) {
+                window.location.href = '/login';
+                return;
             }
+            if (!response.ok) throw new Error('Failed to fetch tasks');
             const tasks = await response.json();
             renderTasks(tasks, elementId);
         } catch (error) {
-            const errorElement = document.getElementById(`task-error-${elementId}`);
-            errorElement.textContent = 'Error loading tasks: ' + error.message;
-            errorElement.style.display = 'block';
+            document.getElementById(`task-error-${elementId}`).textContent = 'Error loading tasks: ' + error.message;
+            document.getElementById(`task-error-${elementId}`).style.display = 'block';
         }
     }
 
-    // Render tasks for a module
     function renderTasks(tasks, elementId) {
         const taskList = document.getElementById(`task-list-${elementId}`);
         taskList.innerHTML = '';
@@ -280,12 +196,10 @@
             taskDiv.innerHTML = `
                     <p><strong>${task.name}</strong></p>
                     ${task.youtubeUrl ? `<p>YouTube: <a href="${task.youtubeUrl}" target="_blank">${task.youtubeUrl}</a></p>` : ''}
-                    <p>Attachments: ${task.attachments && task.attachments.length > 0 ? task.attachments.join(', ') : 'None'}</p>
+                    <p>Attachments: ${task.attachments?.length > 0 ? task.attachments.join(', ') : 'None'}</p>
                     <h6>Questions</h6>
                     <div id="questions-${elementId}-${task.id}">
-                        ${task.questions && task.questions.length > 0
-                ? task.questions.map(q => `<p>${q.text} ${q.attachment ? '(Attachment: ' + q.attachment + ')' : ''}</p>`).join('')
-                : '<p>No questions</p>'}
+                        ${task.questions?.length > 0 ? task.questions.map(q => `<p>${q.text} ${q.attachment ? '(Attachment: ' + q.attachment + ')' : ''}</p>`).join('') : '<p>No questions</p>'}
                     </div>
                     <button onclick="toggleAddQuestionForm('${elementId}-${task.id}')">Add Question</button>
                     <div id="add-question-form-${elementId}-${task.id}" class="add-question-form">
@@ -311,25 +225,10 @@
         });
     }
 
-    // Toggle tasks visibility
-    function toggleTasks(moduleId) {
-        const tasksDiv = document.getElementById(`tasks-${moduleId}`);
-        tasksDiv.style.display = tasksDiv.style.display === 'block' ? 'none' : 'block';
-    }
+    function toggleTasks(moduleId) { document.getElementById(`tasks-${moduleId}`).style.display = document.getElementById(`tasks-${moduleId}`).style.display === 'block' ? 'none' : 'block'; }
+    function toggleAddTaskForm(moduleId) { document.getElementById(`add-task-form-${moduleId}`).style.display = document.getElementById(`add-task-form-${moduleId}`).style.display === 'block' ? 'none' : 'block'; }
+    function toggleAddQuestionForm(taskId) { document.getElementById(`add-question-form-${taskId}`).style.display = document.getElementById(`add-question-form-${taskId}`).style.display === 'block' ? 'none' : 'block'; }
 
-    // Toggle add task form
-    function toggleAddTaskForm(moduleId) {
-        const form = document.getElementById(`add-task-form-${moduleId}`);
-        form.style.display = form.style.display === 'block' ? 'none' : 'block';
-    }
-
-    // Toggle add question form
-    function toggleAddQuestionForm(taskId) {
-        const form = document.getElementById(`add-question-form-${taskId}`);
-        form.style.display = form.style.display === 'block' ? 'none' : 'block';
-    }
-
-    // Add answer variant input
     function addAnswerVariant(taskId) {
         const variantsDiv = document.getElementById(`answer-variants-${taskId}`);
         const input = document.createElement('input');
@@ -339,28 +238,24 @@
         variantsDiv.appendChild(input);
     }
 
-    // Add new task
     async function addTask(event, moduleId, moduleBackendId) {
         event.preventDefault();
         const formData = new FormData();
         formData.append('name', document.getElementById(`task-name-${moduleId}`).value);
         formData.append('youtubeUrl', document.getElementById(`youtube-url-${moduleId}`).value);
         const attachments = document.getElementById(`attachments-${moduleId}`).files;
-        for (let i = 0; i < attachments.length; i++) {
-            formData.append('attachments', attachments[i]);
-        }
+        for (let i = 0; i < attachments.length; i++) formData.append('attachments', attachments[i]);
         try {
-            const response = await fetch(`/api/v1/modules/${moduleBackendId}/tasks`, {
-                method: 'POST',
-                body: formData
-            });
-            if (!response.ok) {
-                throw new Error('Failed to add task');
+            const response = await fetch(`/api/v1/modules/${moduleBackendId}/tasks`, { method: 'POST', credentials: 'include', body: formData });
+            if (response.status === 401) {
+                window.location.href = '/login';
+                return;
             }
+            if (!response.ok) throw new Error('Failed to add task');
             document.getElementById(`task-success-${moduleId}`).textContent = 'Task added successfully!';
             document.getElementById(`task-success-${moduleId}`).style.display = 'block';
             document.getElementById(`task-error-${moduleId}`).style.display = 'none';
-            fetchTasks(moduleBackendId, moduleId); // Refresh tasks
+            fetchTasks(moduleBackendId, moduleId);
             document.getElementById(`add-task-form-${moduleId}`).style.display = 'none';
         } catch (error) {
             document.getElementById(`task-error-${moduleId}`).textContent = 'Error adding task: ' + error.message;
@@ -369,30 +264,26 @@
         }
     }
 
-    // Add new question
     async function addQuestion(event, elementId, taskId) {
         event.preventDefault();
         const formData = new FormData();
         formData.append('text', document.getElementById(`question-text-${elementId}-${taskId}`).value);
         const attachment = document.getElementById(`question-attachment-${elementId}-${taskId}`).files[0];
-        if (attachment) {
-            formData.append('attachment', attachment);
-        }
+        if (attachment) formData.append('attachment', attachment);
         const variantsDiv = document.getElementById(`answer-variants-${elementId}-${taskId}`);
         const variants = Array.from(variantsDiv.children).map(input => input.value).filter(v => v);
         formData.append('answerVariants', JSON.stringify(variants));
         try {
-            const response = await fetch(`/api/v1/tasks/${taskId}/questions`, {
-                method: 'POST',
-                body: formData
-            });
-            if (!response.ok) {
-                throw new Error('Failed to add question');
+            const response = await fetch(`/api/v1/tasks/${taskId}/questions`, { method: 'POST', credentials: 'include', body: formData });
+            if (response.status === 401) {
+                window.location.href = '/login';
+                return;
             }
+            if (!response.ok) throw new Error('Failed to add question');
             document.getElementById(`question-success-${elementId}-${taskId}`).textContent = 'Question added successfully!';
             document.getElementById(`question-success-${elementId}-${taskId}`).style.display = 'block';
             document.getElementById(`question-error-${elementId}-${taskId}`).style.display = 'none';
-            fetchTasks(taskId.split('-')[0], elementId); // Refresh tasks
+            fetchTasks(taskId.split('-')[0], elementId);
             document.getElementById(`add-question-form-${elementId}-${taskId}`).style.display = 'none';
         } catch (error) {
             document.getElementById(`question-error-${elementId}-${taskId}`).textContent = 'Error adding question: ' + error.message;
@@ -401,27 +292,44 @@
         }
     }
 
-    // Fetch supermentor profile
+    async function closeModule(moduleId, elementId) {
+        try {
+            const response = await fetch(`/api/v1/modules/${moduleId}/close`, { method: 'POST', credentials: 'include' });
+            if (response.status === 401) {
+                window.location.href = '/login';
+                return;
+            }
+            if (!response.ok) throw new Error('Failed to close module');
+            document.getElementById(`task-success-${elementId}`).textContent = 'Module closed successfully!';
+            document.getElementById(`task-success-${elementId}`).style.display = 'block';
+            document.getElementById(`task-error-${elementId}`).style.display = 'none';
+            fetchTasks(moduleId, elementId);
+        } catch (error) {
+            document.getElementById(`task-error-${elementId}`).textContent = 'Error closing module: ' + error.message;
+            document.getElementById(`task-error-${elementId}`).style.display = 'block';
+            document.getElementById(`task-success-${elementId}`).style.display = 'none';
+        }
+    }
+
     async function fetchProfile() {
         try {
-            const response = await fetch('/api/v1/users/profile');
-            if (!response.ok) {
-                throw new Error('Failed to fetch profile');
+            const response = await fetch('/api/v1/users/profile', { credentials: 'include' });
+            if (response.status === 401) {
+                window.location.href = '/login';
+                return;
             }
+            if (!response.ok) throw new Error('Failed to fetch profile');
             const profile = await response.json();
             document.getElementById('display-first-name').textContent = profile.firstName || 'Not set';
             document.getElementById('display-last-name').textContent = profile.lastName || 'Not set';
             document.getElementById('display-phone').textContent = profile.phone || 'Not set';
-            if (profile.profilePictureUrl) {
-                document.getElementById('display-profile-picture').src = profile.profilePictureUrl;
-            }
+            if (profile.profilePictureUrl) document.getElementById('display-profile-picture').src = profile.profilePictureUrl;
         } catch (error) {
             document.getElementById('profile-error').textContent = 'Error loading profile: ' + error.message;
             document.getElementById('profile-error').style.display = 'block';
         }
     }
 
-    // Handle profile form submission
     document.getElementById('profile-form').addEventListener('submit', async (event) => {
         event.preventDefault();
         const formData = new FormData();
@@ -429,17 +337,14 @@
         formData.append('lastName', document.getElementById('last-name').value);
         formData.append('phone', document.getElementById('phone').value);
         const profilePicture = document.getElementById('profile-picture').files[0];
-        if (profilePicture) {
-            formData.append('profilePicture', profilePicture);
-        }
+        if (profilePicture) formData.append('profilePicture', profilePicture);
         try {
-            const response = await fetch('/api/v1/users/profile', {
-                method: 'POST',
-                body: formData
-            });
-            if (!response.ok) {
-                throw new Error('Failed to update profile');
+            const response = await fetch('/api/v1/users/profile', { method: 'POST', credentials: 'include', body: formData });
+            if (response.status === 401) {
+                window.location.href = '/login';
+                return;
             }
+            if (!response.ok) throw new Error('Failed to update profile');
             document.getElementById('profile-success').textContent = 'Profile updated successfully!';
             document.getElementById('profile-success').style.display = 'block';
             document.getElementById('profile-error').style.display = 'none';
@@ -453,14 +358,12 @@
         }
     });
 
-    // Toggle edit profile form
     document.getElementById('edit-profile-link').addEventListener('click', (event) => {
         event.preventDefault();
         document.getElementById('profile-form').style.display = 'block';
         document.getElementById('profile-display').style.display = 'none';
     });
 
-    // Cancel profile edit
     document.getElementById('cancel-profile').addEventListener('click', () => {
         document.getElementById('profile-form').style.display = 'none';
         document.getElementById('profile-display').style.display = 'block';
@@ -468,7 +371,6 @@
         document.getElementById('profile-success').style.display = 'none';
     });
 
-    // Update file input status
     document.getElementById('profile-picture').addEventListener('change', () => {
         const fileStatus = document.getElementById('file-status');
         fileStatus.textContent = document.getElementById('profile-picture').files.length > 0
@@ -476,20 +378,16 @@
             : 'No file chosen';
     });
 
-    // Handle logout
     document.getElementById('logout-link').addEventListener('click', async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch('/api/auth/logout');
-            if (response.ok) {
-                window.location.href = '/login'; // Redirect to login page
-            }
+            const response = await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+            if (response.ok) window.location.href = '/login';
         } catch (error) {
             console.error('Logout failed:', error);
         }
     });
 
-    // Initialize page
     fetchSciences();
     fetchProfile();
 </script>
