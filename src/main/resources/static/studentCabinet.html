@@ -666,6 +666,69 @@
             background: #f1f1f1;
         }
 
+        /* Attachment styles */
+        .attachment-container {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+
+        .attachment-container h4 {
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .attachment-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .attachment-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+
+        .attachment-download {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .attachment-download:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .attachment-error {
+            color: var(--danger);
+            text-align: center;
+            padding: 20px;
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 8px;
+        }
+
+        .attachment-loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--primary);
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -826,7 +889,7 @@
                 <h3>Profilni Yangilash</h3>
                 <form id="updateProfileForm">
                     <div class="image-upload">
-                        <img id="imagePreview" class="image-upload-preview" src="" alt="Profil rasmi">
+                        <img id="imagePreview" class="image-upload-preview" src="/placeholder.svg" alt="Profil rasmi">
                         <input type="file" id="imageUpload" accept="image/*" style="display: none;">
                         <button type="button" class="image-upload-btn"
                                 onclick="document.getElementById('imageUpload').click()">
@@ -1365,33 +1428,162 @@
         return match ? match[1] : null;
     }
 
+    // Attachmentlarni yuklash funksiyasi - TO'G'RILANGAN
+    async function loadAttachments(attachmentIds) {
+        if (!attachmentIds || attachmentIds.length === 0) {
+            return null;
+        }
+
+        try {
+            // Backend List<Long> attachmentIds kutgani uchun har bir ID uchun alohida parameter yuboramiz
+            const params = new URLSearchParams();
+            attachmentIds.forEach(id => {
+                params.append('attachmentIds', id.toString());
+            });
+
+            const response = await axios.get(`/api/v1/attachments?${params.toString()}`, {
+                headers: {'Authorization': userData.token}
+            });
+
+            return response.data;
+        } catch (error) {
+            console.error('Attachmentlarni yuklashda xato:', error);
+            throw error;
+        }
+    }
+
+    // Attachmentlarni ko'rsatish funksiyasi - TO'G'RILANGAN
+    function displayAttachments(attachments, container) {
+        if (!attachments || attachments.length === 0) {
+            container.innerHTML = '<div class="attachment-container"><h4>Qo\'shimcha materiallar</h4><div style="text-align: center; color: var(--dark);">Ushbu vazifada qo\'shimcha materiallar mavjud emas</div></div>';
+            return;
+        }
+
+        const attachmentContainer = document.createElement('div');
+        attachmentContainer.className = 'attachment-container';
+
+        const title = document.createElement('h4');
+        title.textContent = 'Qo\'shimcha materiallar';
+        attachmentContainer.appendChild(title);
+
+        attachments.forEach((attachment, index) => {
+            const attachmentItem = document.createElement('div');
+            attachmentItem.className = 'attachment-item';
+
+            try {
+                if (attachment.contentType && attachment.contentType.startsWith('image/')) {
+                    // Rasm uchun
+                    const img = document.createElement('img');
+                    img.className = 'attachment-image';
+
+                    // Base64 ma'lumotlarini to'g'ri formatda ko'rsatish
+                    if (attachment.content) {
+                        // Agar content allaqachon data: bilan boshlanmasa, qo'shamiz
+                        const imageData = attachment.content.startsWith('data:')
+                            ? attachment.content
+                            : `data:${attachment.contentType};base64,${attachment.content}`;
+                        img.src = imageData;
+                    } else {
+                        img.src = '/placeholder.svg?height=200&width=300';
+                        img.alt = 'Rasm yuklanmadi';
+                    }
+
+                    img.alt = `Attachment ${index + 1}`;
+                    img.onerror = function() {
+                        this.src = '/placeholder.svg?height=200&width=300';
+                        this.alt = 'Rasm yuklanmadi';
+                    };
+
+                    attachmentItem.appendChild(img);
+                } else {
+                    // Boshqa fayl turlari uchun yuklab olish havolasi
+                    const downloadLink = document.createElement('a');
+                    downloadLink.className = 'attachment-download';
+                    downloadLink.textContent = `Yuklab olish: ${getFileExtension(attachment.contentType)}`;
+
+                    if (attachment.content) {
+                        const fileData = attachment.content.startsWith('data:')
+                            ? attachment.content
+                            : `data:${attachment.contentType};base64,${attachment.content}`;
+                        downloadLink.href = fileData;
+                        downloadLink.download = `attachment_${attachment.id || index + 1}.${getFileExtension(attachment.contentType)}`;
+                    } else {
+                        downloadLink.href = '#';
+                        downloadLink.onclick = (e) => {
+                            e.preventDefault();
+                            alert('Fayl ma\'lumotlari mavjud emas');
+                        };
+                    }
+
+                    attachmentItem.appendChild(downloadLink);
+                }
+            } catch (error) {
+                console.error('Attachmentni ko\'rsatishda xato:', error);
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'attachment-error';
+                errorDiv.textContent = 'Faylni ko\'rsatishda xato yuz berdi';
+                attachmentItem.appendChild(errorDiv);
+            }
+
+            attachmentContainer.appendChild(attachmentItem);
+        });
+
+        container.appendChild(attachmentContainer);
+    }
+
+    // Fayl kengaytmasini olish funksiyasi
+    function getFileExtension(contentType) {
+        const extensions = {
+            'image/jpeg': 'jpg',
+            'image/jpg': 'jpg',
+            'image/png': 'png',
+            'image/gif': 'gif',
+            'image/webp': 'webp',
+            'application/pdf': 'pdf',
+            'application/msword': 'doc',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
+            'application/vnd.ms-excel': 'xls',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
+            'text/plain': 'txt',
+            'application/zip': 'zip',
+            'application/x-rar-compressed': 'rar'
+        };
+        return extensions[contentType] || 'file';
+    }
+
     async function displayTaskDetails(taskDetails) {
         if (isTaskSubmitted) {
             await displayTaskResults(currentTaskId);
             return;
         }
+
         questionBox.innerHTML = `
-            <div class="question-header">
-                <div class="question-title">${taskDetails.name || 'Vazifa'}</div>
-                <div class="difficulty">${taskDetails.youtubeURL ? 'Video darslik' : 'Test savollar'}</div>
-            </div>
-            <div class="question-content" id="questionContent">
-                <div id="videoContainer" style="display: none;"></div>
-                <div id="questionsAfterVideo" class="questions-after-video"></div>
-            </div>
-        `;
+        <div class="question-header">
+            <div class="question-title">${taskDetails.name || 'Vazifa'}</div>
+            <div class="difficulty">${taskDetails.youtubeURL ? 'Video darslik' : 'Test savollar'}</div>
+        </div>
+        <div class="question-content" id="questionContent">
+            <div id="videoContainer" style="display: none;"></div>
+            <div id="questionsAfterVideo" class="questions-after-video"></div>
+            <div id="taskAttachments"></div>
+        </div>
+    `;
+
         const videoContainer = document.getElementById('videoContainer');
         const questionsAfterVideo = document.getElementById('questionsAfterVideo');
+        const attachmentsDiv = document.getElementById('taskAttachments');
+
+        // Handle YouTube video (existing code, keep it as is)
         if (taskDetails.youtubeURL) {
             const videoId = getYouTubeVideoId(taskDetails.youtubeURL);
             if (videoId && youtubeApiLoaded) {
                 videoContainer.style.display = 'block';
                 videoContainer.innerHTML = `
-                    <div id="youtubePlayer"></div>
-                    <div class="video-message" id="videoMessage">
-                        Iltimos, videoni to'liq ko'ring. Video tugagandan keyin savollar ko'rinadi.
-                    </div>
-                `;
+                <div id="youtubePlayer"></div>
+                <div class="video-message" id="videoMessage">
+                    Iltimos, videoni to'liq ko'ring. Video tugagandan keyin savollar ko'rinadi.
+                </div>
+            `;
                 try {
                     videoPlayer = new YT.Player('youtubePlayer', {
                         height: '100%',
@@ -1410,7 +1602,6 @@
                             'onError': onPlayerError
                         }
                     });
-                    console.log('YouTube player initialized for video ID:', videoId);
                 } catch (error) {
                     console.error('YouTube player yuklashda xato:', error);
                     videoContainer.innerHTML = `<div class="question-text" style="color: var(--danger);">Video yuklanmadi: YouTube xatosi</div>`;
@@ -1421,8 +1612,8 @@
                 }
             } else {
                 videoContainer.innerHTML = `<div class="question-text" style="color: var(--danger);">
-                    ${youtubeApiLoaded ? 'YouTube video URLi noto\'g\'ri: ' + taskDetails.youtubeURL : 'YouTube API yuklanmadi'}
-                </div>`;
+                ${youtubeApiLoaded ? 'YouTube video URLi noto\'g\'ri: ' + taskDetails.youtubeURL : 'YouTube API yuklanmadi'}
+            </div>`;
                 videoContainer.style.display = 'block';
                 questionsAfterVideo.style.display = 'none';
                 videoCompleted = true;
@@ -1434,6 +1625,32 @@
             videoCompleted = true;
             displayQuestionsAfterVideo(questionsAfterVideo);
         }
+
+        // Attachmentlarni yuklash va ko'rsatish - TO'G'RILANGAN
+        if (taskDetails.attachmentId && taskDetails.attachmentId.length > 0) {
+            // Loading ko'rsatish
+            attachmentsDiv.innerHTML = '<div class="attachment-loading"><div class="spinner"></div>Qo\'shimcha materiallar yuklanmoqda...</div>';
+
+            try {
+                const attachments = await loadAttachments(taskDetails.attachmentId);
+                attachmentsDiv.innerHTML = ''; // Loading ni tozalash
+                displayAttachments(attachments, attachmentsDiv);
+            } catch (error) {
+                console.error('Attachmentlarni yuklashda xato:', error);
+                attachmentsDiv.innerHTML = `
+                    <div class="attachment-container">
+                        <h4>Qo'shimcha materiallar</h4>
+                        <div class="attachment-error">
+                            Attachmentlarni yuklashda xato yuz berdi. Iltimos, keyinroq qayta urining.
+                            <br><small>Xato: ${error.response?.data?.message || error.message}</small>
+                        </div>
+                    </div>
+                `;
+            }
+        } else {
+            displayAttachments([], attachmentsDiv);
+        }
+
         questionBox.classList.add('active');
     }
 

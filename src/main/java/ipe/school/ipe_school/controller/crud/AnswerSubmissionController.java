@@ -31,8 +31,6 @@ public class AnswerSubmissionController {
     private final StudentProgressRepository studentProgressRepository;
     private final GroupRepository groupRepository;
 
-
-
     @PostMapping
     public ResponseEntity<StudentProcessRes> submitAnswer(@AuthenticationPrincipal User user, @RequestBody List<AnswerSubmissionReq> answerSubmissionReqs) {
         StudentProcessRes answerSubmissionResList = answerSubmissionService.submitAnswer(user, answerSubmissionReqs);

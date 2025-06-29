@@ -28,7 +28,7 @@ public class AttachmentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AttachmentRes>> getAllAttachments(@RequestBody List<Long> attachmentIds) {
+    public ResponseEntity<List<AttachmentRes>> getAllAttachments(@RequestParam List<Long> attachmentIds) {
         List<AttachmentRes> attachmentResList=attachmentService.getAttachmentsById(attachmentIds);
         return ResponseEntity.ok(attachmentResList);
     }
