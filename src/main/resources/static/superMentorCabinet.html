@@ -16,9 +16,8 @@
         .science-card { background: #e9ecef; padding: 15px; border-radius: 5px; }
         .science-card h3 { margin-top: 0; color: #333; }
         .module { margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 3px; }
-        .module h4 { cursor: pointer; color: #007bff; }
-        .module h4:hover { text-decoration: underline; }
-        .tasks, .add-task-form, .update-task-form, .add-question-form, .update-question-form { display: none; margin-top: 10px; }
+        .module h4 { color: #007bff; }
+        .add-science-form, .update-science-form { display: none; margin-top: 10px; }
         footer { background-color: #333; color: white; text-align: center; padding: 10px 0; position: relative; bottom: 0; width: 100%; }
         form { display: flex; flex-direction: column; gap: 10px; }
         form label { font-weight: bold; }
@@ -27,6 +26,7 @@
         form button:hover { background-color: #0056b3; }
         .error { color: red; display: none; }
         .success { color: green; display: none; }
+        .note { color: #555; font-style: italic; }
     </style>
 </head>
 <body>
@@ -70,9 +70,24 @@
     <section id="dashboard">
         <h2>Supermentor Dashboard</h2>
         <p>Welcome to your supermentor cabinet. Below are all sciences you oversee.</p>
+        <p id="science-count">0 Sciences</p>
     </section>
     <section id="sciences">
         <h2>All Sciences</h2>
+        <button onclick="toggleAddScienceForm()">Add Science</button>
+        <div id="add-science-form" class="add-science-form">
+            <h3>Add New Science</h3>
+            <form onsubmit="addScience(event)">
+                <label for="science-name">Science Name</label>
+                <input type="text" id="science-name" name="science-name" required>
+                <label for="group-ids">Group IDs (comma-separated)</label>
+                <input type="text" id="group-ids" name="group-ids" placeholder="e.g., 1,2,3">
+                <button type="submit">Add Science</button>
+                <p id="science-add-error" class="error"></p>
+                <p id="science-add-success" class="success"></p>
+            </form>
+        </div>
+        <p class="note">Note: Task, question, and module management is not supported due to missing backend endpoints (e.g., /api/v1/modules/{moduleId}/tasks). Contact your backend team to implement these if needed.</p>
         <div id="science-cards" class="science-cards">
             <!-- Science cards will be populated by JavaScript -->
         </div>
@@ -102,7 +117,7 @@
     <section>
         <h2>Contact Info</h2>
         <p>123 Education Street, Tashkent</p>
-        <p>+998 90 123 45 67</p>
+        reneg<p>+998 90 123 45 67</p>
         <p>info@ipeschool.com</p>
     </section>
     <p>© 2023 IPE School. All Rights Reserved.</p>
@@ -110,7 +125,7 @@
 <script>
     async function fetchSciences() {
         try {
-            const response = await fetch('/api/v1/science', { credentials: 'include' });
+            const response = await fetch('/api/v1/sciences', { credentials: 'include' });
             if (response.status === 401) {
                 window.location.href = '/login';
                 return;
@@ -118,8 +133,25 @@
             if (!response.ok) throw new Error(`Failed to fetch sciences: ${response.statusText}`);
             const sciences = await response.json();
             renderSciences(sciences);
+            fetchScienceCount();
         } catch (error) {
             document.getElementById('sciences-error').textContent = `Error loading sciences: ${error.message}`;
+            document.getElementById('sciences-error').style.display = 'block';
+        }
+    }
+
+    async function fetchScienceCount() {
+        try {
+            const response = await fetch('/api/v1/sciences/count', { credentials: 'include' });
+            if (response.status === 401) {
+                window.location.href = '/login';
+                return;
+            }
+            if (!response.ok) throw new Error(`Failed to fetch science count: ${response.statusText}`);
+            const count = await response.json();
+            document.getElementById('science-count').textContent = `${count} Sciences`;
+        } catch (error) {
+            document.getElementById('sciences-error').textContent = `Error loading science count: ${error.message}`;
             document.getElementById('sciences-error').style.display = 'block';
         }
     }
@@ -131,248 +163,104 @@
             const card = document.createElement('div');
             card.className = 'science-card';
             let groupsHtml = science.groups?.length > 0 ? science.groups.map(g => g.name).join(', ') : 'None';
-            let modulesHtml = '';
-            science.modules.forEach((module, index) => {
-                const moduleId = `${science.id}-${index}`;
-                modulesHtml += `
-                        <div class="module">
-                            <h4 onclick="toggleTasks('${moduleId}')">${module.moduleName} (${module.taskCount} tasks)</h4>
-                            <div id="tasks-${moduleId}" class="tasks">
-                                <h5>Tasks</h5>
-                                <div id="task-list-${moduleId}"></div>
-                                <button onclick="toggleAddTaskForm('${moduleId}')">Add Task</button>
-                                <button onclick="closeModule(${module.id}, '${moduleId}')">Close Module</button>
-                            </div>
-                            <div id="add-task-form-${moduleId}" class="add-task-form">
-                                <h5>Add New Task</h5>
-                                <form onsubmit="addTask(event, '${moduleId}', ${module.id})">
-                                    <label for="task-name-${moduleId}">Task Name</label>
-                                    <input type="text" id="task-name-${moduleId}" name="task-name" required>
-                                    <label for="youtube-url-${moduleId}">YouTube URL</label>
-                                    <input type="url" id="youtube-url-${moduleId}" name="youtube-url">
-                                    <label for="attachments-${moduleId}">Attachments</label>
-                                    <input type="file" id="attachments-${moduleId}" name="attachments" multiple>
-                                    <span id="attachments-status-${moduleId}">No files chosen</span>
-                                    <button type="submit">Add Task</button>
-                                    <p id="task-error-${moduleId}" class="error"></p>
-                                    <p id="task-success-${moduleId}" class="success"></p>
-                                </form>
-                            </div>
-                        </div>
-                    `;
-            });
+            let modulesHtml = science.modules?.length > 0 ? science.modules.map(m => `<div class="module"><h4>${m.moduleName} (${m.taskCount} tasks)</h4></div>`).join('') : '<p>No modules</p>';
             card.innerHTML = `
                     <h3>${science.name}</h3>
                     <p><strong>Groups:</strong> ${groupsHtml}</p>
                     <p><strong>Modules:</strong></p>
                     ${modulesHtml}
+                    <button onclick="toggleUpdateScienceForm(${science.id})">Update Science</button>
+                    <button onclick="deleteScience(${science.id})">Delete Science</button>
+                    <div id="update-science-form-${science.id}" class="update-science-form">
+                        <h3>Update Science</h3>
+                        <form onsubmit="updateScience(event, ${science.id})">
+                            <label for="update-science-name-${science.id}">Science Name</label>
+                            <input type="text" id="update-science-name-${science.id}" name="science-name" value="${science.name}" required>
+                            <label for="update-group-ids-${science.id}">Group IDs (comma-separated)</label>
+                            <input type="text" id="update-group-ids-${science.id}" name="group-ids" value="${science.groups?.map(g => g.id).join(',') || ''}">
+                            <button type="submit">Update Science</button>
+                            <p id="science-update-error-${science.id}" class="error"></p>
+                            <p id="science-update-success-${science.id}" class="success"></p>
+                        </form>
+                    </div>
                 `;
             scienceCards.appendChild(card);
-            science.modules.forEach((module, index) => fetchTasks(module.id, `${science.id}-${index}`));
         });
     }
 
-    async function fetchTasks(moduleId, elementId) {
-        try {
-            const response = await fetch(`/api/v1/modules/${moduleId}/tasks`, { credentials: 'include' });
-            if (response.status === 401) {
-                window.location.href = '/login';
-                return;
-            }
-            if (!response.ok) throw new Error(`Failed to fetch tasks: ${response.statusText}`);
-            const tasks = await response.json();
-            renderTasks(tasks, elementId);
-        } catch (error) {
-            document.getElementById(`task-error-${elementId}`).textContent = `Error loading tasks: ${error.message}`;
-            document.getElementById(`task-error-${elementId}`).style.display = 'block';
-        }
+    function toggleAddScienceForm() {
+        document.getElementById('add-science-form').style.display =
+            document.getElementById('add-science-form').style.display === 'block' ? 'none' : 'block';
     }
 
-    function renderTasks(tasks, elementId) {
-        const taskList = document.getElementById(`task-list-${elementId}`);
-        taskList.innerHTML = '';
-        tasks.forEach(task => {
-            const taskDiv = document.createElement('div');
-            taskDiv.innerHTML = `
-                    <p><strong>${task.name}</strong></p>
-                    ${task.youtubeUrl ? `<p>YouTube: <a href="${task.youtubeUrl}" target="_blank">${task.youtubeUrl}</a></p>` : ''}
-                    <p>Attachments: ${task.attachments?.length > 0 ? task.attachments.join(', ') : 'None'}</p>
-                    <button onclick="toggleUpdateTaskForm('${elementId}-${task.id}', ${task.id})">Update Task</button>
-                    <button onclick="deleteTask(${task.id}, '${elementId}')">Delete Task</button>
-                    <div id="update-task-form-${elementId}-${task.id}" class="update-task-form">
-                        <h5>Update Task</h5>
-                        <form onsubmit="updateTask(event, '${elementId}', ${task.id})">
-                            <label for="update-task-name-${elementId}-${task.id}">Task Name</label>
-                            <input type="text" id="update-task-name-${elementId}-${task.id}" name="task-name" value="${task.name}" required>
-                            <label for="update-youtube-url-${elementId}-${task.id}">YouTube URL</label>
-                            <input type="url" id="update-youtube-url-${elementId}-${task.id}" name="youtube-url" value="${task.youtubeUrl || ''}">
-                            <label for="update-attachments-${elementId}-${task.id}">Attachments</label>
-                            <input type="file" id="update-attachments-${elementId}-${task.id}" name="attachments" multiple>
-                            <span id="update-attachments-status-${elementId}-${task.id}">No files chosen</span>
-                            <button type="submit">Update Task</button>
-                            <p id="update-task-error-${elementId}-${task.id}" class="error"></p>
-                            <p id="update-task-success-${elementId}-${task.id}" class="success"></p>
-                        </form>
-                    </div>
-                    <h6>Questions</h6>
-                    <div id="questions-${elementId}-${task.id}">
-                        ${task.questions?.length > 0 ? task.questions.map(q => `
-                            <p>${q.text} ${q.attachment ? '(Attachment: ' + q.attachment + ')' : ''}
-                            <button onclick="toggleUpdateQuestionForm('${elementId}-${task.id}-${q.id}', ${q.id}, '${elementId}', ${task.id})">Edit</button></p>
-                        `).join('') : '<p>No questions</p>'}
-                    </div>
-                    <button onclick="toggleAddQuestionForm('${elementId}-${task.id}')">Add Question</button>
-                    <div id="add-question-form-${elementId}-${task.id}" class="add-question-form">
-                        <h6>New Question</h6>
-                        <form onsubmit="addQuestion(event, '${elementId}', ${task.id})">
-                            <label for="question-text-${elementId}-${task.id}">Question Text</label>
-                            <input type="text" id="question-text-${elementId}-${task.id}" name="question-text" required>
-                            <label for="question-attachment-${elementId}-${task.id}">Attachment (Required)</label>
-                            <input type="file" id="question-attachment-${elementId}-${task.id}" name="question-attachment" required>
-                            <span id="question-attachment-status-${elementId}-${task.id}">No file chosen</span>
-                            <div>
-                                <h6>Answer Variants</h6>
-                                <div id="answer-variants-${elementId}-${task.id}"></div>
-                                <button type="button" onclick="addAnswerVariant('${elementId}-${task.id}')">Add Variant</button>
-                            </div>
-                            <button type="submit">Save</button>
-                            <p id="question-error-${elementId}-${task.id}" class="error"></p>
-                            <p id="question-success-${elementId}-${task.id}" class="success"></p>
-                        </form>
-                    </div>
-                    ${task.questions?.map(q => `
-                        <div id="update-question-form-${elementId}-${task.id}-${q.id}" class="update-question-form">
-                            <h6>Update Question</h6>
-                            <form onsubmit="updateQuestion(event, '${elementId}', ${task.id}, ${q.id})">
-                                <label for="update-question-text-${elementId}-${task.id}-${q.id}">Question Text</label>
-                                <input type="text" id="update-question-text-${elementId}-${task.id}-${q.id}" name="question-text" value="${q.text}" required>
-                                <label for="update-question-attachment-${elementId}-${task.id}-${q.id}">Attachment (Optional)</label>
-                                <input type="file" id="update-question-attachment-${elementId}-${task.id}-${q.id}" name="question-attachment">
-                                <span id="update-question-attachment-status-${elementId}-${task.id}-${q.id}">No file chosen</span>
-                                <div>
-                                    <h6>Answer Variants</h6>
-                                    <div id="update-answer-variants-${elementId}-${task.id}-${q.id}">
-                                        ${q.answerVariants?.map((v, i) => `<input type="text" name="answer-variant-${i}" value="${v}">`).join('')}
-                                    </div>
-                                    <button type="button" onclick="addUpdateAnswerVariant('${elementId}-${task.id}-${q.id}')">Add Variant</button>
-                                </div>
-                                <button type="submit">Save</button>
-                                <p id="update-question-error-${elementId}-${task.id}-${q.id}" class="error"></p>
-                                <p id="update-question-success-${elementId}-${task.id}-${q.id}" class="success"></p>
-                            </form>
-                        </div>
-                    `).join('')}
-                `;
-            taskList.appendChild(taskDiv);
-        });
+    function toggleUpdateScienceForm(scienceId) {
+        document.getElementById(`update-science-form-${scienceId}`).style.display =
+            document.getElementById(`update-science-form-${scienceId}`).style.display === 'block' ? 'none' : 'block';
     }
 
-    function toggleTasks(moduleId) {
-        document.getElementById(`tasks-${moduleId}`).style.display =
-            document.getElementById(`tasks-${moduleId}`).style.display === 'block' ? 'none' : 'block';
-    }
-
-    function toggleAddTaskForm(moduleId) {
-        document.getElementById(`add-task-form-${moduleId}`).style.display =
-            document.getElementById(`add-task-form-${moduleId}`).style.display === 'block' ? 'none' : 'block';
-    }
-
-    function toggleUpdateTaskForm(taskId, backendTaskId) {
-        document.getElementById(`update-task-form-${taskId}`).style.display =
-            document.getElementById(`update-task-form-${taskId}`).style.display === 'block' ? 'none' : 'block';
-    }
-
-    function toggleAddQuestionForm(taskId) {
-        document.getElementById(`add-question-form-${taskId}`).style.display =
-            document.getElementById(`add-question-form-${taskId}`).style.display === 'block' ? 'none' : 'block';
-    }
-
-    function toggleUpdateQuestionForm(questionId, backendQuestionId, elementId, taskId) {
-        document.getElementById(`update-question-form-${questionId}`).style.display =
-            document.getElementById(`update-question-form-${questionId}`).style.display === 'block' ? 'none' : 'block';
-    }
-
-    function addAnswerVariant(taskId) {
-        const variantsDiv = document.getElementById(`answer-variants-${taskId}`);
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.name = `answer-variant-${taskId}-${variantsDiv.children.length}`;
-        input.placeholder = 'Answer variant';
-        variantsDiv.appendChild(input);
-    }
-
-    function addUpdateAnswerVariant(questionId) {
-        const variantsDiv = document.getElementById(`update-answer-variants-${questionId}`);
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.name = `answer-variant-${questionId}-${variantsDiv.children.length}`;
-        input.placeholder = 'Answer variant';
-        variantsDiv.appendChild(input);
-    }
-
-    async function addTask(event, moduleId, moduleBackendId) {
+    async function addScience(event) {
         event.preventDefault();
-        const formData = new FormData();
-        formData.append('name', document.getElementById(`task-name-${moduleId}`).value);
-        formData.append('youtubeUrl', document.getElementById(`youtube-url-${moduleId}`).value);
-        const attachments = document.getElementById(`attachments-${moduleId}`).files;
-        for (let i = 0; i < attachments.length; i++) formData.append('attachments', attachments[i]);
+        const name = document.getElementById('science-name').value;
+        const groupIds = document.getElementById('group-ids').value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+        const scienceReq = { name, groupIds };
         try {
-            const response = await fetch(`/api/v1/modules/${moduleBackendId}/tasks`, {
+            const response = await fetch('/api/v1/sciences', {
                 method: 'POST',
                 credentials: 'include',
-                body: formData
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(scienceReq)
             });
             if (response.status === 401) {
                 window.location.href = '/login';
                 return;
             }
-            if (!response.ok) throw new Error(`Failed to add task: ${response.statusText}`);
-            document.getElementById(`task-success-${moduleId}`).textContent = 'Task added successfully!';
-            document.getElementById(`task-success-${moduleId}`).style.display = 'block';
-            document.getElementById(`task-error-${moduleId}`).style.display = 'none';
-            fetchTasks(moduleBackendId, moduleId);
-            document.getElementById(`add-task-form-${moduleId}`).style.display = 'none';
+            if (!response.ok) throw new Error(`Failed to add science: ${response.statusText}`);
+            document.getElementById('science-add-success').textContent = 'Science added successfully!';
+            document.getElementById('science-add-success').style.display = 'block';
+            document.getElementById('science-add-error').style.display = 'none';
+            fetchSciences();
+            document.getElementById('add-science-form').style.display = 'none';
+            document.getElementById('science-name').value = '';
+            document.getElementById('group-ids').value = '';
         } catch (error) {
-            document.getElementById(`task-error-${moduleId}`).textContent = `Error adding task: ${error.message}`;
-            document.getElementById(`task-error-${moduleId}`).style.display = 'block';
-            document.getElementById(`task-success-${moduleId}`).style.display = 'none';
+            document.getElementById('science-add-error').textContent = `Error adding science: ${error.message}`;
+            document.getElementById('science-add-error').style.display = 'block';
+            document.getElementById('science-add-success').style.display = 'none';
         }
     }
 
-    async function updateTask(event, elementId, taskId) {
+    async function updateScience(event, scienceId) {
         event.preventDefault();
-        const formData = new FormData();
-        formData.append('name', document.getElementById(`update-task-name-${elementId}-${taskId}`).value);
-        formData.append('youtubeUrl', document.getElementById(`update-youtube-url-${elementId}-${taskId}`).value);
-        const attachments = document.getElementById(`update-attachments-${elementId}-${taskId}`).files;
-        for (let i = 0; i < attachments.length; i++) formData.append('attachments', attachments[i]);
+        const name = document.getElementById(`update-science-name-${scienceId}`).value;
+        const groupIds = document.getElementById(`update-group-ids-${scienceId}`).value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+        const scienceReq = { name, groupIds };
         try {
-            const response = await fetch(`/api/v1/tasks/${taskId}`, {
-                method: 'PUT',
+            const response = await fetch(`/api/v1/sciences/${scienceId}`, {
+                method: 'POST',
                 credentials: 'include',
-                body: formData
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(scienceReq)
             });
             if (response.status === 401) {
                 window.location.href = '/login';
                 return;
             }
-            if (!response.ok) throw new Error(`Failed to update task: ${response.statusText}`);
-            document.getElementById(`update-task-success-${elementId}-${taskId}`).textContent = 'Task updated successfully!';
-            document.getElementById(`update-task-success-${elementId}-${taskId}`).style.display = 'block';
-            document.getElementById(`update-task-error-${elementId}-${taskId}`).style.display = 'none';
-            fetchTasks(elementId.split('-')[0], elementId);
-            document.getElementById(`update-task-form-${elementId}-${taskId}`).style.display = 'none';
+            if (!response.ok) throw new Error(`Failed to update science: ${response.statusText}`);
+            document.getElementById(`science-update-success-${scienceId}`).textContent = 'Science updated successfully!';
+            document.getElementById(`science-update-success-${scienceId}`).style.display = 'block';
+            document.getElementById(`science-update-error-${scienceId}`).style.display = 'none';
+            fetchSciences();
+            document.getElementById(`update-science-form-${scienceId}`).style.display = 'none';
         } catch (error) {
-            document.getElementById(`update-task-error-${elementId}-${taskId}`).textContent = `Error updating task: ${error.message}`;
-            document.getElementById(`update-task-error-${elementId}-${taskId}`).style.display = 'block';
-            document.getElementById(`update-task-success-${elementId}-${taskId}`).style.display = 'none';
+            document.getElementById(`science-update-error-${scienceId}`).textContent = `Error updating science: ${error.message}`;
+            document.getElementById(`science-update-error-${scienceId}`).style.display = 'block';
+            document.getElementById(`science-update-success-${scienceId}`).style.display = 'none';
         }
     }
 
-    async function deleteTask(taskId, elementId) {
+    async function deleteScience(scienceId) {
         try {
-            const response = await fetch(`/api/v1/tasks/${taskId}`, {
+            const response = await fetch(`/api/v1/sciences/${scienceId}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -380,109 +268,18 @@
                 window.location.href = '/login';
                 return;
             }
-            if (!response.ok) throw new Error(`Failed to delete task: ${response.statusText}`);
-            document.getElementById(`task-success-${elementId}`).textContent = 'Task deleted successfully!';
-            document.getElementById(`task-success-${elementId}`).style.display = 'block';
-            document.getElementById(`task-error-${elementId}`).style.display = 'none';
-            fetchTasks(elementId.split('-')[0], elementId);
+            if (!response.ok) throw new Error(`Failed to delete science: ${response.statusText}`);
+            document.getElementById('sciences-error').textContent = 'Science deleted successfully!';
+            document.getElementById('sciences-error').style.color = 'green';
+            document.getElementById('sciences-error').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('sciences-error').style.display = 'none';
+                document.getElementById('sciences-error').style.color = 'red';
+            }, 3000);
+            fetchSciences();
         } catch (error) {
-            document.getElementById(`task-error-${elementId}`).textContent = `Error deleting task: ${error.message}`;
-            document.getElementById(`task-error-${elementId}`).style.display = 'block';
-            document.getElementById(`task-success-${elementId}`).style.display = 'none';
-        }
-    }
-
-    async function addQuestion(event, elementId, taskId) {
-        event.preventDefault();
-        const questionText = document.getElementById(`question-text-${elementId}-${taskId}`).value;
-        const attachment = document.getElementById(`question-attachment-${elementId}-${taskId}`).files[0];
-        if (!attachment) {
-            document.getElementById(`question-error-${elementId}-${taskId}`).textContent = 'Attachment is required';
-            document.getElementById(`question-error-${elementId}-${taskId}`).style.display = 'block';
-            return;
-        }
-        const formData = new FormData();
-        formData.append('text', questionText);
-        formData.append('attachment', attachment);
-        formData.append('taskId', taskId);
-        const variantsDiv = document.getElementById(`answer-variants-${elementId}-${taskId}`);
-        const variants = Array.from(variantsDiv.children).map(input => input.value).filter(v => v);
-        formData.append('answerVariants', JSON.stringify(variants));
-        try {
-            const response = await fetch(`/api/v1/tasks/${taskId}/questions`, {
-                method: 'POST',
-                credentials: 'include',
-                body: formData
-            });
-            if (response.status === 401) {
-                window.location.href = '/login';
-                return;
-            }
-            if (!response.ok) throw new Error(`Failed to add question: ${response.statusText}`);
-            document.getElementById(`question-success-${elementId}-${taskId}`).textContent = 'Question added successfully!';
-            document.getElementById(`question-success-${elementId}-${taskId}`).style.display = 'block';
-            document.getElementById(`question-error-${elementId}-${taskId}`).style.display = 'none';
-            fetchTasks(elementId.split('-')[0], elementId);
-            document.getElementById(`add-question-form-${elementId}-${taskId}`).style.display = 'none';
-        } catch (error) {
-            document.getElementById(`question-error-${elementId}-${taskId}`).textContent = `Error adding question: ${error.message}`;
-            document.getElementById(`question-error-${elementId}-${taskId}`).style.display = 'block';
-            document.getElementById(`question-success-${elementId}-${taskId}`).style.display = 'none';
-        }
-    }
-
-    async function updateQuestion(event, elementId, taskId, questionId) {
-        event.preventDefault();
-        const formData = new FormData();
-        formData.append('text', document.getElementById(`update-question-text-${elementId}-${taskId}-${questionId}`).value);
-        const attachment = document.getElementById(`update-question-attachment-${elementId}-${taskId}-${questionId}`).files[0];
-        if (attachment) formData.append('attachment', attachment);
-        formData.append('taskId', taskId);
-        const variantsDiv = document.getElementById(`update-answer-variants-${elementId}-${taskId}-${questionId}`);
-        const variants = Array.from(variantsDiv.children).map(input => input.value).filter(v => v);
-        formData.append('answerVariants', JSON.stringify(variants));
-        try {
-            const response = await fetch(`/api/v1/questions/${questionId}`, {
-                method: 'PUT',
-                credentials: 'include',
-                body: formData
-            });
-            if (response.status === 401) {
-                window.location.href = '/login';
-                return;
-            }
-            if (!response.ok) throw new Error(`Failed to update question: ${response.statusText}`);
-            document.getElementById(`update-question-success-${elementId}-${taskId}-${questionId}`).textContent = 'Question updated successfully!';
-            document.getElementById(`update-question-success-${elementId}-${taskId}-${questionId}`).style.display = 'block';
-            document.getElementById(`update-question-error-${elementId}-${taskId}-${questionId}`).style.display = 'none';
-            fetchTasks(elementId.split('-')[0], elementId);
-            document.getElementById(`update-question-form-${elementId}-${taskId}-${questionId}`).style.display = 'none';
-        } catch (error) {
-            document.getElementById(`update-question-error-${elementId}-${taskId}-${questionId}`).textContent = `Error updating question: ${error.message}`;
-            document.getElementById(`update-question-error-${elementId}-${taskId}-${questionId}`).style.display = 'block';
-            document.getElementById(`update-question-success-${elementId}-${taskId}-${questionId}`).style.display = 'none';
-        }
-    }
-
-    async function closeModule(moduleId, elementId) {
-        try {
-            const response = await fetch(`/api/v1/modules/${moduleId}/close`, {
-                method: 'POST',
-                credentials: 'include'
-            });
-            if (response.status === 401) {
-                window.location.href = '/login';
-                return;
-            }
-            if (!response.ok) throw new Error(`Failed to close module: ${response.statusText}`);
-            document.getElementById(`task-success-${elementId}`).textContent = 'Module closed successfully!';
-            document.getElementById(`task-success-${elementId}`).style.display = 'block';
-            document.getElementById(`task-error-${elementId}`).style.display = 'none';
-            fetchTasks(moduleId, elementId);
-        } catch (error) {
-            document.getElementById(`task-error-${elementId}`).textContent = `Error closing module: ${error.message}`;
-            document.getElementById(`task-error-${elementId}`).style.display = 'block';
-            document.getElementById(`task-success-${elementId}`).style.display = 'none';
+            document.getElementById('sciences-error').textContent = `Error deleting science: ${error.message}`;
+            document.getElementById('sciences-error').style.display = 'block';
         }
     }
 
@@ -572,7 +369,7 @@
             if (statusElement && statusElement.tagName === 'SPAN') {
                 statusElement.textContent = event.target.files.length > 0
                     ? Array.from(event.target.files).map(file => file.name).join(', ')
-                    : 'No files chosen';
+                    : 'No file chosen';
             }
         }
     });
