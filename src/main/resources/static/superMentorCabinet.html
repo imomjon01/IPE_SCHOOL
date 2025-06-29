@@ -110,7 +110,7 @@
 <script>
     async function fetchSciences() {
         try {
-            const response = await fetch('/api/v1/sciences', { credentials: 'include' });
+            const response = await fetch('/api/v1/science', { credentials: 'include' });
             if (response.status === 401) {
                 window.location.href = '/login';
                 return;
