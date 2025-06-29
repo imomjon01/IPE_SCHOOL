@@ -6,11 +6,13 @@ import ipe.school.ipe_school.models.dtos.res.QuestionRes;
 import ipe.school.ipe_school.models.dtos.res.TaskDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.TaskRes;
 import ipe.school.ipe_school.models.entity.Task;
+import ipe.school.ipe_school.models.entity.User;
 import ipe.school.ipe_school.service.interfaces.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +35,7 @@ public class TaskController {
     }
 
     @PostMapping("/{taskId}")
-    public ResponseEntity<TaskRes> updateTask(@PathVariable Long taskId,@ModelAttribute @Validated  TaskReq taskReq) {
+    public ResponseEntity<TaskRes> updateTask(@PathVariable Long taskId, @ModelAttribute @Validated TaskReq taskReq) {
         TaskRes taskRes = taskService.updateTaskById(taskId, taskReq);
         return new ResponseEntity<>(taskRes, HttpStatus.OK);
     }
@@ -52,6 +54,7 @@ public class TaskController {
         List<Long> attachmentIds = taskMapper.extractAttachmentIds(task);
         TaskDetailsRes taskDetailsRes = taskMapper.buildTaskDetails(task, questionResList, attachmentIds);
 
+        System.err.println(taskDetailsRes.getAttachmentId());
         return ResponseEntity.ok(taskDetailsRes);
     }
 }

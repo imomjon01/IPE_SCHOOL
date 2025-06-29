@@ -34,26 +34,43 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, MySecurityFilter mySecurityFilter) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(Customizer.withDefaults());
+
         http.authorizeHttpRequests(authorizeRequests -> {
             authorizeRequests
                     .requestMatchers(
+                            "/favicon.ico",
                             "/swagger-ui.html",
                             "/swagger-ui/**",
                             "/v3/api-docs/**"
                     ).permitAll()
-                    .requestMatchers("/api/v1/auth/updateProfile/**",
-                            "/api/v1/auth/**","/api/v1/auth",
-                            "/api/v1/admin/mentor", "/api/v1/admin/mentor/**",
-                            "/actuator/prometheus").permitAll()
-                    .requestMatchers("/", "/index.html","/adminCabinet.html"
-                            ,"/mentorCabinet.html" ,"/studentCabinet.html","/chooseRole.html" , "/static/**",
-                            "/css/**", "/js/**", "/images/**").permitAll()
-
+                    .requestMatchers(
+                            "/api/v1/auth/updateProfile/**",
+                            "/api/v1/auth/**",
+                            "/api/v1/auth",
+                            "/api/v1/admin/mentor",
+                            "/api/v1/admin/mentor/**",
+                            "/actuator/prometheus"
+                    ).permitAll()
+                    .requestMatchers(
+                            "/", "/index.html",
+                            "/adminCabinet.html",
+                            "/mentorCabinet.html",
+                            "/studentCabinet.html",
+                            "/chooseRole.html",
+                            "/static/**",
+                            "/css/**",
+                            "/js/**",
+                            "/images/**",
+                            "/error" // ✅ << BU QATORNI QO‘SHING
+                    ).permitAll()
                     .anyRequest().authenticated();
         });
+
         http.addFilterBefore(mySecurityFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

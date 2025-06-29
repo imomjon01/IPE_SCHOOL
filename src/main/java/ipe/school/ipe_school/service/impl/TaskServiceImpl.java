@@ -2,13 +2,11 @@ package ipe.school.ipe_school.service.impl;
 
 import ipe.school.ipe_school.models.dtos.req.TaskReq;
 import ipe.school.ipe_school.models.dtos.res.TaskRes;
-import ipe.school.ipe_school.models.entity.Attachment;
+import ipe.school.ipe_school.models.entity.*;
 import ipe.school.ipe_school.models.entity.Module;
-import ipe.school.ipe_school.models.entity.Task;
-import ipe.school.ipe_school.models.repo.AttachmentRepository;
-import ipe.school.ipe_school.models.repo.ModuleRepository;
-import ipe.school.ipe_school.models.repo.TaskRepository;
+import ipe.school.ipe_school.models.repo.*;
 import ipe.school.ipe_school.service.interfaces.TaskService;
+import ipe.school.ipe_school.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +24,9 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final ModuleRepository moduleRepository;
     private static final Logger logger = LoggerFactory.getLogger(TaskServiceImpl.class);
+    private final UserService userService;
+    private final UserRepository userRepository;
+    private final AnswerSubmissionRepository answerSubmissionRepository;
 
     @Override
     @Transactional
@@ -114,4 +115,5 @@ public class TaskServiceImpl implements TaskService {
     public List<Task> getAllTask() {
         return taskRepository.findAll();
     }
+
 }
