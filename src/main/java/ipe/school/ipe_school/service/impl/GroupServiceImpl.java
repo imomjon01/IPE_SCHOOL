@@ -6,10 +6,7 @@ import ipe.school.ipe_school.models.dtos.req.UpdatetedStudentReq;
 import ipe.school.ipe_school.models.dtos.res.*;
 import ipe.school.ipe_school.models.entity.*;
 import ipe.school.ipe_school.models.entity.Module;
-import ipe.school.ipe_school.models.repo.GroupRepository;
-import ipe.school.ipe_school.models.repo.ModuleRepository;
-import ipe.school.ipe_school.models.repo.StudentProgressRepository;
-import ipe.school.ipe_school.models.repo.UserRepository;
+import ipe.school.ipe_school.models.repo.*;
 import ipe.school.ipe_school.service.interfaces.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -33,6 +31,7 @@ public class GroupServiceImpl implements GroupService {
     private final UserRepository userRepository;
     private final ModuleRepository moduleRepository;
     private final StudentProgressRepository studentProgressRepository;
+    private final ScienceRepository scienceRepository;
 
     @Override
     public GroupRes createGroup(GroupReq groupReq) {
@@ -72,6 +71,14 @@ public class GroupServiceImpl implements GroupService {
         Group group = groupRepository.getGroupById(groupId);
         group.setActive(false);
         group.setMentor(null);
+        List<Science> all = scienceRepository.findAll();
+        for (Science science : all) {
+            if (science.getGroups().contains(group)) {
+                science.getGroups().remove(group);
+                scienceRepository.save(science);
+                break;
+            }
+        }
         groupRepository.save(group);
     }
 
@@ -221,7 +228,32 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<GroupRes> getGroupsForScience() {
         List<Group> groups = groupRepository.findAllByActive(true);
-        return groups.stream().map(item->new GroupRes(item.getId(), item.getName())).toList();
+        List<Science> sciences = scienceRepository.findAll();
+
+        List<Group> existingGroups = sciences.stream()
+                .flatMap(science -> science.getGroups().stream())
+                .toList();
+
+        return groups.stream()
+                .filter(group -> !existingGroups.contains(group))
+                .map(item -> new GroupRes(item.getId(), item.getName()))
+                .toList();
+    }
+
+    @Override
+    public List<StudentProgressRes> getGroupProgress(Long groupId) {
+        Optional<Group> byId = groupRepository.findById(groupId);
+        if (byId.isPresent()) {
+            Group group = byId.get();
+            return group.getStudentProgresses().stream()
+                    .map(item -> new StudentProgressRes(
+                            item.getStudent().getFullName(),
+                            item.getTotalQuery(),
+                            item.getPassedQuery(),
+                            item.getTotalQuery() > 0 ? (item.getPassedQuery() * 100) / item.getTotalQuery() : 0
+                    )).toList();
+        }
+        return null;
     }
 
 }

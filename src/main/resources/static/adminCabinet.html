@@ -8,6 +8,77 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        .group-name-link {
+            display: inline-block;
+            padding: 8px 12px;
+            color: #2c3e50;
+            text-decoration: none;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-weight: 500;
+            font-size: 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+        }
+
+        .group-name-link:hover {
+            background-color: #e9ecef;
+            color: #1a252f;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .group-name-link:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        /* For a more colorful version */
+        .group-name-link.colorful {
+            background-color: #4e73df;
+            color: white;
+            border-color: #4e73df;
+        }
+
+        .group-name-link.colorful:hover {
+            background-color: #3a5bd9;
+        }
+
+        .group-name-link.flat {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 0;
+            padding: 10px 15px;
+        }
+
+        .group-name-link.flat:hover {
+            background-color: #2980b9;
+        }
+        .group-name-link.minimalist {
+            background-color: transparent;
+            color: #3498db;
+            border: none;
+            padding: 5px 0;
+            font-weight: 600;
+        }
+
+        .group-name-link.minimalist:hover {
+            color: #2c3e50;
+            text-decoration: underline;
+        }
+        .group-name-link.rounded {
+            border-radius: 20px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+        }
+
+        .group-name-link.rounded:hover {
+            background-color: #27ae60;
+        }
         :root {
             --primary-color: #4e73df;
             --secondary-color: #f8f9fc;
@@ -215,7 +286,7 @@
         </div>
 
         <!-- Asosiy Kontent -->
-        <div class="col-md-9 col-lg-10 ms-sm-auto px-0">
+        <div class="col-12 col-md-9 col-lg-10 ms-sm-auto px-0">
             <!-- Topbar -->
             <nav class="navbar topbar sticky-top mb-4">
                 <div class="container-fluid">
@@ -394,7 +465,8 @@
                                         </table>
                                     </div>
                                     <nav aria-label="Guruh arxiv sahifalash">
-                                        <ul class="pagination justify-content-center" id="archived-group-pagination"></ul>
+                                        <ul class="pagination justify-content-center"
+                                            id="archived-group-pagination"></ul>
                                     </nav>
                                 </div>
                             </div>
@@ -420,7 +492,8 @@
                                         </table>
                                     </div>
                                     <nav aria-label="Foydalanuvchi arxiv sahifalash">
-                                        <ul class="pagination justify-content-center" id="archived-user-pagination"></ul>
+                                        <ul class="pagination justify-content-center"
+                                            id="archived-user-pagination"></ul>
                                     </nav>
                                 </div>
                             </div>
@@ -608,7 +681,8 @@
                         <select class="form-select" id="mentor-select">
                             <option value="">Mentor yo‘q (O‘chirish)</option>
                         </select>
-                        <div class="invalid-feedback">Iltimos, mentor tanlang yoki o‘chirish uchun bo‘sh qoldiring.</div>
+                        <div class="invalid-feedback">Iltimos, mentor tanlang yoki o‘chirish uchun bo‘sh qoldiring.
+                        </div>
                     </div>
                     <div id="mentor-alert-container"></div>
                 </form>
@@ -707,7 +781,8 @@
 </div>
 
 <!-- Fan Yangilash Modali -->
-<div class="modal fade" id="updateScienceModal" tabindex="-1" aria-labelledby="updateScienceModalLabel" aria-hidden="true">
+<div class="modal fade" id="updateScienceModal" tabindex="-1" aria-labelledby="updateScienceModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -739,6 +814,37 @@
                     <span class="spinner" role="status" aria-hidden="true"></span>
                     Saqlash
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Guruh Talaba Progress Modali -->
+<div class="modal fade" id="groupProgressModal" tabindex="-1" aria-labelledby="groupProgressModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="groupProgressModalLabel">Guruh Talabalari Progressi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Talaba Ismi</th>
+                            <th>Umumiy Savollar</th>
+                            <th>Topshirilgan Savollar</th>
+                            <th>Progress (%)</th>
+                        </tr>
+                        </thead>
+                        <tbody id="group-progress-table-body"></tbody>
+                    </table>
+                </div>
+                <div id="group-progress-alert-container"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
             </div>
         </div>
     </div>
@@ -876,7 +982,7 @@
                     Yangilash
                 </button>
                 <button class="btn btn-info btn-sm view-details-btn" data-science-id="${science.id}">
-                    View Details
+                    Tafsilot
                 </button>
             </td>
         `;
@@ -895,14 +1001,7 @@
                             <h6>Guruhlar</h6>
                             <ul id="science-groups-${science.id}" class="list-group">
                                 ${science.groups && science.groups.length > 0 ? science.groups.map(group => `
-                                    <li class="list-group-item">
-                                        ${group.name}
-                                        <ul class="list-group mt-2">
-                                            ${group.students && group.students.length > 0 ? group.students.map(student => `
-                                                <li class="list-group-item">${student.name}: ${student.progress}% (${student.completedTasks}/${student.totalTasks} topshiriq bajarildi)</li>
-                                            `).join('') : '<li class="list-group-item">Talaba yo‘q</li>'}
-                                        </ul>
-                                    </li>
+                                    <li class="list-group-item">${group.name}</li>
                                 `).join('') : '<li class="list-group-item">Guruh yo‘q</li>'}
                             </ul>
                         </div>
@@ -1001,7 +1100,6 @@
                 document.getElementById('update-science-name').value = science.name;
                 const groupsList = document.getElementById('science-groups');
                 groupsList.innerHTML = '';
-
                 if (science.groups && science.groups.length > 0) {
                     science.groups.forEach(group => {
                         const groupItem = document.createElement('li');
@@ -1029,7 +1127,8 @@
     // Mavjud guruhlarni yuklash
     function loadAvailableGroups(scienceId) {
         axios.get('/api/v1/group/getForScience', {
-            headers: {Authorization: `${userData.token}`}
+            headers: {Authorization: `${userData.token}`},
+            params: {scienceId: scienceId}
         })
             .then(response => {
                 const groups = response.data;
@@ -1075,7 +1174,7 @@
         saveBtn.disabled = true;
         saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Yuklanmoqda...';
 
-        axios.post('/api/v1/science', { name: scienceName }, {
+        axios.post('/api/v1/science', {name: scienceName}, {
             headers: {Authorization: `${userData.token}`}
         })
             .then(() => {
@@ -1147,26 +1246,26 @@
         if (e.target.classList.contains('remove-group-btn')) {
             const groupId = e.target.getAttribute('data-group-id');
             const scienceId = document.getElementById('science-id').value;
-            if (confirm('Guruhni fandan o‘chirishni tasdiqlaysizmi?')) {
-                axios.get(`/api/v1/science/${scienceId}`, {
-                    headers: {Authorization: `${userData.token}`}
+            
+            if (confirm('Guruhni fandan oʻchirishni tasdiqlaysizmi?')) {
+                axios.delete(`/api/v1/science/${scienceId}/groups/${groupId}`, {
+                    headers: {
+                        Authorization: `${userData.token}`
+                    }
                 })
-                    .then(response => {
-                        const currentGroupIds = response.data.groups.map(g => g.id).filter(id => id !== parseInt(groupId));
-                        axios.put(`/api/v1/science/${scienceId}`, {
-                            name: document.getElementById('update-science-name').value,
-                            groupIds: currentGroupIds
-                        }, {
-                            headers: {Authorization: `${userData.token}`}
-                        })
-                            .then(() => {
-                                showScienceAlert('success', 'Guruh fandan o‘chirildi!', 'update-science-alert-container');
-                                loadScienceForUpdate(scienceId);
-                            })
-                            .catch(error => {
-                                console.error('Guruhni o‘chirishda xato:', error.response?.data || error);
-                                showScienceAlert('danger', error.response?.data?.message || 'Guruh o‘chirilmadi!', 'update-science-alert-container');
-                            });
+                .then(response => {
+                    // Muvaffaqiyatli o'chirilgandan so'ng
+                    showAlert('success', 'Guruh fandan muvaffaqiyatli oʻchirildi');
+                    // Guruhni DOMdan o'chirish
+                    e.target.closest('.list-group-item').remove();
+                    // Mavjud guruhlar ro'yxatini yangilash
+                    loadAvailableGroups(scienceId);
+                    // Fanlar jadvalini yangilash
+                    loadSciences();
+                })
+                    .catch(error => {
+                        console.error('Xatolik yuz berdi:', error);
+                        showAlert('danger', 'Guruhni o\'chirishda xatolik yuz berdi');
                     });
             }
         }
@@ -1243,6 +1342,18 @@
             `;
             return;
         }
+
+        document.getElementById('save-mentor-btn').addEventListener('click', function () {
+            const groupId = document.getElementById('group-select').value;
+            const mentorId = document.getElementById('mentor-select').value;
+
+            if (!groupId) {
+                showAlert('danger', 'Iltimos guruhni tanlang');
+                return;
+            }
+
+            updateMentorGroup(groupId, mentorId);
+        });
 
         mentors.forEach(mentor => {
             const groupNames = mentor.groups && mentor.groups.length > 0
@@ -1366,11 +1477,18 @@
     }
 
     function updateMentorGroup(groupId, mentorId) {
-        axios.put(`/api/v1/admin/mentor/updateGroup/${groupId}`, {}, {
-            headers: {Authorization: `${userData.token}`},
-            params: {mentorId}
+        const saveBtn = document.getElementById('save-mentor-btn');
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Yuklanmoqda...';
+
+        axios.put(`/api/v1/admin/mentor/updateGroup/${groupId}`, null, {
+            headers: {
+                'Authorization': `${userData.token}`,
+                'Content-Type': 'application/json'
+            },
+            params: {mentorId: mentorId || null}
         })
-            .then(() => {
+            .then(response => {
                 bootstrap.Modal.getInstance(document.getElementById('assignMentorModal')).hide();
                 showAlert('success', mentorId ? 'Mentor muvaffaqiyatli tayinlandi!' : 'Mentor guruhdan o‘chirildi!');
                 loadMentors();
@@ -2001,22 +2119,19 @@
                 : 'Talaba yo‘q';
             const moduleNames = group.moduleRes && group.moduleRes.length > 0
                 ? group.moduleRes.map(module => `
-                <span class="${module.active ? 'module-active' : 'module-inactive'}">
+                <span class="${module.active ? 'module-active' : 'module-inactive'} d-inline-block mb-1 me-2">
                     ${module.moduleName}
-                </span>`).join(', ')
+                </span>`).join(' ')
                 : 'Modul yo‘q';
 
             const row = document.createElement('tr');
             row.innerHTML = `
             <td>${group.id}</td>
-            <td>${group.name}</td>
+            <td><a href="#" class="group-name-link" data-group-id="${group.id}">${group.name}</a></td>
             <td>${mentorName}</td>
             <td>${studentNames}</td>
             <td>${moduleNames}</td>
             <td>
-                <button class="btn btn-primary btn-sm add-module-btn" data-group-id="${group.id}" data-bs-toggle="modal" data-bs-target="#addModuleModal">
-                    <i class="fas fa-plus me-1"></i> Modul Qo‘shish
-                </button>
                 <button class="btn btn-danger btn-sm delete-group-btn" data-group-id="${group.id}">
                     O‘chirish
                 </button>
@@ -2053,10 +2168,11 @@
             });
         });
 
-        document.querySelectorAll('.add-module-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
+        document.querySelectorAll('.group-name-link').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
                 const groupId = this.getAttribute('data-group-id');
-                document.getElementById('module-group-id').value = groupId;
+                loadGroupProgress(groupId);
             });
         });
 
@@ -2069,6 +2185,69 @@
             });
         });
     }
+
+    function loadGroupProgress(groupId) {
+        axios.get(`/api/v1/group/getProgress/${groupId}`, {
+            headers: { Authorization: `${userData.token}` }
+        })
+            .then(response => {
+                const students = response.data;
+                populateGroupProgressTable(students);
+                const modal = new bootstrap.Modal(document.getElementById('groupProgressModal'));
+                modal.show();
+            })
+            .catch(error => {
+                console.error('Guruh progressini yuklashda xato:', error.response?.data || error);
+                showGroupProgressAlert('danger', 'Guruh progressini yuklab bo‘lmadi');
+            });
+    }
+
+    function populateGroupProgressTable(students) {
+        const tableBody = document.getElementById('group-progress-table-body');
+        tableBody.innerHTML = '';
+
+        if (!students || students.length === 0) {
+            tableBody.innerHTML = `
+            <tr>
+                <td colspan="4" class="text-center">Hech qanday talaba progressi topilmadi</td>
+            </tr>
+        `;
+            return;
+        }
+
+        students.forEach(student => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+            <td>${student.studentName}</td>
+            <td>${student.totalQuery}</td>
+            <td>${student.passedQuery}</td>
+            <td>${student.progress}%</td>
+        `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function showGroupProgressAlert(type, message) {
+        const alertContainer = document.getElementById('group-progress-alert-container');
+        alertContainer.innerHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+        setTimeout(() => {
+            const alert = alertContainer.querySelector('.alert');
+            if (alert) {
+                bootstrap.Alert.getOrCreateInstance(alert).close();
+            }
+        }, 5000);
+    }
+
+    const groupProgressModal = document.getElementById('groupProgressModal');
+    groupProgressModal.addEventListener('hidden.bs.modal', () => {
+        document.getElementById('group-progress-table-body').innerHTML = '';
+        document.getElementById('group-progress-alert-container').innerHTML = '';
+    });
 
     // Guruh yaratish
     const addGroupModal = document.getElementById('addGroupModal');

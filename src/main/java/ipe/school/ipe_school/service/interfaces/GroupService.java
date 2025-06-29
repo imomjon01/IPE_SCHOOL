@@ -2,10 +2,7 @@ package ipe.school.ipe_school.service.interfaces;
 
 import ipe.school.ipe_school.models.dtos.req.GroupReq;
 import ipe.school.ipe_school.models.dtos.req.UpdatetedStudentReq;
-import ipe.school.ipe_school.models.dtos.res.GroupArxivedRes;
-import ipe.school.ipe_school.models.dtos.res.GroupDetailsRes;
-import ipe.school.ipe_school.models.dtos.res.GroupRes;
-import ipe.school.ipe_school.models.dtos.res.GroupResToAdmin;
+import ipe.school.ipe_school.models.dtos.res.*;
 import ipe.school.ipe_school.models.entity.Group;
 import ipe.school.ipe_school.models.entity.Module;
 import ipe.school.ipe_school.models.entity.User;
@@ -43,4 +40,6 @@ public interface GroupService {
     Module createModule(Long groupId, String moduleName);
 
     List<GroupRes> getGroupsForScience();
+
+    List<StudentProgressRes> getGroupProgress(Long groupId);
 }

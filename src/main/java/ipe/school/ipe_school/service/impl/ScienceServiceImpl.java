@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,14 +26,14 @@ public class ScienceServiceImpl implements ScienceService {
         Science science = new Science();
         science.setName(scienceReq.getName());
         science.setActive(true);
-        List<Group> groups=bringingGroupsThatBelongsToScience(scienceReq.getGroupIds());
+        List<Group> groups = bringingGroupsThatBelongsToScience(scienceReq.getGroupIds());
         science.setGroups(groups);
         Science savedScience = scienceRepository.save(science);
         return new ScienceRes(savedScience.getId(), savedScience.getName());
     }
 
     private List<Group> bringingGroupsThatBelongsToScience(List<Long> groupIds) {
-        if (groupIds==null || groupIds.size()==0){
+        if (groupIds == null || groupIds.size() == 0) {
             return null;
         }
         return groupRepository.findAllByIdInAndActiveTrue(groupIds);
@@ -43,13 +44,13 @@ public class ScienceServiceImpl implements ScienceService {
     public ScienceDetailsRes getScienceByIdAndActive(Long scienceId) {
         Science science = scienceRepository.findScienceByIdAndActive(scienceId, true).orElseThrow(RuntimeException::new);
         List<GroupRes> groupRes = wrapGroupToGroupRes(science);
-        return new ScienceDetailsRes(science.getId(), science.getName(),groupRes,
+        return new ScienceDetailsRes(science.getId(), science.getName(), groupRes,
                 science.getModules().stream().map(item ->
                         new ModuleDetalRes(item.getModuleName(), item.getTasks().size())).toList());
     }
 
     private static List<GroupRes> wrapGroupToGroupRes(Science science) {
-        List<GroupRes> groupRes=null;
+        List<GroupRes> groupRes = null;
         if (science.getGroups() != null) {
             groupRes = science.getGroups()
                     .stream()
@@ -62,7 +63,7 @@ public class ScienceServiceImpl implements ScienceService {
     @Override
     @Transactional
     public List<ScienceDetailsRes> getAllSciencesByActive() {
-        List<Science> sciences=scienceRepository.findAllSciencesByActive(true);
+        List<Science> sciences = scienceRepository.findAllSciencesByActive(true);
         return sciences.stream()
                 .map(science -> {
                     List<GroupRes> groupRes = wrapGroupToGroupRes(science);
@@ -70,8 +71,7 @@ public class ScienceServiceImpl implements ScienceService {
                             science.getModules().stream().map(item ->
                                     new ModuleDetalRes(item.getModuleName(),
                                             item.getTasks().size())).toList());
-                })
-                .toList();
+                }).toList();
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ScienceServiceImpl implements ScienceService {
         science.setGroups(groups);
         Science updatedScience = scienceRepository.save(science);
         List<GroupRes> groupRes = wrapGroupToGroupRes(updatedScience);
-        return new ScienceDetailsRes(science.getId(), science.getName(),groupRes,
+        return new ScienceDetailsRes(science.getId(), science.getName(), groupRes,
                 science.getModules().stream().map(item ->
                         new ModuleDetalRes(item.getModuleName(),
                                 item.getTasks().size())).toList());
@@ -99,5 +99,15 @@ public class ScienceServiceImpl implements ScienceService {
     @Override
     public Long getScienceCount() {
         return scienceRepository.getCount();
+    }
+
+    @Override
+    public void deleteScienceFromGroup(Long scienceId, Long groupId) {
+        Optional<Science> byId = scienceRepository.findById(scienceId);
+        if (byId.isPresent()) {
+            Science science = byId.get();
+            science.getGroups().removeIf(item -> item.getId().equals(groupId));
+            scienceRepository.save(science);
+        }
     }
 }

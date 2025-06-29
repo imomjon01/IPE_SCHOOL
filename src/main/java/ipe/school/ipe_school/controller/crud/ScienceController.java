@@ -55,4 +55,10 @@ public class ScienceController {
         return ResponseEntity.ok().body(count);
     }
 
+    @DeleteMapping("/{scienceId}/groups/{groupId}")
+    public ResponseEntity<Void> deleteScienceFromGroup(@PathVariable Long scienceId, @PathVariable Long groupId) {
+        scienceService.deleteScienceFromGroup(scienceId, groupId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

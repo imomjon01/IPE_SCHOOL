@@ -73,6 +73,4 @@ public class AdminMentorController {
         Integer totalElements = mentorService.getMentorCount();
         return new ResponseEntity<>(totalElements, HttpStatus.OK);
     }
-
-
 }
