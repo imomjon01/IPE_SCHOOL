@@ -47,7 +47,7 @@ public class SecurityConfig {
                             "/actuator/prometheus").permitAll()
                     .requestMatchers("/", "/index.html","/adminCabinet.html"
                             ,"/mentorCabinet.html" ,"/studentCabinet.html","/chooseRole.html" , "/static/**",
-                            "/css/**", "/js/**", "/images/**","/superMentorCabinet").permitAll()
+                            "/css/**", "/js/**", "/images/**","/superMentorCabinet.html").permitAll()
 
                     .anyRequest().authenticated();
         });
