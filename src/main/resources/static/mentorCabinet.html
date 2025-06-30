@@ -671,7 +671,9 @@
   // Load group details
   async function loadGroupDetails(groupId, groupName) {
     try {
-      const response = await fetch(`/api/v1/group/${groupId}`);
+      const response = await fetch(`/api/v1/group/${groupId}`,{
+        headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
+      });
       if (response.ok) {
         const groupData = await response.json();
         displayGroupDetails(groupData);
@@ -758,7 +760,9 @@
             `;
 
     try {
-      const response = await fetch(`/api/v1/group/getProgress/${currentGroupId}`);
+      const response = await fetch(`/api/v1/group/getProgress/${currentGroupId}`, {
+        headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
+      });
       if (response.ok) {
         const progressData = await response.json();
         displayStudentProgress(progressData);
