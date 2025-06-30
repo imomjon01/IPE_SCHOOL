@@ -3,920 +3,539 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supermentor Cabinet - IPE School</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>IPE School - Supermentor Cabinet</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Import Poppins font */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8fafc;
-        }
-        .header-bg {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-        .card-hover {
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
-            transition: all 0.3s ease;
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
-        }
-        .btn-danger {
-            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
-            transition: all 0.3s ease;
-        }
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
-        }
-        .btn-success {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            transition: all 0.3s ease;
-        }
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
-        }
-        .btn-warning {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            transition: all 0.3s ease;
-        }
-        .btn-warning:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4);
-        }
-        .nav-link {
-            position: relative;
-        }
-        .nav-link:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -2px;
-            left: 0;
-            background-color: white;
-            transition: width 0.3s ease;
-        }
-        .nav-link:hover:after {
-            width: 100%;
-        }
-        .animate-fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .profile-pic {
-            border: 4px solid #3b82f6;
-            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
-        }
+        body { font-family: Arial, sans-serif; }
+        .navbar { background-color: #f8f9fa; }
+        .navbar-brand, .nav-link { color: #333 !important; }
+        .card { margin-bottom: 20px; }
+        .section { padding: 50px 0; }
+        .footer { background-color: #f8f9fa; padding: 20px 0; }
     </style>
 </head>
-<body class="bg-gray-50">
-<header class="header-bg text-white py-4 shadow-lg">
-    <div class="container mx-auto px-4 flex justify-between items-center">
-        <div class="flex items-center space-x-2">
-            <i class="fas fa-graduation-cap text-2xl"></i>
-            <h1 class="text-2xl font-bold">IPE School</h1>
-        </div>
-        <nav>
-            <ul class="flex space-x-6">
-                <li><a href="/index.html" class="nav-link hover:underline flex items-center space-x-1"><i class="fas fa-home"></i> <span>Home</span></a></li>
-                <li><a href="/about" class="nav-link hover:underline flex items-center space-x-1"><i class="fas fa-info-circle"></i> <span>About</span></a></li>
-                <li><a href="/mentors" class="nav-link hover:underline flex items-center space-x-1"><i class="fas fa-users"></i> <span>Mentors</span></a></li>
-                <li><a href="#" id="logout-link" class="nav-link hover:underline flex items-center space-x-1"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
+<body>
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="#">IPE School</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#mentors">Mentors</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" onclick="logout()">Logout</a></li>
             </ul>
-        </nav>
+        </div>
     </div>
-</header>
+</nav>
 
-<main class="container mx-auto px-4 py-8">
-    <section class="bg-white rounded-xl shadow-lg p-6 mb-8 animate-fade-in">
-        <!-- Profile Section -->
-        <div id="supermentor-profile" class="mb-8">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
-                    <i class="fas fa-user-circle mr-2 text-blue-500"></i> Supermentor Profile
-                </h2>
-                <button id="edit-profile-button" class="btn-warning text-white px-4 py-2 rounded-lg flex items-center">
-                    <i class="fas fa-edit mr-2"></i> Edit Profile
-                </button>
-            </div>
-            <div class="flex items-center space-x-6 mb-4 p-4 bg-blue-50 rounded-xl">
-                <img id="profile-picture" src="" alt="Supermentor Image" class="w-24 h-24 rounded-full object-cover profile-pic">
-                <div>
-                    <h3 id="profile-name" class="text-xl font-semibold text-gray-800"></h3>
-                    <p id="profile-phone" class="text-gray-600 flex items-center">
-                        <i class="fas fa-phone-alt mr-2 text-blue-500"></i>
-                        <span class="phone-number"></span>
-                    </p>
-                </div>
-            </div>
-
-            <div id="edit-profile-form" class="hidden mt-6 p-6 bg-gray-50 rounded-xl border border-gray-200">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-user-edit mr-2 text-blue-500"></i> Edit Profile
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label for="update-first-name" class="block text-gray-700 font-medium mb-1">First Name</label>
-                        <input type="text" id="update-first-name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+<div class="container section">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Supermentor Profile</h5>
+                    <div id="profileInfo">
+                        <p><strong>First Name:</strong> <span id="firstName"></span></p>
+                        <p><strong>Last Name:</strong> <span id="lastName"></span></p>
+                        <p><strong>Phone Number:</strong> <span id="phoneNumber"></span></p>
+                        <img id="profilePicture" src="" alt="Profile Picture" class="img-fluid" style="max-width: 100px;">
                     </div>
-                    <div>
-                        <label for="update-last-name" class="block text-gray-700 font-medium mb-1">Last Name</label>
-                        <input type="text" id="update-last-name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <label for="update-profile-phone" class="block text-gray-700 font-medium mb-1">Phone Number</label>
-                    <input type="text" id="update-profile-phone" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
-                </div>
-                <div class="mb-4">
-                    <label for="update-profile-picture" class="block text-gray-700 font-medium mb-1">Profile Picture</label>
-                    <div class="flex items-center space-x-4">
-                        <label class="flex flex-col items-center px-4 py-3 bg-white rounded-lg border border-blue-500 cursor-pointer hover:bg-blue-50">
-                            <i class="fas fa-cloud-upload-alt text-blue-500 text-2xl mb-1"></i>
-                            <span class="text-sm text-gray-600">Choose file</span>
-                            <input type="file" id="update-profile-picture" class="hidden">
-                        </label>
-                        <span id="file-name" class="text-sm text-gray-500">No file chosen</span>
-                    </div>
-                </div>
-                <div class="flex space-x-3 justify-end">
-                    <button id="cancel-profile-update" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 flex items-center">
-                        <i class="fas fa-times mr-2"></i> Cancel
-                    </button>
-                    <button id="submit-profile-update" class="btn-primary px-4 py-2 rounded-lg flex items-center">
-                        <i class="fas fa-save mr-2"></i> Update Profile
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Dashboard Section -->
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-3xl font-semibold text-gray-800 flex items-center">
-                <i class="fas fa-tachometer-alt mr-3 text-blue-500"></i> Supermentor Dashboard
-            </h2>
-            <div class="flex items-center space-x-2 bg-blue-100 px-4 py-2 rounded-full">
-                <i class="fas fa-flask text-blue-500"></i>
-                <span id="sciences-count" class="font-medium text-blue-800">0 Sciences</span>
-            </div>
-        </div>
-
-        <p class="text-gray-600 mb-8 text-lg">Welcome to your supermentor cabinet. Below are all sciences you oversee.</p>
-
-        <!-- Sciences Section -->
-        <div id="sciences-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-        <!-- Science Details (Modules, Tasks, Questions) -->
-        <div id="science-details" class="hidden mt-8 animate-fade-in">
-            <button id="back-to-sciences" class="btn-primary text-white px-4 py-2 rounded-lg mb-6 flex items-center">
-                <i class="fas fa-arrow-left mr-2"></i> Back to Sciences
-            </button>
-
-            <div class="flex justify-between items-center mb-6">
-                <h2 id="science-name" class="text-2xl font-semibold text-gray-800 flex items-center">
-                    <i class="fas fa-flask mr-3 text-blue-500"></i>
-                    <span class="science-name-text"></span>
-                </h2>
-                <button id="update-science-button" class="btn-warning text-white px-4 py-2 rounded-lg flex items-center">
-                    <i class="fas fa-edit mr-2"></i> Update Science
-                </button>
-            </div>
-
-            <div id="update-science-form" class="hidden mb-8 p-6 bg-gray-50 rounded-xl border border-gray-200">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-edit mr-2 text-blue-500"></i> Update Science
-                </h3>
-                <div class="mb-4">
-                    <label for="update-science-name" class="block text-gray-700 font-medium mb-1">Science Name</label>
-                    <input type="text" id="update-science-name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
-                </div>
-                <div class="mb-4">
-                    <label for="update-group-ids" class="block text-gray-700 font-medium mb-1">Group IDs (comma-separated)</label>
-                    <input type="text" id="update-group-ids" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-                <div class="flex justify-end space-x-3">
-                    <button id="cancel-update-science" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 flex items-center">
-                        <i class="fas fa-times mr-2"></i> Cancel
-                    </button>
-                    <button id="submit-update-science" class="btn-primary text-white px-4 py-2 rounded-lg flex items-center">
-                        <i class="fas fa-save mr-2"></i> Update Science
-                    </button>
+                    <button class="btn btn-primary mt-3" onclick="showEditProfile()">Edit Profile</button>
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-xl shadow">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-book mr-2 text-blue-500"></i> Modules
-                </h3>
-                <div id="modules-list" class="mt-4 flex flex-wrap gap-3"></div>
-            </div>
-        </div>
-
-        <!-- Module Details -->
-        <div id="module-details" class="hidden mt-8 animate-fade-in">
-            <button id="back-to-science" class="btn-primary text-white px-4 py-2 rounded-lg mb-6 flex items-center">
-                <i class="fas fa-arrow-left mr-2"></i> Back to Science
-            </button>
-
-            <div class="flex justify-between items-center mb-6">
-                <h2 id="module-name" class="text-2xl font-semibold text-gray-800 flex items-center">
-                    <i class="fas fa-book-open mr-3 text-blue-500"></i>
-                    <span class="module-name-text"></span>
-                </h2>
-                <div class="flex space-x-3">
-                    <button id="add-task-button" class="btn-success text-white px-4 py-2 rounded-lg flex items-center">
-                        <i class="fas fa-plus mr-2"></i> Add Task
-                    </button>
-                    <button id="close-module-button" class="btn-danger text-white px-4 py-2 rounded-lg flex items-center">
-                        <i class="fas fa-lock mr-2"></i> Close Module
-                    </button>
-                </div>
-            </div>
-
-            <div id="add-task-form" class="hidden mb-8 p-6 bg-gray-50 rounded-xl border border-gray-200">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-tasks mr-2 text-blue-500"></i> Add New Task
-                </h3>
-                <div class="mb-4">
-                    <label for="task-name" class="block text-gray-700 font-medium mb-1">Task Name</label>
-                    <input type="text" id="task-name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
-                </div>
-                <div class="mb-4">
-                    <label for="youtube-url" class="block text-gray-700 font-medium mb-1">YouTube URL</label>
-                    <input type="text" id="youtube-url" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="https://www.youtube.com/watch?v=...">
-                </div>
-                <div class="mb-4">
-                    <label for="attachments" class="block text-gray-700 font-medium mb-1">Attachments</label>
-                    <div class="flex items-center space-x-4">
-                        <label class="flex flex-col items-center px-4 py-3 bg-white rounded-lg border border-blue-500 cursor-pointer hover:bg-blue-50">
-                            <i class="fas fa-paperclip text-blue-500 text-2xl mb-1"></i>
-                            <span class="text-sm text-gray-600">Choose files</span>
-                            <input type="file" id="attachments" name="attachments" multiple class="hidden">
-                        </label>
-                        <span id="task-files-name" class="text-sm text-gray-500">No files chosen</span>
-                    </div>
-                </div>
-                <div class="flex justify-end">
-                    <button id="submit-task" class="btn-primary text-white px-4 py-2 rounded-lg flex items-center">
-                        <i class="fas fa-save mr-2"></i> Add Task
-                    </button>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-list-check mr-2 text-blue-500"></i> Tasks
-                </h3>
-                <div id="tasks-list" class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-            </div>
-        </div>
-
-        <!-- Task Details -->
-        <div id="task-details" class="hidden mt-8 animate-fade-in">
-            <button id="back-to-module" class="btn-primary text-white px-4 py-2 rounded-lg mb-6 flex items-center">
-                <i class="fas fa-arrow-left mr-2"></i> Back to Module
-            </button>
-
-            <div class="flex justify-between items-center mb-6">
-                <h2 id="task-name" class="text-2xl font-semibold text-gray-800 flex items-center">
-                    <i class="fas fa-tasks mr-3 text-blue-500"></i>
-                    <span class="task-name-text"></span>
-                </h2>
-                <button id="update-task-button" class="btn-warning text-white px-4 py-2 rounded-lg flex items-center">
-                    <i class="fas fa-edit mr-2"></i> Update Task
-                </button>
-            </div>
-
-            <div id="update-task-form" class="hidden mb-8 p-6 bg-gray-50 rounded-xl border border-gray-200">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-edit mr-2 text-blue-500"></i> Update Task
-                </h3>
-                <div class="mb-4">
-                    <label for="update-task-name" class="block text-gray-700 font-medium mb-1">Task Name</label>
-                    <input type="text" id="update-task-name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
-                </div>
-                <div class="mb-4">
-                    <label for="update-youtube-url" class="block text-gray-700 font-medium mb-1">YouTube URL</label>
-                    <input type="text" id="update-youtube-url" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-                <div class="mb-4">
-                    <label for="update-attachments" class="block text-gray-700 font-medium mb-1">Attachments</label>
-                    <div class="flex items-center space-x-4">
-                        <label class="flex flex-col items-center px-4 py-3 bg-white rounded-lg border border-blue-500 cursor-pointer hover:bg-blue-50">
-                            <i class="fas fa-paperclip text-blue-500 text-2xl mb-1"></i>
-                            <span class="text-sm text-gray-600">Choose files</span>
-                            <input type="file" id="update-attachments" name="attachments" multiple class="hidden">
-                        </label>
-                        <span id="update-files-name" class="text-sm text-gray-500">No files chosen</span>
-                    </div>
-                </div>
-                <div class="flex justify-end">
-                    <button id="submit-update-task" class="btn-primary text-white px-4 py-2 rounded-lg flex items-center">
-                        <i class="fas fa-save mr-2"></i> Update Task
-                    </button>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow">
-                        <div id="task-video" class="mb-6"></div>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-xl shadow">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                            <i class="fas fa-paperclip mr-2 text-blue-500"></i> Attachments
-                        </h3>
-                        <div id="attachments-list" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-                    </div>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow h-fit sticky top-4">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-xl font-semibold text-gray-800 flex items-center">
-                            <i class="fas fa-question-circle mr-2 text-blue-500"></i> Questions
-                        </h3>
-                        <button id="add-question-button" class="btn-success text-white px-3 py-1 rounded-lg flex items-center text-sm">
-                            <i class="fas fa-plus mr-1"></i> Add
-                        </button>
-                    </div>
-
-                    <div id="add-question-form" class="hidden mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
-                            <i class="fas fa-plus-circle mr-2 text-blue-500"></i> New Question
-                        </h3>
+            <div class="card" id="editProfileCard" style="display: none;">
+                <div class="card-body">
+                    <h5 class="card-title">Edit Profile</h5>
+                    <form id="editProfileForm">
                         <div class="mb-3">
-                            <label for="question-test" class="block text-gray-700 font-medium mb-1">Question Text</label>
-                            <input type="text" id="question-test" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                            <label for="editFirstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="editFirstName" required>
                         </div>
                         <div class="mb-3">
-                            <label for="question-attachment" class="block text-gray-700 font-medium mb-1">Attachment (Optional)</label>
-                            <div class="flex items-center space-x-2">
-                                <label class="flex items-center px-3 py-1 bg-white rounded-lg border border-blue-500 cursor-pointer hover:bg-blue-50 text-sm">
-                                    <i class="fas fa-paperclip text-blue-500 mr-1"></i>
-                                    <span>Choose file</span>
-                                    <input type="file" id="question-attachment" class="hidden">
-                                </label>
-                                <span id="question-file-name" class="text-xs text-gray-500">No file chosen</span>
+                            <label for="editLastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="editLastName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPhoneNumber" class="form-label">Phone Number</label>
+                            <input type="text" class="form-control" id="editPhoneNumber" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProfilePicture" class="form-label">Profile Picture</label>
+                            <input type="file" class="form-control" id="editProfilePicture">
+                            <small class="form-text text-muted">No file chosen</small>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="cancelEditProfile()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Supermentor Dashboard</h5>
+                    <p>Welcome to your supermentor cabinet. Below are all sciences you oversee.</p>
+                    <p><strong>Total Sciences:</strong> <span id="scienceCount">0</span></p>
+                </div>
+            </div>
+
+            <div id="scienceList">
+                <!-- Sciences and modules will be dynamically loaded here -->
+            </div>
+
+            <div class="card" id="moduleView" style="display: none;">
+                <div class="card-body">
+                    <button class="btn btn-link" onclick="backToSciences()">Back to Sciences</button>
+                    <h5 id="moduleTitle"></h5>
+                    <button class="btn btn-primary" onclick="showAddTaskForm()">Add Task</button>
+                    <button class="btn btn-danger" onclick="closeModule()">Close Module</button>
+                    <div class="card mt-3" id="addTaskCard" style="display: none;">
+                        <div class="card-body">
+                            <h6>Add New Task</h6>
+                            <form id="addTaskForm">
+                                <div class="mb-3">
+                                    <label for="taskName" class="form-label">Task Name</label>
+                                    <input type="text" class="form-control" id="taskName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="youtubeUrl" class="form-label">YouTube URL</label>
+                                    <input type="url" class="form-control" id="youtubeUrl">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="taskAttachments" class="form-label">Attachments</label>
+                                    <input type="file" class="form-control" id="taskAttachments" multiple>
+                                    <small class="form-text text-muted">No files chosen</small>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add Task</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h6>Tasks</h6>
+                            <div id="taskList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" id="taskView" style="display: none;">
+                <div class="card-body">
+                    <button class="btn btn-link" onclick="backToModule()">Back to Module</button>
+                    <h5 id="taskTitle"></h5>
+                    <button class="btn btn-primary" onclick="showUpdateTaskForm()">Update Task</button>
+                    <div class="card mt-3" id="updateTaskCard" style="display: none;">
+                        <div class="card-body">
+                            <h6>Update Task</h6>
+                            <form id="updateTaskForm">
+                                <div class="mb-3">
+                                    <label for="updateTaskName" class="form-label">Task Name</label>
+                                    <input type="text" class="form-control" id="updateTaskName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="updateYoutubeUrl" class="form-label">YouTube URL</label>
+                                    <input type="url" class="form-control" id="updateYoutubeUrl">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="updateTaskAttachments" class="form-label">Attachments</label>
+                                    <input type="file" class="form-control" id="updateTaskAttachments" multiple>
+                                    <small class="form-text text-muted">No files chosen</small>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update Task</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h6>Attachments</h6>
+                            <div id="taskAttachmentsList"></div>
+                        </div>
+                    </div>
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h6>Questions</h6>
+                            <button class="btn btn-primary" onclick="showAddQuestionForm()">Add</button>
+                            <div id="questionList"></div>
+                            <div class="card mt-3" id="addQuestionCard" style="display: none;">
+                                <div class="card-body">
+                                    <h6>New Question</h6>
+                                    <form id="addQuestionForm">
+                                        <div class="mb-3">
+                                            <label for="questionText" class="form-label">Question Text</label>
+                                            <textarea class="form-control" id="questionText" required></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="questionAttachment" class="form-label">Attachment (Optional)</label>
+                                            <input type="file" class="form-control" id="questionAttachment">
+                                            <small class="form-text text-muted">No file chosen</small>
+                                        </div>
+                                        <div class="mb-3" id="answerVariants">
+                                            <h6>Answer Variants</h6>
+                                            <div id="variantList"></div>
+                                            <button type="button" class="btn btn-secondary" onclick="addAnswerVariant()">Add Variant</button>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <h4 class="block text-gray-700 font-semibold mb-1 flex items-center">
-                                <i class="fas fa-list-ol mr-2 text-blue-500"></i> Answer Variants
-                            </h4>
-                            <div id="variants-container" class="mt-2 space-y-2"></div>
-                            <button id="add-variant-button" class="btn-primary text-white px-2 py-1 rounded-lg mt-2 flex items-center text-sm">
-                                <i class="fas fa-plus mr-1"></i> Add Variant
-                            </button>
-                        </div>
-                        <div class="flex justify-end space-x-2">
-                            <button id="submit-question" class="btn-primary text-white px-3 py-1 rounded-lg flex items-center text-sm">
-                                <i class="fas fa-save mr-1"></i> Save
-                            </button>
-                        </div>
                     </div>
-
-                    <div id="questions-list" class="space-y-4" style="max-height: 500px; overflow-y: auto;"></div>
                 </div>
             </div>
         </div>
-    </section>
-</main>
+    </div>
+</div>
 
-<footer class="bg-gray-800 text-white py-8 mt-12">
-    <div class="container mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-                <h3 class="text-lg font-semibold mb-4 flex items-center">
-                    <i class="fas fa-graduation-cap mr-2"></i> About Us
-                </h3>
-                <p class="text-sm text-gray-300">IPE School is a leading educational institution dedicated to providing quality education with expert mentors and modern facilities.</p>
-                <div class="flex space-x-4 mt-4">
-                    <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+<footer class="footer text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>About Us</h5>
+                <p>IPE School is a leading educational institution dedicated to providing quality education with expert mentors and modern facilities.</p>
+                <div class="d-flex justify-content-center">
+                    <a href="#" class="mx-2"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="mx-2"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="mx-2"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="mx-2"><i class="fab fa-linkedin"></i></a>
                 </div>
             </div>
-            <div>
-                <h3 class="text-lg font-semibold mb-4 flex items-center">
-                    <i class="fas fa-link mr-2"></i> Quick Links
-                </h3>
-                <ul class="space-y-2">
-                    <li><a href="/index.html" class="text-gray-300 hover:text-white flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> Home</a></li>
-                    <li><a href="/about" class="text-gray-300 hover:text-white flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> About</a></li>
-                    <li><a href="/mentors" class="text-gray-300 hover:text-white flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> Mentors</a></li>
-                    <li><a href="/login.html" class="text-gray-300 hover:text-white flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> Login</a></li>
+            <div class="col-md-4">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#mentors">Mentors</a></li>
+                    <li><a href="#login">Login</a></li>
                 </ul>
             </div>
-            <div>
-                <h3 class="text-lg font-semibold mb-4 flex items-center">
-                    <i class="fas fa-envelope mr-2"></i> Contact Info
-                </h3>
-                <ul class="space-y-2 text-gray-300">
-                    <li class="flex items-center"><i class="fas fa-map-marker-alt mr-3"></i> 123 Education Street, Tashkent</li>
-                    <li class="flex items-center"><i class="fas fa-phone-alt mr-3"></i> +998 90 123 45 67</li>
-                    <li class="flex items-center"><i class="fas fa-envelope mr-3"></i> info@ipeschool.com</li>
-                </ul>
+            <div class="col-md-4">
+                <h5>Contact Info</h5>
+                <p>123 Education Street, Tashkent</p>
+                <p>+998 90 123 45 67</p>
+                <p>info@ipeschool.com</p>
             </div>
         </div>
-        <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-400">
-            <p>© 2023 IPE School. All Rights Reserved.</p>
-        </div>
+        <p class="mt-3">© 2023 IPE School. All Rights Reserved.</p>
     </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    let currentScience = null;
-    let currentModule = null;
+    const API_BASE = 'http://localhost:80/api/v1';
+    let currentModuleId = null;
     let currentTaskId = null;
-    let currentTask = null;
 
-    function getImageSrc(imageData) {
-        if (Array.isArray(imageData) && imageData.length) {
-            const uint8 = new Uint8Array(imageData);
-            let binary = '';
-            for (let i = 0; i < uint8.length; i++) {
-                binary += String.fromCharCode(uint8[i]);
-            }
-            return `data:image/png;base64,${window.btoa(binary)}`;
-        } else if (typeof imageData === 'string' && imageData.startsWith('data:image')) {
-            return imageData;
-        }
-        return 'https://via.placeholder.com/100';
-    }
-
-    async function fetchWithAuth(url, options = {}) {
+    // Fetch and display supermentor profile
+    async function loadProfile() {
         try {
-            const response = await fetch(url, {
-                ...options,
-                credentials: 'include'
+            const response = await fetch(`${API_BASE}/profile`, {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
             });
-            if (response.status === 401) {
-                window.location.href = '/login';
-                throw new Error('Unauthorized');
-            }
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Failed to fetch: ${response.status} - ${errorText}`);
-            }
-            return response;
+            const profile = await response.json();
+            document.getElementById('firstName').textContent = profile.firstName || 'N/A';
+            document.getElementById('lastName').textContent = profile.lastName || 'N/A';
+            document.getElementById('phoneNumber').textContent = profile.phoneNumber || 'N/A';
+            document.getElementById('profilePicture').src = profile.profilePicture || '';
+            document.getElementById('editFirstName').value = profile.firstName || '';
+            document.getElementById('editLastName').value = profile.lastName || '';
+            document.getElementById('editPhoneNumber').value = profile.phoneNumber || '';
         } catch (error) {
-            console.error(`Fetch error for ${url}:`, error.message);
-            throw error;
+            console.error('Error loading profile:', error);
         }
     }
 
-    async function createAttachment(file) {
-        const formData = new FormData();
-        formData.append('attachment', file);
-        const response = await fetchWithAuth('/api/v1/attachments', {
-            method: 'POST',
-            body: formData
-        });
-        const data = await response.json();
-        return { id: data };
-    }
-
-    async function fetchProfile() {
-        const response = await fetchWithAuth('/api/v1/users/profile');
-        const profile = await response.json();
-        document.getElementById('profile-name').textContent = `${profile.firstName} ${profile.lastName}`;
-        document.getElementById('profile-phone').querySelector('.phone-number').textContent = profile.phone || 'Not set';
-        if (profile.profilePictureUrl) {
-            document.getElementById('profile-picture').src = profile.profilePictureUrl;
-        }
-    }
-
-    async function updateProfile() {
-        const firstName = document.getElementById('update-first-name').value;
-        const lastName = document.getElementById('update-last-name').value;
-        const phone = document.getElementById('update-profile-phone').value;
-        const profilePicture = document.getElementById('update-profile-picture').files[0];
-
-        const formData = new FormData();
-        formData.append('firstName', firstName);
-        formData.append('lastName', lastName);
-        formData.append('phone', phone);
-        if (profilePicture) formData.append('profilePicture', profilePicture);
-
-        const response = await fetchWithAuth('/api/v1/users/profile', {
-            method: 'POST',
-            body: formData
-        });
-        await fetchProfile();
-        document.getElementById('edit-profile-form').classList.add('hidden');
-        alert('Profile updated successfully!');
-    }
-
-    async function fetchSciences() {
-        const response = await fetchWithAuth('/api/v1/sciences');
-        const sciences = await response.json();
-        displaySciences(sciences);
-        fetchScienceCount();
-    }
-
-    async function fetchScienceCount() {
-        const response = await fetchWithAuth('/api/v1/sciences/count');
-        const count = await response.json();
-        document.getElementById('sciences-count').textContent = `${count} Sciences`;
-    }
-
-    function displaySciences(sciences) {
-        const container = document.getElementById('sciences-container');
-        container.innerHTML = '';
-        sciences.forEach(science => {
-            const scienceCard = document.createElement('div');
-            scienceCard.className = 'bg-white p-6 rounded-lg shadow-md card-hover cursor-pointer';
-            scienceCard.innerHTML = `
-                        <h3 class="text-xl font-semibold text-gray-800">${science.name}</h3>
-                        <button class="btn-danger text-white px-4 py-2 rounded-lg mt-2 flex items-center" onclick="deleteScience(${science.id})">
-                            <i class="fas fa-trash mr-2"></i> Delete
-                        </button>
+    // Fetch and display all sciences
+    async function loadSciences() {
+        try {
+            const response = await fetch(`${API_BASE}/science`, {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+            });
+            const sciences = await response.json();
+            document.getElementById('scienceCount').textContent = sciences.length;
+            const scienceList = document.getElementById('scienceList');
+            scienceList.innerHTML = '';
+            sciences.forEach(science => {
+                const scienceCard = document.createElement('div');
+                scienceCard.className = 'card mb-3';
+                scienceCard.innerHTML = `
+                        <div class="card-body">
+                            <h5>${science.name}</h5>
+                            <button class="btn btn-primary" onclick="showModules(${science.id}, '${science.name}')">View Modules</button>
+                        </div>
                     `;
-            scienceCard.addEventListener('click', (e) => {
-                if (!e.target.closest('button')) showScienceDetails(science.id);
-            });
-            container.appendChild(scienceCard);
-        });
-    }
-
-    async function showScienceDetails(scienceId) {
-        const response = await fetchWithAuth(`/api/v1/sciences/${scienceId}`);
-        currentScience = await response.json();
-        displayScienceDetails(currentScience);
-    }
-
-    function displayScienceDetails(science) {
-        document.getElementById('sciences-container').classList.add('hidden');
-        document.getElementById('science-details').classList.remove('hidden');
-        document.getElementById('module-details').classList.add('hidden');
-        document.getElementById('task-details').classList.add('hidden');
-
-        document.getElementById('science-name').querySelector('.science-name-text').textContent = science.name;
-
-        const modulesList = document.getElementById('modules-list');
-        modulesList.innerHTML = '';
-        if (science.modules && science.modules.length > 0) {
-            science.modules.forEach(module => {
-                const button = document.createElement('button');
-                button.className = module.active
-                    ? 'bg-green-500 text-white p-2 rounded hover:bg-green-600 m-1'
-                    : 'bg-gray-400 text-white p-2 rounded m-1 cursor-not-allowed';
-                button.textContent = module.active ? module.moduleName : `${module.moduleName} 🔒`;
-                button.disabled = !module.active;
-                if (module.active) {
-                    button.addEventListener('click', () => showModuleDetails(module.id));
-                }
-                modulesList.appendChild(button);
-            });
-        } else {
-            modulesList.textContent = 'No modules in this science.';
-        }
-    }
-
-    async function updateScience() {
-        const name = document.getElementById('update-science-name').value;
-        const groupIds = document.getElementById('update-group-ids').value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
-        const scienceReq = { name, groupIds };
-
-        const response = await fetchWithAuth(`/api/v1/sciences/${currentScience.id}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(scienceReq)
-        });
-        await fetchSciences();
-        document.getElementById('science-details').classList.add('hidden');
-        document.getElementById('sciences-container').classList.remove('hidden');
-        alert('Science updated successfully!');
-    }
-
-    async function deleteScience(scienceId) {
-        if (confirm('Are you sure you want to delete this science?')) {
-            const response = await fetchWithAuth(`/api/v1/sciences/${scienceId}`, {
-                method: 'DELETE'
-            });
-            await fetchSciences();
-            alert('Science deleted successfully!');
-        }
-    }
-
-    async function showModuleDetails(moduleId) {
-        const response = await fetchWithAuth(`/api/v1/module/${moduleId}`);
-        currentModule = await response.json();
-        displayModuleDetails(currentModule);
-    }
-
-    function displayModuleDetails(module) {
-        document.getElementById('science-details').classList.add('hidden');
-        document.getElementById('module-details').classList.remove('hidden');
-        document.getElementById('task-details').classList.add('hidden');
-
-        document.getElementById('module-name').querySelector('.module-name-text').textContent = module.moduleName;
-
-        const closeModuleButton = document.getElementById('close-module-button');
-        closeModuleButton.style.display = module.active ? 'inline-block' : 'none';
-
-        const tasksList = document.getElementById('tasks-list');
-        tasksList.innerHTML = '';
-        if (module.tasks && module.tasks.length > 0) {
-            module.tasks.forEach(task => {
-                const taskButton = document.createElement('button');
-                taskButton.className = 'bg-blue-500 text-white p-2 rounded m-1 hover:bg-blue-600';
-                taskButton.textContent = task.taskName;
-                taskButton.addEventListener('click', () => showTaskDetails(task.id));
-                tasksList.appendChild(taskButton);
-            });
-        } else {
-            tasksList.textContent = 'No tasks in this module.';
-        }
-    }
-
-    async function showTaskDetails(taskId) {
-        const taskResponse = await fetchWithAuth(`/api/v1/task/${taskId}`);
-        currentTask = await taskResponse.json();
-        currentTaskId = taskId;
-
-        const attachmentIds = [
-            ...(currentTask.attachmentId || []),
-            ...(currentTask.questionRes || []).map(q => q.attachmentId).filter(id => id)
-        ].filter(id => id);
-        const attachments = await fetchAttachments(attachmentIds);
-        const attachmentMap = new Map(attachments.map(a => [a.id, a]));
-
-        displayTaskDetails(currentTask, attachmentMap);
-    }
-
-    async function fetchAttachments(attachmentIds) {
-        const promises = attachmentIds.map(id =>
-            fetchWithAuth(`/api/v1/attachments/${id}`).then(res => res.json()).catch(() => null)
-        );
-        return (await Promise.all(promises)).filter(a => a);
-    }
-
-    function displayTaskDetails(task, attachmentMap) {
-        document.getElementById('module-details').classList.add('hidden');
-        document.getElementById('task-details').classList.remove('hidden');
-
-        document.getElementById('task-name').querySelector('.task-name-text').textContent = task.name || task.taskName;
-
-        const videoDiv = document.getElementById('task-video');
-        videoDiv.innerHTML = task.youtubeURL
-            ? `<iframe width="560" height="315" src="https://www.youtube.com/embed/${new URL(task.youtubeURL).searchParams.get('v')}" frameborder="0" allowfullscreen class="max-w-full"></iframe>`
-            : '';
-
-        const attachmentsList = document.getElementById('attachments-list');
-        attachmentsList.innerHTML = '';
-        if (task.attachmentId && task.attachmentId.length) {
-            task.attachmentId.forEach(id => {
-                const attachment = attachmentMap.get(id);
-                const div = document.createElement('div');
-                div.className = 'mb-2';
-                div.innerHTML = attachment
-                    ? attachment.contentType?.startsWith('image/')
-                        ? `<img src="data:${attachment.contentType};base64,${attachment.content}" alt="Attachment ${id}" class="max-w-full h-auto">`
-                        : `<a href="data:${attachment.contentType};base64,${attachment.content}" download class="text-blue-500 underline">Download Attachment ${id}</a>`
-                    : `<p class="text-red-600">Attachment not found: ${id}</p>`;
-                attachmentsList.appendChild(div);
-            });
-        } else {
-            attachmentsList.textContent = 'No attachments.';
-        }
-
-        const questionsList = document.getElementById('questions-list');
-        questionsList.innerHTML = '';
-        if (task.questionRes && task.questionRes.length) {
-            task.questionRes.forEach(question => {
-                const div = document.createElement('div');
-                div.className = 'mb-4 p-4 bg-white rounded shadow';
-                div.innerHTML = `
-                            <div class="flex justify-between items-center">
-                                <h4 class="text-lg font-semibold">${question.questionTest}</h4>
-                                <button class="btn-primary text-white px-2 py-1 rounded-lg text-sm" onclick="populateUpdateQuestionForm(${question.id}, ${task.id})">
-                                    <i class="fas fa-edit mr-1"></i> Edit
-                                </button>
+                scienceList.appendChild(scienceCard);
+                science.modules.forEach(module => {
+                    const moduleCard = document.createElement('div');
+                    moduleCard.className = 'card mb-2 ms-3';
+                    moduleCard.innerHTML = `
+                            <div class="card-body">
+                                <h6>${module.moduleName}</h6>
+                                <p>Tasks: ${module.tasks.length}</p>
+                                <button class="btn btn-primary" onclick="showModuleDetails(${module.id}, '${module.moduleName}')">View Details</button>
                             </div>
-                            <ul class="list-disc list-inside">${question.variant.map(v => `<li>${v}</li>`).join('')}</ul>
-                            <p class="mt-2"><strong>Correct Answer:</strong> ${question.currentAnswer || 'N/A'}</p>
-                            ${question.attachmentId && attachmentMap.get(question.attachmentId) ? `<img src="data:${attachmentMap.get(question.attachmentId).contentType};base64,${attachmentMap.get(question.attachmentId).content}" alt="Question Attachment" class="mt-2 max-w-full h-auto">` : ''}
                         `;
-                questionsList.appendChild(div);
+                    scienceList.appendChild(moduleCard);
+                });
             });
-        } else {
-            questionsList.textContent = 'No questions.';
+        } catch (error) {
+            console.error('Error loading sciences:', error);
         }
     }
 
-    async function addTask() {
-        const taskName = document.getElementById('task-name').value;
-        const youtubeURL = document.getElementById('youtube-url').value;
-        const attachments = document.getElementById('attachments').files;
+    // Show modules for a specific science
+    function showModules(scienceId, scienceName) {
+        // Handled in loadSciences; modules are already displayed
+    }
 
+    // Show module details and tasks
+    async function showModuleDetails(moduleId, moduleName) {
+        currentModuleId = moduleId;
+        document.getElementById('scienceList').style.display = 'none';
+        document.getElementById('moduleView').style.display = 'block';
+        document.getElementById('moduleTitle').textContent = moduleName;
+        await loadTasks(moduleId);
+    }
+
+    // Fetch and display tasks for a module
+    async function loadTasks(moduleId) {
+        try {
+            const response = await fetch(`${API_BASE}/module/${moduleId}/tasks`, {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+            });
+            const tasks = await response.json();
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+            tasks.forEach(task => {
+                const taskCard = document.createElement('div');
+                taskCard.className = 'card mb-2';
+                taskCard.innerHTML = `
+                        <div class="card-body">
+                            <h6>${task.taskName}</h6>
+                            <button class="btn btn-primary" onclick="showTaskDetails(${task.id}, '${task.taskName}')">View Details</button>
+                        </div>
+                    `;
+                taskList.appendChild(taskCard);
+            });
+        } catch (error) {
+            console.error('Error loading tasks:', error);
+        }
+    }
+
+    // Show task details and questions
+    async function showTaskDetails(taskId, taskName) {
+        currentTaskId = taskId;
+        document.getElementById('moduleView').style.display = 'none';
+        document.getElementById('taskView').style.display = 'block';
+        document.getElementById('taskTitle').textContent = taskName;
+        await loadTaskAttachments(taskId);
+        await loadQuestions(taskId);
+    }
+
+    // Fetch and display task attachments
+    async function loadTaskAttachments(taskId) {
+        try {
+            const response = await fetch(`${API_BASE}/task/${taskId}/attachments`, {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+            });
+            const attachments = await response.json();
+            const attachmentsList = document.getElementById('taskAttachmentsList');
+            attachmentsList.innerHTML = attachments.map(att => `<p><a href="${att.url}">${att.name}</a></p>`).join('');
+        } catch (error) {
+            console.error('Error loading attachments:', error);
+        }
+    }
+
+    // Fetch and display questions for a task
+    async function loadQuestions(taskId) {
+        try {
+            const response = await fetch(`${API_BASE}/task/${taskId}/questions`, {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+            });
+            const questions = await response.json();
+            const questionList = document.getElementById('questionList');
+            questionList.innerHTML = questions.map(q => `
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <p>${q.text}</p>
+                            <button class="btn btn-primary" onclick="showUpdateQuestionForm(${q.id}, '${q.text}')">Edit</button>
+                        </div>
+                    </div>
+                `).join('');
+        } catch (error) {
+            console.error('Error loading questions:', error);
+        }
+    }
+
+    // Show edit profile form
+    function showEditProfile() {
+        document.getElementById('profileInfo').style.display = 'none';
+        document.getElementById('editProfileCard').style.display = 'block';
+    }
+
+    // Cancel edit profile
+    function cancelEditProfile() {
+        document.getElementById('profileInfo').style.display = 'block';
+        document.getElementById('editProfileCard').style.display = 'none';
+    }
+
+    // Update profile
+    document.getElementById('editProfileForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
         const formData = new FormData();
-        formData.append('taskName', taskName);
-        formData.append('youtubeURL', youtubeURL || '');
-        formData.append('moduleId', currentModule.id);
-        for (let i = 0; i < attachments.length; i++) {
-            formData.append('attachments', attachments[i]);
+        formData.append('firstName', document.getElementById('editFirstName').value);
+        formData.append('lastName', document.getElementById('editLastName').value);
+        formData.append('phoneNumber', document.getElementById('editPhoneNumber').value);
+        const file = document.getElementById('editProfilePicture').files[0];
+        if (file) formData.append('profilePicture', file);
+        try {
+            await fetch(`${API_BASE}/profile`, {
+                method: 'PUT',
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                body: formData
+            });
+            cancelEditProfile();
+            loadProfile();
+        } catch (error) {
+            console.error('Error updating profile:', error);
         }
+    });
 
-        const response = await fetchWithAuth('/api/v1/task', {
-            method: 'POST',
-            body: formData
-        });
-        await showModuleDetails(currentModule.id);
-        document.getElementById('add-task-form').classList.add('hidden');
-        alert('Task added successfully!');
+    // Show add task form
+    function showAddTaskForm() {
+        document.getElementById('addTaskCard').style.display = 'block';
     }
 
-    async function updateTask() {
-        const taskName = document.getElementById('update-task-name').value;
-        const youtubeURL = document.getElementById('update-youtube-url').value;
-        const attachments = document.getElementById('update-attachments').files;
-
+    // Add task
+    document.getElementById('addTaskForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
         const formData = new FormData();
-        formData.append('taskName', taskName);
-        formData.append('youtubeURL', youtubeURL || '');
-        formData.append('moduleId', currentModule.id);
-        for (let i = 0; i < attachments.length; i++) {
-            formData.append('attachments', attachments[i]);
+        formData.append('taskName', document.getElementById('taskName').value);
+        formData.append('youtubeUrl', document.getElementById('youtubeUrl').value);
+        const files = document.getElementById('taskAttachments').files;
+        for (let file of files) formData.append('attachments', file);
+        try {
+            await fetch(`${API_BASE}/module/${currentModuleId}/tasks`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                body: formData
+            });
+            document.getElementById('addTaskCard').style.display = 'none';
+            loadTasks(currentModuleId);
+        } catch (error) {
+            console.error('Error adding task:', error);
         }
+    });
 
-        const response = await fetchWithAuth(`/api/v1/task/${currentTaskId}`, {
-            method: 'POST',
-            body: formData
-        });
-        await showModuleDetails(currentModule.id);
-        document.getElementById('task-details').classList.add('hidden');
-        alert('Task updated successfully!');
+    // Show update task form
+    function showUpdateTaskForm() {
+        document.getElementById('updateTaskCard').style.display = 'block';
     }
 
+    // Update task
+    document.getElementById('updateTaskForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('taskName', document.getElementById('updateTaskName').value);
+        formData.append('youtubeUrl', document.getElementById('updateYoutubeUrl').value);
+        const files = document.getElementById('updateTaskAttachments').files;
+        for (let file of files) formData.append('attachments', file);
+        try {
+            await fetch(`${API_BASE}/task/${currentTaskId}`, {
+                method: 'PUT',
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                body: formData
+            });
+            document.getElementById('updateTaskCard').style.display = 'none';
+            showTaskDetails(currentTaskId, document.getElementById('updateTaskName').value);
+        } catch (error) {
+            console.error('Error updating task:', error);
+        }
+    });
+
+    // Show add question form
+    function showAddQuestionForm() {
+        document.getElementById('addQuestionCard').style.display = 'block';
+    }
+
+    // Add answer variant
+    function addAnswerVariant() {
+        const variantList = document.getElementById('variantList');
+        const variantDiv = document.createElement('div');
+        variantDiv.className = 'mb-2';
+        variantDiv.innerHTML = `<input type="text" class="form-control" placeholder="Answer variant">`;
+        variantList.appendChild(variantDiv);
+    }
+
+    // Add question
+    document.getElementById('addQuestionForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('text', document.getElementById('questionText').value);
+        const file = document.getElementById('questionAttachment').files[0];
+        अगर file) formData.append('attachment', file);
+        const variants = Array.from(document.getElementById('variantList').getElementsByTagName('input'))
+            .map(input => input.value).filter(val => val);
+        formData.append('answerVariants', JSON.stringify(variants));
+        try {
+            await fetch(`${API_BASE}/task/${currentTaskId}/questions`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                body: formData
+            });
+            document.getElementById('addQuestionCard').style.display = 'none';
+            loadQuestions(currentTaskId);
+        } catch (error) {
+            console.error('Error adding question:', error);
+        }
+    });
+
+    // Show update question form (placeholder, as not fully implemented in mentorCabinet.html)
+    function showUpdateQuestionForm(questionId, questionText) {
+        // Implement update question form if needed
+        alert('Update question functionality to be implemented');
+    }
+
+    // Close module
     async function closeModule() {
-        if (confirm('Are you sure you want to close this module?')) {
-            const response = await fetchWithAuth(`/api/v1/module/${currentModule.id}`, {
-                method: 'DELETE'
+        try {
+            await fetch(`${API_BASE}/module/${currentModuleId}/close`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
             });
-            await showScienceDetails(currentScience.id);
-            alert('Module closed successfully!');
+            backToSciences();
+        } catch (error) {
+            console.error('Error closing module:', error);
         }
     }
 
-    function addVariantInput(container, index) {
-        const div = document.createElement('div');
-        div.className = 'flex items-center space-x-2 mb-2';
-        div.innerHTML = `
-                    <input type="text" id="variant-${index}" class="flex-1 p-2 border rounded" placeholder="Enter variant ${index + 1}" required>
-                    <label class="flex items-center space-x-1">
-                        <input type="checkbox" id="correct-${index}" class="form-checkbox">
-                        <span>Correct</span>
-                    </label>
-                    <button type="button" class="bg-red-500 text-white p-2 rounded hover:bg-red-600 remove-variant">Remove</button>
-                `;
-        container.appendChild(div);
-        div.querySelector('.remove-variant').addEventListener('click', () => div.remove());
+    // Navigation functions
+    function backToSciences() {
+        document.getElementById('moduleView').style.display = 'none';
+        document.getElementById('taskView').style.display = 'none';
+        document.getElementById('scienceList').style.display = 'block';
+        loadSciences();
     }
 
-    async function addQuestion() {
-        const questionTest = document.getElementById('question-test').value;
-        const attachment = document.getElementById('question-attachment').files[0];
-        const variantsContainer = document.getElementById('variants-container');
-        const variants = Array.from(variantsContainer.querySelectorAll('input[type="text"]')).map(input => input.value.trim()).filter(v => v);
-        const correctAnswers = Array.from(variantsContainer.querySelectorAll('input[type="checkbox"]')).map((cb, i) => cb.checked ? variants[i] : null).filter(a => a);
-
-        let attachmentId = null;
-        if (attachment) {
-            const attachmentData = await createAttachment(attachment);
-            attachmentId = attachmentData.id;
-        }
-
-        const questionData = {
-            questionTest,
-            attachmentId,
-            variant: variants,
-            currentAnswer: correctAnswers.join(','),
-            taskId: currentTaskId
-        };
-
-        const response = await fetchWithAuth('/api/v1/questions', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(questionData)
-        });
-        await showTaskDetails(currentTaskId);
-        document.getElementById('add-question-form').classList.add('hidden');
-        alert('Question added successfully!');
+    function backToModule() {
+        document.getElementById('taskView').style.display = 'none';
+        document.getElementById('moduleView').style.display = 'block';
+        loadTasks(currentModuleId);
     }
 
+    // Logout
+    function logout() {
+        localStorage.removeItem('token');
+        window.location.href = '/index.html';
+    }
+
+    // Initialize page
     document.addEventListener('DOMContentLoaded', () => {
-        fetchProfile();
-        fetchSciences();
-
-        document.getElementById('edit-profile-button').addEventListener('click', () => {
-            document.getElementById('edit-profile-form').classList.remove('hidden');
-        });
-
-        document.getElementById('cancel-profile-update').addEventListener('click', () => {
-            document.getElementById('edit-profile-form').classList.add('hidden');
-        });
-
-        document.getElementById('submit-profile-update').addEventListener('click', updateProfile);
-
-        document.getElementById('back-to-sciences').addEventListener('click', () => {
-            document.getElementById('science-details').classList.add('hidden');
-            document.getElementById('module-details').classList.add('hidden');
-            document.getElementById('task-details').classList.add('hidden');
-            document.getElementById('sciences-container').classList.remove('hidden');
-        });
-
-        document.getElementById('update-science-button').addEventListener('click', () => {
-            document.getElementById('update-science-name').value = currentScience.name;
-            document.getElementById('update-group-ids').value = currentScience.groups?.map(g => g.id).join(',') || '';
-            document.getElementById('update-science-form').classList.remove('hidden');
-        });
-
-        document.getElementById('cancel-update-science').addEventListener('click', () => {
-            document.getElementById('update-science-form').classList.add('hidden');
-        });
-
-        document.getElementById('submit-update-science').addEventListener('click', updateScience);
-
-        document.getElementById('back-to-science').addEventListener('click', () => {
-            showScienceDetails(currentScience.id);
-        });
-
-        document.getElementById('add-task-button').addEventListener('click', () => {
-            document.getElementById('add-task-form').classList.remove('hidden');
-        });
-
-        document.getElementById('submit-task').addEventListener('click', addTask);
-
-        document.getElementById('close-module-button').addEventListener('click', closeModule);
-
-        document.getElementById('back-to-module').addEventListener('click', () => {
-            showModuleDetails(currentModule.id);
-        });
-
-        document.getElementById('update-task-button').addEventListener('click', () => {
-            document.getElementById('update-task-name').value = currentTask.name || currentTask.taskName;
-            document.getElementById('update-youtube-url').value = currentTask.youtubeURL || '';
-            document.getElementById('update-task-form').classList.remove('hidden');
-        });
-
-        document.getElementById('submit-update-task').addEventListener('click', updateTask);
-
-        document.getElementById('add-question-button').addEventListener('click', () => {
-            document.getElementById('add-question-form').classList.remove('hidden');
-            const variantsContainer = document.getElementById('variants-container');
-            variantsContainer.innerHTML = '';
-            addVariantInput(variantsContainer, 0);
-        });
-
-        document.getElementById('add-variant-button').addEventListener('click', () => {
-            const variantsContainer = document.getElementById('variants-container');
-            addVariantInput(variantsContainer, variantsContainer.children.length);
-        });
-
-        document.getElementById('submit-question').addEventListener('click', addQuestion);
-
-        document.getElementById('logout-link').addEventListener('click', async (e) => {
-            e.preventDefault();
-            await fetchWithAuth('/api/auth/logout', { method: 'POST' });
-            window.location.href = '/login';
-        });
-
-        document.getElementById('update-profile-picture').addEventListener('change', function() {
-            document.getElementById('file-name').textContent = this.files[0] ? this.files[0].name : 'No file chosen';
-        });
-
-        document.getElementById('attachments').addEventListener('change', function() {
-            document.getElementById('task-files-name').textContent = this.files.length ? `${this.files.length} files selected` : 'No files chosen';
-        });
-
-        document.getElementById('update-attachments').addEventListener('change', function() {
-            document.getElementById('update-files-name').textContent = this.files.length ? `${this.files.length} files selected` : 'No files chosen';
-        });
-
-        document.getElementById('question-attachment').addEventListener('change', function() {
-            document.getElementById('question-file-name').textContent = this.files[0] ? this.files[0].name : 'No file chosen';
-        });
+        if (!localStorage.getItem('token')) window.location.href = '/index.html';
+        loadProfile();
+        loadSciences();
     });
 </script>
 </body>
