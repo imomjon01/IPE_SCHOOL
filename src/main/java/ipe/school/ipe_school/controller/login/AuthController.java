@@ -73,7 +73,7 @@ public class AuthController {
 
     private String determineRedirectUrl(List<String> roles) {
         if (roles.contains("ROLE_ADMIN")) {
-            return "/adminCabinet.html";
+            return "/admincabinet.html";
         } else if (roles.contains("ROLE_SUPER_MENTOR")) {
             return "/superMentorCabinet.html";
         } else if (roles.contains("ROLE_MENTOR")) {

@@ -1,0 +1,33 @@
+-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtz
+c2gtZWQyNTUxOQAAACDweleNkhHt1KAsS/RDoFqrMhq/dV68mzK+n4Ypk4aXawAA
+AIgvDyQQLw8kEAAAAAtzc2gtZWQyNTUxOQAAACDweleNkhHt1KAsS/RDoFqrMhq/
+dV68mzK+n4Ypk4aXawAAAEAwUQIBATAFBgMrZXAEIgQgw+BiUKb6UWRY6bNfKVYd
+7/B6V42SEe3UoCxL9EOgWqsyGr91XrybMr6fhimThpdrAAAAAAECAwQF
+-----END OPENSSH PRIVATE KEY-----
+
+ip: 16.171.151.149
+
+
+[
+    {
+        "id": 1,
+        "name": "Physics",
+        "groups": [{"id": 1, "name": "Group 1"},{"id": 2, "name": "Group 2"} ],
+        "modules": [
+            { "name": "Mechanics", "taskCount": 10 },
+            { "name": "Thermodynamics", "taskCount": 8 }
+        ]
+    }
+]
+
+SAN QILISHING KERAK BOLGAN TASKLAR :
+
+1 : san fanni ichidagi groupni ochirish funksiyasini qilishing kerak                          OXSHADI
+2 : fanni yangilash funksiyasida boshqa fanga aloqador grouplar chiqmasligi kerak             OXSHADI
+3 : view detalda grouplarni studentlari chiqishi kerak emas                                   OXSHADI
+4 : guruh tabga otganda group.getNameni bosganda student progress chiqadigan qilishing kerak
+
+5 : ENG ASOSIYSI telefondan kirganda chiroyliroq qilib chiqaradigan qilishing kerak
+
+go omad
