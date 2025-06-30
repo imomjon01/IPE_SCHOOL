@@ -309,6 +309,9 @@
                             <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#profileModal">
                                 <i class="fas fa-user-edit me-2"></i>Profilni Yangilash
                             </button>
+                            <button class="btn btn-danger w-100 mt-2" id="logout-btn">
+                                <i class="fas fa-sign-out-alt me-2"></i>Chiqish
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -902,6 +905,22 @@
             currentTab = tab;
             loadTabData(tab);
         });
+    });
+
+    // Chiqish tugmasi uchun hodisa
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        // userData dan rollarni olish
+        const roles = userData.roles || []; // Agar roles mavjud bo'lmasa, bo'sh array
+        // Agar rollar soni 1 tadan ko'p bo'lsa
+        if (roles.length > 1) {
+            // chooseRole.html ga yo'naltirish
+            window.location.href = 'chooseRole.html';
+        } else {
+            // localStorage ni tozalash
+            localStorage.removeItem('userData');
+            // Login sahifasiga yo'naltirish (masalan, index.html)
+            window.location.href = 'index.html';
+        }
     });
 
     function loadTabData(tab) {

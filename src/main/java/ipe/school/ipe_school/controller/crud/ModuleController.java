@@ -46,8 +46,8 @@ public class ModuleController {
     }
 
     @GetMapping("/get/{moduleId}")
-    public ResponseEntity<List<TaskRes>> getTasksByModule(@PathVariable Long moduleId) {
-        List<TaskRes> taskRes = moduleService.getAllModuleById(moduleId);
+    public ResponseEntity<List<TaskRes>> getTasksByModule(@AuthenticationPrincipal User user, @PathVariable Long moduleId) {
+        List<TaskRes> taskRes = moduleService.getAllModuleById(user, moduleId);
         return new ResponseEntity<>(taskRes, HttpStatus.OK);
     }
 

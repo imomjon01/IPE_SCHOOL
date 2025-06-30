@@ -49,12 +49,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-
     @Transactional
     public UserRes changeUserRole(Long userId, List<Long> roleIds) {
         List<Roles> roles = rolesRepository.findByIdIn(roleIds);
         User user = userRepository.findById(userId).orElseThrow(RuntimeException::new);
+
+        boolean isStudent = roles.stream()
+                .anyMatch(role -> role.getName().equals("ROLE_STUDENT"));
+
+        if (isStudent) {
+            studentProgressRepository.findByStudentId(user.getId())
+                    .ifPresent(progress -> {
+                        progress.setActive(true);
+                        studentProgressRepository.save(progress);
+                    });
+
+        }else {
+            studentProgressRepository.findByStudentId(user.getId())
+                    .ifPresent(progress -> {
+                        progress.setActive(false);
+                        studentProgressRepository.save(progress);
+                    });
+        }
+
         user.setRoles(roles);
+        userRepository.save(user);
+
         return new UserRes(user.getId(), user.getFirstName(),
                 user.getLastName(), user.getPhoneNumber(),
                 user.getRoles().stream().map(Roles::getName).toList());

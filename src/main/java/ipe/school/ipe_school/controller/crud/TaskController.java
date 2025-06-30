@@ -53,8 +53,6 @@ public class TaskController {
         List<QuestionRes> questionResList = taskMapper.mapQuestions(task);
         List<Long> attachmentIds = taskMapper.extractAttachmentIds(task);
         TaskDetailsRes taskDetailsRes = taskMapper.buildTaskDetails(task, questionResList, attachmentIds);
-
-        System.err.println(taskDetailsRes.getAttachmentId());
         return ResponseEntity.ok(taskDetailsRes);
     }
 }

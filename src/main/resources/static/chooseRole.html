@@ -101,12 +101,30 @@
             background: rgba(220, 53, 69, 0.1);
             border-left: 4px solid #dc3545;
         }
+
+        .logout-btn {
+            margin-top: 2rem;
+            background-color: #dc3545;
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body class="d-flex justify-content-center align-items-center p-3">
 <div class="role-card p-4 p-md-5 text-center">
     <h3 class="header-text">Kabinetni tanlang</h3>
     <div id="role-buttons" class="d-grid gap-3"></div>
+    <button class="logout-btn mt-4" onclick="logout()">
+        <i class="fas fa-sign-out-alt me-2"></i> Chiqish
+    </button>
 </div>
 
 <script>
@@ -158,6 +176,11 @@
                         </button>`;
             }
         });
+    }
+
+    function logout() {
+        localStorage.removeItem('userData');
+        window.location.href = '/index.html';
     }
 </script>
 </body>

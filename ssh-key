@@ -1,0 +1,13 @@
+
+
+[
+    {
+        "id": 1,
+        "name": "Physics",
+        "groups": [{"id": 1, "name": "Group 1"},{"id": 2, "name": "Group 2"} ],
+        "modules": [
+            { "name": "Mechanics", "taskCount": 10 },
+            { "name": "Thermodynamics", "taskCount": 8 }
+        ]
+    }
+]
