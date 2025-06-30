@@ -302,7 +302,7 @@
     // Fetch and display tasks for a module
     async function loadTasks(moduleId) {
         try {
-            const response = await fetch(`${API_BASE}/module/${moduleId}/tasks`, {
+            const response = await fetch(`${API_BASE}/module/${moduleId}`, {
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
             });
             const tasks = await response.json();
@@ -337,7 +337,7 @@
     // Fetch and display task attachments
     async function loadTaskAttachments(taskId) {
         try {
-            const response = await fetch(`${API_BASE}/task/${taskId}/attachments`, {
+            const response = await fetch(`${API_BASE}/task/${taskId}`, {
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
             });
             const attachments = await response.json();
@@ -351,7 +351,7 @@
     // Fetch and display questions for a task
     async function loadQuestions(taskId) {
         try {
-            const response = await fetch(`${API_BASE}/task/${taskId}/questions`, {
+            const response = await fetch(`${API_BASE}/task/${taskId}`, {
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
             });
             const questions = await response.json();
@@ -417,7 +417,7 @@
         const files = document.getElementById('taskAttachments').files;
         for (let file of files) formData.append('attachments', file);
         try {
-            await fetch(`${API_BASE}/module/${currentModuleId}/tasks`, {
+            await fetch(`${API_BASE}/module/${currentModuleId}`, {
                 method: 'POST',
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` },
                 body: formData
@@ -480,7 +480,7 @@
             .map(input => input.value).filter(val => val);
         formData.append('answerVariants', JSON.stringify(variants));
         try {
-            await fetch(`${API_BASE}/task/${currentTaskId}/questions`, {
+            await fetch(`${API_BASE}/task/${currentTaskId}`, {
                 method: 'POST',
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` },
                 body: formData
@@ -501,7 +501,7 @@
     // Close module
     async function closeModule() {
         try {
-            await fetch(`${API_BASE}/module/${currentModuleId}/close`, {
+            await fetch(`${API_BASE}/module/${currentModuleId}`, {
                 method: 'POST',
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
             });
