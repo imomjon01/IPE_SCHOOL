@@ -8,6 +8,7 @@ import ipe.school.ipe_school.models.entity.StudentProgress;
 import ipe.school.ipe_school.models.entity.User;
 import ipe.school.ipe_school.models.repo.*;
 import ipe.school.ipe_school.service.interfaces.AnswerSubmissionService;
+import ipe.school.ipe_school.service.interfaces.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ public class AnswerSubmissionServiceImpl implements AnswerSubmissionService {
     private final AnswerSubmissionRepository answerSubmissionRepository;
     private final StudentProgressRepository studentProgressRepository;
     private final GroupRepository groupRepository;
+    private final TaskService taskService;
 
     @Override
     @Transactional
@@ -80,4 +82,31 @@ public class AnswerSubmissionServiceImpl implements AnswerSubmissionService {
         );
     }
 
+    @Override
+    public StudentProcessRes results(User user, Long taskId) {
+        List<AnswerSubmission> submissions = answerSubmissionRepository
+                .findByStudentIdAndQuestionIn(user.getId(), taskService.findByActiveTask(taskId).getQuestions());
+
+        Optional<StudentProgress> studentProgress = studentProgressRepository.findByStudentId(user.getId());
+
+        StudentProgress progress = studentProgress.orElseGet(() -> StudentProgress.builder()
+                .student(user)
+                .groupName(groupRepository.findGroupNameByStudentId(user.getId()))
+                .totalQuery(0)
+                .passedQuery(0)
+                .failedQuery(0)
+                .build());
+
+        int totalQuery = submissions.size();
+        int passedQuery = (int) submissions.stream().filter(AnswerSubmission::getCorrect).count();
+        int failedQuery = totalQuery - passedQuery;
+
+        return new StudentProcessRes(
+                user.getFullName(),
+                progress.getGroupName(),
+                totalQuery,
+                passedQuery,
+                failedQuery
+        );
+    }
 }

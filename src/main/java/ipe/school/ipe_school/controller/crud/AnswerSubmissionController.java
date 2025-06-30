@@ -38,29 +38,10 @@ public class AnswerSubmissionController {
     }
 
     @GetMapping("/{taskId}/results")
-    public ResponseEntity<StudentProcessRes> getTaskResults(@PathVariable Long taskId, @AuthenticationPrincipal User user) {
-        List<AnswerSubmission> submissions = answerSubmissionRepository
-                .findByStudentIdAndQuestionIn(user.getId(), taskService.findByActiveTask(taskId).getQuestions());
+    public ResponseEntity<StudentProcessRes> getTaskResults(@AuthenticationPrincipal User user, @PathVariable Long taskId) {
 
-        Optional<StudentProgress> studentProgress = studentProgressRepository.findByStudentId(user.getId());
-        StudentProgress progress = studentProgress.orElseGet(() -> StudentProgress.builder()
-                .student(user)
-                .groupName(groupRepository.findGroupNameByStudentId(user.getId()))
-                .totalQuery(0)
-                .passedQuery(0)
-                .failedQuery(0)
-                .build());
-        int totalQuery = submissions.size();
-        int passedQuery = (int) submissions.stream().filter(AnswerSubmission::getCorrect).count();
-        int failedQuery = totalQuery - passedQuery;
+        StudentProcessRes studentProcessRes = answerSubmissionService.results(user, taskId);
 
-        StudentProcessRes response = new StudentProcessRes(
-                user.getFullName(),
-                progress.getGroupName(),
-                totalQuery,
-                passedQuery,
-                failedQuery
-        );
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(studentProcessRes);
     }
 }

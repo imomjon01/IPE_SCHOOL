@@ -19,449 +19,421 @@
             --accent: #4895ef;
             --light: #f8f9fa;
             --dark: #212529;
-            --success: #4cc9f0;
-            --task-color: #ff9e00;
-            --danger: #f72585;
-            --warning: #ffaa00;
+            --success: #22c55e;
+            --task-color: #f59e0b;
+            --danger: #ef4444;
+            --warning: #f59e0b;
             --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --shadow-mobile: 0 2px 10px rgba(0, 0, 0, 0.08);
             --transition: all 0.3s ease;
+            --border-radius: 12px;
         }
 
         body {
             background: linear-gradient(135deg, #e0e7ff 0%, #c3cfe2 100%);
             min-height: 100vh;
-            padding: 20px;
             color: var(--dark);
+            font-size: 16px;
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 1rem;
             display: grid;
-            grid-template-columns: 3fr 1fr;
-            gap: 30px;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
         }
 
-        @media (max-width: 768px) {
+        /* Mobile First - Default Layout */
+        @media (min-width: 768px) {
             .container {
-                grid-template-columns: 1fr;
+                padding: 1.5rem;
+                gap: 2rem;
             }
         }
 
-        .student-bar {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            cursor: pointer;
-            transition: var(--transition);
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            min-height: 200px;
+        @media (min-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr 2fr;
+                padding: 2rem;
+                gap: 2.5rem;
+            }
         }
 
-        .student-bar:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        /* Student Profile Card */
+        .student-bar {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-mobile);
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            order: -1;
+        }
+
+        @media (min-width: 1024px) {
+            .student-bar {
+                order: 0;
+                box-shadow: var(--shadow);
+            }
+
+            .student-bar:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            }
         }
 
         .student-info {
             display: flex;
             align-items: center;
-            gap: 15px;
-            color: white;
-            margin-bottom: 15px;
+            gap: 1rem;
+            margin-bottom: 1rem;
         }
 
         .student-info img {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid white;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 768px) {
+            .student-info img {
+                width: 70px;
+                height: 70px;
+            }
         }
 
         .student-details {
-            flex-grow: 1;
+            flex: 1;
+            min-width: 0;
         }
 
         .student-name {
-            font-size: 18px;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 0.25rem;
+            word-wrap: break-word;
+        }
+
+        @media (min-width: 768px) {
+            .student-name {
+                font-size: 1.25rem;
+            }
         }
 
         .student-phone {
-            font-size: 14px;
+            font-size: 0.875rem;
             opacity: 0.9;
+            word-wrap: break-word;
         }
 
         .student-progress {
             width: 100%;
             background: rgba(255, 255, 255, 0.2);
-            height: 8px;
-            border-radius: 4px;
-            margin-top: 10px;
+            height: 6px;
+            border-radius: 3px;
+            margin-top: 0.75rem;
             overflow: hidden;
         }
 
         .student-progress-fill {
             height: 100%;
             background: white;
-            border-radius: 4px;
+            border-radius: 3px;
             width: 0%;
-            transition: width 0.5s ease;
+            transition: width 0.8s ease;
         }
 
         .student-info .error {
             color: var(--danger);
-            font-size: 14px;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
         }
 
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+        .actions {
+            display: flex;
             justify-content: center;
-            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
         }
 
-        .modal-content {
-            background: white;
-            padding: 25px;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            position: relative;
-        }
-
-        .close-modal {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            font-size: 24px;
+        .action-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
             cursor: pointer;
-            color: var(--dark);
-        }
-
-        .update-profile form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .update-profile label {
             font-weight: 500;
-            color: var(--dark);
-        }
-
-        .update-profile input {
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-
-        .phone-group {
+            font-size: 0.875rem;
+            transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 0.5rem;
+            min-height: 44px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .phone-prefix {
-            padding: 12px;
-            background: #f0f0f0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            color: var(--dark);
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
         }
 
-        .phone-input {
-            flex: 1;
+        .action-btn.secondary {
+            background: rgba(255, 255, 255, 0.15);
+            width: 100%;
+            justify-content: center;
         }
 
-        .error-message {
-            color: var(--danger);
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
-        }
-
-        .image-upload {
+        /* Sidebar */
+        .sidebar {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            margin: 10px 0;
+            gap: 1.5rem;
         }
 
-        .image-upload-preview {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--primary);
-            display: none;
-        }
-
-        .image-upload-btn {
-            padding: 8px 15px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: var(--transition);
-        }
-
-        .image-upload-btn:hover {
-            background: var(--secondary);
-        }
-
-        .update-profile button {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 50px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-            margin-top: 10px;
-        }
-
-        .update-profile button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
-        }
-
+        /* Level Bar (Modules) */
         .level-bar {
             background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-mobile);
+        }
+
+        @media (min-width: 1024px) {
+            .level-bar {
+                box-shadow: var(--shadow);
+            }
         }
 
         .level-btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 50px;
-            background: linear-gradient(90deg, var(--accent), var(--success));
-            color: white;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            background: white;
             cursor: pointer;
             transition: var(--transition);
-            font-weight: 600;
-            font-size: 16px;
-            margin: 5px;
+            text-align: left;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-height: 56px;
+            width: 100%;
+            margin: 0.5rem 0;
         }
 
         .level-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
+            border-color: var(--accent);
+            background: rgba(72, 149, 239, 0.05);
+            transform: translateY(-1px);
         }
 
         .level-btn.active {
-            background: linear-gradient(90deg, var(--secondary), var(--primary));
-            transform: scale(1.05);
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            transform: scale(1.02);
         }
 
+        /* Tasks Section */
         .tasks {
             background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-mobile);
+        }
+
+        @media (min-width: 1024px) {
+            .tasks {
+                box-shadow: var(--shadow);
+            }
         }
 
         .section-title {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
             color: var(--primary);
-            font-size: 22px;
-            padding-bottom: 10px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            padding-bottom: 0.75rem;
             border-bottom: 2px solid var(--accent);
         }
 
         .task-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
         }
 
         .task {
-            background: linear-gradient(135deg, var(--task-color), #ffb74d);
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            transition: var(--transition);
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            background: white;
             cursor: pointer;
-            color: white;
-            font-weight: 600;
-            box-shadow: 0 4px 8px rgba(255, 158, 0, 0.3);
+            transition: all 0.3s ease;
+            text-align: left;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 56px;
             position: relative;
+            user-select: none;
         }
 
-        .task:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(255, 158, 0, 0.4);
+        .task:hover:not(.completed) {
+            border-color: var(--task-color);
+            background: rgba(245, 158, 11, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
+
+        .task:active:not(.completed) {
+            transform: translateY(0);
+        }
+
+        .task.active {
+            border-color: var(--task-color);
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--task-color);
+            transform: scale(1.02);
         }
 
         .task.completed {
-            background: linear-gradient(135deg, #28a745, #4ade80);
-            cursor: not-allowed;
+            background: rgba(34, 197, 94, 0.1);
+            border-color: var(--success);
+            color: var(--success);
+            cursor: pointer;
         }
 
         .task.completed:hover {
-            transform: none;
-            box-shadow: 0 4px 8px rgba(Rankin, 0, 0, 0.3);
+            background: rgba(34, 197, 94, 0.15);
+            transform: translateY(-1px);
         }
 
         .task.completed::after {
-            content: "Ishlangan";
+            content: "Bajarilgan";
             position: absolute;
-            bottom: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 12px;
-            color: #fff;
-            background: rgba(0, 0, 0, 0.5);
+            top: -8px;
+            right: 8px;
+            font-size: 0.7rem;
+            color: var(--success);
+            background: white;
             padding: 2px 8px;
             border-radius: 10px;
+            border: 1px solid var(--success);
         }
 
         .task i {
-            font-size: 28px;
-            margin-bottom: 10px;
+            font-size: 1.1rem;
+            margin-right: 0.5rem;
         }
 
+        .task span {
+            flex: 1;
+            min-width: 0;
+            word-wrap: break-word;
+        }
+
+        /* Main Content */
         .question-section {
             background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-mobile);
+            overflow: hidden;
+        }
+
+        @media (min-width: 1024px) {
+            .question-section {
+                box-shadow: var(--shadow);
+            }
         }
 
         .question {
-            min-height: 350px;
+            min-height: 400px;
             display: flex;
             flex-direction: column;
         }
 
         .question-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .question-title {
-            font-size: 20px;
-            color: var(--primary);
+            font-size: 1.25rem;
             font-weight: 600;
+            color: var(--dark);
+            flex: 1;
+            min-width: 0;
+            word-wrap: break-word;
         }
 
         .difficulty {
             background: var(--accent);
             color: white;
-            padding: 5px 12px;
+            padding: 0.375rem 0.75rem;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
         }
 
         .question-content {
-            flex-grow: 1;
+            flex: 1;
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 30px 0;
         }
 
         .question-text {
-            font-size: 24px;
+            font-size: 1.125rem;
             color: var(--dark);
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 1.5rem;
             line-height: 1.6;
-            max-width: 800px;
+            max-width: 100%;
+            word-wrap: break-word;
         }
 
-        .options {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 25px;
-            width: 100%;
-            max-width: 700px;
+        @media (min-width: 768px) {
+            .question-text {
+                font-size: 1.25rem;
+                margin-bottom: 2rem;
+            }
         }
 
-        .option {
-            padding: 20px;
-            border: 3px solid #e0e0e0;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: var(--transition);
-            text-align: center;
-            font-weight: 600;
-            font-size: 18px;
-            background: white;
-            position: relative;
-        }
-
-        .option:hover {
-            border-color: var(--accent);
-            background: rgba(67, 97, 238, 0.1);
-        }
-
-        .option.selected {
-            border-color: var(--success);
-            background: rgba(76, 201, 240, 0.2);
-            transform: scale(1.02);
-        }
-
-        .option input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .option label {
-            display: block;
-            cursor: pointer;
-            padding: 10px;
-        }
-
+        /* Video Section */
         #videoContainer {
             position: relative;
-            padding-bottom: 62.5%;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
             height: 0;
-            overflow: hidden;
-            max-width: 100%;
-            width: 90%;
             background: #000;
             border-radius: 10px;
-            box-shadow: 0 4px 1px rgba(0, 0, 0, 0.2);
-            margin: 0 auto 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-bottom: 1.5rem;
         }
 
         #videoContainer iframe {
@@ -474,46 +446,92 @@
 
         .video-message {
             text-align: center;
-            margin-top: 15px;
-            font-size: 16px;
+            padding: 1rem;
+            background: rgba(72, 149, 239, 0.1);
+            border-radius: 8px;
             color: var(--primary);
             font-weight: 500;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
         }
 
+        /* Continue Button */
+        .continue-section {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .continue-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--success), #16a34a);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-height: 56px;
+        }
+
+        .continue-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+        }
+
+        .continue-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Questions After Video */
         .questions-after-video {
             display: none;
             width: 100%;
-            animation: fadeIn 0.5s ease-out;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .questions-after-video.active {
+            display: block;
         }
 
         .question-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            border-left: 5px solid var(--primary);
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid var(--primary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .question-card-title {
-            font-size: 18px;
+            font-size: 1.125rem;
             font-weight: 600;
-            margin-bottom: 15px;
             color: var(--dark);
+            margin-bottom: 1.25rem;
+            line-height: 1.5;
         }
 
         .question-card-options {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
+            gap: 0.75rem;
         }
 
         .question-card-option {
-            padding: 15px;
-            border: 2px solid #eee;
-            border-radius: 8px;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
             cursor: pointer;
             transition: var(--transition);
+            background: white;
+            display: flex;
+            align-items: center;
+            min-height: 56px;
         }
 
         .question-card-option:hover {
@@ -523,213 +541,465 @@
 
         .question-card-option.selected {
             border-color: var(--success);
-            background: rgba(76, 201, 240, 0.1);
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+            font-weight: 500;
         }
 
-        .actions {
+        .question-card-option input[type="radio"] {
+            display: none;
+        }
+
+        .question-card-option label {
+            cursor: pointer;
+            width: 100%;
+            padding: 0.5rem;
+        }
+
+        /* Question Navigation */
+        .question-nav {
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
-        .action-btn {
-            padding: 12px 30px;
+        .question-counter {
+            font-size: 0.875rem;
+            color: var(--dark);
+            font-weight: 500;
+            order: 2;
+            width: 100%;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .question-counter {
+                order: 0;
+                width: auto;
+            }
+        }
+
+        .question-nav .action-btn {
+            background: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+            padding: 0.75rem 1.5rem;
+            font-size: 0.875rem;
+            min-height: 44px;
+        }
+
+        .question-nav .action-btn.secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .question-nav .action-btn:hover {
+            background: var(--secondary);
+            border-color: var(--secondary);
+            color: white;
+        }
+
+        .question-nav .action-btn.secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Submit Button */
+        #submitButton {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--success), #16a34a);
+            color: white;
             border: none;
             border-radius: 50px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: white;
-            cursor: pointer;
+            font-size: 1rem;
             font-weight: 600;
-            font-size: 16px;
+            cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.75rem;
+            min-height: 56px;
+            margin: 2rem auto;
         }
 
-        .action-btn.secondary {
-            background: linear-gradient(90deg, var(--accent), var(--success));
+        #submitButton:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
         }
 
-        .action-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
-        }
-
-        .action-btn:disabled {
-            background: #ccc;
+        #submitButton:disabled {
+            background: #9ca3af;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
 
-        .unlock-btn {
-            padding: 8px 20px;
-            border: none;
-            border-radius: 50px;
-            background: linear-gradient(90deg, var(--warning), #ffaa00);
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            transition: var(--transition);
-            margin-top: 10px;
-        }
-
-        .unlock-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(255, 170, 0, 0.4);
-        }
-
-        .progress-container {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            margin-top: 20px;
-        }
-
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .progress-bar {
-            height: 12px;
-            background: #e9ecef;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--success));
-            border-radius: 10px;
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-
-        .question-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-
-        .question-counter {
-            font-size: 16px;
-            color: var(--dark);
-            font-weight: 500;
-        }
-
-        .group-list {
-            margin-top: 20px;
-        }
-
-        .group-item {
-            background: #f9f9f9;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border-left: 5px solid var(--primary);
-        }
-
-        .group-item h3 {
-            margin: 0;
-            color: var(--primary);
-            font-size: 20px;
-        }
-
-        .student-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        .student-table th,
-        .student-table td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .student-table th {
-            background: var(--primary);
-            color: white;
-        }
-
-        .student-table tr:hover {
-            background: #f1f1f1;
-        }
-
-        /* Attachment styles */
+        /* Attachments */
         .attachment-container {
-            margin: 20px 0;
-            padding: 20px;
-            background: #f8f9fa;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: #f8fafc;
             border-radius: 10px;
-            border: 1px solid #e9ecef;
+            border: 1px solid #e2e8f0;
         }
 
         .attachment-container h4 {
-            margin-bottom: 15px;
+            margin-bottom: 1rem;
             color: var(--primary);
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .attachment-item {
-            margin-bottom: 15px;
-            padding: 10px;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
             background: white;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
         }
 
         .attachment-image {
             max-width: 100%;
             height: auto;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 0.5rem;
         }
 
         .attachment-download {
-            display: inline-block;
-            padding: 10px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
             background: var(--primary);
             color: white;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 8px;
             font-weight: 500;
             transition: var(--transition);
+            font-size: 0.875rem;
+            min-height: 44px;
         }
 
         .attachment-download:hover {
             background: var(--secondary);
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
 
         .attachment-error {
             color: var(--danger);
             text-align: center;
-            padding: 20px;
-            background: #fff5f5;
-            border: 1px solid #fed7d7;
+            padding: 1rem;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
             border-radius: 8px;
+            font-size: 0.875rem;
         }
 
         .attachment-loading {
             text-align: center;
-            padding: 20px;
+            padding: 1rem;
+            color: var(--primary);
+            font-size: 0.875rem;
+        }
+
+        /* Progress Container */
+        .progress-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-mobile);
+            margin-top: 1.5rem;
+        }
+
+        @media (min-width: 1024px) {
+            .progress-container {
+                box-shadow: var(--shadow);
+            }
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            border-radius: 5px;
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        /* Task Results */
+        .task-results {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            display: none;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .task-results.active {
+            display: block;
+        }
+
+        .task-results-header {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--success);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .task-results-content p {
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f3f4f6;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 1.25rem;
+        }
+
+        .close-modal:hover {
+            background: #e5e7eb;
+        }
+
+        /* Form Styles */
+        .update-profile form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .update-profile label {
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .update-profile input {
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            min-height: 48px;
+        }
+
+        .update-profile input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .phone-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .phone-prefix {
+            padding: 0.75rem;
+            background: #f3f4f6;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-weight: 500;
+            color: var(--dark);
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+        }
+
+        .phone-input {
+            flex: 1;
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .image-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .image-upload-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            display: none;
+        }
+
+        .image-upload-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .image-upload-btn:hover {
+            background: var(--secondary);
+        }
+
+        .update-profile button[type="submit"] {
+            padding: 1rem;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-top: 0.5rem;
+            min-height: 52px;
+            font-size: 1rem;
+        }
+
+        .update-profile button[type="submit"]:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+        }
+
+        /* Loading States */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
             color: var(--primary);
         }
 
-        @keyframes fadeIn {
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(67, 97, 238, 0.1);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: #6b7280;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #d1d5db;
+        }
+
+        .empty-state h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .empty-state p {
+            font-size: 0.875rem;
+        }
+
+        /* Animations */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -743,7 +1013,7 @@
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateX(-30px);
+                transform: translateX(-20px);
             }
             to {
                 opacity: 1;
@@ -751,61 +1021,61 @@
             }
         }
 
+        /* Responsive Improvements */
+        @media (max-width: 640px) {
+            .container {
+                padding: 0.75rem;
+                gap: 1rem;
+            }
+
+            .student-bar, .level-bar, .tasks, .question-section {
+                padding: 1rem;
+            }
+
+            .question-content {
+                padding: 1rem;
+            }
+
+            .question-nav {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .question-nav .action-btn {
+                justify-content: center;
+            }
+
+            .attachment-container {
+                margin: 1rem 0;
+                padding: 0.75rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+                margin: 0.5rem;
+            }
+        }
+
+        /* Utility Classes */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .text-success { color: var(--success); }
+        .text-danger { color: var(--danger); }
+        .text-muted { color: #6b7280; }
+        .mb-0 { margin-bottom: 0; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mt-2 { margin-top: 1rem; }
+
+        /* Footer */
         footer {
             grid-column: 1 / -1;
             text-align: center;
-            margin-top: 40px;
-            padding: 20px;
+            margin-top: 2rem;
+            padding: 1.5rem;
             color: #6c757d;
-            font-size: 14px;
-        }
-
-        .loading {
-            display: none;
-            font-size: 16px;
-            color: var(--primary);
-            text-align: center;
-            padding: 20px;
-        }
-
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border-left-color: var(--primary);
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        .task-results {
-            margin-top: 20px;
-            padding: 20px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            display: none;
-        }
-
-        .task-results-header {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-
-        .task-results-content p {
-            margin: 10px 0;
-            font-size: 16px;
+            font-size: 0.875rem;
+            line-height: 1.4;
         }
     </style>
 </head>
@@ -819,16 +1089,23 @@
                     <div class="difficulty">Daraja tanlanmadi</div>
                 </div>
                 <div class="question-content" id="questionContent">
-                    <div class="question-text">Iltimos, vazifa tanlang!</div>
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-check"></i>
+                        <h3>Vazifa tanlanmadi</h3>
+                        <p>Iltimos, chap tarafdan vazifa tanlang!</p>
+                    </div>
                     <div class="options" id="optionsContainer"></div>
                 </div>
             </div>
             <div class="task-results" id="taskResults">
-                <div class="task-results-header">Vazifa Natijalari</div>
+                <div class="task-results-header">
+                    <i class="fas fa-check-circle"></i>
+                    Vazifa Natijalari
+                </div>
                 <div class="task-results-content" id="taskResultsContent"></div>
             </div>
             <div class="actions">
-                <button class="action-btn" id="submitButton" onclick="submitAnswer()">
+                <button class="action-btn" id="submitButton" onclick="submitAnswer()" style="display: none;">
                     <i class="fas fa-paper-plane"></i> Yuborish
                 </button>
             </div>
@@ -846,7 +1123,7 @@
     <div class="sidebar">
         <div class="student-bar" onclick="showProfileModal()">
             <div class="student-info">
-                <img id="studentImage" src="https://via.placeholder.com/50" alt="Student Image">
+                <img id="studentImage" src="/placeholder.svg?height=70&width=70" alt="Student Image">
                 <div class="student-details">
                     <div class="student-name" id="studentName">Yuklanmoqda...</div>
                     <div class="student-phone" id="studentPhone">Telefon: Yuklanmoqda...</div>
@@ -856,16 +1133,26 @@
                 </div>
                 <div id="imageError" class="error" style="display: none;">Rasm yuklanmadi</div>
             </div>
-            <div class="actions" style="margin-top: auto;">
-                <button class="action-btn secondary" style="width: 100%;">
+            <div class="actions">
+                <button class="action-btn secondary">
                     <i class="fas fa-user-edit"></i> Profilni yangilash
                 </button>
             </div>
         </div>
         <div class="level-bar" id="levelBar">
+            <div class="section-title">
+                <i class="fas fa-book"></i>
+                <h2>Modullar</h2>
+            </div>
             <div class="loading" id="moduleLoading">
                 <div class="spinner"></div>
                 Modullar yuklanmoqda...
+            </div>
+            <div id="modulesList" class="hidden"></div>
+            <div id="modulesEmpty" class="empty-state hidden">
+                <i class="fas fa-book-open"></i>
+                <h3>Modullar mavjud emas</h3>
+                <p>Sizda hozirda modullar mavjud emas. Modulni tanlang.</p>
             </div>
         </div>
         <div class="tasks">
@@ -873,8 +1160,21 @@
                 <i class="fas fa-tasks"></i>
                 <h2>Vazifalar Ro'yxati</h2>
             </div>
-            <div class="loading" id="taskLoading">Yuklanmoqda...</div>
+            <div class="loading" id="taskLoading" style="display: none;">
+                <div class="spinner"></div>
+                Vazifalar yuklanmoqda...
+            </div>
             <div class="task-list" id="taskList"></div>
+            <div id="tasksEmpty" class="empty-state hidden">
+                <i class="fas fa-clipboard-list"></i>
+                <h3>Vazifalar mavjud emas</h3>
+                <p>Sizda vazifa mavjud emas. Vazifani tanlang.</p>
+            </div>
+            <div id="tasksSelectModule" class="empty-state">
+                <i class="fas fa-arrow-up"></i>
+                <h3>Modul tanlang</h3>
+                <p>Vazifalarni ko'rish uchun avval modulni tanlang.</p>
+            </div>
         </div>
         <div class="actions">
             <button class="action-btn" onclick="viewStudentsLevels()">
@@ -923,7 +1223,10 @@
                         <label for="confirmPassword">Parolni tasdiqlash</label>
                         <input type="password" id="confirmPassword" placeholder="Parolni tasdiqlash">
                     </div>
-                    <button type="submit">Yangilash</button>
+                    <button type="submit">
+                        <i class="fas fa-save"></i>
+                        Yangilash
+                    </button>
                 </form>
             </div>
         </div>
@@ -948,13 +1251,14 @@
         console.error('YouTube IFrame API yuklanmadi');
         const videoContainer = document.getElementById('videoContainer');
         if (videoContainer) {
-            videoContainer.innerHTML = `<div class="question-text" style="color: var(--danger);">YouTube API yuklanmadi. Iltimos, keyinroq qayta urining.</div>`;
+            videoContainer.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>YouTube API yuklanmadi</h3><p>Iltimos, keyinroq qayta urining.</p></div>`;
             videoCompleted = true;
             displayQuestionsAfterVideo(document.getElementById('questionsAfterVideo'));
         }
     };
     document.head.appendChild(youtubeScript);
 
+    // Global variables
     const levelBar = document.getElementById('levelBar');
     const moduleLoading = document.getElementById('moduleLoading');
     const taskLoading = document.getElementById('taskLoading');
@@ -993,10 +1297,12 @@
 
     function checkAuth() {
         if (!userData || !userData.userId || !userData.token) {
-            questionBox.innerHTML = `
-                <div class="question-content">
-                    <div class="question-text">Avtorizatsiya ma'lumotlari topilmadi. Iltimos, qaytadan kiring.</div>
-                    <button onclick="logout()" style="padding: 10px 20px; margin-top: 15px; background: var(--primary); color: white; border: none; border-radius: 5px; cursor: pointer;">
+            questionContent.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Avtorizatsiya ma'lumotlari topilmadi</h3>
+                    <p>Iltimos, qaytadan kiring.</p>
+                    <button onclick="logout()" style="padding: 0.75rem 1.5rem; margin-top: 1rem; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer;">
                         Login sahifasiga o'tish
                     </button>
                 </div>
@@ -1021,7 +1327,7 @@
                 imagePreview.src = userData.image;
                 imagePreview.style.display = 'block';
             } else {
-                studentImageElement.src = 'https://via.placeholder.com/50';
+                studentImageElement.src = '/placeholder.svg?height=70&width=70';
                 imageErrorElement.style.display = 'block';
             }
             if (userData.progress) {
@@ -1030,7 +1336,7 @@
         } else {
             studentNameElement.textContent = 'Foydalanuvchi';
             studentPhoneElement.textContent = 'Telefon: Noma\'lum';
-            studentImageElement.src = 'https://via.placeholder.com/50';
+            studentImageElement.src = '/placeholder.svg?height=70&width=70';
             imageErrorElement.style.display = 'block';
         }
         if (userData) {
@@ -1070,11 +1376,11 @@
 
     function showProfileModal() {
         if (!checkAuth()) return;
-        profileModal.style.display = 'flex';
+        profileModal.classList.add('active');
     }
 
     function closeProfileModal() {
-        profileModal.style.display = 'none';
+        profileModal.classList.remove('active');
         updateProfileForm.reset();
         newImageFile = null;
         phoneError.style.display = 'none';
@@ -1097,9 +1403,11 @@
             console.log('Backenddan kelgan ma\'lumotlar:', students);
 
             if (!Array.isArray(students) || students.length === 0) {
-                questionBox.innerHTML = `
-                    <div class="question-content">
-                        <div class="question-text">Talabalar ma\'lumotlari topilmadi</div>
+                questionContent.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-users"></i>
+                        <h3>Talabalar ma'lumotlari topilmadi</h3>
+                        <p>Hozirda talabalar reytingi mavjud emas</p>
                     </div>
                 `;
                 return;
@@ -1120,27 +1428,28 @@
 
             let htmlContent = `
                 <div class="question-header">
-                    <div class="question-title">Talabalar Reytingi (Guruh bo'yicha)</div>
+                    <div class="question-title">Talabalar Reytingi</div>
+                    <div class="difficulty">Guruh bo'yicha</div>
                 </div>
                 <div class="question-content">
                     <div class="group-list">
             `;
 
             if (Object.keys(groupedStudents).length === 0) {
-                htmlContent += '<div class="question-text">Talabalar ma\'lumotlari topilmadi</div>';
+                htmlContent += '<div class="empty-state"><i class="fas fa-users"></i><h3>Talabalar ma\'lumotlari topilmadi</h3></div>';
             } else {
                 Object.keys(groupedStudents).forEach(groupName => {
                     htmlContent += `
-                        <div class="group-item">
-                            <h3>${groupName}</h3>
-                            <table class="student-table">
+                        <div class="group-item" style="background: #f8fafc; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; border-left: 4px solid var(--primary);">
+                            <h3 style="margin: 0 0 1rem 0; color: var(--primary); font-size: 1.125rem;">${groupName}</h3>
+                            <table class="student-table" style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
                                 <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Ism</th>
-                                        <th>Jami savollar</th>
-                                        <th>To'g'ri javoblar</th>
-                                        <th>Noto'g'ri javoblar</th>
+                                    <tr style="background: var(--primary); color: white;">
+                                        <th style="padding: 0.75rem 0.5rem; text-align: left; border-bottom: 1px solid #ddd;">#</th>
+                                        <th style="padding: 0.75rem 0.5rem; text-align: left; border-bottom: 1px solid #ddd;">Ism</th>
+                                        <th style="padding: 0.75rem 0.5rem; text-align: left; border-bottom: 1px solid #ddd;">Jami</th>
+                                        <th style="padding: 0.75rem 0.5rem; text-align: left; border-bottom: 1px solid #ddd;">To'g'ri</th>
+                                        <th style="padding: 0.75rem 0.5rem; text-align: left; border-bottom: 1px solid #ddd;">Noto'g'ri</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1151,12 +1460,12 @@
                         const passedQuery = student.passedQuery || 0;
                         const failedQuery = student.failedQuery || 0;
                         htmlContent += `
-                            <tr>
-                                <td>${index + 1}</td>
-                                <td>${studentName}</td>
-                                <td>${totalQuery}</td>
-                                <td>${passedQuery}</td>
-                                <td>${failedQuery}</td>
+                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                                <td style="padding: 0.75rem 0.5rem;">${index + 1}</td>
+                                <td style="padding: 0.75rem 0.5rem;">${studentName}</td>
+                                <td style="padding: 0.75rem 0.5rem;">${totalQuery}</td>
+                                <td style="padding: 0.75rem 0.5rem; color: var(--success);">${passedQuery}</td>
+                                <td style="padding: 0.75rem 0.5rem; color: var(--danger);">${failedQuery}</td>
                             </tr>
                         `;
                     });
@@ -1175,12 +1484,11 @@
             questionBox.innerHTML = htmlContent;
         } catch (error) {
             console.error('Talabalar reytingini yuklashda xato:', error);
-            questionBox.innerHTML = `
-                <div class="question-content">
-                    <div class="question-text" style="color: var(--danger);">
-                        Talabalar reytingini yuklashda xato yuz berdi: ${error.response?.data?.message || error.message}.
-                        Iltimos, tarmoq ulanishingizni tekshiring yoki administrator bilan bog'laning.
-                    </div>
+            questionContent.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Xato yuz berdi</h3>
+                    <p>Talabalar reytingini yuklashda xato: ${error.response?.data?.message || error.message}</p>
                 </div>
             `;
         }
@@ -1189,6 +1497,9 @@
     async function loadModules() {
         if (!checkAuth()) return;
         moduleLoading.style.display = 'block';
+        document.getElementById('modulesList').classList.add('hidden');
+        document.getElementById('modulesEmpty').classList.add('hidden');
+
         try {
             const response = await axios.get('/api/v1/module', {
                 headers: {'Authorization': userData.token}
@@ -1199,35 +1510,37 @@
             displayModules(response.data);
         } catch (error) {
             console.error('Modullarni yuklashda xato:', error);
-            questionBox.innerHTML = `
-            <div class="question-content">
-                <div class="question-text" style="color: var(--dark);">
-                    ${error.message}
-                </div>
-            </div>`;
             moduleLoading.style.display = 'none';
+            document.getElementById('modulesEmpty').classList.remove('hidden');
+            document.getElementById('modulesEmpty').innerHTML = `
+                <i class="fas fa-book-open"></i>
+                <h3>Modullar mavjud emas</h3>
+                <p>Sizda hozirda modullar mavjud emas. Modulni tanlang.</p>
+            `;
         }
     }
 
     function displayModules(modules) {
-        levelBar.innerHTML = '';
+        const modulesList = document.getElementById('modulesList');
+        modulesList.innerHTML = '';
+
         if (!modules || modules.length === 0) {
-            questionBox.innerHTML = `
-            <div class="question-content">
-                <div class="question-text">Hozirda siz uchun modullar mavjud emas</div>
-            </div>`;
+            document.getElementById('modulesEmpty').classList.remove('hidden');
             moduleLoading.style.display = 'none';
             return;
         }
+
         modules.forEach(module => {
             const button = document.createElement('button');
             button.className = 'level-btn';
             button.innerHTML = `<i class="fas fa-book"></i> ${module.moduleName || 'Noma\'lum modul'}`;
             button.dataset.moduleId = module.id;
             button.addEventListener('click', () => selectModule(module));
-            levelBar.appendChild(button);
+            modulesList.appendChild(button);
         });
+
         moduleLoading.style.display = 'none';
+        modulesList.classList.remove('hidden');
     }
 
     function selectModule(module) {
@@ -1236,6 +1549,10 @@
         const selectedBtn = document.querySelector(`.level-btn[data-module-id="${module.id}"]`);
         if (selectedBtn) selectedBtn.classList.add('active');
         currentModuleId = module.id;
+
+        // Hide tasks select module message
+        document.getElementById('tasksSelectModule').classList.add('hidden');
+
         loadTasks(module.id);
     }
 
@@ -1243,6 +1560,8 @@
         if (!checkAuth()) return;
         taskLoading.style.display = 'block';
         taskList.innerHTML = '';
+        document.getElementById('tasksEmpty').classList.add('hidden');
+
         try {
             const response = await axios.get(`/api/v1/module/get/${moduleId}`, {
                 headers: {'Authorization': userData.token}
@@ -1253,7 +1572,13 @@
             await displayTasks(response.data);
         } catch (error) {
             console.error('Vazifalarni yuklashda xato:', error);
-            taskList.innerHTML = `<div class="error-message" style="color: var(--danger);">Vazifalarni yuklashda xato: ${error.message}</div>`;
+            taskLoading.style.display = 'none';
+            document.getElementById('tasksEmpty').classList.remove('hidden');
+            document.getElementById('tasksEmpty').innerHTML = `
+                <i class="fas fa-clipboard-list"></i>
+                <h3>Vazifalar mavjud emas</h3>
+                <p>Sizda vazifa mavjud emas. Vazifani tanlang.</p>
+            `;
         } finally {
             taskLoading.style.display = 'none';
         }
@@ -1262,22 +1587,82 @@
     async function displayTasks(tasks) {
         taskList.innerHTML = '';
         if (!tasks || tasks.length === 0) {
-            taskList.innerHTML = `<div class="empty-message">Ushbu modulda vazifalar mavjud emas</div>`;
+            document.getElementById('tasksEmpty').classList.remove('hidden');
             return;
         }
+
         for (const task of tasks) {
             const taskElement = document.createElement('div');
             taskElement.className = 'task';
-            taskElement.innerHTML = `<i class="fas fa-tasks"></i><span>${task.taskName || 'Noma\'lum vazifa'}</span>`;
+            taskElement.dataset.taskId = task.id;
+            taskElement.innerHTML = `
+                <i class="fas fa-tasks"></i>
+                <span>${task.taskName || 'Noma\'lum vazifa'}</span>
+                <i class="fas fa-chevron-right"></i>
+            `;
+
             const isSubmitted = await checkTaskSubmission(task.id);
             if (isSubmitted) {
                 taskElement.classList.add('completed');
-                taskElement.removeEventListener('click', selectTask);
-                taskElement.addEventListener('click', () => displayTaskResults(task.id));
+                taskElement.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    displayTaskResults(task.id);
+                });
             } else {
-                taskElement.addEventListener('click', () => selectTask(task));
+                taskElement.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    selectTask(task, taskElement);
+                });
             }
             taskList.appendChild(taskElement);
+        }
+    }
+
+    async function selectTask(task, taskElement) {
+        if (!checkAuth()) return;
+
+        if (await checkTaskSubmission(task.id)) {
+            await displayTaskResults(task.id);
+            return;
+        }
+
+        document.querySelectorAll('.task').forEach(t => t.classList.remove('active'));
+        if (taskElement) {
+            taskElement.classList.add('active');
+        }
+
+        currentTaskId = task.id;
+        isTaskSubmitted = await checkTaskSubmission(task.id);
+
+        if (isTaskSubmitted) {
+            await displayTaskResults(task.id);
+            return;
+        }
+
+        try {
+            const response = await axios.get(`/api/v1/task/${task.id}`, {
+                headers: {'Authorization': userData.token}
+            });
+            if (!response.data) {
+                throw new Error('Vazifa ma\'lumotlari topilmadi');
+            }
+
+            currentTaskDetails = response.data;
+            currentQuestions = currentTaskDetails.questionRes || [];
+            currentQuestionIndex = 0;
+            selectedAnswers = new Array(currentQuestions.length).fill(null);
+            videoCompleted = false;
+            submitButton.style.display = 'none';
+
+            displayTaskDetails(currentTaskDetails);
+        } catch (error) {
+            console.error('Savollarni yuklashda xato:', error);
+            questionContent.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Xato yuz berdi</h3>
+                    <p>Savollarni yuklashda xato yuz berdi: ${error.message}</p>
+                </div>`;
         }
     }
 
@@ -1298,120 +1683,59 @@
 
     async function displayTaskResults(taskId) {
         if (!checkAuth()) return;
-        taskResults.style.display = 'none';
+        taskResults.classList.remove('active');
         taskResultsContent.innerHTML = '';
+
         try {
             const response = await axios.get(`/api/v1/answer/submission/${taskId}/results`, {
                 headers: {'Authorization': userData.token}
             });
             const result = response.data;
+
             if (result && result.totalQuery > 0) {
                 isTaskSubmitted = true;
-                submitButton.disabled = true;
-                taskResults.style.display = 'block';
+                submitButton.style.display = 'none';
+                taskResults.classList.add('active');
+
                 taskResultsContent.innerHTML = `
                     <p><strong>Talaba:</strong> ${result.studentName || 'Noma\'lum'}</p>
                     <p><strong>Guruh:</strong> ${result.groupName || 'Noma\'lum'}</p>
                     <p><strong>Jami savollar:</strong> ${result.totalQuery}</p>
-                    <p><strong>To'g'ri javoblar:</strong> ${result.passedQuery}</p>
-                    <p><strong>Noto'g'ri javoblar:</strong> ${result.failedQuery}</p>
-                    <div style="height: 10px; background: #e9ecef; border-radius: 5px; margin: 10px 0;">
-                        <div style="height: 100%; width: ${(result.passedQuery / result.totalQuery) * 100}%; background: var(--success); border-radius: 5px;"></div>
+                    <p><strong>To'g'ri javoblar:</strong> <span style="color: var(--success);">${result.passedQuery}</span></p>
+                    <p><strong>Noto'g'ri javoblar:</strong> <span style="color: var(--danger);">${result.failedQuery}</span></p>
+                    <div style="height: 8px; background: #e5e7eb; border-radius: 4px; margin: 1rem 0; overflow: hidden;">
+                        <div style="height: 100%; width: ${(result.passedQuery / result.totalQuery) * 100}%; background: var(--success); border-radius: 4px; transition: width 0.5s ease;"></div>
                     </div>
                 `;
+
                 questionBox.innerHTML = `
                     <div class="question-header">
                         <div class="question-title">Vazifa Natijalari</div>
                         <div class="difficulty">Topshirilgan</div>
                     </div>
                     <div class="question-content">
-                        <div class="question-card">
-                            <div class="question-card-title">Bu vazifa allaqachon topshirilgan</div>
-                            <div>${taskResultsContent.innerHTML}</div>
+                        <div class="empty-state">
+                            <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                            <h3>Bu vazifa allaqachon topshirilgan</h3>
+                            <div style="margin-top: 1rem; text-align: left; max-width: 400px;">
+                                ${taskResultsContent.innerHTML}
+                            </div>
                         </div>
                     </div>
                 `;
             } else {
                 isTaskSubmitted = false;
-                submitButton.disabled = false;
+                submitButton.style.display = 'flex';
             }
         } catch (error) {
             console.error('Vazifa natijalarini yuklashda xato:', error);
-            taskResultsContent.innerHTML = `
-                <p style="color: var(--danger);">Natijalarni yuklashda xato: ${error.response?.data?.message || error.message}</p>
-            `;
-            questionBox.innerHTML = `
-                <div class="question-content">
-                    <div class="question-text" style="color: var(--danger);">
-                        Natijalarni yuklashda xato: ${error.response?.data?.message || error.message}
-                    </div>
+            questionContent.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Xato yuz berdi</h3>
+                    <p>Natijalarni yuklashda xato: ${error.response?.data?.message || error.message}</p>
                 </div>
             `;
-        }
-    }
-
-    async function unlockTask(taskId) {
-        if (!checkAuth()) return;
-        try {
-            const response = await axios.post(`/api/v1/task/unlock/${taskId}`, {}, {
-                headers: {'Authorization': userData.token}
-            });
-            if (response.data.success) {
-                isTaskSubmitted = false;
-                submitButton.disabled = false;
-                alert('Vazifa muvaffaqiyatli ochildi!');
-                loadTasks(currentModuleId);
-                if (currentTaskId === taskId) {
-                    selectTask({id: taskId});
-                }
-            } else {
-                alert('Vazifani ochish uchun ruxsat yo\'q: ' + response.data.message);
-            }
-        } catch (error) {
-            console.error('Vazifani ochishda xato:', error);
-            alert('Vazifani ochishda xato: ' + error.response?.data?.message || error.message);
-        }
-    }
-
-    async function selectTask(task) {
-        if (!checkAuth()) return;
-        if (await checkTaskSubmission(task.id)) {
-            await displayTaskResults(task.id);
-            return;
-        }
-        document.querySelectorAll('.task').forEach(t => t.classList.remove('active'));
-        const taskElements = document.querySelectorAll('.task span');
-        taskElements.forEach(element => {
-            if (element.textContent === task.taskName) {
-                element.parentElement.classList.add('active');
-            }
-        });
-        currentTaskId = task.id;
-        isTaskSubmitted = await checkTaskSubmission(task.id);
-        if (isTaskSubmitted) {
-            await displayTaskResults(task.id);
-            return;
-        }
-        try {
-            const response = await axios.get(`/api/v1/task/${task.id}`, {
-                headers: {'Authorization': userData.token}
-            });
-            if (!response.data) {
-                throw new Error('Vazifa ma\'lumotlari topilmadi');
-            }
-            currentTaskDetails = response.data;
-            currentQuestions = currentTaskDetails.questionRes || [];
-            currentQuestionIndex = 0;
-            selectedAnswers = new Array(currentQuestions.length).fill(null);
-            videoCompleted = false;
-            submitButton.disabled = false;
-            displayTaskDetails(currentTaskDetails);
-        } catch (error) {
-            console.error('Savollarni yuklashda xato:', error);
-            questionBox.innerHTML = `
-                <div class="question-content">
-                    <div class="question-text" style="color: var(--danger);">Savollarni yuklashda xato yuz berdi: ${error.message}</div>
-                </div>`;
         }
     }
 
@@ -1428,14 +1752,12 @@
         return match ? match[1] : null;
     }
 
-    // Attachmentlarni yuklash funksiyasi - TO'G'RILANGAN
     async function loadAttachments(attachmentIds) {
         if (!attachmentIds || attachmentIds.length === 0) {
             return null;
         }
 
         try {
-            // Backend List<Long> attachmentIds kutgani uchun har bir ID uchun alohida parameter yuboramiz
             const params = new URLSearchParams();
             attachmentIds.forEach(id => {
                 params.append('attachmentIds', id.toString());
@@ -1452,10 +1774,16 @@
         }
     }
 
-    // Attachmentlarni ko'rsatish funksiyasi - TO'G'RILANGAN
     function displayAttachments(attachments, container) {
         if (!attachments || attachments.length === 0) {
-            container.innerHTML = '<div class="attachment-container"><h4>Qo\'shimcha materiallar</h4><div style="text-align: center; color: var(--dark);">Ushbu vazifada qo\'shimcha materiallar mavjud emas</div></div>';
+            container.innerHTML = `
+                <div class="attachment-container">
+                    <h4><i class="fas fa-paperclip"></i> Qo'shimcha materiallar</h4>
+                    <div class="empty-state">
+                        <i class="fas fa-file"></i>
+                        <p>Ushbu vazifada qo'shimcha materiallar mavjud emas</p>
+                    </div>
+                </div>`;
             return;
         }
 
@@ -1463,7 +1791,7 @@
         attachmentContainer.className = 'attachment-container';
 
         const title = document.createElement('h4');
-        title.textContent = 'Qo\'shimcha materiallar';
+        title.innerHTML = '<i class="fas fa-paperclip"></i> Qo\'shimcha materiallar';
         attachmentContainer.appendChild(title);
 
         attachments.forEach((attachment, index) => {
@@ -1472,13 +1800,10 @@
 
             try {
                 if (attachment.contentType && attachment.contentType.startsWith('image/')) {
-                    // Rasm uchun
                     const img = document.createElement('img');
                     img.className = 'attachment-image';
 
-                    // Base64 ma'lumotlarini to'g'ri formatda ko'rsatish
                     if (attachment.content) {
-                        // Agar content allaqachon data: bilan boshlanmasa, qo'shamiz
                         const imageData = attachment.content.startsWith('data:')
                             ? attachment.content
                             : `data:${attachment.contentType};base64,${attachment.content}`;
@@ -1496,10 +1821,9 @@
 
                     attachmentItem.appendChild(img);
                 } else {
-                    // Boshqa fayl turlari uchun yuklab olish havolasi
                     const downloadLink = document.createElement('a');
                     downloadLink.className = 'attachment-download';
-                    downloadLink.textContent = `Yuklab olish: ${getFileExtension(attachment.contentType)}`;
+                    downloadLink.innerHTML = `<i class="fas fa-download"></i> Yuklab olish: ${getFileExtension(attachment.contentType)}`;
 
                     if (attachment.content) {
                         const fileData = attachment.content.startsWith('data:')
@@ -1531,7 +1855,6 @@
         container.appendChild(attachmentContainer);
     }
 
-    // Fayl kengaytmasini olish funksiyasi
     function getFileExtension(contentType) {
         const extensions = {
             'image/jpeg': 'jpg',
@@ -1557,33 +1880,31 @@
             return;
         }
 
-        questionBox.innerHTML = `
-        <div class="question-header">
-            <div class="question-title">${taskDetails.name || 'Vazifa'}</div>
-            <div class="difficulty">${taskDetails.youtubeURL ? 'Video darslik' : 'Test savollar'}</div>
-        </div>
-        <div class="question-content" id="questionContent">
-            <div id="videoContainer" style="display: none;"></div>
-            <div id="questionsAfterVideo" class="questions-after-video"></div>
-            <div id="taskAttachments"></div>
-        </div>
-    `;
+        // Update header
+        document.querySelector('.question-title').textContent = taskDetails.name || 'Vazifa';
+        document.querySelector('.difficulty').textContent = taskDetails.youtubeURL ? 'Video darslik' : 'Test savollar';
 
-        const videoContainer = document.getElementById('videoContainer');
-        const questionsAfterVideo = document.getElementById('questionsAfterVideo');
-        const attachmentsDiv = document.getElementById('taskAttachments');
-
-        // Handle YouTube video (existing code, keep it as is)
         if (taskDetails.youtubeURL) {
+            // Show video content
             const videoId = getYouTubeVideoId(taskDetails.youtubeURL);
             if (videoId && youtubeApiLoaded) {
-                videoContainer.style.display = 'block';
-                videoContainer.innerHTML = `
-                <div id="youtubePlayer"></div>
-                <div class="video-message" id="videoMessage">
-                    Iltimos, videoni to'liq ko'ring. Video tugagandan keyin savollar ko'rinadi.
-                </div>
-            `;
+                questionContent.innerHTML = `
+                    <div id="videoContainer">
+                        <div id="youtubePlayer"></div>
+                    </div>
+                    <div class="video-message" id="videoMessage">
+                        Iltimos, videoni to'liq ko'ring. Video tugagandan keyin savollar ko'rinadi.
+                    </div>
+                    <div id="taskAttachments"></div>
+                    <div class="continue-section" style="display: none;" id="continueSection">
+                        <button id="continueBtn" class="continue-btn" onclick="continueToQuestions()" disabled>
+                            <i class="fas fa-clock"></i>
+                            Video tugashini kuting
+                        </button>
+                    </div>
+                    <div id="questionsAfterVideo" class="questions-after-video"></div>
+                `;
+
                 try {
                     videoPlayer = new YT.Player('youtubePlayer', {
                         height: '100%',
@@ -1604,58 +1925,75 @@
                     });
                 } catch (error) {
                     console.error('YouTube player yuklashda xato:', error);
-                    videoContainer.innerHTML = `<div class="question-text" style="color: var(--danger);">Video yuklanmadi: YouTube xatosi</div>`;
-                    videoContainer.style.display = 'block';
-                    questionsAfterVideo.style.display = 'none';
+                    questionContent.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Video yuklanmadi</h3>
+                            <p>YouTube xatosi yuz berdi</p>
+                        </div>`;
                     videoCompleted = true;
-                    displayQuestionsAfterVideo(questionsAfterVideo);
+                    showQuestionsDirectly();
                 }
             } else {
-                videoContainer.innerHTML = `<div class="question-text" style="color: var(--danger);">
-                ${youtubeApiLoaded ? 'YouTube video URLi noto\'g\'ri: ' + taskDetails.youtubeURL : 'YouTube API yuklanmadi'}
-            </div>`;
-                videoContainer.style.display = 'block';
-                questionsAfterVideo.style.display = 'none';
+                questionContent.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Video yuklanmadi</h3>
+                        <p>${youtubeApiLoaded ? 'YouTube video URLi noto\'g\'ri' : 'YouTube API yuklanmadi'}</p>
+                    </div>`;
                 videoCompleted = true;
-                displayQuestionsAfterVideo(questionsAfterVideo);
+                showQuestionsDirectly();
+            }
+
+            // Load attachments for video
+            if (taskDetails.attachmentId && taskDetails.attachmentId.length > 0) {
+                const attachmentsDiv = document.getElementById('taskAttachments');
+                if (attachmentsDiv) {
+                    attachmentsDiv.innerHTML = '<div class="attachment-loading"><div class="spinner"></div>Qo\'shimcha materiallar yuklanmoqda...</div>';
+
+                    try {
+                        const attachments = await loadAttachments(taskDetails.attachmentId);
+                        attachmentsDiv.innerHTML = '';
+                        displayAttachments(attachments, attachmentsDiv);
+                    } catch (error) {
+                        console.error('Attachmentlarni yuklashda xato:', error);
+                        attachmentsDiv.innerHTML = `
+                            <div class="attachment-container">
+                                <h4><i class="fas fa-paperclip"></i> Qo'shimcha materiallar</h4>
+                                <div class="attachment-error">
+                                    Attachmentlarni yuklashda xato yuz berdi. Iltimos, keyinroq qayta urining.
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
             }
         } else {
-            videoContainer.style.display = 'none';
-            questionsAfterVideo.style.display = 'block';
+            // Show questions directly
             videoCompleted = true;
-            displayQuestionsAfterVideo(questionsAfterVideo);
+            showQuestionsDirectly();
+        }
+    }
+
+    function showQuestionsDirectly() {
+        if (!currentQuestions || currentQuestions.length === 0) {
+            questionContent.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-question-circle"></i>
+                    <h3>Savollar mavjud emas</h3>
+                    <p>Ushbu vazifa uchun savollar topilmadi</p>
+                </div>
+            `;
+            return;
         }
 
-        // Attachmentlarni yuklash va ko'rsatish - TO'G'RILANGAN
-        if (taskDetails.attachmentId && taskDetails.attachmentId.length > 0) {
-            // Loading ko'rsatish
-            attachmentsDiv.innerHTML = '<div class="attachment-loading"><div class="spinner"></div>Qo\'shimcha materiallar yuklanmoqda...</div>';
-
-            try {
-                const attachments = await loadAttachments(taskDetails.attachmentId);
-                attachmentsDiv.innerHTML = ''; // Loading ni tozalash
-                displayAttachments(attachments, attachmentsDiv);
-            } catch (error) {
-                console.error('Attachmentlarni yuklashda xato:', error);
-                attachmentsDiv.innerHTML = `
-                    <div class="attachment-container">
-                        <h4>Qo'shimcha materiallar</h4>
-                        <div class="attachment-error">
-                            Attachmentlarni yuklashda xato yuz berdi. Iltimos, keyinroq qayta urining.
-                            <br><small>Xato: ${error.response?.data?.message || error.message}</small>
-                        </div>
-                    </div>
-                `;
-            }
-        } else {
-            displayAttachments([], attachmentsDiv);
-        }
-
-        questionBox.classList.add('active');
+        displayQuestionsAfterVideo();
+        submitButton.style.display = 'flex';
     }
 
     function onPlayerReady(event) {
         console.log('YouTube player tayyor:', event.target.getVideoUrl());
+        document.getElementById('continueSection').style.display = 'block';
     }
 
     function onPlayerError(event) {
@@ -1667,64 +2005,111 @@
             101: 'Video egasi tomonidan taqiqlangan',
             150: 'Video egasi tomonidan taqiqlangan'
         };
-        const videoContainer = document.getElementById('videoContainer');
-        videoContainer.innerHTML = `<div class="question-text" style="color: var(--danger);">Video yuklanmadi: ${errorMessages[event.data] || 'Noma\'lum xato'}</div>`;
-        videoContainer.style.display = 'block';
+
+        questionContent.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Video yuklanmadi</h3>
+                <p>${errorMessages[event.data] || 'Noma\'lum xato'}</p>
+            </div>`;
         videoCompleted = true;
-        displayQuestionsAfterVideo(document.getElementById('questionsAfterVideo'));
+        showQuestionsDirectly();
     }
 
     function onPlayerStateChange(event) {
         if (event.data === YT.PlayerState.ENDED) {
             console.log('Video tugadi');
             videoCompleted = true;
-            const videoContainer = document.getElementById('videoContainer');
-            const questionsAfterVideo = document.getElementById('questionsAfterVideo');
-            videoContainer.style.display = 'none';
-            questionsAfterVideo.style.display = 'block';
-            displayQuestionsAfterVideo(questionsAfterVideo);
+            const continueBtn = document.getElementById('continueBtn');
+            const videoMessage = document.getElementById('videoMessage');
+
+            if (continueBtn) {
+                continueBtn.disabled = false;
+                continueBtn.innerHTML = '<i class="fas fa-arrow-right"></i> O\'tkazish';
+            }
+
+            if (videoMessage) {
+                videoMessage.textContent = 'Video tugadi! Davom etish uchun tugmani bosing.';
+                videoMessage.style.background = 'rgba(34, 197, 94, 0.1)';
+                videoMessage.style.color = 'var(--success)';
+            }
         }
     }
 
-    function displayQuestionsAfterVideo(container) {
+    function continueToQuestions() {
+        if (!videoCompleted) {
+            alert("Iltimos, avval videoni to'liq ko'ring!");
+            return;
+        }
+
+        // Hide video section and show questions
+        document.getElementById('videoContainer').style.display = 'none';
+        document.getElementById('continueSection').style.display = 'none';
+        document.getElementById('videoMessage').style.display = 'none';
+
+        const questionsContainer = document.getElementById('questionsAfterVideo');
+        questionsContainer.classList.add('active');
+
+        displayQuestionsAfterVideo();
+        submitButton.style.display = 'flex';
+    }
+
+    function displayQuestionsAfterVideo() {
         if (isTaskSubmitted) {
-            container.innerHTML = '';
             return;
         }
+
         if (!videoCompleted && currentTaskDetails.youtubeURL) {
-            container.innerHTML = `
-                <div class="question-card">
-                    <div class="question-card-title">Iltimos, avval videoni to'liq ko'ring!</div>
-                    <p>Video tugagandan keyin savollar ko'rinadi</p>
-                </div>
-            `;
+            const questionsContainer = document.getElementById('questionsAfterVideo');
+            if (questionsContainer) {
+                questionsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-video"></i>
+                        <h3>Iltimos, avval videoni to'liq ko'ring!</h3>
+                        <p>Video tugagandan keyin savollar ko'rinadi</p>
+                    </div>
+                `;
+            }
             return;
         }
+
         if (!currentQuestions || currentQuestions.length === 0) {
+            const container = document.getElementById('questionsAfterVideo') || questionContent;
             container.innerHTML = `
-                <div class="question-card">
-                    <div class="question-card-title">Ushbu vazifa uchun savollar mavjud emas</div>
+                <div class="empty-state">
+                    <i class="fas fa-question-circle"></i>
+                    <h3>Savollar mavjud emas</h3>
+                    <p>Ushbu vazifa uchun savollar topilmadi</p>
                 </div>
             `;
             return;
         }
+
+        const container = document.getElementById('questionsAfterVideo') || questionContent;
         container.innerHTML = '';
+
         const question = currentQuestions[currentQuestionIndex];
         if (!question) {
             container.innerHTML = `
-                <div class="question-card">
-                    <div class="question-card-title">Savol yuklanmadi</div>
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Savol yuklanmadi</h3>
+                    <p>Savol ma'lumotlari topilmadi</p>
                 </div>
             `;
             return;
         }
+
         const questionCard = document.createElement('div');
         questionCard.className = 'question-card';
+
         const questionTitle = document.createElement('div');
         questionTitle.className = 'question-card-title';
         questionTitle.textContent = question.questionTest || 'Savol matni mavjud emas';
+
         const optionsContainer = document.createElement('div');
         optionsContainer.className = 'question-card-options';
+
         if (question.variant && question.variant.length > 0) {
             question.variant.forEach((variant, index) => {
                 const option = document.createElement('div');
@@ -1741,24 +2126,32 @@
                 optionsContainer.appendChild(option);
             });
         } else {
-            optionsContainer.innerHTML = '<p>Variantlar mavjud emas</p>';
+            optionsContainer.innerHTML = '<div class="empty-state"><p>Variantlar mavjud emas</p></div>';
         }
+
         const navControls = document.createElement('div');
         navControls.className = 'question-nav';
+
         const prevButton = document.createElement('button');
         prevButton.className = 'action-btn secondary';
         prevButton.innerHTML = '<i class="fas fa-arrow-left"></i> Oldingi';
         prevButton.addEventListener('click', () => navigateQuestionAfterVideo(-1));
+        prevButton.disabled = currentQuestionIndex === 0;
+
         const nextButton = document.createElement('button');
         nextButton.className = 'action-btn';
         nextButton.innerHTML = 'Keyingi <i class="fas fa-arrow-right"></i>';
         nextButton.addEventListener('click', () => navigateQuestionAfterVideo(1));
+        nextButton.disabled = currentQuestionIndex >= currentQuestions.length - 1;
+
         const counter = document.createElement('div');
         counter.className = 'question-counter';
         counter.textContent = `Savol ${currentQuestionIndex + 1}/${currentQuestions.length}`;
+
         navControls.appendChild(prevButton);
         navControls.appendChild(counter);
         navControls.appendChild(nextButton);
+
         questionCard.appendChild(questionTitle);
         questionCard.appendChild(optionsContainer);
         questionCard.appendChild(navControls);
@@ -1767,26 +2160,40 @@
 
     function navigateQuestionAfterVideo(direction) {
         if (!currentQuestions || currentQuestions.length === 0 || isTaskSubmitted) return;
+
         currentQuestionIndex += direction;
         if (currentQuestionIndex < 0) currentQuestionIndex = 0;
         if (currentQuestionIndex >= currentQuestions.length) currentQuestionIndex = currentQuestions.length - 1;
-        displayQuestionsAfterVideo(document.getElementById('questionsAfterVideo'));
+
+        displayQuestionsAfterVideo();
     }
 
     async function submitAnswer() {
         if (!checkAuth()) return;
+
         if (!videoCompleted && currentTaskDetails.youtubeURL) {
             alert('Iltimos, avval videoni to\'liq ko\'ring!');
             return;
         }
+
         if (isTaskSubmitted) {
             alert('Bu vazifa allaqachon topshirilgan!');
             return;
         }
+
         if (!selectedAnswers.some(answer => answer !== null)) {
             alert('Iltimos, kamida bitta savolga javob bering!');
             return;
         }
+
+        const confirmSubmit = confirm(
+            "Javobingiz qattiymi, boshqa bu savolga qayta olmaysiz. Javoblaringizni yuborishni xohlaysizmi?"
+        );
+
+        if (!confirmSubmit) {
+            return;
+        }
+
         const answers = selectedAnswers
             .map((answer, index) => {
                 if (answer) {
@@ -1798,50 +2205,74 @@
                 return null;
             })
             .filter(answer => answer !== null);
+
         try {
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Yuborilmoqda...';
+
             const response = await axios.post('/api/v1/answer/submission', answers, {
                 headers: {
                     'Authorization': userData.token,
                     'Content-Type': 'application/json'
                 }
             });
+
             const result = response.data;
             isTaskSubmitted = true;
-            submitButton.disabled = true;
+
+            // Show results
             questionBox.innerHTML = `
                 <div class="question-header">
-                    <div class="question-title">Natijalar</div>
-                    <div class="difficulty">Umumiy</div>
+                    <div class="question-title">Test Natijalari</div>
+                    <div class="difficulty">Yakunlandi</div>
                 </div>
                 <div class="question-content">
-                    <div class="question-card">
-                        <div class="question-card-title">Test natijalari</div>
-                        <p><strong>Talaba:</strong> ${result.studentName || 'Noma\'lum'}</p>
-                        <p><strong>Guruh:</strong> ${result.groupName || 'Noma\'lum'}</p>
-                        <p><strong>Jami savollar:</strong> ${result.totalQuery}</p>
-                        <p><strong>To'g'ri javoblar:</strong> ${result.passedQuery}</p>
-                        <p><strong>Noto'g'ri javoblar:</strong> ${result.failedQuery}</p>
-                        <div style="height: 10px; background: #e9ecef; border-radius: 5px; margin: 10px 0;">
-                            <div style="height: 100%; width: ${(result.passedQuery / result.totalQuery) * 100}%; background: var(--success); border-radius: 5px;"></div>
+                    <div class="empty-state">
+                        <i class="fas fa-check-circle" style="color: var(--success); font-size: 4rem;"></i>
+                        <h3 style="color: var(--success);">Test muvaffaqiyatli yakunlandi!</h3>
+                        <div style="margin-top: 1.5rem; text-align: left; max-width: 400px; background: #f8fafc; padding: 1.5rem; border-radius: 10px; border-left: 4px solid var(--success);">
+                            <p><strong>Talaba:</strong> ${result.studentName || 'Noma\'lum'}</p>
+                            <p><strong>Guruh:</strong> ${result.groupName || 'Noma\'lum'}</p>
+                            <p><strong>Jami savollar:</strong> ${result.totalQuery}</p>
+                            <p><strong>To'g'ri javoblar:</strong> <span style="color: var(--success); font-weight: 600;">${result.passedQuery}</span></p>
+                            <p><strong>Noto'g'ri javoblar:</strong> <span style="color: var(--danger); font-weight: 600;">${result.failedQuery}</span></p>
+                            <div style="height: 10px; background: #e5e7eb; border-radius: 5px; margin: 1rem 0; overflow: hidden;">
+                                <div style="height: 100%; width: ${(result.passedQuery / result.totalQuery) * 100}%; background: linear-gradient(90deg, var(--success), #16a34a); border-radius: 5px; transition: width 1s ease;"></div>
+                            </div>
+                            <p style="text-align: center; font-weight: 600; color: var(--primary);">
+                                Natija: ${Math.round((result.passedQuery / result.totalQuery) * 100)}%
+                            </p>
                         </div>
                     </div>
                 </div>
             `;
-            taskResults.style.display = 'block';
-            taskResultsContent.innerHTML = questionBox.querySelector('.question-content').innerHTML;
+
+            // Update overall progress
             const totalQuestions = result.totalQuery;
             const progressPercentage = totalQuestions > 0 ? (result.passedQuery / totalQuestions) * 100 : 0;
             progressText.textContent = `${Math.round(progressPercentage)}%`;
             progressFill.style.width = `${progressPercentage}%`;
-            alert('Javoblar yuborildi!');
-            loadTasks(currentModuleId);
+
+            // Hide submit button
+            submitButton.style.display = 'none';
+
+            alert('Javoblar muvaffaqiyatli yuborildi!');
+
+            // Reload tasks to show completion status
+            if (currentModuleId) {
+                loadTasks(currentModuleId);
+            }
+
         } catch (error) {
             console.error('Javob yuborishda xato:', error);
-            questionBox.innerHTML = `
-                <div class="question-content">
-                    <div class="question-text" style="color: var(--danger);">
-                        Javob yuborishda xato: ${error.response?.data?.message || error.message}
-                    </div>
+            submitButton.disabled = false;
+            submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Yuborish';
+
+            questionContent.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Xato yuz berdi</h3>
+                    <p>Javob yuborishda xato: ${error.response?.data?.message || error.message}</p>
                 </div>
             `;
         }
@@ -1850,6 +2281,7 @@
     updateProfileForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (!checkAuth()) return;
+
         const firstName = document.getElementById('firstName').value || userData.firstName;
         const lastName = document.getElementById('lastName').value || userData.lastName;
         const phoneNumber = `+998${document.getElementById('phoneNumber').value}` || userData.phoneNumber;
@@ -1907,6 +2339,14 @@
         }
     });
 
+    // Close modal when clicking outside
+    profileModal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeProfileModal();
+        }
+    });
+
+    // Initialize app
     document.addEventListener('DOMContentLoaded', () => {
         if (!localStorage.getItem('userData')) {
             userData = {};
