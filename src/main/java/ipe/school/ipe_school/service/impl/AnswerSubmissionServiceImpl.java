@@ -2,10 +2,7 @@ package ipe.school.ipe_school.service.impl;
 
 import ipe.school.ipe_school.models.dtos.req.AnswerSubmissionReq;
 import ipe.school.ipe_school.models.dtos.res.StudentProcessRes;
-import ipe.school.ipe_school.models.entity.AnswerSubmission;
-import ipe.school.ipe_school.models.entity.Question;
-import ipe.school.ipe_school.models.entity.StudentProgress;
-import ipe.school.ipe_school.models.entity.User;
+import ipe.school.ipe_school.models.entity.*;
 import ipe.school.ipe_school.models.repo.*;
 import ipe.school.ipe_school.service.interfaces.AnswerSubmissionService;
 import ipe.school.ipe_school.service.interfaces.TaskService;
@@ -36,6 +33,17 @@ public class AnswerSubmissionServiceImpl implements AnswerSubmissionService {
                 .student(findUser)
                 .groupName(groupRepository.findGroupNameByStudentId(findUser.getId()))
                 .build());
+
+        Optional<Group> guruh = groupRepository.findById(
+                groupRepository.findGroupIdByStudentId(findUser.getId())
+        );
+
+        guruh.ifPresent(g -> {
+            if (!g.getStudentProgresses().contains(studentProgress)) {
+                g.getStudentProgresses().add(studentProgress);
+                groupRepository.save(g);
+            }
+        });
 
         List<AnswerSubmission> allAnswers = new ArrayList<>();
         for (AnswerSubmissionReq item : answerSubmissionReqs) {
