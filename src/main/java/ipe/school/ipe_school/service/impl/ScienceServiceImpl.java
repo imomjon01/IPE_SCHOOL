@@ -46,7 +46,7 @@ public class ScienceServiceImpl implements ScienceService {
         List<GroupRes> groupRes = wrapGroupToGroupRes(science);
         return new ScienceDetailsRes(science.getId(), science.getName(), groupRes,
                 science.getModules().stream().map(item ->
-                        new ModuleDetalRes(item.getModuleName(), item.getTasks().size())).toList());
+                        new ModuleDetalRes(item.getId(),item.getModuleName(), item.getTasks().size())).toList());
     }
 
     private static List<GroupRes> wrapGroupToGroupRes(Science science) {
@@ -69,7 +69,7 @@ public class ScienceServiceImpl implements ScienceService {
                     List<GroupRes> groupRes = wrapGroupToGroupRes(science);
                     return new ScienceDetailsRes(science.getId(), science.getName(), groupRes,
                             science.getModules().stream().map(item ->
-                                    new ModuleDetalRes(item.getModuleName(),
+                                    new ModuleDetalRes(item.getId(),item.getModuleName(),
                                             item.getTasks().size())).toList());
                 }).toList();
     }
@@ -85,7 +85,7 @@ public class ScienceServiceImpl implements ScienceService {
         List<GroupRes> groupRes = wrapGroupToGroupRes(updatedScience);
         return new ScienceDetailsRes(science.getId(), science.getName(), groupRes,
                 science.getModules().stream().map(item ->
-                        new ModuleDetalRes(item.getModuleName(),
+                        new ModuleDetalRes(item.getId(),item.getModuleName(),
                                 item.getTasks().size())).toList());
     }
 

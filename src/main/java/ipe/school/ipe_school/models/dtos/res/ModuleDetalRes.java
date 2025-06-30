@@ -4,6 +4,7 @@ import lombok.Value;
 
 @Value
 public class ModuleDetalRes {
+    Long id;
     String name;
     Integer taskCount;
 }

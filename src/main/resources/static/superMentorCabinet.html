@@ -158,11 +158,6 @@
             transition: all 0.3s ease;
         }
 
-        .profile-img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
         .section {
             padding: 3rem 0;
         }
@@ -173,33 +168,6 @@
             padding: 3rem 0;
         }
 
-        .footer a {
-            color: rgba(255, 255, 255, 0.7);
-            transition: all 0.3s ease;
-        }
-
-        .footer a:hover {
-            color: white;
-            text-decoration: none;
-        }
-
-        .social-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.1);
-            margin: 0 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .social-icon:hover {
-            background-color: var(--primary-color);
-            transform: translateY(-3px);
-        }
-
         .badge-count {
             background: linear-gradient(135deg, var(--accent-color) 0%, var(--primary-color) 100%);
             color: white;
@@ -207,18 +175,6 @@
             padding: 0.25rem 0.75rem;
             font-weight: 500;
             box-shadow: 0 4px 10px rgba(67, 97, 238, 0.2);
-        }
-
-        .form-control, .form-select {
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            border: 1px solid #e0e0e0;
-            transition: all 0.3s ease;
-        }
-
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
         }
 
         .file-upload {
@@ -249,15 +205,17 @@
             background-color: #e9ecef;
         }
 
-        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
+        .animate-fade {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .animate-slide-right {
+            animation: slideInRight 0.5s ease-out forwards;
         }
 
         @keyframes slideInRight {
@@ -265,95 +223,26 @@
             to { opacity: 1; transform: translateX(0); }
         }
 
-        .animate-fade {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
+        .animate-delay-1 { animation-delay: 0.1s; }
+        .animate-delay-2 { animation-delay: 0.2s; }
+        .animate-delay-3 { animation-delay: 0.3s; }
 
-        .animate-slide-left {
-            animation: slideInLeft 0.5s ease-out forwards;
-        }
-
-        .animate-slide-right {
-            animation: slideInRight 0.5s ease-out forwards;
-        }
-
-        .animate-delay-1 {
-            animation-delay: 0.1s;
-        }
-
-        .animate-delay-2 {
-            animation-delay: 0.2s;
-        }
-
-        .animate-delay-3 {
-            animation-delay: 0.3s;
-        }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--secondary-color);
-        }
-
-        /* Task cards */
-        .task-card {
-            border-left: 4px solid var(--primary-color);
-            transition: all 0.3s ease;
-        }
-
-        .task-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Question cards */
-        .question-card {
-            border-left: 4px solid var(--success-color);
-            transition: all 0.3s ease;
-        }
-
-        .question-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Module cards */
-        .module-card {
-            border-left: 4px solid var(--accent-color);
-            transition: all 0.3s ease;
-        }
-
-        .module-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Science cards */
         .science-card {
             border-left: 4px solid var(--warning-color);
-            transition: all 0.3s ease;
         }
 
-        .science-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        .module-card {
+            border-left: 4px solid var(--accent-color);
         }
 
-        /* Attachment styling */
+        .task-card {
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .question-card {
+            border-left: 4px solid var(--success-color);
+        }
+
         .attachment-item {
             display: flex;
             align-items: center;
@@ -361,21 +250,8 @@
             background-color: var(--light-color);
             border-radius: 8px;
             margin-bottom: 0.5rem;
-            transition: all 0.3s ease;
         }
 
-        .attachment-item:hover {
-            background-color: #e9ecef;
-            transform: translateX(3px);
-        }
-
-        .attachment-icon {
-            color: var(--primary-color);
-            margin-right: 0.75rem;
-            font-size: 1.25rem;
-        }
-
-        /* Variant input styling */
         .variant-input-group {
             display: flex;
             align-items: center;
@@ -385,22 +261,6 @@
         .variant-input {
             flex-grow: 1;
             margin-right: 0.5rem;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .navbar-brand {
-                font-size: 1.25rem;
-            }
-
-            .profile-img {
-                width: 80px;
-                height: 80px;
-            }
-
-            .section {
-                padding: 2rem 0;
-            }
         }
     </style>
 </head>
@@ -439,7 +299,6 @@
         <div class="row">
             <!-- Profile Column -->
             <div class="col-lg-4 mb-4">
-                <!-- Profile Card -->
                 <div class="card animate-fade animate-delay-1">
                     <div class="card-header">
                         <h5 class="mb-0"><i class="fas fa-user-circle me-2"></i>Supermentor Profile</h5>
@@ -457,7 +316,6 @@
                     </div>
                 </div>
 
-                <!-- Edit Profile Card (Hidden by default) -->
                 <div class="card animate-fade" id="editProfileCard" style="display: none;">
                     <div class="card-header">
                         <h5 class="mb-0"><i class="fas fa-user-edit me-2"></i>Edit Profile</h5>
@@ -502,32 +360,32 @@
             <!-- Dashboard Column -->
             <div class="col-lg-8">
                 <!-- Dashboard Card -->
-                <div class="card animate-fade animate-delay-2">
+                <div class="card animate-fade animate-delay-2" id="dashboardView">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0"><i class="fas fa-tachometer-alt me-2"></i>Supermentor Dashboard</h5>
                         <span class="badge-count"><i class="fas fa-flask me-1"></i> <span id="scienceCount">0</span> Sciences</span>
                     </div>
                     <div class="card-body">
-                        <p class="lead">Welcome to your supermentor cabinet. Below are all sciences you oversee.</p>
-
-                        <!-- Sciences List -->
-                        <div id="scienceList" class="mt-4">
-                            <!-- Sciences and modules will be dynamically loaded here -->
-                            <div class="text-center py-4">
-                                <div class="spinner-border text-primary" role="status">
-                                    <span class="visually-hidden">Loading...</span>
+                        <p class="lead">Welcome to your supermentor cabinet. Manage your sciences below.</p>
+                        <div class="mt-4">
+                            <h5><i class="fas fa-flask me-2"></i>Sciences</h5>
+                            <div id="scienceList" class="mt-2">
+                                <div class="text-center py-4">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p class="mt-2">Loading sciences...</p>
                                 </div>
-                                <p class="mt-2">Loading sciences...</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Module View (Hidden by default) -->
+                <!-- Module View -->
                 <div class="card animate-fade" id="moduleView" style="display: none;">
                     <div class="card-header">
-                        <button class="btn btn-link text-white p-0" onclick="backToSciences()">
-                            <i class="fas fa-arrow-left me-2"></i>Back to Sciences
+                        <button class="btn btn-link text-white p-0" onclick="back()">
+                            <i class="fas fa-arrow-left me-2"></i>Back
                         </button>
                     </div>
                     <div class="card-body">
@@ -537,13 +395,11 @@
                                 <button class="btn btn-success me-2" onclick="showAddTaskForm()">
                                     <i class="fas fa-plus me-2"></i>Add Task
                                 </button>
-                                <button class="btn btn-danger" onclick="closeModule()">
+                                <button class="btn btn-danger" onclick="closeModule()" id="closeModuleButton">
                                     <i class="fas fa-lock me-2"></i>Close Module
                                 </button>
                             </div>
                         </div>
-
-                        <!-- Add Task Form (Hidden by default) -->
                         <div class="card mt-3" id="addTaskCard" style="display: none;">
                             <div class="card-header">
                                 <h6 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Add New Task</h6>
@@ -574,19 +430,15 @@
                                 </form>
                             </div>
                         </div>
-
-                        <!-- Tasks List -->
                         <h5 class="mt-4"><i class="fas fa-tasks me-2"></i>Tasks</h5>
-                        <div id="taskList" class="row">
-                            <!-- Tasks will be dynamically loaded here -->
-                        </div>
+                        <div id="taskList" class="row mt-2"></div>
                     </div>
                 </div>
 
-                <!-- Task View (Hidden by default) -->
+                <!-- Task View -->
                 <div class="card animate-fade" id="taskView" style="display: none;">
                     <div class="card-header">
-                        <button class="btn btn-link text-white p-0" onclick="backToModule()">
+                        <button class="btn btn-link text-white p-0" onclick="back()">
                             <i class="fas fa-arrow-left me-2"></i>Back to Module
                         </button>
                     </div>
@@ -597,8 +449,6 @@
                                 <i class="fas fa-edit me-2"></i>Update Task
                             </button>
                         </div>
-
-                        <!-- Update Task Form (Hidden by default) -->
                         <div class="card mt-3" id="updateTaskCard" style="display: none;">
                             <div class="card-header">
                                 <h6 class="mb-0"><i class="fas fa-edit me-2"></i>Update Task</h6>
@@ -629,20 +479,23 @@
                                 </form>
                             </div>
                         </div>
-
-                        <!-- Task Attachments -->
+                        <!-- Added YouTube Video Display Card -->
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h6 class="mb-0"><i class="fas fa-video me-2"></i>YouTube Video</h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="taskVideo"></div>
+                            </div>
+                        </div>
                         <div class="card mt-4">
                             <div class="card-header">
                                 <h6 class="mb-0"><i class="fas fa-paperclip me-2"></i>Attachments</h6>
                             </div>
                             <div class="card-body">
-                                <div id="taskAttachmentsList">
-                                    <!-- Attachments will be dynamically loaded here -->
-                                </div>
+                                <div id="taskAttachmentsList"></div>
                             </div>
                         </div>
-
-                        <!-- Questions Section -->
                         <div class="card mt-4">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h6 class="mb-0"><i class="fas fa-question-circle me-2"></i>Questions</h6>
@@ -651,11 +504,7 @@
                                 </button>
                             </div>
                             <div class="card-body">
-                                <div id="questionList">
-                                    <!-- Questions will be dynamically loaded here -->
-                                </div>
-
-                                <!-- Add Question Form (Hidden by default) -->
+                                <div id="questionList"></div>
                                 <div class="card mt-3" id="addQuestionCard" style="display: none;">
                                     <div class="card-header">
                                         <h6 class="mb-0"><i class="fas fa-plus-circle me-2"></i>New Question</h6>
@@ -678,9 +527,7 @@
                                             </div>
                                             <div class="mb-3">
                                                 <h6><i class="fas fa-list-ol me-2"></i>Answer Variants</h6>
-                                                <div id="variantList" class="mb-2">
-                                                    <!-- Variants will be added here -->
-                                                </div>
+                                                <div id="variantList" class="mb-2"></div>
                                                 <button type="button" class="btn btn-secondary btn-sm" onclick="addAnswerVariant()">
                                                     <i class="fas fa-plus me-1"></i>Add Variant
                                                 </button>
@@ -707,12 +554,6 @@
             <div class="col-md-4 mb-4 mb-md-0">
                 <h5><i class="fas fa-graduation-cap me-2"></i>About Us</h5>
                 <p>IPE School is a leading educational institution dedicated to providing quality education with expert mentors and modern facilities.</p>
-                <div class="d-flex mt-3">
-                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-                </div>
             </div>
             <div class="col-md-4 mb-4 mb-md-0">
                 <h5><i class="fas fa-link me-2"></i>Quick Links</h5>
@@ -720,7 +561,6 @@
                     <li class="mb-2"><a href="/index.html"><i class="fas fa-chevron-right me-2"></i>Home</a></li>
                     <li class="mb-2"><a href="#about"><i class="fas fa-chevron-right me-2"></i>About</a></li>
                     <li class="mb-2"><a href="#mentors"><i class="fas fa-chevron-right me-2"></i>Mentors</a></li>
-                    <li class="mb-2"><a href="#login"><i class="fas fa-chevron-right me-2"></i>Login</a></li>
                 </ul>
             </div>
             <div class="col-md-4">
@@ -745,47 +585,31 @@
     const API_BASE = '/api/v1';
     let currentModuleId = null;
     let currentTaskId = null;
+    let currentView = 'dashboard';
 
     // Initialize file input change handlers
     document.addEventListener('DOMContentLoaded', function() {
-        // Profile picture file input
         document.getElementById('editProfilePicture').addEventListener('change', function() {
-            const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
-            document.getElementById('profilePictureFileName').textContent = fileName;
+            document.getElementById('profilePictureFileName').textContent = this.files[0] ? this.files[0].name : 'No file chosen';
         });
 
-        // Task attachments file input
         document.getElementById('taskAttachments').addEventListener('change', function() {
             const files = this.files;
-            let fileName = 'No files chosen';
-            if (files.length > 0) {
-                fileName = files.length === 1 ? files[0].name : `${files.length} files selected`;
-            }
-            document.getElementById('taskFilesName').textContent = fileName;
+            document.getElementById('taskFilesName').textContent = files.length > 0 ? (files.length === 1 ? files[0].name : `${files.length} files selected`) : 'No files chosen';
         });
 
-        // Update task attachments file input
         document.getElementById('updateTaskAttachments').addEventListener('change', function() {
             const files = this.files;
-            let fileName = 'No files chosen';
-            if (files.length > 0) {
-                fileName = files.length === 1 ? files[0].name : `${files.length} files selected`;
-            }
-            document.getElementById('updateTaskFilesName').textContent = fileName;
+            document.getElementById('updateTaskFilesName').textContent = files.length > 0 ? (files.length === 1 ? files[0].name : `${files.length} files selected`) : 'No files chosen';
         });
 
-        // Question attachment file input
         document.getElementById('questionAttachment').addEventListener('change', function() {
-            const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
-            document.getElementById('questionFileName').textContent = fileName;
+            document.getElementById('questionFileName').textContent = this.files[0] ? this.files[0].name : 'No file chosen';
         });
 
-        // Initialize the page
         if (!localStorage.getItem('authToken')) window.location.href = '/index.html';
         loadProfile();
         loadSciences();
-
-        // Add initial variant input
         addAnswerVariant();
     });
 
@@ -799,15 +623,12 @@
 
             if (profile.image) {
                 document.getElementById('profilePicture').style.display = 'block';
-                // Check if image is a base64 string or a file path
                 if (typeof profile.image === 'string' && profile.image.startsWith('data:image')) {
                     document.getElementById('profilePicture').src = profile.image;
                 } else if (Array.isArray(profile.image)) {
-                    // Convert byte array to data URL
                     const byteArray = new Uint8Array(profile.image);
                     const blob = new Blob([byteArray], {type: 'image/jpeg'});
-                    const url = URL.createObjectURL(blob);
-                    document.getElementById('profilePicture').src = url;
+                    document.getElementById('profilePicture').src = URL.createObjectURL(blob);
                 } else {
                     document.getElementById('profilePicture').src = profile.image || '';
                 }
@@ -819,27 +640,24 @@
             document.getElementById('editLastName').value = profile.lastName || '';
             document.getElementById('editPhoneNumber').value = profile.phoneNumber || '';
         } catch (error) {
-            console.error('Error loading profile from localStorage:', error);
+            console.error('Error loading profile:', error);
         }
     }
 
-    // Fetch and display all sciences
+    // Fetch and display sciences
     async function loadSciences() {
         try {
             const response = await fetch(`${API_BASE}/science`, {
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
             });
+            if (!response.ok) throw new Error('Failed to fetch sciences');
             const sciences = await response.json();
             document.getElementById('scienceCount').textContent = sciences.length;
             const scienceList = document.getElementById('scienceList');
             scienceList.innerHTML = '';
 
             if (sciences.length === 0) {
-                scienceList.innerHTML = `
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle me-2"></i>No sciences assigned to you.
-                        </div>
-                    `;
+                scienceList.innerHTML = `<div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>No sciences assigned.</div>`;
                 return;
             }
 
@@ -847,90 +665,82 @@
                 const scienceCard = document.createElement('div');
                 scienceCard.className = 'card science-card mb-3 animate-fade';
                 scienceCard.innerHTML = `
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="mb-0">
-                                    <i class="fas fa-flask me-2"></i>${science.name}
-                                </h5>
-                                <button class="btn btn-primary btn-sm" onclick="showModules(${science.id}, '${science.name}')">
-                                    <i class="fas fa-eye me-1"></i>View Modules
-                                </button>
-                            </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><i class="fas fa-flask me-2"></i>${science.name}</h5>
+                            <button class="btn btn-primary btn-sm" onclick="showModules(${science.id}, '${science.name}')">
+                                <i class="fas fa-eye me-1"></i>View Modules
+                            </button>
                         </div>
-                    `;
+                    </div>
+                `;
                 scienceList.appendChild(scienceCard);
 
-                // Add modules for this science
                 if (science.modules && science.modules.length > 0) {
                     science.modules.forEach(module => {
                         const moduleCard = document.createElement('div');
                         moduleCard.className = 'card module-card mb-2 ms-4 animate-fade';
                         moduleCard.innerHTML = `
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h6 class="mb-0">
-                                                <i class="fas fa-book me-2"></i>${module.moduleName}
-                                            </h6>
-                                            <small class="text-muted">Tasks: ${module.tasks.length}</small>
-                                        </div>
-                                        <button class="btn btn-primary btn-sm" onclick="showModuleDetails(${module.id}, '${module.moduleName}')">
-                                            <i class="fas fa-info-circle me-1"></i>Details
-                                        </button>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-0"><i class="fas fa-book me-2"></i>${module.moduleName}</h6>
+                                        <small class="text-muted">Tasks: ${module.tasks?.length || 0}</small>
                                     </div>
+                                    <button class="btn btn-primary btn-sm" onclick="showModuleDetails(${module.id}, '${module.moduleName}')">
+                                        <i class="fas fa-info-circle me-1"></i>Details
+                                    </button>
                                 </div>
-                            `;
+                            </div>
+                        `;
                         scienceList.appendChild(moduleCard);
                     });
                 }
             });
         } catch (error) {
             console.error('Error loading sciences:', error);
-            document.getElementById('scienceList').innerHTML = `
-                    <div class="alert alert-danger">
-                        <i class="fas fa-exclamation-triangle me-2"></i>Error loading sciences: ${error.message}
-                    </div>
-                `;
+            document.getElementById('scienceList').innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading sciences.</div>`;
         }
     }
 
-    // Show modules for a specific science
+    // Show modules (placeholder, as implemented in loadSciences)
     function showModules(scienceId, scienceName) {
-        // Handled in loadSciences; modules are already displayed
+        // Modules are already displayed under sciences
     }
 
-    // Show module details and tasks
+    // Show module details
     async function showModuleDetails(moduleId, moduleName) {
         try {
             currentModuleId = moduleId;
-            document.getElementById('scienceList').style.display = 'none';
+            currentView = 'module';
+            document.getElementById('dashboardView').style.display = 'none';
             document.getElementById('moduleView').style.display = 'block';
             document.getElementById('taskView').style.display = 'none';
             document.getElementById('moduleTitle').textContent = moduleName;
             document.getElementById('moduleTitle').innerHTML = `<i class="fas fa-book-open me-2"></i>${moduleName}`;
 
-            // Show loading state
-            document.getElementById('taskList').innerHTML = `
-                    <div class="col-12 text-center py-4">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <p class="mt-2">Loading tasks...</p>
-                    </div>
-                `;
+            const response = await fetch(`${API_BASE}/module/${moduleId}`, {
+                headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
+            });
+            if (!response.ok) throw new Error('Failed to fetch module');
+            const module = await response.json();
+            document.getElementById('closeModuleButton').style.display = module.active ? 'inline-block' : 'none';
 
+            document.getElementById('taskList').innerHTML = `<div class="col-12 text-center py-4"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading tasks...</p></div>`;
             await loadTasks(moduleId);
         } catch (error) {
             console.error('Error showing module details:', error);
+            document.getElementById('taskList').innerHTML = `<div class="col-12"><div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading tasks.</div></div>`;
         }
     }
 
-    // Fetch and display tasks for a module
+    // Fetch and display tasks
     async function loadTasks(moduleId) {
         try {
             const response = await fetch(`${API_BASE}/module/${moduleId}`, {
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
             });
+            if (!response.ok) throw new Error('Failed to fetch tasks');
             const module = await response.json();
             const taskList = document.getElementById('taskList');
             taskList.innerHTML = '';
@@ -940,131 +750,142 @@
                     const taskCard = document.createElement('div');
                     taskCard.className = 'col-md-6 mb-3';
                     taskCard.innerHTML = `
-                            <div class="card task-card h-100">
-                                <div class="card-body">
-                                    <h6 class="card-title">
-                                        <i class="fas fa-tasks me-2"></i>${task.taskName}
-                                    </h6>
-                                    <p class="card-text text-muted small">
-                                        <i class="fas fa-paperclip me-1"></i>${task.attachmentId ? task.attachmentId.length : 0} attachments
-                                    </p>
-                                    <button class="btn btn-primary btn-sm w-100" onclick="showTaskDetails(${task.id}, '${task.taskName}')">
-                                        <i class="fas fa-eye me-1"></i>View Details
-                                    </button>
-                                </div>
-                            </div>
-                        `;
-                    taskList.appendChild(taskCard);
-                });
-            } else {
-                taskList.innerHTML = `
-                        <div class="col-12">
-                            <div class="alert alert-info">
-                                <i class="fas fa-info-circle me-2"></i>No tasks in this module.
+                        <div class="card task-card h-100">
+                            <div class="card-body">
+                                <h6 class="card-title"><i class="fas fa-tasks me-2"></i>${task.taskName}</h6>
+                                <p class="card-text text-muted small"><i class="fas fa-paperclip me-1"></i>${task.attachmentId ? task.attachmentId.length : 0} attachments</p>
+                                <button class="btn btn-primary btn-sm w-100" onclick="showTaskDetails(${task.id}, '${task.taskName}')">
+                                    <i class="fas fa-eye me-1"></i>View Details
+                                </button>
                             </div>
                         </div>
                     `;
+                    taskList.appendChild(taskCard);
+                });
+            } else {
+                taskList.innerHTML = `<div class="col-12"><div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>No tasks in this module.</div></div>`;
             }
         } catch (error) {
             console.error('Error loading tasks:', error);
-            document.getElementById('taskList').innerHTML = `
-                    <div class="col-12">
-                        <div class="alert alert-danger">
-                            <i class="fas fa-exclamation-triangle me-2"></i>Error loading tasks: ${error.message}
-                        </div>
-                    </div>
-                `;
+            document.getElementById('taskList').innerHTML = `<div class="col-12"><div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading tasks.</div></div>`;
         }
     }
 
-    // Show task details and questions
+    // Show task details with YouTube video embedding
     async function showTaskDetails(taskId, taskName) {
         try {
             currentTaskId = taskId;
+            currentView = 'task';
             document.getElementById('moduleView').style.display = 'none';
             document.getElementById('taskView').style.display = 'block';
             document.getElementById('taskTitle').textContent = taskName;
             document.getElementById('taskTitle').innerHTML = `<i class="fas fa-tasks me-2"></i>${taskName}`;
 
-            // Show loading state for attachments
-            document.getElementById('taskAttachmentsList').innerHTML = `
-                    <div class="text-center py-3">
-                        <div class="spinner-border spinner-border-sm text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <span class="ms-2">Loading attachments...</span>
-                    </div>
-                `;
+            document.getElementById('taskVideo').innerHTML = `<div class="text-center py-3"><div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div><span class="ms-2">Loading video...</span></div>`;
+            document.getElementById('taskAttachmentsList').innerHTML = `<div class="text-center py-3"><div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div><span class="ms-2">Loading attachments...</span></div>`;
+            document.getElementById('questionList').innerHTML = `<div class="text-center py-3"><div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div><span class="ms-2">Loading questions...</span></div>`;
 
-            // Show loading state for questions
-            document.getElementById('questionList').innerHTML = `
-                    <div class="text-center py-3">
-                        <div class="spinner-border spinner-border-sm text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <span class="ms-2">Loading questions...</span>
-                    </div>
-                `;
+            const taskResponse = await fetch(`${API_BASE}/task/${taskId}`, {
+                headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
+            });
+            if (!taskResponse.ok) throw new Error('Failed to fetch task details');
+            const task = await taskResponse.json();
+
+            // YouTube Video Embedding Logic (Copied from Mentor Page)
+            const videoDiv = document.getElementById('taskVideo');
+            videoDiv.innerHTML = '';
+            if (task.youtubeURL) {
+                try {
+                    const url = new URL(task.youtubeURL);
+                    const videoId = url.searchParams.get('v') || url.pathname.split('/').pop();
+                    if (videoId) {
+                        const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                        videoDiv.innerHTML = `
+                            <iframe width="100%" height="315" src="${embedUrl}" title="YouTube video player"
+                                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen class="max-w-full"></iframe>
+                        `;
+                    } else {
+                        videoDiv.innerHTML = `<p class="text-danger">Invalid YouTube URL: <a href="${task.youtubeURL}" class="text-primary">${task.youtubeURL}</a></p>`;
+                    }
+                } catch (e) {
+                    videoDiv.innerHTML = `<p class="text-danger">Invalid YouTube URL: <a href="${task.youtubeURL}" class="text-primary">${task.youtubeURL}</a></p>`;
+                }
+            } else {
+                videoDiv.innerHTML = `<p class="text-muted">No YouTube video provided.</p>`;
+            }
 
             await loadTaskAttachments(taskId);
             await loadQuestions(taskId);
 
-            // Initialize update task form with current values
             document.getElementById('updateTaskName').value = taskName;
+            document.getElementById('updateYoutubeUrl').value = task.youtubeURL || '';
         } catch (error) {
             console.error('Error showing task details:', error);
+            document.getElementById('taskVideo').innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading video.</div>`;
+            document.getElementById('taskAttachmentsList').innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading attachments.</div>`;
+            document.getElementById('questionList').innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading questions.</div>`;
         }
     }
 
-    // Fetch and display task attachments
+    // Fetch and display task attachments (Updated to match Mentor Page)
     async function loadTaskAttachments(taskId) {
         try {
             const response = await fetch(`${API_BASE}/task/${taskId}`, {
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
             });
+            if (!response.ok) throw new Error('Failed to fetch task');
             const task = await response.json();
             const attachmentsList = document.getElementById('taskAttachmentsList');
             attachmentsList.innerHTML = '';
 
             if (task.attachmentId && task.attachmentId.length > 0) {
-                task.attachmentId.forEach((attachment, index) => {
-                    const attachmentItem = document.createElement('div');
-                    attachmentItem.className = 'attachment-item';
-                    attachmentItem.innerHTML = `
-                            <i class="fas fa-paperclip attachment-icon"></i>
-                            <div>
-                                <p class="mb-0">Attachment ${index + 1}</p>
-                                <small class="text-muted">ID: ${attachment}</small>
+                for (const id of task.attachmentId) {
+                    const attachmentResponse = await fetch(`${API_BASE}/attachments/${id}`, {
+                        headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
+                    });
+                    if (!attachmentResponse.ok) {
+                        console.warn(`Failed to fetch attachment ${id}`);
+                        continue;
+                    }
+                    const attachment = await attachmentResponse.json();
+
+                    const attachmentDiv = document.createElement('div');
+                    attachmentDiv.className = 'mb-2';
+
+                    if (attachment.contentType?.startsWith('image/')) {
+                        const imageSrc = `data:${attachment.contentType};base64,${attachment.content}`;
+                        attachmentDiv.innerHTML = `<img src="${imageSrc}" alt="Attachment ${id}" class="max-w-full h-auto rounded">`;
+                    } else {
+                        const dataUrl = `data:${attachment.contentType || 'application/octet-stream'};base64,${attachment.content}`;
+                        attachmentDiv.innerHTML = `
+                            <div class="attachment-item">
+                                <i class="fas fa-paperclip me-2"></i>
+                                <span>Attachment ${id}</span>
+                                <a href="${dataUrl}" download class="ms-auto btn btn-link btn-sm">
+                                    <i class="fas fa-download"></i> Download
+                                </a>
                             </div>
-                            <a href="${API_BASE}/attachments/${attachment}" class="ms-auto btn btn-link btn-sm" download>
-                                <i class="fas fa-download"></i>
-                            </a>
                         `;
-                    attachmentsList.appendChild(attachmentItem);
-                });
+                    }
+                    attachmentsList.appendChild(attachmentDiv);
+                }
             } else {
-                attachmentsList.innerHTML = `
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle me-2"></i>No attachments for this task.
-                        </div>
-                    `;
+                attachmentsList.innerHTML = `<div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>No attachments for this task.</div>`;
             }
         } catch (error) {
             console.error('Error loading attachments:', error);
-            document.getElementById('taskAttachmentsList').innerHTML = `
-                    <div class="alert alert-danger">
-                        <i class="fas fa-exclamation-triangle me-2"></i>Error loading attachments: ${error.message}
-                    </div>
-                `;
+            document.getElementById('taskAttachmentsList').innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading attachments.</div>`;
         }
     }
 
-    // Fetch and display questions for a task
+    // Fetch and display questions
     async function loadQuestions(taskId) {
         try {
             const response = await fetch(`${API_BASE}/task/${taskId}`, {
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
             });
+            if (!response.ok) throw new Error('Failed to fetch questions');
             const task = await response.json();
             const questionList = document.getElementById('questionList');
             questionList.innerHTML = '';
@@ -1074,51 +895,40 @@
                     const questionCard = document.createElement('div');
                     questionCard.className = 'card question-card mb-3';
                     questionCard.innerHTML = `
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <h6 class="mb-1">Question ${index + 1}</h6>
-                                        <p class="mb-2">${question.questionTest}</p>
-                                    </div>
-                                    <button class="btn btn-primary btn-sm" onclick="showUpdateQuestionForm(${question.id}, '${question.questionTest}')">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">Question ${index + 1}</h6>
+                                    <p class="mb-2">${question.questionTest}</p>
                                 </div>
-                                <div class="mt-2">
-                                    <p class="mb-1"><strong>Answer Variants:</strong></p>
-                                    <ul class="list-unstyled mb-2">
-                                        ${question.variant.map(v => `<li><i class="fas fa-circle me-1" style="font-size: 0.5rem; vertical-align: middle;"></i>${v}</li>`).join('')}
-                                    </ul>
-                                    <p class="mb-0"><strong>Correct Answer:</strong> ${question.currentAnswer || 'Not specified'}</p>
-                                </div>
+                                <button class="btn btn-primary btn-sm" onclick="alert('Update question functionality to be implemented')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
                             </div>
-                        `;
+                            <div class="mt-2">
+                                <p class="mb-1"><strong>Answer Variants:</strong></p>
+                                <ul class="list-unstyled mb-2">${question.variant.map(v => `<li><i class="fas fa-circle me-1" style="font-size: 0.5rem;"></i>${v}</li>`).join('')}</ul>
+                                <p class="mb-0"><strong>Correct Answer:</strong> ${question.currentAnswer || 'Not specified'}</p>
+                            </div>
+                        </div>
+                    `;
                     questionList.appendChild(questionCard);
                 });
             } else {
-                questionList.innerHTML = `
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle me-2"></i>No questions in this task.
-                        </div>
-                    `;
+                questionList.innerHTML = `<div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>No questions in this task.</div>`;
             }
         } catch (error) {
             console.error('Error loading questions:', error);
-            document.getElementById('questionList').innerHTML = `
-                    <div class="alert alert-danger">
-                        <i class="fas fa-exclamation-triangle me-2"></i>Error loading questions: ${error.message}
-                    </div>
-                `;
+            document.getElementById('questionList').innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading questions.</div>`;
         }
     }
 
-    // Show edit profile form
+    // Profile management
     function showEditProfile() {
         document.getElementById('profileInfo').style.display = 'none';
         document.getElementById('editProfileCard').style.display = 'block';
     }
 
-    // Cancel edit profile
     function cancelEditProfile() {
         document.getElementById('profileInfo').style.display = 'block';
         document.getElementById('editProfileCard').style.display = 'none';
@@ -1126,7 +936,6 @@
         document.getElementById('editProfilePicture').value = '';
     }
 
-    // Update profile
     document.getElementById('editProfileForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData();
@@ -1143,26 +952,19 @@
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` },
                 body: formData
             });
-
-            if (!response.ok) {
-                throw new Error('Failed to update profile');
-            }
-
+            if (!response.ok) throw new Error('Failed to update profile');
             const updatedProfile = await response.json();
             localStorage.setItem('userData', JSON.stringify(updatedProfile));
-
             cancelEditProfile();
             loadProfile();
-
-            // Show success message
             alert('Profile updated successfully!');
         } catch (error) {
             console.error('Error updating profile:', error);
-            alert(`Error updating profile: ${error.message}`);
+            alert('Error updating profile.');
         }
     });
 
-    // Show add task form
+    // Task management
     function showAddTaskForm() {
         document.getElementById('addTaskCard').style.display = 'block';
         document.getElementById('taskName').value = '';
@@ -1171,16 +973,29 @@
         document.getElementById('taskFilesName').textContent = 'No files chosen';
     }
 
-    // Add task
     document.getElementById('addTaskForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        formData.append('taskName', document.getElementById('taskName').value);
-        formData.append('youtubeUrl', document.getElementById('youtubeUrl').value);
-        formData.append('moduleId', currentModuleId);
+        const taskName = document.getElementById('taskName').value;
+        const youtubeURL = document.getElementById('youtubeUrl').value;
+        const attachments = document.getElementById('taskAttachments').files;
 
-        const files = document.getElementById('taskAttachments').files;
-        for (let file of files) formData.append('attachments', file);
+        if (!taskName) {
+            alert('Task name is required.');
+            return;
+        }
+
+        if (!currentModuleId) {
+            alert('Please select a module before adding a task.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('taskName', taskName);
+        formData.append('youtubeURL', youtubeURL || '');
+        formData.append('moduleId', currentModuleId);
+        for (let file of attachments) {
+            formData.append('attachments', file);
+        }
 
         try {
             const response = await fetch(`${API_BASE}/task`, {
@@ -1188,80 +1003,100 @@
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` },
                 body: formData
             });
-
-            if (!response.ok) {
-                throw new Error('Failed to add task');
-            }
-
+            if (!response.ok) throw new Error('Failed to add task');
             document.getElementById('addTaskCard').style.display = 'none';
             await loadTasks(currentModuleId);
-
-            // Show success message
             alert('Task added successfully!');
         } catch (error) {
             console.error('Error adding task:', error);
-            alert(`Error adding task: ${error.message}`);
+            alert('Error adding task.');
         }
     });
 
-    // Show update task form
     function showUpdateTaskForm() {
         document.getElementById('updateTaskCard').style.display = 'block';
         document.getElementById('updateTaskAttachments').value = '';
         document.getElementById('updateTaskFilesName').textContent = 'No files chosen';
     }
 
-    // Update task
     document.getElementById('updateTaskForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        formData.append('taskName', document.getElementById('updateTaskName').value);
-        formData.append('youtubeUrl', document.getElementById('updateYoutubeUrl').value);
+        const taskName = document.getElementById('updateTaskName').value;
+        const youtubeURL = document.getElementById('updateYoutubeUrl').value;
+        const attachments = document.getElementById('updateTaskAttachments').files;
 
-        const files = document.getElementById('updateTaskAttachments').files;
-        for (let file of files) formData.append('attachments', file);
+        if (!taskName) {
+            alert('Task name is required.');
+            return;
+        }
+
+        if (!currentTaskId || !currentModuleId) {
+            alert('Please select a task and module before updating.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('taskName', taskName);
+        formData.append('youtubeURL', youtubeURL || '');
+        formData.append('moduleId', currentModuleId);
+        for (let file of attachments) {
+            formData.append('attachments', file);
+        }
 
         try {
             const response = await fetch(`${API_BASE}/task/${currentTaskId}`, {
-                method: 'PUT',
+                method: 'POST',
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` },
                 body: formData
             });
-
-            if (!response.ok) {
-                throw new Error('Failed to update task');
-            }
-
+            if (!response.ok) throw new Error('Failed to update task');
             document.getElementById('updateTaskCard').style.display = 'none';
-            await showTaskDetails(currentTaskId, document.getElementById('updateTaskName').value);
-
-            // Show success message
+            await showTaskDetails(currentTaskId, taskName);
             alert('Task updated successfully!');
         } catch (error) {
             console.error('Error updating task:', error);
-            alert(`Error updating task: ${error.message}`);
+            alert('Error updating task.');
         }
     });
 
-    // Add answer variant
+    // Question management
+    async function uploadAttachment(file) {
+        if (!file) return null;
+        const formData = new FormData();
+        formData.append('attachment', file);
+        try {
+            const response = await fetch(`${API_BASE}/attachments`, {
+                method: 'POST',
+                headers: { 'Authorization': `${localStorage.getItem('authToken')}` },
+                body: formData
+            });
+            if (!response.ok) throw new Error('Failed to upload attachment');
+            const data = await response.json();
+            return data.id;
+        } catch (error) {
+            console.error('Error uploading attachment:', error);
+            alert('Error uploading attachment.');
+            return null;
+        }
+    }
+
     function addAnswerVariant() {
         const variantList = document.getElementById('variantList');
         const variantDiv = document.createElement('div');
         variantDiv.className = 'variant-input-group';
         variantDiv.innerHTML = `
-                <input type="text" class="form-control variant-input" placeholder="Answer variant" required>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="correctVariant">
-                    <label class="form-check-label" for="correctVariant">Correct</label>
-                </div>
-                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentNode.remove()">
-                    <i class="fas fa-times"></i>
-                </button>
-            `;
+            <input type="text" class="form-control variant-input" placeholder="Answer variant" required>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch">
+                <label class="form-check-label">Correct</label>
+            </div>
+            <button type="button" class="btn btn-danger btn-sm" onclick="this.parentNode.remove()">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
         variantList.appendChild(variantDiv);
     }
 
-    // Show add question form
     function showAddQuestionForm() {
         document.getElementById('addQuestionCard').style.display = 'block';
         document.getElementById('questionText').value = '';
@@ -1271,94 +1106,95 @@
         addAnswerVariant();
     }
 
-    // Add question
     document.getElementById('addQuestionForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        formData.append('text', document.getElementById('questionText').value);
-        formData.append('taskId', currentTaskId);
-
+        const questionText = document.getElementById('questionText').value;
         const file = document.getElementById('questionAttachment').files[0];
-        if (file) formData.append('attachment', file);
-
-        // Get variants and correct answers
         const variantInputs = document.querySelectorAll('#variantList .variant-input');
         const variantCheckboxes = document.querySelectorAll('#variantList .form-check-input');
 
-        const variants = Array.from(variantInputs).map(input => input.value);
+        if (!questionText) {
+            alert('Question text is required.');
+            return;
+        }
+
+        const variants = Array.from(variantInputs).map(input => input.value.trim()).filter(v => v);
+        if (variants.length === 0) {
+            alert('At least one variant is required.');
+            return;
+        }
+
         const correctAnswers = Array.from(variantCheckboxes)
             .map((checkbox, index) => checkbox.checked ? variants[index] : null)
             .filter(answer => answer);
+        if (correctAnswers.length === 0) {
+            alert('At least one correct answer must be selected.');
+            return;
+        }
 
-        formData.append('variants', JSON.stringify(variants));
-        formData.append('correctAnswers', JSON.stringify(correctAnswers));
+        let attachmentId = null;
+        if (file) {
+            attachmentId = await uploadAttachment(file);
+            if (!attachmentId) return;
+        }
+
+        const questionData = {
+            questionText,
+            attachmentId,
+            variant: variants,
+            correctAnswer: correctAnswers.join(','),
+            taskId: currentTaskId
+        };
 
         try {
             const response = await fetch(`${API_BASE}/questions`, {
                 method: 'POST',
-                headers: { 'Authorization': `${localStorage.getItem('authToken')}` },
-                body: formData
+                headers: {
+                    'Authorization': `${localStorage.getItem('authToken')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(questionData)
             });
-
-            if (!response.ok) {
-                throw new Error('Failed to add question');
-            }
-
+            if (!response.ok) throw new Error('Failed to add question');
             document.getElementById('addQuestionCard').style.display = 'none';
             await loadQuestions(currentTaskId);
-
-            // Show success message
             alert('Question added successfully!');
         } catch (error) {
             console.error('Error adding question:', error);
-            alert(`Error adding question: ${error.message}`);
+            alert('Error adding question.');
         }
     });
 
-    // Show update question form (placeholder, as not fully implemented in mentorCabinet.html)
-    function showUpdateQuestionForm(questionId, questionText) {
-        alert('Update question functionality will be implemented here');
-        // Implement update question form if needed
-    }
-
-    // Close module
+    // Module management
     async function closeModule() {
-        if (!confirm('Are you sure you want to close this module? This action cannot be undone.')) {
-            return;
-        }
-
+        if (!confirm('Are you sure you want to close this module?')) return;
         try {
             const response = await fetch(`${API_BASE}/module/${currentModuleId}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
             });
-
-            if (!response.ok) {
-                throw new Error('Failed to close module');
-            }
-
-            // Show success message
+            if (!response.ok) throw new Error('Failed to close module');
             alert('Module closed successfully!');
-
-            backToSciences();
+            back();
         } catch (error) {
             console.error('Error closing module:', error);
-            alert(`Error closing module: ${error.message}`);
+            alert('Error closing module.');
         }
     }
 
-    // Navigation functions
-    function backToSciences() {
-        document.getElementById('moduleView').style.display = 'none';
-        document.getElementById('taskView').style.display = 'none';
-        document.getElementById('scienceList').style.display = 'block';
-        loadSciences();
-    }
-
-    function backToModule() {
-        document.getElementById('taskView').style.display = 'none';
-        document.getElementById('moduleView').style.display = 'block';
-        loadTasks(currentModuleId);
+    // Navigation
+    function back() {
+        if (currentView === 'task') {
+            currentView = 'module';
+            document.getElementById('taskView').style.display = 'none';
+            document.getElementById('moduleView').style.display = 'block';
+            loadTasks(currentModuleId);
+        } else if (currentView === 'module') {
+            currentView = 'dashboard';
+            document.getElementById('moduleView').style.display = 'none';
+            document.getElementById('dashboardView').style.display = 'block';
+            loadSciences();
+        }
     }
 
     // Logout
@@ -1370,5 +1206,3 @@
 </script>
 </body>
 </html>
-
-
