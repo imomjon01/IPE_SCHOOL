@@ -245,13 +245,15 @@ public class GroupServiceImpl implements GroupService {
         Optional<Group> byId = groupRepository.findById(groupId);
         if (byId.isPresent()) {
             Group group = byId.get();
-            return group.getStudentProgresses().stream()
+            List<StudentProgressRes> list = new java.util.ArrayList<>(group.getStudentProgresses().stream()
                     .map(item -> new StudentProgressRes(
                             item.getStudent().getFullName(),
                             item.getTotalQuery(),
                             item.getPassedQuery(),
                             item.getTotalQuery() > 0 ? (item.getPassedQuery() * 100) / item.getTotalQuery() : 0
-                    )).toList();
+                    )).toList());
+            list.sort((o1, o2) -> o2.getPassedQuery().compareTo(o1.getPassedQuery()));
+            return list;
         }
         return null;
     }
