@@ -231,19 +231,17 @@
     // Fetch and display supermentor profile
     async function loadProfile() {
         try {
-            const response = await fetch(`${API_BASE}/profile`, {
-                headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
-            });
-            const profile = await response.json();
+            const profile = JSON.parse(localStorage.getItem('userProfile')) || {};
             document.getElementById('firstName').textContent = profile.firstName || 'N/A';
             document.getElementById('lastName').textContent = profile.lastName || 'N/A';
             document.getElementById('phoneNumber').textContent = profile.phoneNumber || 'N/A';
+            document.getElementById('profilePicture').style.display = profile.profilePicture ? 'block' : 'none';
             document.getElementById('profilePicture').src = profile.profilePicture || '';
             document.getElementById('editFirstName').value = profile.firstName || '';
             document.getElementById('editLastName').value = profile.lastName || '';
             document.getElementById('editPhoneNumber').value = profile.phoneNumber || '';
         } catch (error) {
-            console.error('Error loading profile:', error);
+            console.error('Error loading profile from localStorage:', error);
         }
     }
 
