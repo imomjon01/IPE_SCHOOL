@@ -232,7 +232,7 @@
     async function loadProfile() {
         try {
             const response = await fetch(`${API_BASE}/profile`, {
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                headers: { 'Authorization': `${localStorage.getItem('token')}` }
             });
             const profile = await response.json();
             document.getElementById('firstName').textContent = profile.firstName || 'N/A';
@@ -251,7 +251,7 @@
     async function loadSciences() {
         try {
             const response = await fetch(`${API_BASE}/science`, {
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                headers: { 'Authorization': `${localStorage.getItem('token')}` }
             });
             const sciences = await response.json();
             document.getElementById('scienceCount').textContent = sciences.length;
@@ -303,7 +303,7 @@
     async function loadTasks(moduleId) {
         try {
             const response = await fetch(`${API_BASE}/module/${moduleId}/tasks`, {
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                headers: { 'Authorization': `${localStorage.getItem('token')}` }
             });
             const tasks = await response.json();
             const taskList = document.getElementById('taskList');
@@ -338,7 +338,7 @@
     async function loadTaskAttachments(taskId) {
         try {
             const response = await fetch(`${API_BASE}/task/${taskId}/attachments`, {
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                headers: { 'Authorization': `${localStorage.getItem('token')}` }
             });
             const attachments = await response.json();
             const attachmentsList = document.getElementById('taskAttachmentsList');
@@ -352,7 +352,7 @@
     async function loadQuestions(taskId) {
         try {
             const response = await fetch(`${API_BASE}/task/${taskId}/questions`, {
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                headers: { 'Authorization': `${localStorage.getItem('token')}` }
             });
             const questions = await response.json();
             const questionList = document.getElementById('questionList');
@@ -393,7 +393,7 @@
         try {
             await fetch(`${API_BASE}/profile`, {
                 method: 'PUT',
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                headers: { 'Authorization': `${localStorage.getItem('token')}` },
                 body: formData
             });
             cancelEditProfile();
@@ -419,7 +419,7 @@
         try {
             await fetch(`${API_BASE}/module/${currentModuleId}/tasks`, {
                 method: 'POST',
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                headers: { 'Authorization': `${localStorage.getItem('token')}` },
                 body: formData
             });
             document.getElementById('addTaskCard').style.display = 'none';
@@ -445,7 +445,7 @@
         try {
             await fetch(`${API_BASE}/task/${currentTaskId}`, {
                 method: 'PUT',
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                headers: { 'Authorization': `${localStorage.getItem('token')}` },
                 body: formData
             });
             document.getElementById('updateTaskCard').style.display = 'none';
@@ -482,7 +482,7 @@
         try {
             await fetch(`${API_BASE}/task/${currentTaskId}/questions`, {
                 method: 'POST',
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                headers: { 'Authorization': `${localStorage.getItem('token')}` },
                 body: formData
             });
             document.getElementById('addQuestionCard').style.display = 'none';
@@ -503,7 +503,7 @@
         try {
             await fetch(`${API_BASE}/module/${currentModuleId}/close`, {
                 method: 'POST',
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                headers: { 'Authorization': `${localStorage.getItem('token')}` }
             });
             backToSciences();
         } catch (error) {
