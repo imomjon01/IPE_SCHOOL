@@ -475,7 +475,7 @@
         const formData = new FormData();
         formData.append('text', document.getElementById('questionText').value);
         const file = document.getElementById('questionAttachment').files[0];
-        अगर file) formData.append('attachment', file);
+        formData.append('attachment', file);
         const variants = Array.from(document.getElementById('variantList').getElementsByTagName('input'))
             .map(input => input.value).filter(val => val);
         formData.append('answerVariants', JSON.stringify(variants));
