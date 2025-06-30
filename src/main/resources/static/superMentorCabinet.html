@@ -231,7 +231,7 @@
     // Fetch and display supermentor profile
     async function loadProfile() {
         try {
-            const profile = JSON.parse(localStorage.getItem('userProfile')) || {};
+            const profile = JSON.parse(localStorage.getItem('userData')) || {};
             document.getElementById('firstName').textContent = profile.firstName || 'N/A';
             document.getElementById('lastName').textContent = profile.lastName || 'N/A';
             document.getElementById('phoneNumber').textContent = profile.phoneNumber || 'N/A';
