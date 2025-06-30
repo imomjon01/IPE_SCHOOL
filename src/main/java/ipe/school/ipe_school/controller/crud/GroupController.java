@@ -24,7 +24,6 @@ public class GroupController {
 
     @PostMapping()
     public ResponseEntity<GroupRes> addGroup(@RequestBody GroupReq groupReq) {
-        System.out.println(groupReq);
         GroupRes groupRes = groupService.createGroup(groupReq);
         return new ResponseEntity<>(groupRes, HttpStatus.CREATED);
     }
@@ -87,5 +86,11 @@ public class GroupController {
     public ResponseEntity<List<GroupRes>> getGroup() {
         List<GroupRes> groups = groupService.getGroupsForScience();
         return new ResponseEntity<>(groups, HttpStatus.OK);
+    }
+
+    @GetMapping("/getProgress/{groupId}")
+    public ResponseEntity<List<StudentProgressRes>> getGroupProgress(@PathVariable Long groupId) {
+        List<StudentProgressRes> groupProgressRes = groupService.getGroupProgress(groupId);
+        return new ResponseEntity<>(groupProgressRes, HttpStatus.OK);
     }
 }

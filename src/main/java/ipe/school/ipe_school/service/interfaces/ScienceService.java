@@ -18,4 +18,6 @@ public interface ScienceService {
     void deleteScience(Long scienceId);
 
     Long getScienceCount();
+
+    void deleteScienceFromGroup(Long scienceId, Long groupId);
 }
