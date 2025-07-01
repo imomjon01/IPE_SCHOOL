@@ -258,4 +258,21 @@ public class GroupServiceImpl implements GroupService {
         return null;
     }
 
+    @Override
+    public void updateModule(Long groupId, Long moduleId) {
+        Optional<Group> byId = groupRepository.findById(groupId);
+        if (byId.isPresent()) {
+            Group group = byId.get();
+            Optional<Module> byId1 = moduleRepository.findById(moduleId);
+            if (byId1.isPresent()) {
+                Module module = byId1.get();
+                if (module.getActive()) {
+                    group.getModules().removeAll(group.getModules());
+                    group.getModules().add(module);
+                    groupRepository.save(group);
+                }
+            }
+        }
+    }
+
 }

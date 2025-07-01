@@ -42,4 +42,6 @@ public interface GroupService {
     List<GroupRes> getGroupsForScience();
 
     List<StudentProgressRes> getGroupProgress(Long groupId);
+
+    void updateModule(Long groupId, Long moduleId);
 }

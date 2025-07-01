@@ -1,9 +1,11 @@
 package ipe.school.ipe_school.service.impl;
 
 import ipe.school.ipe_school.models.dtos.res.UserRes;
+import ipe.school.ipe_school.models.entity.Group;
 import ipe.school.ipe_school.models.entity.Roles;
 import ipe.school.ipe_school.models.entity.StudentProgress;
 import ipe.school.ipe_school.models.entity.User;
+import ipe.school.ipe_school.models.repo.GroupRepository;
 import ipe.school.ipe_school.models.repo.RolesRepository;
 import ipe.school.ipe_school.models.repo.StudentProgressRepository;
 import ipe.school.ipe_school.models.repo.UserRepository;
@@ -31,6 +33,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RolesRepository rolesRepository;
     private final StudentProgressRepository studentProgressRepository;
+    private final GroupRepository groupRepository;
 
     @Override
     public User save(User user) {
@@ -70,6 +73,16 @@ public class UserServiceImpl implements UserService {
                         progress.setActive(false);
                         studentProgressRepository.save(progress);
                     });
+        }
+
+        if (user.getRoles().contains(rolesRepository.findByName("ROLE_MENTOR"))) {
+            if (!roles.contains(rolesRepository.findByName("ROLE_MENTOR"))) {
+                List<Group> byMentor = groupRepository.findByMentor(user);
+                for (Group group : byMentor) {
+                    group.setMentor(null);
+                }
+                groupRepository.saveAll(byMentor);
+            }
         }
 
         user.setRoles(roles);

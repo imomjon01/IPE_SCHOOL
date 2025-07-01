@@ -34,6 +34,8 @@ public class AnswerSubmissionServiceImpl implements AnswerSubmissionService {
                 .groupName(groupRepository.findGroupNameByStudentId(findUser.getId()))
                 .build());
 
+        studentProgressRepository.save(studentProgress);
+
         Optional<Group> guruh = groupRepository.findById(
                 groupRepository.findGroupIdByStudentId(findUser.getId())
         );

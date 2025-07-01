@@ -3,1522 +3,1642 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mentor Cabinet - IPE School</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>IPE School</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8fafc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
         }
-        .header-bg {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        .card-hover {
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
         }
-        .sidebar-item {
-            transition: all 0.2s ease;
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
         }
-        .sidebar-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            transform: translateX(5px);
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
+
         .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
-            transition: all 0.3s ease;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #dee2e6;
         }
-        .btn-danger {
-            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
-            transition: all 0.3s ease;
-        }
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
-        }
+
         .btn-success {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            transition: all 0.3s ease;
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
         }
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
-        }
+
         .btn-warning {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            transition: all 0.3s ease;
+            background: linear-gradient(45deg, #ffc107, #ff8c00);
+            color: white;
         }
-        .btn-warning:hover {
+
+        .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
-        .nav-link {
-            position: relative;
+
+        .main-content {
+            display: flex;
+            gap: 20px;
+            min-height: 600px;
         }
-        .nav-link:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -2px;
-            left: 0;
-            background-color: white;
-            transition: width 0.3s ease;
+
+        .sidebar {
+            width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
-        .nav-link:hover:after {
-            width: 100%;
+
+        .content-area {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
-        .module-badge {
+
+        .profile-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .profile-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid #667eea;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
-        .module-badge:hover {
+
+        .profile-image:hover {
             transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
-        .student-card {
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .profile-phone {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .groups-list {
+            list-style: none;
+        }
+
+        .group-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
             transition: all 0.3s ease;
+            border-left: 4px solid transparent;
         }
-        .student-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+
+        .group-item:hover {
+            background: #e9ecef;
+            border-left-color: #667eea;
         }
-        .task-card {
-            transition: all 0.3s ease;
+
+        .group-item.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-left-color: #fff;
         }
-        .task-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        .question-card {
-            transition: all 0.3s ease;
-        }
-        .question-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        #close-module-button {
+
+        .view {
             display: none;
         }
-        #close-module-button.visible {
+
+        .view.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .mentors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .mentor-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        .mentor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            background: #e9ecef;
+        }
+
+        .mentor-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 2px solid #667eea;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            margin-bottom: 20px;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+
+        .attachment {
             display: inline-block;
-        }
-        .animate-fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #a1a1a1;
-        }
-        .profile-pic {
-            border: 4px solid #3b82f6;
-            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
-        }
-        .attachment-icon {
-            color: #3b82f6;
+            margin: 5px;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #ddd;
             transition: all 0.3s ease;
         }
-        .attachment-icon:hover {
-            color: #1e40af;
-            transform: scale(1.1);
+
+        .attachment:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .module-button {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .module-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .custom-checkbox {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            user-select: none;
+            color: #333;
+        }
+
+        .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 22px;
+            width: 22px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .custom-checkbox:hover input ~ .checkmark {
+            background-color: #e9ecef;
+            border-color: #667eea;
+        }
+
+        .custom-checkbox input:checked ~ .checkmark {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-color: transparent;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .custom-checkbox input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .custom-checkbox .checkmark:after {
+            left: 7px;
+            top: 3px;
+            width: 6px;
+            height: 12px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .password-input-wrapper {
+            position: relative;
+        }
+
+        .password-input-wrapper input {
+            padding-right: 40px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-password:hover {
+            color: #667eea;
+        }
+
+        .question-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .question-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .question-text {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .variants-list {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .variant-item {
+            padding: 8px 12px;
+            margin-bottom: 5px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        .correct-answer {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+            font-weight: 500;
+        }
+
+        .science-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .science-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .science-card:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+        }
+
+        .science-card.selected {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #eee;
+        }
+
+        .module-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .module-card.selected {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .mentor-groups {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .mentor-group-item {
+            background: white;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .mentors-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .group-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-50">
-<header class="header-bg text-white py-4 shadow-lg">
-    <div class="container mx-auto px-4 flex justify-between items-center">
-        <div class="flex items-center space-x-2">
-            <i class="fas fa-graduation-cap text-2xl"></i>
-            <h1 class="text-2xl font-bold">IPE School</h1>
+<body>
+<div class="container">
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i> IPE School
         </div>
-        <nav>
-            <ul class="flex space-x-6">
-                <li><a href="/index.html" class="nav-link hover:underline flex items-center space-x-1"><i class="fas fa-home"></i> <span>Home</span></a></li>
-                <li><a href="/about" class="nav-link hover:underline flex items-center space-x-1"><i class="fas fa-info-circle"></i> <span>About</span></a></li>
-                <li><a href="/mentors" class="nav-link hover:underline flex items-center space-x-1"><i class="fas fa-users"></i> <span>Mentors</span></a></li>
-                <li><a href="/logout" class="nav-link hover:underline flex items-center space-x-1"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
-            </ul>
-        </nav>
-    </div>
-</header>
+        <div class="nav-buttons">
+            <button class="btn btn-secondary" onclick="showView('mentors')">
+                <i class="fas fa-users"></i> Mentors
+            </button>
+            <button class="btn btn-secondary" onclick="showView('profile')">
+                <i class="fas fa-user"></i> Profile
+            </button>
+            <button class="btn btn-primary" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </header>
 
-<main class="container mx-auto px-4 py-8">
-    <section class="bg-white rounded-xl shadow-lg p-6 mb-8 animate-fade-in">
-        <div id="mentor-profile" class="mb-8">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
-                    <i class="fas fa-user-circle mr-2 text-blue-500"></i> Mentor Profile
-                </h2>
-                <button id="edit-profile-button" class="btn-warning text-white px-4 py-2 rounded-lg flex items-center">
-                    <i class="fas fa-edit mr-2"></i> Edit Profile
-                </button>
+    <div class="main-content">
+        <div class="sidebar">
+            <div class="profile-section">
+                <img id="sidebarProfileImage" class="profile-image" src="/placeholder.svg?height=80&width=80"
+                     alt="Profile" onclick="showView('profile')">
+                <div class="profile-name" id="sidebarProfileName">Loading...</div>
+                <div class="profile-phone" id="sidebarProfilePhone">Loading...</div>
             </div>
-            <div class="flex items-center space-x-6 mb-4 p-4 bg-blue-50 rounded-xl">
-                <img id="profile-picture" src="" alt="Mentor Image" class="w-24 h-24 rounded-full object-cover profile-pic">
-                <div>
-                    <h3 id="profile-name" class="text-xl font-semibold text-gray-800"></h3>
-                    <p id="profile-phone" class="text-gray-600 flex items-center">
-                        <i class="fas fa-phone-alt mr-2 text-blue-500"></i>
-                        <span class="phone-number"></span>
-                    </p>
+
+            <div>
+                <h3 style="margin-bottom: 15px; color: #333;">My Groups</h3>
+                <ul class="groups-list" id="groupsList">
+                    <li class="loading">
+                        <div class="spinner"></div>
+                        Loading groups...
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <!-- Dashboard View -->
+            <div id="dashboard" class="view active">
+                <p>Select a group from the sidebar to view details, or use the navigation buttons above.</p>
+            </div>
+
+            <!-- Profile View -->
+            <div id="profile" class="view">
+                <h2>Mentor Profile</h2>
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label>Profile Image</label>
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <img id="profileImage" class="profile-image" src="/placeholder.svg?height=80&width=80"
+                                 alt="Profile" onclick="document.getElementById('imageInput').click()"
+                                 style="width: 120px; height: 120px;">
+                            <input type="file" id="imageInput" accept="image/*" style="display: none;"
+                                   onchange="previewImage(this)">
+                            <p style="color: #666; font-size: 12px; margin-top: 10px;">Click image to change</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="tel" id="phoneNumber" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="changePassword" onchange="togglePasswordField()">
+                            <span class="checkmark"></span>
+                            <span class="label-text">Change Password</span>
+                        </label>
+                    </div>
+
+                    <div class="form-group hidden" id="passwordGroup">
+                        <label for="password">New Password</label>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="password" placeholder="Enter new password">
+                            <i class="fas fa-eye-slash toggle-password" onclick="togglePasswordVisibility()"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Update Profile
+                    </button>
+                </form>
+            </div>
+
+            <!-- Mentors View -->
+            <div id="mentors" class="view">
+                <h2>All Mentors</h2>
+                <div id="mentorsGrid" class="mentors-grid">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Loading mentors...
+                    </div>
                 </div>
             </div>
 
-            <div id="edit-profile-form" class="hidden mt-6 p-6 bg-gray-50 rounded-xl border border-gray-200">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-user-edit mr-2 text-blue-500"></i> Edit Profile
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <!-- Group Details View -->
+            <div id="groupDetails" class="view">
+                <div class="group-header">
+                    <h2 id="groupName">Group Details</h2>
                     <div>
-                        <label for="update-first-name" class="block text-gray-700 font-medium mb-1">First Name</label>
-                        <input type="text" id="update-first-name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
-                    </div>
-                    <div>
-                        <label for="update-last-name" class="block text-gray-700 font-medium mb-1">Last Name</label>
-                        <input type="text" id="update-last-name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <label for="update-profile-phone" class="block text-gray-700 font-medium mb-1">Phone Number</label>
-                    <input type="text" id="update-profile-phone" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
-                </div>
-                <div class="mb-4">
-                    <label for="update-profile-picture" class="block text-gray-700 font-medium mb-1">Profile Picture</label>
-                    <div class="flex items-center space-x-4">
-                        <label class="flex flex-col items-center px-4 py-3 bg-white rounded-lg border border-blue-500 cursor-pointer hover:bg-blue-50">
-                            <i class="fas fa-cloud-upload-alt text-blue-500 text-2xl mb-1"></i>
-                            <span class="text-sm text-gray-600">Choose file</span>
-                            <input type="file" id="update-profile-picture" class="hidden">
-                        </label>
-                        <span id="file-name" class="text-sm text-gray-500">No file chosen</span>
-                    </div>
-                </div>
-                <div class="flex space-x-3 justify-end">
-                    <button id="cancel-profile-update" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 flex items-center">
-                        <i class="fas fa-times mr-2"></i> Cancel
-                    </button>
-                    <button id="submit-profile-update" class="btn-primary px-4 py-2 rounded-lg flex items-center">
-                        <i class="fas fa-save mr-2"></i> Update Profile
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-3xl font-semibold text-gray-800 flex items-center">
-                <i class="fas fa-tachometer-alt mr-3 text-blue-500"></i> Mentor Dashboard
-            </h2>
-            <div class="flex items-center space-x-2 bg-blue-100 px-4 py-2 rounded-full">
-                <i class="fas fa-users text-blue-500"></i>
-                <span id="groups-count" class="font-medium text-blue-800">0 Groups</span>
-            </div>
-        </div>
-
-        <p class="text-gray-600 mb-8 text-lg">Welcome to your mentor cabinet. Below are the groups you are mentoring.</p>
-
-        <div id="groups-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-        <div id="group-details" class="hidden mt-8 animate-fade-in">
-            <button id="back-to-groups" class="btn-primary text-white px-4 py-2 rounded-lg mb-6 flex items-center">
-                <i class="fas fa-arrow-left mr-2"></i> Back to Groups
-            </button>
-
-            <div class="flex justify-between items-center mb-6">
-                <h2 id="group-name" class="text-2xl font-semibold text-gray-800 flex items-center">
-                    <i class="fas fa-users mr-3 text-blue-500"></i>
-                    <span class="group-name-text"></span>
-                </h2>
-                <div class="flex items-center space-x-2 bg-green-100 px-4 py-2 rounded-full">
-                    <i class="fas fa-user-graduate text-green-500"></i>
-                    <span id="students-count" class="font-medium text-green-800">0 Students</span>
-                </div>
-            </div>
-
-            <div class="mb-8 bg-white p-6 rounded-xl shadow">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-user-friends mr-2 text-blue-500"></i> Students
-                </h3>
-                <div id="students-list" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-book mr-2 text-blue-500"></i> Modules
-                </h3>
-                <p id="modules-warning" class="text-yellow-600 mt-2 hidden flex items-center">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                    <span class="warning-text"></span>
-                </p>
-                <div id="modules-list" class="mt-4 flex flex-wrap gap-3"></div>
-            </div>
-        </div>
-
-        <div id="module-details" class="hidden mt-8 animate-fade-in">
-            <button id="back-to-group" class="btn-primary text-white px-4 py-2 rounded-lg mb-6 flex items-center">
-                <i class="fas fa-arrow-left mr-2"></i> Back to Group
-            </button>
-
-            <div class="flex justify-between items-center mb-6">
-                <h2 id="module-name" class="text-2xl font-semibold text-gray-800 flex items-center">
-                    <i class="fas fa-book-open mr-3 text-blue-500"></i>
-                    <span class="module-name-text"></span>
-                </h2>
-                <div class="flex space-x-3">
-                    <button id="add-task-button" class="btn-success text-white px-4 py-2 rounded-lg flex items-center">
-                        <i class="fas fa-plus mr-2"></i> Add Task
-                    </button>
-                    <button id="close-module-button" class="btn-danger text-white px-4 py-2 rounded-lg flex items-center">
-                        <i class="fas fa-lock mr-2"></i> Close Module
-                    </button>
-                </div>
-            </div>
-
-            <div id="add-task-form" class="hidden mb-8 p-6 bg-gray-50 rounded-xl border border-gray-200">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-tasks mr-2 text-blue-500"></i> Add New Task
-                </h3>
-                <div class="mb-4">
-                    <label for="task-name" class="block text-gray-700 font-medium mb-1">Task Name</label>
-                    <input type="text" id="task-name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
-                </div>
-                <div class="mb-4">
-                    <label for="youtube-url" class="block text-gray-700 font-medium mb-1">YouTube URL</label>
-                    <input type="text" id="youtube-url" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="https://www.youtube.com/watch?v=...">
-                </div>
-                <div class="mb-4">
-                    <label for="attachments" class="block text-gray-700 font-medium mb-1">Attachments</label>
-                    <div class="flex items-center space-x-4">
-                        <label class="flex flex-col items-center px-4 py-3 bg-white rounded-lg border border-blue-500 cursor-pointer hover:bg-blue-50">
-                            <i class="fas fa-paperclip text-blue-500 text-2xl mb-1"></i>
-                            <span class="text-sm text-gray-600">Choose files</span>
-                            <input type="file" id="attachments" name="attachments" multiple class="hidden">
-                        </label>
-                        <span id="task-files-name" class="text-sm text-gray-500">No files chosen</span>
-                    </div>
-                </div>
-                <div class="flex justify-end">
-                    <button id="submit-task" class="btn-primary text-white px-4 py-2 rounded-lg flex items-center">
-                        <i class="fas fa-save mr-2"></i> Add Task
-                    </button>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-list-check mr-2 text-blue-500"></i> Tasks
-                </h3>
-                <div id="tasks-list" class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-            </div>
-        </div>
-
-        <div id="task-details" class="hidden mt-8 animate-fade-in">
-            <button id="back-to-module" class="btn-primary text-white px-4 py-2 rounded-lg mb-6 flex items-center">
-                <i class="fas fa-arrow-left mr-2"></i> Back to Module
-            </button>
-
-            <div class="flex justify-between items-center mb-6">
-                <h2 id="task-name" class="text-2xl font-semibold text-gray-800 flex items-center">
-                    <i class="fas fa-tasks mr-3 text-blue-500"></i>
-                    <span class="task-name-text"></span>
-                </h2>
-                <button id="update-task-button" class="btn-warning text-white px-4 py-2 rounded-lg flex items-center">
-                    <i class="fas fa-edit mr-2"></i> Update Task
-                </button>
-            </div>
-
-            <div id="update-task-form" class="hidden mb-8 p-6 bg-gray-50 rounded-xl border border-gray-200">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-edit mr-2 text-blue-500"></i> Update Task
-                </h3>
-                <div class="mb-4">
-                    <label for="update-task-name" class="block text-gray-700 font-medium mb-1">Task Name</label>
-                    <input type="text" id="update-task-name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
-                </div>
-                <div class="mb-4">
-                    <label for="update-youtube-url" class="block text-gray-700 font-medium mb-1">YouTube URL</label>
-                    <input type="text" id="update-youtube-url" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-                <div class="mb-4">
-                    <label for="update-attachments" class="block text-gray-700 font-medium mb-1">Attachments</label>
-                    <div class="flex items-center space-x-4">
-                        <label class="flex flex-col items-center px-4 py-3 bg-white rounded-lg border border-blue-500 cursor-pointer hover:bg-blue-50">
-                            <i class="fas fa-paperclip text-blue-500 text-2xl mb-1"></i>
-                            <span class="text-sm text-gray-600">Choose files</span>
-                            <input type="file" id="update-attachments" name="attachments" multiple class="hidden">
-                        </label>
-                        <span id="update-files-name" class="text-sm text-gray-500">No files chosen</span>
-                    </div>
-                </div>
-                <div class="flex justify-end">
-                    <button id="submit-update-task" class="btn-primary text-white px-4 py-2 rounded-lg flex items-center">
-                        <i class="fas fa-save mr-2"></i> Update Task
-                    </button>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow">
-                        <div id="task-video" class="mb-6"></div>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-xl shadow">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                            <i class="fas fa-paperclip mr-2 text-blue-500"></i> Attachments
-                        </h3>
-                        <div id="attachments-list" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-                    </div>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow h-fit sticky top-4">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-xl font-semibold text-gray-800 flex items-center">
-                            <i class="fas fa-question-circle mr-2 text-blue-500"></i> Questions
-                        </h3>
-                        <button id="add-question-button" class="btn-success text-white px-3 py-1 rounded-lg flex items-center text-sm">
-                            <i class="fas fa-plus mr-1"></i> Add
+                        <button id="moduleButton" class="module-button hidden" onclick="showModuleDetails()">
+                            <i class="fas fa-book"></i> <span id="moduleName">Module</span>
+                        </button>
+                        <button class="btn btn-warning" onclick="showChangeModuleModal()" style="margin-left: 10px;">
+                            <i class="fas fa-exchange-alt"></i> Change Module
+                        </button>
+                        <button class="btn btn-secondary" onclick="showStudentProgress()" style="margin-left: 10px;">
+                            <i class="fas fa-chart-line"></i> Student Progress
                         </button>
                     </div>
-
-                    <div id="add-question-form" class="hidden mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
-                            <i class="fas fa-plus-circle mr-2 text-blue-500"></i> New Question
-                        </h3>
-                        <div class="mb-3">
-                            <label for="question-test" class="block text-gray-700 font-medium mb-1">Question Text</label>
-                            <input type="text" id="question-test" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="question-attachment" class="block text-gray-700 font-medium mb-1">Attachment (Optional)</label>
-                            <div class="flex items-center space-x-2">
-                                <label class="flex items-center px-3 py-1 bg-white rounded-lg border border-blue-500 cursor-pointer hover:bg-blue-50 text-sm">
-                                    <i class="fas fa-paperclip text-blue-500 mr-1"></i>
-                                    <span>Choose file</span>
-                                    <input type="file" id="question-attachment" class="hidden">
-                                </label>
-                                <span id="question-file-name" class="text-xs text-gray-500">No file chosen</span>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <h4 class="block text-gray-700 font-semibold mb-1 flex items-center">
-                                <i class="fas fa-list-ol mr-2 text-blue-500"></i> Answer Variants
-                            </h4>
-                            <div id="variants-container" class="mt-2 space-y-2"></div>
-                            <button id="add-variant-button" class="btn-primary text-white px-2 py-1 rounded-lg mt-2 flex items-center text-sm">
-                                <i class="fas fa-plus mr-1"></i> Add Variant
-                            </button>
-                        </div>
-                        <div class="flex justify-end space-x-2">
-                            <button id="submit-question" class="btn-primary text-white px-3 py-1 rounded-lg flex items-center text-sm">
-                                <i class="fas fa-save mr-1"></i> Save
-                            </button>
-                        </div>
-                    </div>
-
-                    <div id="questions-list" class="space-y-4 custom-scrollbar" style="max-height: 500px; overflow-y: auto;"></div>
                 </div>
-            </div>
-        </div>
-    </section>
-</main>
 
-<footer class="bg-gray-800 text-white py-8 mt-12">
-    <div class="container mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-                <h3 class="text-lg font-semibold mb-4 flex items-center">
-                    <i class="fas fa-graduation-cap mr-2"></i> About Us
-                </h3>
-                <p class="text-sm text-gray-300">IPE School is a leading educational institution dedicated to providing quality education with expert mentors and modern facilities.</p>
-                <div class="flex space-x-4 mt-4">
-                    <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
-                </div>
+                <h3>Students</h3>
+                <table class="table" id="studentsTable">
+                    <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Phone Number</th>
+                    </tr>
+                    </thead>
+                    <tbody id="studentsTableBody">
+                    </tbody>
+                </table>
             </div>
-            <div>
-                <h3 class="text-lg font-semibold mb-4 flex items-center">
-                    <i class="fas fa-link mr-2"></i> Quick Links
-                </h3>
-                <ul class="space-y-2">
-                    <li><a href="/index.html" class="text-gray-300 hover:text-white flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> Home</a></li>
-                    <li><a href="/about" class="text-gray-300 hover:text-white flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> About</a></li>
-                    <li><a href="/mentors" class="text-gray-300 hover:text-white flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> Mentors</a></li>
-                    <li><a href="/login.html" class="text-gray-300 hover:text-white flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> Login</a></li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="text-lg font-semibold mb-4 flex items-center">
-                    <i class="fas fa-envelope mr-2"></i> Contact Info
-                </h3>
-                <ul class="space-y-2 text-gray-300">
-                    <li class="flex items-center"><i class="fas fa-map-marker-alt mr-3"></i> 123 Education Street, Tashkent</li>
-                    <li class="flex items-center"><i class="fas fa-phone-alt mr-3"></i> +998 90 123 45 67</li>
-                    <li class="flex items-center"><i class="fas fa-envelope mr-3"></i> info@ipeschool.com</li>
-                </ul>
-            </div>
-        </div>
-        <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-400">
-            <p>© 2023 IPE School. All Rights Reserved.</p>
         </div>
     </div>
-</footer>
+</div>
+
+<!-- Student Progress Modal -->
+<div id="progressModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('progressModal')">&times;</span>
+        <h2>Student Progress</h2>
+        <div id="progressContent">
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading progress...
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Module Details Modal -->
+<div id="moduleModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('moduleModal')">&times;</span>
+        <h2 id="moduleModalTitle">Module Details</h2>
+        <div id="moduleContent">
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading module...
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Task Details Modal -->
+<div id="taskModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('taskModal')">&times;</span>
+        <h2 id="taskModalTitle">Task Details</h2>
+        <div id="taskContent">
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading task...
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Question Details Modal -->
+<div id="questionModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('questionModal')">&times;</span>
+        <h2 id="questionModalTitle">Question Details</h2>
+        <div id="questionContent">
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading question...
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Module Modal -->
+<div id="changeModuleModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('changeModuleModal')">&times;</span>
+        <h2>Change Module</h2>
+        <div id="changeModuleContent">
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading sciences...
+            </div>
+        </div>
+        <div style="text-align: right; margin-top: 20px;">
+            <button id="updateModuleBtn" class="btn btn-success hidden" onclick="updateGroupModule()">
+                <i class="fas fa-save"></i> Update Module
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Mentor Groups Modal -->
+<div id="mentorGroupsModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('mentorGroupsModal')">&times;</span>
+        <h2 id="mentorGroupsTitle">Mentor Groups</h2>
+        <div id="mentorGroupsContent">
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading groups...
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
-    let currentGroup = null;
-    let currentModule = null;
-    let currentTaskId = null;
-    let currentTask = null;
-
-    function byteArrayToDataUrl(byteArray, mime = 'application/octet-stream') {
-        const uint8 = new Uint8Array(byteArray);
-        let binary = '';
-        for (let i = 0; i < uint8.length; i++) {
-            binary += String.fromCharCode(uint8[i]);
-        }
-        return `data:${mime};base64,${window.btoa(binary)}`;
-    }
-
-    function getImageSrc(imageData) {
-        if (Array.isArray(imageData) && imageData.length) {
-            return byteArrayToDataUrl(imageData, 'image/png');
-        } else if (typeof imageData === 'string' && imageData.startsWith('data:image')) {
-            return imageData;
-        }
-        return 'https://via.placeholder.com/100';
-    }
-
-    function getAuthHeader() {
-        let token = localStorage.getItem('authToken');
-        if (!token) {
-            console.error('No auth token found in localStorage. Redirecting to login.');
-            return null;
-        }
-        try {
-            if (typeof token === 'string' && token.startsWith('{')) {
-                token = JSON.parse(token).token || token;
-            }
-        } catch (e) {
-            console.warn('Invalid token format in localStorage:', e.message);
-        }
-        const cleanToken = token.startsWith('Bearer ') ? token.substring(7) : token;
-        console.debug('Using auth token (obfuscated): Bearer ' + cleanToken.slice(0, 4) + '...');
-        return `Bearer ${cleanToken}`;
-    }
-
-    async function fetchWithAuth(url, options = {}) {
-        const authHeader = getAuthHeader();
-        if (!authHeader) {
-            alert('No authentication token found. Please log in again.');
-            window.location.href = '/login.html';
-            throw new Error('No authentication token');
-        }
-
-        console.debug(`Making request to ${url}`, {
-            method: options.method || 'GET',
-            headers: { Authorization: authHeader, ...options.headers }
-        });
-
-        try {
-            const headers = {
-                ...options.headers,
-                Authorization: authHeader
-            };
-            if (!(options.body instanceof FormData)) {
-                headers['Content-Type'] = options.headers?.['Content-Type'] || 'application/json';
-            }
-
-            const response = await fetch(`${url}`, {
-                ...options,
-                headers
-            });
-
-            console.debug(`Response from ${url}: ${response.status} ${response.statusText}`);
-
-            if (response.status === 401) {
-                console.error('Unauthorized request. Token may be invalid or expired.');
-                alert('Session expired or invalid token. Please log in again.');
-                localStorage.removeItem('authToken');
-                window.location.href = '/login.html';
-                throw new Error('Unauthorized');
-            }
-
-            if (!response.ok) {
-                // Read response body once
-                const contentType = response.headers.get('content-type');
-                let errorText = 'Unknown error';
-                let responseBody;
-
-                try {
-                    responseBody = await response.text();
-                    if (contentType && contentType.includes('application/json')) {
-                        const errorData = JSON.parse(responseBody);
-                        errorText = errorData.message || errorText;
-                    } else {
-                        errorText = responseBody || errorText;
-                    }
-                } catch (e) {
-                    console.warn('Failed to parse response body:', e.message);
-                    errorText = responseBody || 'Unable to read error details';
-                }
-
-                throw new Error(`Failed to fetch: ${response.status} - ${errorText}`);
-            }
-
-            return response;
-        } catch (error) {
-            console.error(`Fetch error for ${url}:`, error.message);
-            throw error;
-        }
-    }
-
-    async function createAttachment(file) {
-        if (!file || file.size === 0) {
-            throw new Error('No file selected or file is empty');
-        }
-        if (file.size > 5 * 1024 * 1024) {
-            throw new Error('File size exceeds 5MB limit');
-        }
-        const formData = new FormData();
-        formData.append('attachment', file);
-        console.debug('Uploading attachment:', { fileName: file.name, size: file.size });
-        try {
-            const response = await fetchWithAuth('/api/v1/attachments', {
-                method: 'POST',
-                headers: {},
-                body: formData
-            });
-            const data = await response.json();
-            console.debug('Attachment uploaded successfully:', data);
-            return { id: data };
-        } catch (error) {
-            console.error('Attachment upload failed:', error);
-            throw error;
-        }
-    }
-
-    async function updateProfile() {
-        let userData = JSON.parse(localStorage.getItem('userData'));
-        const firstName = document.getElementById('update-first-name').value;
-        const lastName = document.getElementById('update-last-name').value;
-        const phoneNumber = document.getElementById('update-profile-phone').value;
-        const profilePicture = document.getElementById('update-profile-picture').files[0];
-
-        if (!firstName || !lastName || !phoneNumber) {
-            alert('Please fill in all required fields.');
-            return;
-        }
-
-        let attachmentId = null;
-        if (profilePicture) {
-            try {
-                const attachmentData = await createAttachment(profilePicture);
-                attachmentId = attachmentData.id;
-                if (!attachmentId) {
-                    throw new Error('No attachment ID received from server');
-                }
-                console.debug('Profile picture uploaded:', { attachmentId });
-            } catch (error) {
-                console.error('Profile picture upload error:', error);
-                alert(`Failed to upload profile picture: ${error.message}. Please try again.`);
-                return;
-            }
-        }
-
-        const formData = new FormData();
-        formData.append("id",userData.userId);
-        formData.append('firstName', firstName);
-        formData.append('lastName', lastName);
-        formData.append('phoneNumber', phoneNumber);
-        if (attachmentId) {
-            formData.append('image', attachmentId.toString());
-        }
-
-        try {
-            console.debug('Sending profile update:', Object.fromEntries(formData));
-            const response = await fetchWithAuth('/api/v1/auth/updateProfile', {
-                method: 'POST',
-                headers: {},
-                body: formData
-            });
-            const updatedUser = await response.json();
-            console.debug('Profile updated successfully:', updatedUser);
-
-            localStorage.setItem('userData', JSON.stringify(updatedUser));
-            displayMentorProfile();
-            document.getElementById('edit-profile-form').classList.add('hidden');
-            alert('Profile updated successfully!');
-        } catch (error) {
-            console.error('Error updating profile:', {
-                message: error.message,
-                stack: error.stack,
-                formData: Object.fromEntries(formData)
-            });
-            alert(`An error occurred while updating the profile: ${error.message}`);
-        }
-    }
-
-    function addVariantInput(container, index) {
-        const variantDiv = document.createElement('div');
-        variantDiv.className = 'flex items-center space-x-2 mb-2';
-        variantDiv.innerHTML = `
-            <input type="text" id="variant-${index}" class="flex-1 p-2 border rounded" placeholder="Enter variant ${index + 1}" required>
-            <label class="flex items-center space-x-1">
-                <input type="checkbox" id="correct-${index}" class="form-checkbox">
-                <span>Correct</span>
-            </label>
-            <button type="button" class="bg-red-500 text-white p-2 rounded hover:bg-red-600 remove-variant">Remove</button>
-        `;
-        container.appendChild(variantDiv);
-        variantDiv.querySelector('.remove-variant').addEventListener('click', () => {
-            variantDiv.remove();
-        });
-    }
-
-    function displayMentorProfile() {
-        const userData = JSON.parse(localStorage.getItem('userData'));
-        if (!userData) {
-            console.warn('No user data found in localStorage');
-            return;
-        }
-
-        const profilePicture = document.getElementById('profile-picture');
-        const profileName = document.getElementById('profile-name');
-        const profilePhone = document.getElementById('profile-phone');
-
-        const imageSrc = getImageSrc(userData.image);
-        profilePicture.src = imageSrc;
-        profileName.textContent = `${userData.firstName} ${userData.lastName}`;
-        profilePhone.textContent = `Phone: ${userData.phoneNumber}`;
-    }
-
-    async function fetchMentorGroups() {
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-            console.error('No auth token found. Redirecting to login.');
-            alert('Please log in to view your groups.');
-            window.location.href = '/login.html';
-            return;
-        }
-        console.debug('Fetching groups with token (obfuscated): ' + token.slice(0, 20) + '...');
-
-        try {
-            const response = await fetchWithAuth('/api/v1/mentor/group');
-            const groups = await response.json();
-            console.debug('Groups fetched successfully:', groups);
-            displayGroups(groups);
-        } catch (error) {
-            console.error('Error fetching groups:', error.message);
-            alert(`An error occurred while fetching your groups: ${error.message}`);
-        }
-    }
-
-    function displayGroups(groups) {
-        const container = document.getElementById('groups-container');
-        container.innerHTML = '';
-
-        if (!groups || !groups.length) {
-            container.innerHTML = '<p class="text-gray-600">No groups assigned to you.</p>';
-            return;
-        }
-
-        groups.forEach(group => {
-            const groupCard = document.createElement('div');
-            groupCard.className = 'bg-white p-6 rounded-lg shadow-md card-hover cursor-pointer';
-            groupCard.innerHTML = `<h3 class="text-xl font-semibold text-gray-800">${group.name}</h3>`;
-            groupCard.addEventListener('click', () => showGroupDetails(group.id));
-            container.appendChild(groupCard);
-        });
-    }
-
-    async function showGroupDetails(groupId) {
-        try {
-            const response = await fetchWithAuth(`/api/v1/group/${groupId}`);
-            currentGroup = await response.json();
-            console.debug('Group details fetched:', currentGroup);
-            displayGroupDetails(currentGroup);
-        } catch (error) {
-            console.error('Error fetching group details:', error);
-            alert(`An error occurred while fetching group details: ${error.message}`);
-        }
-    }
-
-    function displayGroupDetails(group) {
-        document.getElementById('groups-container').classList.add('hidden');
-        document.getElementById('group-details').classList.remove('hidden');
-        document.getElementById('module-details').classList.add('hidden');
-        document.getElementById('task-details').classList.add('hidden');
-
-        document.getElementById('group-name').textContent = group.name;
-
-        const studentsList = document.getElementById('students-list');
-        studentsList.innerHTML = '';
-        if (group.students && group.students.length > 0) {
-            group.students.forEach(student => {
-                const studentDiv = document.createElement('div');
-                studentDiv.className = 'flex items-center bg-white p-4 rounded shadow mb-2';
-                const imageSrc = getImageSrc(student.image);
-                studentDiv.innerHTML = `
-                    <img src="${imageSrc}" alt="${student.firstName} ${student.lastName}" class="w-12 h-12 rounded-full mr-4">
-                    <div>
-                        <p class="font-semibold text-lg">${student.firstName} ${student.lastName}</p>
-                        <p class="text-gray-600">${student.phoneNumber}</p>
-                    </div>
-                `;
-                studentsList.appendChild(studentDiv);
-            });
-        } else {
-            studentsList.textContent = 'No students in this group.';
-        }
-
-        const modulesList = document.getElementById('modules-list');
-        const modulesWarning = document.getElementById('modules-warning');
-        modulesList.innerHTML = '';
-        if (group.modules && group.modules.length > 0) {
-            modulesWarning.classList.add('hidden');
-            group.modules.forEach(module => {
-                const button = document.createElement('button');
-                button.className = module.active
-                    ? 'bg-green-500 text-white p-2 rounded hover:bg-green-600 m-1'
-                    : 'bg-gray-400 text-white p-2 rounded m-1 cursor-not-allowed';
-                button.textContent = module.active ? module.moduleName : `${module.moduleName} 🔒`;
-                button.disabled = !module.active;
-                if (module.active) {
-                    button.addEventListener('click', () => showModuleDetails(module.id));
-                }
-                modulesList.appendChild(button);
-            });
-        } else {
-            modulesWarning.textContent = 'Warning: No modules assigned to this group.';
-            modulesWarning.classList.remove('hidden');
-        }
-    }
-
-    async function showModuleDetails(moduleId) {
-        try {
-            const response = await fetchWithAuth(`/api/v1/module/${moduleId}`);
-            const moduleData = await response.json();
-            console.debug('Raw module API response:', moduleData);
-            if (!moduleData.id || typeof moduleData.id !== 'number' || isNaN(moduleData.id) || moduleData.id <= 0 || !Number.isInteger(moduleData.id)) {
-                console.error('Invalid module id in response:', moduleData);
-                alert('Invalid module data received. Please try again.');
-                return;
-            }
-            currentModule = moduleData;
-            console.debug('Set currentModule with id:', currentModule.id);
-            displayModuleDetails(currentModule);
-        } catch (error) {
-            console.error('Error fetching module details:', error);
-            alert(`An error occurred while fetching module details: ${error.message}`);
-        }
-    }
-
-    function displayModuleDetails(module) {
-        document.getElementById('group-details').classList.add('hidden');
-        document.getElementById('module-details').classList.remove('hidden');
-        document.getElementById('task-details').classList.add('hidden');
-
-        document.getElementById('module-name').textContent = module.moduleName;
-
-        console.debug('Module active status:', {
-            moduleId: module.id,
-            moduleName: module.moduleName,
-            active: module.active
-        });
-
-        const closeModuleButton = document.getElementById('close-module-button');
-        if (module.active || module.active === undefined) {
-            closeModuleButton.classList.add('visible');
-            console.debug('Showing Close Module button for module:', module.id);
-        } else {
-            closeModuleButton.classList.remove('visible');
-            console.debug('Hiding Close Module button for module:', module.id);
-        }
-
-        const tasksList = document.getElementById('tasks-list');
-        tasksList.innerHTML = '';
-        if (module.tasks && module.tasks.length > 0) {
-            module.tasks.forEach(task => {
-                const taskButton = document.createElement('button');
-                taskButton.className = 'bg-blue-500 text-white p-2 rounded m-1 hover:bg-blue-600';
-                taskButton.textContent = task.taskName;
-                taskButton.addEventListener('click', () => showTaskDetails(task.id));
-                tasksList.appendChild(taskButton);
-            });
-        } else {
-            tasksList.textContent = 'No tasks in this module.';
-        }
-    }
-
-    async function showTaskDetails(taskId) {
-        try {
-            const taskResponse = await fetchWithAuth(`/api/v1/task/${taskId}`);
-            const task = await taskResponse.json();
-            currentTaskId = taskId;
-            currentTask = task;
-
-            const taskAttachmentIds = task.attachmentId?.filter(id => id != null) || [];
-            const questionAttachmentIds = task.questionRes?.map(q => q.attachmentId).filter(id => id != null) || [];
-            const attachmentIds = [...new Set([...taskAttachmentIds, ...questionAttachmentIds])];
-            console.debug('Fetching attachments for IDs:', attachmentIds);
-
-            const attachments = await fetchAttachments(attachmentIds);
-            const attachmentMap = new Map(attachments.map(a => [a.id, a]));
-
-            displayTaskDetails(task, attachmentMap);
-        } catch (error) {
-            console.error('Error fetching task details or attachments:', error);
-            alert(`An error occurred while fetching task details: ${error.message}`);
-        }
-    }
-
-    async function fetchAttachments(attachmentIds) {
-        const promises = attachmentIds.map(id =>
-            fetchWithAuth(`/api/v1/attachments/${id}`).then(response => {
-                if (!response.ok) return null;
-                return response.json();
-            }).catch(error => {
-                console.error(`Error fetching attachment ${id}:`, error);
-                return null;
-            })
-        );
-        const results = await Promise.all(promises);
-        return results.filter(a => a != null);
-    }
-
-    function displayTaskDetails(task, attachmentMap) {
-        document.getElementById('module-details').classList.add('hidden');
-        document.getElementById('task-details').classList.remove('hidden');
-
-        document.getElementById('task-name').textContent = task.name || task.taskName;
-
-        const videoDiv = document.getElementById('task-video');
-        videoDiv.innerHTML = '';
-        if (task.youtubeURL) {
-            try {
-                const url = new URL(task.youtubeURL);
-                const videoId = url.searchParams.get('v') || url.pathname.split('/').pop();
-                if (videoId) {
-                    const embedUrl = `https://www.youtube.com/embed/${videoId}`;
-                    videoDiv.innerHTML = `
-                    <iframe width="560" height="315" src="${embedUrl}" title="YouTube video player"
-                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen class="max-w-full" onerror="this.style.display='none'; document.getElementById('youtube-fallback').style.display='block';"></iframe>
-                    <p id="youtube-fallback" class="text-red-600" style="display:none;">Unable to load YouTube video. URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>
-                `;
-                } else {
-                    videoDiv.innerHTML = `<p class="text-red-600">Invalid YouTube URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>`;
-                }
-            } catch {
-                videoDiv.innerHTML = `<p class="text-red-600">Invalid YouTube URL: <a href="${task.youtubeURL}" class="underline">${task.youtubeURL}</a></p>`;
-            }
-        }
-
-        const attachmentsList = document.getElementById('attachments-list');
-        attachmentsList.innerHTML = '';
-        if (task.attachmentId && task.attachmentId.length > 0) {
-            task.attachmentId.forEach(id => {
-                const attachment = attachmentMap.get(id);
-                const attachmentDiv = document.createElement('div');
-                attachmentDiv.className = 'mb-2';
-                if (attachment) {
-                    if (attachment.contentType?.startsWith('image/')) {
-                        const imageSrc = `data:${attachment.contentType};base64,${attachment.content}`;
-                        attachmentDiv.innerHTML = `<img src="${imageSrc}" alt="Attachment ${id}" class="max-w-full h-auto">`;
-                    } else {
-                        const dataUrl = `data:${attachment.contentType || 'application/octet-stream'};base64,${attachment.content}`;
-                        attachmentDiv.innerHTML = `<a href="${dataUrl}" download class="text-blue-500 underline">Download Attachment ${id}</a>`;
-                    }
-                } else {
-                    attachmentDiv.innerHTML = `<p class="text-red-600">Attachment not found. URL: /api/v1/attachments/${id}</p>`;
-                }
-                attachmentsList.appendChild(attachmentDiv);
-            });
-        } else {
-            attachmentsList.textContent = 'No attachments for this task.';
-        }
-
-        const questionsList = document.getElementById('questions-list');
-        questionsList.innerHTML = '';
-        if (task.questionRes && task.questionRes.length > 0) {
-            task.questionRes.forEach(question => {
-                const questionDiv = document.createElement('div');
-                questionDiv.className = 'mb-4 p-4 bg-white rounded shadow question-card';
-                let html = `
-                <div class="flex justify-between items-center">
-                    <h4 class="text-lg font-semibold">${question.questionTest}</h4>
-                    <button class="btn-primary text-white px-2 py-1 rounded-lg text-sm" onclick="populateUpdateQuestionForm(${question.id}, ${task.id})">
-                        <i class="fas fa-edit mr-1"></i> Edit
-                    </button>
-                </div>
-                <ul class="list-disc list-inside">
-                    ${question.variant.map(v => `<li>${v}</li>`).join('')}
-                </ul>
-                <p class="mt-2"><strong>Correct Answer:</strong> ${question.currentAnswer || 'N/A'}</p>
-            `;
-                if (question.attachmentId) {
-                    console.debug('Processing question attachment:', { questionId: question.id, attachmentId: question.attachmentId });
-                    const attachment = attachmentMap.get(Number(question.attachmentId));
-                    if (attachment) {
-                        if (attachment.contentType?.startsWith('image/')) {
-                            const imageSrc = `data:${attachment.contentType};base64,${attachment.content}`;
-                            html += `<img src="${imageSrc}" alt="Question Attachment ${question.attachmentId}" class="mt-2 max-w-full h-auto">`;
-                        } else {
-                            const dataUrl = `data:${attachment.contentType || 'application/octet-stream'};base64,${attachment.content}`;
-                            html += `<a href="${dataUrl}" download class="text-blue-500 underline mt-2 block">Download Question Attachment ${question.attachmentId}</a>`;
-                        }
-                    } else {
-                        html += `<p class="mt-2 text-red-600">Question attachment not found. URL: /api/v1/attachments/${question.attachmentId}</p>`;
-                    }
-                } else {
-                    console.debug('No attachment for question:', { questionId: question.id });
-                }
-                questionDiv.innerHTML = html;
-                questionsList.appendChild(questionDiv);
-            });
-        } else {
-            questionsList.textContent = 'No questions in this task.';
-        }
-    }
-
-    async function addTask() {
-        const taskName = document.getElementById('task-name').value;
-        const youtubeURL = document.getElementById('youtube-url').value;
-        const attachmentsInput = document.getElementById('attachments');
-        const attachments = attachmentsInput.files;
-
-        if (!taskName) {
-            alert('Task name is required.');
-            return;
-        }
-
-        if (!currentModule || currentModule.id == null || typeof currentModule.id !== 'number' || isNaN(currentModule.id) || currentModule.id <= 0 || !Number.isInteger(currentModule.id)) {
-            console.error('Invalid or no module selected:', currentModule);
-            alert('Please select a valid module before adding a task.');
-            return;
-        }
-
-        const moduleId = currentModule.id;
-        console.debug('Sending moduleId:', moduleId);
-
-        const formData = new FormData();
-        formData.append('taskName', taskName);
-        formData.append('youtubeURL', youtubeURL || '');
-        formData.append('moduleId', String(moduleId));
-        for (let i = 0; i < attachments.length; i++) {
-            formData.append('attachments', attachments[i]);
-        }
-
-        console.debug('FormData contents:', Object.fromEntries(formData));
-
-        try {
-            const response = await fetchWithAuth('/api/v1/task', {
-                method: 'POST',
-                headers: {},
-                body: formData
-            });
-
-            const data = await response.json();
-            console.debug('Task added successfully:', data);
-            alert('Task added successfully!');
-            await showModuleDetails(moduleId);
-            document.getElementById('add-task-form').classList.add('hidden');
-            document.getElementById('task-name').value = '';
-            document.getElementById('youtube-url').value = '';
-            document.getElementById('attachments').value = '';
-        } catch (error) {
-            console.error('Error adding task:', error.message);
-            alert(`An error occurred while adding the task: ${error.message}`);
-        }
-    }
-
-    async function updateTask() {
-        const taskName = document.getElementById('update-task-name').value;
-        const youtubeURL = document.getElementById('update-youtube-url').value;
-        const attachmentsInput = document.getElementById('update-attachments');
-        const attachments = attachmentsInput.files;
-
-        if (!taskName) {
-            alert('Task name is required.');
-            return;
-        }
-
-        if (!currentTaskId || !currentModule || currentModule.id == null) {
-            console.error('Invalid task or module:', { currentTaskId, currentModule });
-            alert('Please select a valid task and module before updating.');
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('taskName', taskName);
-        formData.append('youtubeURL', youtubeURL || '');
-        formData.append('moduleId', String(currentModule.id));
-        for (let i = 0; i < attachments.length; i++) {
-            formData.append('attachments', attachments[i]);
-        }
-
-        console.debug('FormData contents for update:', Object.fromEntries(formData));
-
-        try {
-            const response = await fetchWithAuth(`/api/v1/task/${currentTaskId}`, {
-                method: 'POST',
-                headers: {},
-                body: formData
-            });
-
-            const data = await response.json();
-            console.debug('Task updated successfully:', data);
-            alert('Task updated successfully!');
-            const moduleId = currentModule.id;
-            await showModuleDetails(moduleId);
-            document.getElementById('task-details').classList.add('hidden');
-            document.getElementById('update-task-form').classList.add('hidden');
-            document.getElementById('update-task-name').value = '';
-            document.getElementById('update-youtube-url').value = '';
-            document.getElementById('update-attachments').value = '';
-        } catch (error) {
-            console.error('Error updating task:', error.message);
-            alert(`An error occurred while updating the task: ${error.message}`);
-        }
-    }
-
-    async function closeModule() {
-        if (!currentModule || !currentModule.id) {
-            console.error('No module selected for closing:', currentModule);
-            alert('Please select a valid module to close.');
-            return;
-        }
-
-        if (!confirm('Are you sure you want to close this module? It will no longer be accessible.')) {
-            return;
-        }
-
-        try {
-            const response = await fetchWithAuth(`/api/v1/module/${currentModule.id}`, {
-                method: 'DELETE',
-                headers: {}
-            });
-
-            console.debug('Module closed successfully:', { moduleId: currentModule.id, status: response.status });
-            alert('Module closed successfully!');
-
-            const groupId = currentGroup?.id;
-            currentModule = null;
-
-            if (groupId) {
-                await showGroupDetails(groupId);
-            } else {
-                console.warn('No current group set, refreshing groups.');
-                await fetchMentorGroups();
-            }
-        } catch (error) {
-            console.error('Error closing module:', {
-                moduleId: currentModule?.id,
-                error: error.message,
-                stack: error.stack
-            });
-            alert(`An error occurred while closing the module: ${error.message}`);
-        }
-    }
-
-    async function addQuestion() {
-        const questionTest = document.getElementById('question-test').value;
-        const attachmentInput = document.getElementById('question-attachment');
-        const attachment = attachmentInput.files[0];
-        const variantsContainer = document.getElementById('variants-container');
-        const variantInputs = variantsContainer.querySelectorAll('input[type="text"]');
-        const correctCheckboxes = variantsContainer.querySelectorAll('input[type="checkbox"]');
-
-        if (!questionTest) {
-            alert('Question text is required.');
-            return;
-        }
-
-        const variants = Array.from(variantInputs)
-            .map(input => input.value.trim())
-            .filter(value => value);
-        if (variants.length === 0) {
-            alert('At least one variant is required.');
-            return;
-        }
-
-        const correctAnswers = Array.from(correctCheckboxes)
-            .map((checkbox, index) => checkbox.checked ? variants[index] : null)
-            .filter(answer => answer);
-        if (correctAnswers.length === 0) {
-            alert('At least one correct answer must be selected.');
-            return;
-        }
-
-        let attachmentId = null;
-        if (attachment) {
-            try {
-                const attachmentData = await createAttachment(attachment);
-                attachmentId = attachmentData.id;
-                if (!attachmentId) {
-                    throw new Error('No attachment ID received from server');
-                }
-                console.debug('Question attachment uploaded:', { attachmentId });
-            } catch (error) {
-                console.error('Attachment error details:', error);
-                alert(`Failed to upload attachment: ${error.message}. Please try again.`);
-                return;
-            }
-        }
-
-        const questionData = {
-            questionTest,
-            attachmentId,
-            variant: variants,
-            currentAnswer: correctAnswers.join(','),
-            taskId: currentTaskId
-        };
-
-        console.debug('Submitting question:', questionData);
-
-        try {
-            const response = await fetchWithAuth('/api/v1/questions', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(questionData)
-            });
-
-            const questionRes = await response.json();
-            console.debug('Question added successfully:', questionRes);
-            await showTaskDetails(currentTaskId);
-            document.getElementById('add-question-form').classList.add('hidden');
-            document.getElementById('question-test').value = '';
-            document.getElementById('question-attachment').value = '';
-            variantsContainer.innerHTML = '';
-            addVariantInput(variantsContainer, 0);
-        } catch (error) {
-            console.error('Error adding question:', error);
-            alert(`An error occurred while adding the question: ${error.message}`);
-        }
-    }
-    function addUpdateVariantInput(container, index, value = '', isCorrect = false) {
-        const variantDiv = document.createElement('div');
-        variantDiv.className = 'flex items-center space-x-2 mb-2';
-        variantDiv.innerHTML = `
-        <input type="text" id="update-variant-${index}" class="flex-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" value="${value}" required>
-        <label class="flex items-center space-x-1">
-            <input type="checkbox" id="update-correct-${index}" class="form-checkbox" ${isCorrect ? 'checked' : ''}>
-            <span>Correct</span>
-        </label>
-        <button type="button" class="bg-red-500 text-white p-2 rounded hover:bg-red-600 remove-variant">Remove</button>
-    `;
-        container.appendChild(variantDiv);
-        variantDiv.querySelector('.remove-variant').addEventListener('click', () => {
-            variantDiv.remove();
-        });
-    }
-
-    async function populateUpdateQuestionForm(questionId, taskId) {
-        try {
-            const response = await fetchWithAuth(`/api/v1/questions/${questionId}`);
-            const question = await response.json();
-            console.log('Question data:', question);
-
-            document.getElementById('update-question-test').value = question.questionTest || '';
-            document.getElementById('current-attachment-name').textContent = question.attachmentId ? `Attachment ID: ${question.attachmentId}` : 'None';
-            document.getElementById('update-question-id').value = questionId;
-            document.getElementById('update-task-id').value = taskId;
-            document.getElementById('update-question-attachment').value = '';
-            document.getElementById('update-question-file-name').textContent = 'No file chosen';
-
-            const variantsContainer = document.getElementById('update-variants-container');
-            variantsContainer.innerHTML = '';
-            const correctAnswers = question.currentAnswer ? question.currentAnswer.split(',') : [];
-            question.variant.forEach((variant, index) => {
-                const isCorrect = correctAnswers.includes(variant);
-                addUpdateVariantInput(variantsContainer, index, variant, isCorrect);
-            });
-
-            document.getElementById('update-question-form').classList.remove('hidden');
-        } catch (error) {
-            console.error('Error fetching question:', error);
-            alert(`Failed to load question details: ${error.message}`);
-        }
-    }
-    async function updateQuestion() {
-        const questionId = document.getElementById('update-question-id').value;
-        const taskId = document.getElementById('update-task-id').value;
-        const questionTest = document.getElementById('update-question-test').value;
-        const attachmentInput = document.getElementById('update-question-attachment').files[0];
-        const variantsContainer = document.getElementById('update-variants-container');
-        const variantInputs = variantsContainer.querySelectorAll('input[type="text"]');
-        const correctCheckboxes = variantsContainer.querySelectorAll('input[type="checkbox"]');
-
-        if (!questionTest) {
-            alert('Question text is required.');
-            return;
-        }
-
-        const variants = Array.from(variantInputs)
-            .map(input => input.value.trim())
-            .filter(value => value);
-        if (variants.length === 0) {
-            alert('At least one variant is required.');
-            return;
-        }
-
-        const correctAnswers = Array.from(correctCheckboxes)
-            .map((checkbox, index) => checkbox.checked ? variants[index] : null)
-            .filter(answer => answer);
-        if (correctAnswers.length === 0) {
-            alert('At least one correct answer must be selected.');
-            return;
-        }
-
-        let attachmentId = null;
-        if (attachmentInput) {
-            try {
-                const attachmentData = await createAttachment(attachmentInput);
-                attachmentId = attachmentData.id;
-                console.debug('Question attachment uploaded:', { attachmentId });
-            } catch (error) {
-                console.error('Attachment upload error:', error);
-                alert(`Failed to upload attachment: ${error.message}`);
-                return;
-            }
-        }
-
-        const questionData = {
-            questionTest,
-            attachmentId,
-            variant: variants,
-            currentAnswer: correctAnswers.join(','),
-            taskId
-        };
-
-        try {
-            const response = await fetchWithAuth(`/api/v1/questions/${questionId}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(questionData)
-            });
-
-            const questionRes = await response.json();
-            console.debug('Question updated successfully:', questionRes);
-            alert('Question updated successfully!');
-            await showTaskDetails(taskId);
-            document.getElementById('update-question-form').classList.add('hidden');
-            document.getElementById('update-question-test').value = '';
-            document.getElementById('update-question-attachment').value = '';
-            document.getElementById('update-question-file-name').textContent = 'No file chosen';
-            document.getElementById('current-attachment-name').textContent = 'None';
-            variantsContainer.innerHTML = '';
-            addUpdateVariantInput(variantsContainer, 0);
-        } catch (error) {
-            console.error('Error updating question:', error);
-            alert(`An error occurred while updating the question: ${error.message}`);
-        }
-    }
-
-    function updateCorrectAnswerOptions() {
-        const select = document.getElementById('update-current-answer');
-        const currentValue = select.value;
-        select.innerHTML = '<option value="">Select Correct Answer</option>';
-        const variantInputs = document.querySelectorAll('#update-variants-container input[type="text"]');
-        const variants = Array.from(variantInputs).map(input => input.value).filter(v => v);
-        variants.forEach(variant => {
-            const option = document.createElement('option');
-            option.value = variant;
-            option.textContent = variant;
-            if (variant === currentValue) {
-                option.selected = true;
-            }
-            select.appendChild(option);
-        });
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-        // Add event listeners for file input changes to show file names
-        document.getElementById('update-profile-picture').addEventListener('change', function() {
-            const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
-            document.getElementById('file-name').textContent = fileName;
-        });
-
-        document.getElementById('attachments').addEventListener('change', function() {
-            const files = this.files;
-            let fileName = 'No files chosen';
-            if (files.length > 0) {
-                fileName = files.length === 1 ? files[0].name : `${files.length} files selected`;
-            }
-            document.getElementById('task-files-name').textContent = fileName;
-        });
-
-        document.getElementById('update-attachments').addEventListener('change', function() {
-            const files = this.files;
-            let fileName = 'No files chosen';
-            if (files.length > 0) {
-                fileName = files.length === 1 ? files[0].name : `${files.length} files selected`;
-            }
-            document.getElementById('update-files-name').textContent = fileName;
-        });
-
-        document.getElementById('question-attachment').addEventListener('change', function() {
-            const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
-            document.getElementById('question-file-name').textContent = fileName;
-        });
-
-        // Your existing DOMContentLoaded code
-        if (!localStorage.getItem('authToken')) {
-            console.warn('No auth token found. Setting default token for testing.');
-            localStorage.setItem('authToken', 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0Iiwicm9sZXMiOiJST0xFX01FTlRPUiIsImlhdCI6MTc1MDQwNjc5NywiZXhwIjoxNzUxMDExNTk3fQ.R8CXGXqMrADhJSquC3NQtT2wj_owbcdUf_eaZ4yC74A');
-        }
-
-        try {
-            displayMentorProfile();
-            fetchMentorGroups();
-        } catch (error) {
-            console.error('Error during page initialization:', error);
-            alert('Failed to load dashboard. Please try again.');
-        }
-
-        const variantsContainer = document.getElementById('variants-container');
-        const addVariantButton = document.getElementById('add-variant-button');
-
-        addVariantInput(variantsContainer, 0);
-
-        addVariantButton.addEventListener('click', () => {
-            const currentVariants = variantsContainer.querySelectorAll('input[type="text"]').length;
-            addVariantInput(variantsContainer, currentVariants);
-        });
-
-        document.getElementById('edit-profile-button').addEventListener('click', () => {
-            const userData = JSON.parse(localStorage.getItem('userData'));
-            if (userData) {
-                document.getElementById('update-first-name').value = userData.firstName || '';
-                document.getElementById('update-last-name').value = userData.lastName || '';
-                document.getElementById('update-profile-phone').value = userData.phoneNumber || '';
-            }
-            document.getElementById('edit-profile-form').classList.remove('hidden');
-        });
-
-        document.getElementById('cancel-profile-update').addEventListener('click', () => {
-            document.getElementById('edit-profile-form').classList.add('hidden');
-            document.getElementById('update-first-name').value = '';
-            document.getElementById('update-last-name').value = '';
-            document.getElementById('update-profile-phone').value = '';
-            document.getElementById('update-profile-picture').value = '';
-        });
-
-        document.getElementById('submit-profile-update').addEventListener('click', (e) => {
-            e.preventDefault();
-            updateProfile();
-        });
-
-        document.getElementById('back-to-groups').addEventListener('click', () => {
-            document.getElementById('group-details').classList.add('hidden');
-            document.getElementById('module-details').classList.add('hidden');
-            document.getElementById('task-details').classList.add('hidden');
-            document.getElementById('groups-container').classList.remove('hidden');
-        });
-
-        document.getElementById('back-to-group').addEventListener('click', () => {
-            if (currentGroup) showGroupDetails(currentGroup.id);
-        });
-
-        document.getElementById('back-to-module').addEventListener('click', () => {
-            if (currentModule) showModuleDetails(currentModule.id);
-        });
-
-        document.getElementById('add-task-button').addEventListener('click', () => {
-            if (!currentModule || currentModule.id == null || typeof currentModule.id !== 'number' || isNaN(currentModule.id) || currentModule.id <= 0 || !Number.isInteger(currentModule.id)) {
-                console.error('Cannot open task form. Invalid or no module selected:', currentModule);
-                alert('Please select a valid module before adding a task.');
-                return;
-            }
-            console.debug('Opening task form for moduleId:', currentModule.id);
-            document.getElementById('add-task-form').classList.remove('hidden');
-        });
-
-        document.getElementById('submit-task').addEventListener('click', (e) => {
-            e.preventDefault();
-            addTask();
-        });
-
-        document.getElementById('close-module-button').addEventListener('click', (e) => {
-            e.preventDefault();
-            closeModule();
-        });
-
-        document.getElementById('add-question-button').addEventListener('click', () => {
-            document.getElementById('add-question-form').classList.remove('hidden');
-            variantsContainer.innerHTML = '';
-            addVariantInput(variantsContainer, 0);
-        });
-
-        document.getElementById('submit-question').addEventListener('click', (e) => {
-            e.preventDefault();
-            addQuestion();
-        });
-
-        document.getElementById('update-task-button').addEventListener('click', () => {
-            if (!currentTask) {
-                console.error('No task selected for updating.');
-                alert('Please select a task to update.');
-                return;
-            }
-            document.getElementById('update-task-name').value = currentTask.name || currentTask.taskName || '';
-            document.getElementById('update-youtube-url').value = currentTask.youtubeURL || '';
-            document.getElementById('update-task-form').classList.remove('hidden');
-        });
-
-        document.getElementById('submit-update-task').addEventListener('click', (e) => {
-            e.preventDefault();
-            updateTask();
-        });
-        document.getElementById('update-question-attachment').addEventListener('change', function() {
-            const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
-            document.getElementById('update-question-file-name').textContent = fileName;
-        });
-
-        document.getElementById('update-add-variant-button').addEventListener('click', () => {
-            const variantsContainer = document.getElementById('update-variants-container');
-            const currentVariants = variantsContainer.querySelectorAll('input[type="text"]').length;
-            addUpdateVariantInput(variantsContainer, currentVariants);
-        });
-
-        document.getElementById('cancel-update-question').addEventListener('click', () => {
-            document.getElementById('update-question-form').classList.add('hidden');
-            document.getElementById('update-question-test').value = '';
-            document.getElementById('update-question-attachment').value = '';
-            document.getElementById('update-variants-container').innerHTML = '';
-            addUpdateVariantInput(document.getElementById('update-variants-container'), 0);
-        });
-
-        document.getElementById('submit-update-question').addEventListener('click', (e) => {
-            e.preventDefault();
-            updateQuestion();
-        });
+    // Global variables
+    let currentUser = null;
+    let currentGroupId = null;
+    let currentModuleId = null;
+    let selectedModuleId = null;
+    let allMentors = [];
+    let mentorGroups = [];
+    let allSciences = [];
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', function () {
+        loadUserData();
+        loadMentorGroups();
+        loadAllMentors();
+        setupProfileForm();
     });
+
+    // Load user data from localStorage
+    function loadUserData() {
+        const userData = localStorage.getItem('userData');
+        if (!userData) {
+            window.location.href = 'index.html';
+            return;
+        }
+
+        currentUser = JSON.parse(userData);
+        updateProfileDisplay();
+    }
+
+    // Update profile display
+    function updateProfileDisplay() {
+        if (!currentUser) return;
+
+        // Update sidebar profile
+        document.getElementById('sidebarProfileName').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+        document.getElementById('sidebarProfilePhone').textContent = currentUser.phoneNumber;
+
+        if (currentUser.image) {
+            document.getElementById('sidebarProfileImage').src = currentUser.image;
+            document.getElementById('profileImage').src = currentUser.image;
+        }
+
+        // Update profile form
+        document.getElementById('firstName').value = currentUser.firstName || '';
+        document.getElementById('lastName').value = currentUser.lastName || '';
+        document.getElementById('phoneNumber').value = currentUser.phoneNumber || '';
+    }
+
+    // Load mentor groups
+    async function loadMentorGroups() {
+        if (!currentUser || !currentUser.userId) return;
+
+        try {
+            const response = await fetch(`/api/v1/admin/mentor/${currentUser.userId}`);
+            if (response.ok) {
+                const mentorData = await response.json();
+                mentorGroups = mentorData.groups || [];
+                displayGroups();
+            } else {
+                console.error('Failed to load mentor groups');
+            }
+        } catch (error) {
+            console.error('Error loading mentor groups:', error);
+        }
+    }
+
+    // Display groups in sidebar
+    function displayGroups() {
+        const groupsList = document.getElementById('groupsList');
+
+        if (mentorGroups.length === 0) {
+            groupsList.innerHTML = '<li style="text-align: center; color: #666;">No groups assigned</li>';
+            return;
+        }
+
+        groupsList.innerHTML = mentorGroups.map(group => `
+                <li class="group-item" onclick="selectGroup(${group.id}, '${group.name}')">
+                    <i class="fas fa-users"></i> ${group.name}
+                </li>
+            `).join('');
+    }
+
+    // Select a group
+    async function selectGroup(groupId, groupName) {
+        currentGroupId = groupId;
+
+        // Update active state
+        document.querySelectorAll('.group-item').forEach(item => item.classList.remove('active'));
+        event.target.classList.add('active');
+
+        // Load group details
+        await loadGroupDetails(groupId, groupName);
+        showView('groupDetails');
+    }
+
+    // Load group details
+    async function loadGroupDetails(groupId, groupName) {
+        try {
+            const response = await fetch(`/api/v1/group/${groupId}`, {
+                headers: {'Authorization': `${localStorage.getItem('authToken')}`}
+            });
+            if (response.ok) {
+                const groupData = await response.json();
+                displayGroupDetails(groupData);
+            } else {
+                console.error('Failed to load group details');
+            }
+        } catch (error) {
+            console.error('Error loading group details:', error);
+        }
+    }
+
+    // Display group details
+    function displayGroupDetails(groupData) {
+        document.getElementById('groupName').textContent = groupData.name;
+
+        // Display module button if module exists
+        if (groupData.modules && groupData.modules.length > 0) {
+            const module = groupData.modules[0]; // Taking first module as mentioned
+            currentModuleId = module.id;
+            document.getElementById('moduleName').textContent = module.moduleName;
+            document.getElementById('moduleButton').classList.remove('hidden');
+        } else {
+            document.getElementById('moduleButton').classList.add('hidden');
+        }
+
+        // Display students
+        const studentsTableBody = document.getElementById('studentsTableBody');
+        if (groupData.students && groupData.students.length > 0) {
+            studentsTableBody.innerHTML = groupData.students.map(student => `
+                    <tr>
+                        <td>${student.firstName}</td>
+                        <td>${student.lastName}</td>
+                        <td>${student.phoneNumber}</td>
+                    </tr>
+                `).join('');
+        } else {
+            studentsTableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #666;">No students in this group</td></tr>';
+        }
+    }
+
+    // Load all mentors
+    async function loadAllMentors() {
+        try {
+            const response = await fetch('/api/v1/admin/mentor', {
+                headers: {'Authorization': `${localStorage.getItem('authToken')}`}
+            });
+            if (response.ok) {
+                allMentors = await response.json();
+                displayMentors();
+            } else {
+                console.error('Failed to load mentors');
+            }
+        } catch (error) {
+            console.error('Error loading mentors:', error);
+        }
+    }
+
+    // Display mentors
+    function displayMentors() {
+        const mentorsGrid = document.getElementById('mentorsGrid');
+
+        if (allMentors.length === 0) {
+            mentorsGrid.innerHTML = '<div style="text-align: center; color: #666;">No mentors found</div>';
+            return;
+        }
+
+        mentorsGrid.innerHTML = allMentors.map(mentor => `
+            <div class="mentor-card" onclick="showMentorGroups(${mentor.id}, '${mentor.firstName} ${mentor.lastName}')">
+                <img class="mentor-image"
+                     src="${mentor.image ? `data:image/jpeg;base64,${arrayBufferToBase64(mentor.image)}` : '/placeholder.svg?height=60&width=60'}"
+                     alt="${mentor.firstName}" width="60" height="60">
+                <h4>${mentor.firstName} ${mentor.lastName}</h4>
+                <p style="color: #666; font-size: 14px;">${mentor.phoneNumber}</p>
+            </div>
+        `).join('');
+    }
+
+    // Show mentor groups
+    function showMentorGroups(mentorId, mentorName) {
+        const mentor = allMentors.find(m => m.id === mentorId);
+        if (!mentor) return;
+
+        document.getElementById('mentorGroupsTitle').textContent = `${mentorName} - Groups`;
+        document.getElementById('mentorGroupsModal').style.display = 'block';
+
+        const mentorGroupsContent = document.getElementById('mentorGroupsContent');
+
+        if (!mentor.groups || mentor.groups.length === 0) {
+            mentorGroupsContent.innerHTML = '<p style="text-align: center; color: #666;">No groups assigned to this mentor</p>';
+            return;
+        }
+
+        mentorGroupsContent.innerHTML = `
+            <div class="mentors-grid">
+                ${mentor.groups.map(group => `
+                    <div class="mentor-card" style="cursor: default;">
+                        <i class="fas fa-users" style="font-size: 24px; color: #667eea; margin-bottom: 10px;"></i>
+                        <h4>${group.name}</h4>
+                        <p style="color: #666; font-size: 14px;">Group ID: ${group.id}</p>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    // Show student progress
+    async function showStudentProgress() {
+        if (!currentGroupId) return;
+
+        document.getElementById('progressModal').style.display = 'block';
+        document.getElementById('progressContent').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading progress...
+                </div>
+            `;
+
+        try {
+            const response = await fetch(`/api/v1/group/getProgress/${currentGroupId}`, {
+                headers: {'Authorization': `${localStorage.getItem('authToken')}`}
+            });
+            if (response.ok) {
+                const progressData = await response.json();
+                displayStudentProgress(progressData);
+            } else {
+                console.error('Failed to load student progress');
+            }
+        } catch (error) {
+            console.error('Error loading student progress:', error);
+        }
+    }
+
+    // Display student progress
+    function displayStudentProgress(progressData) {
+        const progressContent = document.getElementById('progressContent');
+
+        if (progressData.length === 0) {
+            progressContent.innerHTML = '<p style="text-align: center; color: #666;">No progress data available</p>';
+            return;
+        }
+
+        progressContent.innerHTML = `
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Total Queries</th>
+                            <th>Passed Queries</th>
+                            <th>Progress</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${progressData.map(student => `
+                            <tr>
+                                <td>${student.studentName}</td>
+                                <td>${student.totalQuery}</td>
+                                <td>${student.passedQuery}</td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: ${student.progress}%"></div>
+                                    </div>
+                                    <span style="font-size: 12px; color: #666;">${student.progress}%</span>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+    }
+
+    // Show change module modal
+    async function showChangeModuleModal() {
+        if (!currentGroupId) return;
+
+        document.getElementById('changeModuleModal').style.display = 'block';
+        document.getElementById('changeModuleContent').innerHTML = `
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading sciences...
+            </div>
+        `;
+
+        try {
+            const response = await fetch('/api/v1/science', {
+                headers: {'Authorization': `${localStorage.getItem('authToken')}`}
+            });
+            if (response.ok) {
+                allSciences = await response.json();
+                displaySciences();
+            } else {
+                console.error('Failed to load sciences');
+            }
+        } catch (error) {
+            console.error('Error loading sciences:', error);
+        }
+    }
+
+    // Display sciences
+    function displaySciences() {
+        const changeModuleContent = document.getElementById('changeModuleContent');
+
+        if (allSciences.length === 0) {
+            changeModuleContent.innerHTML = '<p style="text-align: center; color: #666;">No sciences available</p>';
+            return;
+        }
+
+        changeModuleContent.innerHTML = `
+            <h3>Select a Science:</h3>
+            <div class="science-grid">
+                ${allSciences.map(science => `
+                    <div class="science-card" onclick="selectScience(${science.id}, '${science.name}')">
+                        <i class="fas fa-flask" style="font-size: 24px; margin-bottom: 10px;"></i>
+                        <h4>${science.name}</h4>
+                        <p style="font-size: 12px; color: #666;">${science.modules ? science.modules.length : 0} modules</p>
+                    </div>
+                `).join('')}
+            </div>
+            <div id="modulesSection" class="hidden">
+                <h3>Select a Module:</h3>
+                <div id="modulesGrid" class="modules-grid"></div>
+            </div>
+        `;
+    }
+
+    // Select science
+    function selectScience(scienceId, scienceName) {
+        // Update selected state
+        document.querySelectorAll('.science-card').forEach(card => card.classList.remove('selected'));
+        event.target.classList.add('selected');
+
+        const science = allSciences.find(s => s.id === scienceId);
+        if (!science || !science.modules) return;
+
+        // Show modules section
+        document.getElementById('modulesSection').classList.remove('hidden');
+        const modulesGrid = document.getElementById('modulesGrid');
+
+        modulesGrid.innerHTML = science.modules.map(module => `
+            <div class="module-card" onclick="selectModule(${module.id}, '${module.name}')">
+                <h4>${module.name}</h4>
+                <p style="color: #666; font-size: 14px;">Module ID: ${module.id}</p>
+            </div>
+        `).join('');
+    }
+
+    // Select module
+    function selectModule(moduleId, moduleName) {
+        selectedModuleId = moduleId;
+
+        // Update selected state
+        document.querySelectorAll('.module-card').forEach(card => card.classList.remove('selected'));
+        event.target.classList.add('selected');
+
+        // Show update button
+        document.getElementById('updateModuleBtn').classList.remove('hidden');
+    }
+
+    // Update group module
+    async function updateGroupModule() {
+        if (!currentGroupId || !selectedModuleId) return;
+
+        try {
+            const response = await fetch(`/api/v1/group/updateModule/${currentGroupId}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `${localStorage.getItem('authToken')}`,
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `moduleId=${selectedModuleId}`
+            });
+
+            if (response.ok) {
+                alert('Module updated successfully!');
+                closeModal('changeModuleModal');
+                // Reload group details
+                await loadGroupDetails(currentGroupId, document.getElementById('groupName').textContent);
+            } else {
+                alert('Failed to update module');
+            }
+        } catch (error) {
+            console.error('Error updating module:', error);
+            alert('Error updating module');
+        }
+    }
+
+    // Show module details
+    async function showModuleDetails() {
+        if (!currentModuleId) return;
+
+        document.getElementById('moduleModal').style.display = 'block';
+        document.getElementById('moduleContent').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading module...
+                </div>
+            `;
+
+        try {
+            const response = await fetch(`/api/v1/module/${currentModuleId}`, {
+                headers: {'Authorization': `${localStorage.getItem('authToken')}`}
+            });
+            if (response.ok) {
+                const moduleData = await response.json();
+                displayModuleDetails(moduleData);
+            } else {
+                console.error('Failed to load module details');
+            }
+        } catch (error) {
+            console.error('Error loading module details:', error);
+        }
+    }
+
+    // Display module details
+    function displayModuleDetails(moduleData) {
+        document.getElementById('moduleModalTitle').textContent = moduleData.moduleName;
+        const moduleContent = document.getElementById('moduleContent');
+
+        if (!moduleData.tasks || moduleData.tasks.length === 0) {
+            moduleContent.innerHTML = '<p style="text-align: center; color: #666;">No tasks available</p>';
+            return;
+        }
+
+        moduleContent.innerHTML = `
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Task Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${moduleData.tasks.map(task => `
+                            <tr>
+                                <td>${task.taskName}</td>
+                                <td>
+                                    <button class="btn btn-secondary" onclick="showTaskDetails(${task.id}, '${task.taskName}')">
+                                        <i class="fas fa-eye"></i> View Details
+                                    </button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+    }
+
+    // Show task details
+    async function showTaskDetails(taskId, taskName) {
+        document.getElementById('taskModal').style.display = 'block';
+        document.getElementById('taskModalTitle').textContent = taskName;
+        document.getElementById('taskContent').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading task...
+                </div>
+            `;
+
+        try {
+            const response = await fetch(`/api/v1/task/${taskId}`, {
+                headers: {'Authorization': `${localStorage.getItem('authToken')}`}
+            });
+            if (response.ok) {
+                const taskData = await response.json();
+                await displayTaskDetails(taskData);
+            } else {
+                console.error('Failed to load task details');
+            }
+        } catch (error) {
+            console.error('Error loading task details:', error);
+        }
+    }
+
+    // Display task details
+    async function displayTaskDetails(taskData) {
+        const taskContent = document.getElementById('taskContent');
+        let content = '';
+
+        // YouTube video
+        if (taskData.youtubeURL) {
+            const videoId = extractYouTubeVideoId(taskData.youtubeURL);
+            if (videoId) {
+                content += `
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    `;
+            }
+        }
+
+        // Attachments
+        if (taskData.attachmentId && taskData.attachmentId.length > 0) {
+            content += '<h4>Attachments:</h4><div>';
+            for (const attachmentId of taskData.attachmentId) {
+                try {
+                    const attachmentResponse = await fetch(`/api/v1/attachments/${attachmentId}`, {
+                        headers: {
+                            'Authorization': localStorage.getItem('authToken')
+                        }
+                    });
+
+                    if (attachmentResponse.ok) {
+                        const attachmentData = await attachmentResponse.json();
+                        const attachmentUrl = `data:${attachmentData.contentType};base64,${arrayBufferToBase64(attachmentData.content)}`;
+                        content += `<img src="${attachmentUrl}"
+                           style="max-width: 100%; margin: 10px 0; border-radius: 8px;"
+                           alt="Attachment">`;
+                    }
+                } catch (error) {
+                    console.error('Error loading attachment:', error);
+                }
+            }
+            content += '</div>';
+        }
+
+        // Questions
+        if (taskData.questionRes && taskData.questionRes.length > 0) {
+            content += '<h4>Questions:</h4>';
+            content += '<table class="table">';
+            content += '<thead><tr><th>Question</th><th>Action</th></tr></thead>';
+            content += '<tbody>';
+
+            taskData.questionRes.forEach((question, index) => {
+                content += `
+                    <tr>
+                        <td>Question ${index + 1}: ${question.questionTest || 'Question details'}</td>
+                        <td>
+                            <button class="btn btn-secondary" onclick="showQuestionDetails(${JSON.stringify(question).replace(/"/g, '&quot;')}, ${index + 1})">
+                                <i class="fas fa-eye"></i> View Details
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            content += '</tbody></table>';
+        }
+
+        if (!content) {
+            content = '<p style="text-align: center; color: #666;">No additional content available</p>';
+        }
+
+        taskContent.innerHTML = content;
+    }
+
+    // Show question details
+    async function showQuestionDetails(question, questionNumber) {
+        document.getElementById('questionModal').style.display = 'block';
+        document.getElementById('questionModalTitle').textContent = `Question ${questionNumber}`;
+        document.getElementById('questionContent').innerHTML = `
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading question details...
+            </div>
+        `;
+
+        let content = '';
+
+        // Question text
+        content += `<div class="question-card">`;
+        content += `<div class="question-text"><strong>Question:</strong> ${question.questionTest || 'No question text available'}</div>`;
+
+        // Question attachment
+        if (question.attachmentId) {
+            try {
+                const attachmentResponse = await fetch(`/api/v1/attachments/${question.attachmentId}`, {
+                    headers: {
+                        'Authorization': localStorage.getItem('authToken')
+                    }
+                });
+
+                if (attachmentResponse.ok) {
+                    const attachmentData = await attachmentResponse.json();
+                    const attachmentUrl = `data:${attachmentData.contentType};base64,${arrayBufferToBase64(attachmentData.content)}`;
+                    content += `
+                        <div style="margin: 15px 0;">
+                            <strong>Question Image:</strong><br>
+                            <img src="${attachmentUrl}" style="max-width: 100%; margin-top: 10px; border-radius: 8px;" alt="Question Image">
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading question attachment:', error);
+            }
+        }
+
+        // Variants
+        if (question.variant && question.variant.length > 0) {
+            content += `<div style="margin: 15px 0;"><strong>Options:</strong></div>`;
+            content += `<ul class="variants-list">`;
+            question.variant.forEach((variant, index) => {
+                const isCorrect = variant === question.currentAnswer;
+                content += `<li class="variant-item ${isCorrect ? 'correct-answer' : ''}">${String.fromCharCode(65 + index)}. ${variant}</li>`;
+            });
+            content += `</ul>`;
+        }
+
+        // Correct answer
+        if (question.currentAnswer) {
+            content += `<div style="margin: 15px 0;"><strong>Correct Answer:</strong> <span style="color: #28a745; font-weight: 600;">${question.currentAnswer}</span></div>`;
+        }
+
+        content += `</div>`;
+
+        document.getElementById('questionContent').innerHTML = content;
+    }
+
+    // Setup profile form
+    function setupProfileForm() {
+        document.getElementById('profileForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            await updateProfile();
+        });
+    }
+
+    // Update profile
+    async function updateProfile() {
+        const formData = new FormData();
+        formData.append('id', currentUser.userId.toString());
+        formData.append('firstName', document.getElementById('firstName').value);
+        formData.append('lastName', document.getElementById('lastName').value);
+        formData.append('phoneNumber', document.getElementById('phoneNumber').value);
+
+        // Add password if changing
+        if (document.getElementById('changePassword').checked) {
+            const password = document.getElementById('password').value;
+            if (password) {
+                formData.append('password', password);
+            }
+        }
+
+        // Add image if selected
+        const imageInput = document.getElementById('imageInput');
+        if (imageInput.files[0]) {
+            formData.append('file', imageInput.files[0]);
+        }
+
+        try {
+            const response = await fetch('/api/v1/auth/updateProfile', {
+                headers: {'Authorization': `${localStorage.getItem('authToken')}`},
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                const updatedData = await response.json();
+
+                // Update localStorage (preserve roles and token)
+                const currentUserData = JSON.parse(localStorage.getItem('userData'));
+                const updatedUserData = {
+                    ...currentUserData,
+                    firstName: updatedData.firstName,
+                    lastName: updatedData.lastName,
+                    phoneNumber: updatedData.phoneNumber,
+                    image: updatedData.image || currentUserData.image
+                };
+
+                localStorage.setItem('userData', JSON.stringify(updatedUserData));
+                currentUser = updatedUserData;
+
+                updateProfileDisplay();
+                alert('Profile updated successfully!');
+
+                // Reset password fields
+                document.getElementById('changePassword').checked = false;
+                document.getElementById('password').value = '';
+                togglePasswordField();
+            } else {
+                alert('Failed to update profile');
+            }
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            alert('Error updating profile');
+        }
+    }
+
+    // Preview image
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('profileImage').src = e.target.result;
+                document.getElementById('sidebarProfileImage').src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Toggle password field
+    function togglePasswordField() {
+        const passwordGroup = document.getElementById('passwordGroup');
+        const changePassword = document.getElementById('changePassword');
+
+        if (changePassword.checked) {
+            passwordGroup.classList.remove('hidden');
+            document.getElementById('password').required = true;
+        } else {
+            passwordGroup.classList.add('hidden');
+            document.getElementById('password').required = false;
+            document.getElementById('password').value = '';
+        }
+    }
+
+    // Show view
+    function showView(viewName) {
+        document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+        document.getElementById(viewName).classList.add('active');
+    }
+
+    // Close modal
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+
+        // Reset change module modal state
+        if (modalId === 'changeModuleModal') {
+            selectedModuleId = null;
+            document.getElementById('updateModuleBtn').classList.add('hidden');
+        }
+    }
+
+    // Logout function
+    function logout() {
+        if (!currentUser || !currentUser.roles) {
+            localStorage.removeItem('userData');
+            window.location.href = 'index.html';
+            return;
+        }
+
+        if (currentUser.roles.length === 1) {
+            localStorage.removeItem('userData');
+            window.location.href = 'index.html';
+        } else {
+            window.location.href = 'chooseRole.html';
+        }
+    }
+
+    // Utility functions
+    function arrayBufferToBase64(buffer) {
+        if (!buffer) return '';
+        if (typeof buffer === 'string') return buffer;
+
+        const bytes = new Uint8Array(buffer);
+        let binary = '';
+        for (let i = 0; i < bytes.byteLength; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return btoa(binary);
+    }
+
+    function extractYouTubeVideoId(url) {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    }
+
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.querySelector('.toggle-password');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        }
+    }
+
+    // Close modals when clicking outside
+    window.onclick = function (event) {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
 </script>
 </body>
 </html>

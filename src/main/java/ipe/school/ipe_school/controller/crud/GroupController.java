@@ -93,4 +93,10 @@ public class GroupController {
         List<StudentProgressRes> groupProgressRes = groupService.getGroupProgress(groupId);
         return new ResponseEntity<>(groupProgressRes, HttpStatus.OK);
     }
+
+    @PostMapping("/updateModule/{groupId}")
+    public ResponseEntity<?> updateModule(@PathVariable Long groupId, @RequestParam Long moduleId) {
+        groupService.updateModule(groupId, moduleId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
