@@ -25,7 +25,6 @@ import static ipe.school.ipe_school.utils.ApiConstants.*;
 public class ModuleController {
 
     private final ModuleService moduleService;
-    private final UserRepository userRepository;
 
     @PostMapping
     public ResponseEntity<ModuleRes> createModule(@RequestBody ModuleReq moduleReq) {

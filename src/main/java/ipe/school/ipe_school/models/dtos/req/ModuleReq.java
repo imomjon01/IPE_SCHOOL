@@ -5,4 +5,5 @@ import lombok.Value;
 @Value
 public class ModuleReq {
     String name;
+    Long scienceId;
 }

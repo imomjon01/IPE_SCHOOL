@@ -5,14 +5,9 @@ import ipe.school.ipe_school.models.dtos.req.ModuleReq;
 import ipe.school.ipe_school.models.dtos.res.ModuleDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.ModuleRes;
 import ipe.school.ipe_school.models.dtos.res.TaskRes;
+import ipe.school.ipe_school.models.entity.*;
 import ipe.school.ipe_school.models.entity.Module;
-import ipe.school.ipe_school.models.entity.Question;
-import ipe.school.ipe_school.models.entity.Task;
-import ipe.school.ipe_school.models.entity.User;
-import ipe.school.ipe_school.models.repo.AnswerSubmissionRepository;
-import ipe.school.ipe_school.models.repo.GroupRepository;
-import ipe.school.ipe_school.models.repo.ModuleRepository;
-import ipe.school.ipe_school.models.repo.UserRepository;
+import ipe.school.ipe_school.models.repo.*;
 import ipe.school.ipe_school.service.interfaces.ModuleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,15 +24,29 @@ public class ModuleServiceImpl implements ModuleService {
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
     private final AnswerSubmissionRepository answerSubmissionRepository;
+    private final ScienceRepository scienceRepository;
 
     @Override
+    @Transactional
     public ModuleRes createModule(ModuleReq moduleReq) {
         Module module = Module.builder()
                 .moduleName(moduleReq.getName())
                 .active(true)
                 .build();
         Module savedModule = moduleRepository.save(module);
+        addingCurrentScience(savedModule,moduleReq.getScienceId());
         return new ModuleRes(savedModule.getId(), savedModule.getModuleName(), savedModule.getActive());
+    }
+
+    private void addingCurrentScience(Module savedModule, Long scienceId) {
+        if (scienceId!=null){
+            Science science = scienceRepository.findById(scienceId).orElseThrow(RuntimeException::new);
+            if (science.getModules()!=null){
+                science.getModules().add(savedModule);
+            }else  {
+                science.setModules(Collections.singletonList(savedModule));
+            }
+        }
     }
 
     @Override

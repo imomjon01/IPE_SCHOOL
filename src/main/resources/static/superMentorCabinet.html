@@ -377,6 +377,23 @@
                                     <p class="mt-2">Loading sciences...</p>
                                 </div>
                             </div>
+                            <div class="card mt-4" id="addModuleCard">
+                                <div class="card-header">
+                                    <h6 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Add New Module</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p class="mb-3"><strong>Current Science:</strong> <span id="currentScienceName">N/A</span></p>
+                                    <form id="addModuleForm">
+                                        <div class="mb-3">
+                                            <label for="moduleName" class="form-label">Module Name</label>
+                                            <input type="text" class="form-control" id="moduleName" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100" id="addModuleButton">
+                                            <i class="fas fa-save me-2"></i>Add Module
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -384,7 +401,7 @@
                 <!-- Module View -->
                 <div class="card animate-fade" id="moduleView" style="display: none;">
                     <div class="card-header">
-                        <button class="btn btn-link text-white p-0" onclick="back()">
+                        <button class="btn btn-link text-white p-5" onclick="back()">
                             <i class="fas fa-arrow-left me-2"></i>Back
                         </button>
                     </div>
@@ -491,49 +508,82 @@
                         <div class="card mt-4">
                             <div class="card-header">
                                 <h6 class="mb-0"><i class="fas fa-paperclip me-2"></i>Attachments</h6>
-                            </div>
-                            <div class="card-body">
+                                (pipe)                            <div class="card-body">
                                 <div id="taskAttachmentsList"></div>
                             </div>
-                        </div>
-                        <div class="card mt-4">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0"><i class="fas fa-question-circle me-2"></i>Questions</h6>
-                                <button class="btn btn-success btn-sm" onclick="showAddQuestionForm()">
-                                    <i class="fas fa-plus me-1"></i>Add
-                                </button>
                             </div>
-                            <div class="card-body">
-                                <div id="questionList"></div>
-                                <div class="card mt-3" id="addQuestionCard" style="display: none;">
+                            <div class="card mt-4">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0"><i class="fas fa-question-circle me-2"></i>Questions</h6>
+                                    <button class="btn btn-success btn-sm" onclick="showAddQuestionForm()">
+                                        <i class="fas fa-plus me-1"></i>Add
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <div id="questionList"></div>
+                                    <div class="card mt-3" id="addQuestionCard" style="display: none;">
+                                        <div class="card-header">
+                                            <h6 class="mb-0"><i class="fas fa-plus-circle me-2"></i>New Question</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="addQuestionForm">
+                                                < EAP_div class="mb-3">
+                                                <label for="questionTest" class="form-label">Question Text</label>
+                                                <textarea class="form-control" id="questionTest" rows="3" required></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="questionAttachment" class="form-label">Attachment (Optional)</label>
+                                            <div class="file-upload">
+                                                <label for="questionAttachment" class="file-upload-label w-100 text-center">
+                                                    <i class="fas fa-paperclip me-2"></i>Choose File
+                                                </label>
+                                                <input type="file" class="file-upload-input" id="questionAttachment">
+                                                <small class="form-text text-muted d-block mt-1" id="questionFileName">No file chosen</small>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <h6><i class="fas fa-list-ol me-2"></i>Answer Variants</h6>
+                                            <div id="variantList" class="mb-2"></div>
+                                            <button type="button" class="btn btn-secondary btn-sm" onclick="addAnswerVariant()">
+                                                <i class="fas fa-plus me-1"></i>Add Variant
+                                            </button>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100" id="saveQuestionButton">
+                                            <i class="fas fa-save me-2"></i>Save
+                                        </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="card mt-3" id="updateQuestionCard" style="display: none;">
                                     <div class="card-header">
-                                        <h6 class="mb-0"><i class="fas fa-plus-circle me-2"></i>New Question</h6>
+                                        <h6 class="mb-0"><i class="fas fa-edit me-2"></i>Update Question</h6>
                                     </div>
                                     <div class="card-body">
-                                        <form id="addQuestionForm">
+                                        <form id="updateQuestionForm">
+                                            <input type="hidden" id="currentAttachmentId" value="">
                                             <div class="mb-3">
-                                                <label for="questionText" class="form-label">Question Text</label>
-                                                <textarea class="form-control" id="questionText" rows="3" required></textarea>
+                                                <label for="updateQuestionTest" class="form-label">Question Text</label>
+                                                <textarea class="form-control" id="updateQuestionTest" rows="3" required></textarea>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="questionAttachment" class="form-label">Attachment (Optional)</label>
+                                                <label for="updateQuestionAttachment" class="form-label">Attachment (Optional)</label>
                                                 <div class="file-upload">
-                                                    <label for="questionAttachment" class="file-upload-label w-100 text-center">
+                                                    <label for="updateQuestionAttachment" class="file-upload-label w-100 text-center">
                                                         <i class="fas fa-paperclip me-2"></i>Choose File
                                                     </label>
-                                                    <input type="file" class="file-upload-input" id="questionAttachment">
-                                                    <small class="form-text text-muted d-block mt-1" id="questionFileName">No file chosen</small>
+                                                    <input type="file" class="file-upload-input" id="updateQuestionAttachment">
+                                                    <small class="form-text text-muted d-block mt-1" id="updateQuestionFileName">No file chosen</small>
                                                 </div>
                                             </div>
                                             <div class="mb-3">
                                                 <h6><i class="fas fa-list-ol me-2"></i>Answer Variants</h6>
-                                                <div id="variantList" class="mb-2"></div>
-                                                <button type="button" class="btn btn-secondary btn-sm" onclick="addAnswerVariant()">
+                                                <div id="updateVariantList" class="mb-2"></div>
+                                                <button type="button" class="btn btn-secondary btn-sm" onclick="addUpdateVariantInput()">
                                                     <i class="fas fa-plus me-1"></i>Add Variant
                                                 </button>
                                             </div>
-                                            <button type="submit" class="btn btn-primary w-100">
-                                                <i class="fas fa-save me-2"></i>Save
+                                            <button type="submit" class="btn btn-primary w-100" id="updateQuestionButton">
+                                                <i class="fas fa-save me-2"></i>Update
                                             </button>
                                         </form>
                                     </div>
@@ -583,9 +633,12 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const API_BASE = '/api/v1';
+    let currentScienceId = null;
+    let currentScienceName = null;
     let currentModuleId = null;
     let currentTaskId = null;
     let currentView = 'dashboard';
+    let currentQuestionId = null;
 
     // Initialize file input change handlers
     document.addEventListener('DOMContentLoaded', function() {
@@ -605,6 +658,10 @@
 
         document.getElementById('questionAttachment').addEventListener('change', function() {
             document.getElementById('questionFileName').textContent = this.files[0] ? this.files[0].name : 'No file chosen';
+        });
+
+        document.getElementById('updateQuestionAttachment').addEventListener('change', function() {
+            document.getElementById('updateQuestionFileName').textContent = this.files[0] ? this.files[0].name : 'No file chosen';
         });
 
         if (!localStorage.getItem('authToken')) window.location.href = '/index.html';
@@ -684,10 +741,10 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h6 class="mb-0"><i class="fas fa-book me-2"></i>${module.moduleName}</h6>
+                                        <h6 class="mb-0"><i class="fas fa-book me-2"></i>${module.name}</h6>
                                         <small class="text-muted">Tasks: ${module.tasks?.length || 0}</small>
                                     </div>
-                                    <button class="btn btn-primary btn-sm" onclick="showModuleDetails(${module.id}, '${module.moduleName}')">
+                                    <button class="btn btn-primary btn-sm" onclick="showModuleDetails(${module.id}, '${module.name}')">
                                         <i class="fas fa-info-circle me-1"></i>Details
                                     </button>
                                 </div>
@@ -703,9 +760,13 @@
         }
     }
 
-    // Show modules (placeholder, as implemented in loadSciences)
+    // Show modules for a specific science
     function showModules(scienceId, scienceName) {
-        // Modules are already displayed under sciences
+        currentScienceId = scienceId;
+        currentScienceName = scienceName;
+        document.getElementById('currentScienceName').textContent = scienceName;
+        // No need to create a separate view, modules are already under sciences
+        loadSciences(); // Refresh to show modules
     }
 
     // Show module details
@@ -933,14 +994,14 @@
                                     <p class="mb-2">${question.questionTest}</p>
                                     ${attachmentHtml}
                                 </div>
-                                <button class="btn btn-primary btn-sm" onclick="alert('Update question functionality to be implemented')">
+                                <button class="btn btn-primary btn-sm" data-question-id="${question.id}" data-question-test="${question.questionTest.replace(/"/g, '&quot;')}" data-variants='${JSON.stringify(question.variant)}' data-current-answer="${question.currentAnswer.replace(/"/g, '&quot;')}" data-attachment-id="${question.attachmentId || ''}" onclick="showUpdateQuestionForm(this)">
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </div>
                             <div class="mt-2">
                                 <p class="mb-1"><strong>Answer Variants:</strong></p>
                                 <ul class="list-unstyled mb-2">${question.variant.map(v => `<li><i class="fas fa-circle me-1" style="font-size: 0.5rem;"></i>${v}</li>`).join('')}</ul>
-                                <p class="mb-0"><strong>Correct Answer:</strong> ${question.correctAnswer || 'Not specified'}</p>
+                                <p class="mb-0"><strong>Correct Answer:</strong> ${question.currentAnswer || 'Not specified'}</p>
                             </div>
                         </div>
                     `;
@@ -1104,10 +1165,15 @@
             });
             if (!response.ok) throw new Error('Failed to upload attachment');
             const data = await response.json();
-            return data.id;
+            console.log('Attachment upload response:', data);
+            if (data) {
+                return data;
+            } else {
+                throw new Error('No ID returned from attachment upload');
+            }
         } catch (error) {
             console.warn('Attachment upload failed:', error);
-            alert('Attachment upload failed.');
+            alert('Attachment upload failed. Please try again.');
             return null;
         }
     }
@@ -1129,28 +1195,80 @@
         variantList.appendChild(variantDiv);
     }
 
+    function addUpdateVariantInput() {
+        const variantList = document.getElementById('updateVariantList');
+        const variantDiv = document.createElement('div');
+        variantDiv.className = 'variant-input-group';
+        variantDiv.innerHTML = `
+            <input type="text" class="form-control variant-input" placeholder="Answer variant" required>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch">
+                <label class="form-check-label">Correct</label>
+            </div>
+            <button type="button" class="btn btn-danger btn-sm" onclick="this.parentNode.remove()">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        variantList.appendChild(variantDiv);
+    }
+
     function showAddQuestionForm() {
         document.getElementById('addQuestionCard').style.display = 'block';
-        document.getElementById('questionText').value = '';
+        document.getElementById('questionTest').value = '';
         document.getElementById('questionAttachment').value = '';
         document.getElementById('questionFileName').textContent = 'No file chosen';
         document.getElementById('variantList').innerHTML = '';
         addAnswerVariant();
     }
 
+    function showUpdateQuestionForm(button) {
+        const questionId = button.dataset.questionId;
+        const questionTest = button.dataset.questionTest;
+        const variants = JSON.parse(button.dataset.variants);
+        const currentAnswer = button.dataset.currentAnswer;
+        const attachmentId = button.dataset.attachmentId || null;
+
+        currentQuestionId = questionId;
+        document.getElementById('updateQuestionCard').style.display = 'block';
+        document.getElementById('updateQuestionTest').value = questionTest;
+        document.getElementById('currentAttachmentId').value = attachmentId || '';
+        document.getElementById('updateQuestionAttachment').value = '';
+        document.getElementById('updateQuestionFileName').textContent = attachmentId ? `Attached: ${attachmentId}` : 'No file chosen';
+        const variantList = document.getElementById('updateVariantList');
+        variantList.innerHTML = '';
+        variants.forEach((variant, index) => {
+            const variantDiv = document.createElement('div');
+            variantDiv.className = 'variant-input-group';
+            const isCorrect = currentAnswer.split(', ').includes(variant);
+            variantDiv.innerHTML = `
+                <input type="text" class="form-control variant-input" value="${variant}" required>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" ${isCorrect ? 'checked' : ''}>
+                    <label class="form-check-label">Correct</label>
+                </div>
+                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentNode.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            variantList.appendChild(variantDiv);
+        });
+    }
+
     document.getElementById('addQuestionForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const submitButton = document.querySelector('#addQuestionForm button[type="submit"]');
+        const submitButton = document.getElementById('saveQuestionButton');
         submitButton.disabled = true;
+        submitButton.textContent = 'Saving...';
 
-        const questionText = document.getElementById('questionText').value;
+        const questionTest = document.getElementById('questionTest').value.trim();
         const file = document.getElementById('questionAttachment').files[0];
         const variantInputs = document.querySelectorAll('#variantList .variant-input');
         const variantCheckboxes = document.querySelectorAll('#variantList .form-check-input');
 
-        if (!questionText) {
+        if (!questionTest) {
             alert('Question text is required.');
             submitButton.disabled = false;
+            submitButton.textContent = 'Save';
             return;
         }
 
@@ -1158,6 +1276,7 @@
         if (variants.length === 0) {
             alert('At least one variant is required.');
             submitButton.disabled = false;
+            submitButton.textContent = 'Save';
             return;
         }
 
@@ -1167,29 +1286,28 @@
         if (correctAnswers.length === 0) {
             alert('At least one correct answer must be selected.');
             submitButton.disabled = false;
+            submitButton.textContent = 'Save';
             return;
         }
 
         let attachmentId = null;
         if (file) {
-            try {
-                attachmentId = await uploadAttachment(file);
-                if (!attachmentId) {
-                    throw new Error('Attachment upload failed');
-                }
-            } catch (error) {
-                console.warn('Attachment upload failed, proceeding without attachment:', error);
-                alert('Attachment upload failed, question will be saved without it.');
+            attachmentId = await uploadAttachment(file);
+            if (!attachmentId) {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Save';
+                return;
             }
         }
 
         const questionData = {
-            questionText,
+            questionTest,
             attachmentId,
             variant: variants,
-            correctAnswer: correctAnswers.join(', '), // Space-separated for readability
+            currentAnswer: correctAnswers.join(', '),
             taskId: currentTaskId
         };
+        console.log('Sending question data:', JSON.stringify(questionData));
 
         try {
             const response = await fetch(`${API_BASE}/questions`, {
@@ -1208,17 +1326,144 @@
             alert('Question added successfully!');
         } catch (error) {
             console.error('Error adding question:', error);
-            alert('Error adding question.');
+            alert('Error adding question. Please try again.');
         } finally {
             document.getElementById('addQuestionForm').reset();
             document.getElementById('questionFileName').textContent = 'No file chosen';
             document.getElementById('variantList').innerHTML = '';
             addAnswerVariant();
             submitButton.disabled = false;
+            submitButton.textContent = 'Save';
+        }
+    });
+
+    document.getElementById('updateQuestionForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitButton = document.getElementById('updateQuestionButton');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Updating...';
+
+        const questionTest = document.getElementById('updateQuestionTest').value.trim();
+        const file = document.getElementById('updateQuestionAttachment').files[0];
+        const variantInputs = document.querySelectorAll('#updateVariantList .variant-input');
+        const variantCheckboxes = document.querySelectorAll('#updateVariantList .form-check-input');
+
+        if (!questionTest) {
+            alert('Question text is required.');
+            submitButton.disabled = false;
+            submitButton.textContent = 'Update';
+            return;
+        }
+
+        const variants = Array.from(variantInputs).map(input => input.value.trim()).filter(v => v);
+        if (variants.length === 0) {
+            alert('At least one variant is required.');
+            submitButton.disabled = false;
+            submitButton.textContent = 'Update';
+            return;
+        }
+
+        const correctAnswers = Array.from(variantCheckboxes)
+            .map((checkbox, index) => checkbox.checked ? variants[index] : null)
+            .filter(answer => answer);
+        if (correctAnswers.length === 0) {
+            alert('At least one correct answer must be selected.');
+            submitButton.disabled = false;
+            submitButton.textContent = 'Update';
+            return;
+        }
+
+        let attachmentId = document.getElementById('currentAttachmentId').value || null;
+        if (file) {
+            attachmentId = await uploadAttachment(file);
+            if (!attachmentId) {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Update';
+                return;
+            }
+        }
+
+        const questionData = {
+            questionTest,
+            attachmentId,
+            variant: variants,
+            currentAnswer: correctAnswers.join(', '),
+            taskId: currentTaskId
+        };
+        console.log('Sending updated question data:', JSON.stringify(questionData));
+
+        try {
+            const response = await fetch(`${API_BASE}/questions/${currentQuestionId}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `${localStorage.getItem('authToken')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(questionData)
+            });
+            if (!response.ok) throw new Error('Failed to update question');
+            const questionRes = await response.json();
+            console.debug('Question updated successfully:', questionRes);
+            document.getElementById('updateQuestionCard').style.display = 'none';
+            await loadQuestions(currentTaskId);
+            alert('Question updated successfully!');
+        } catch (error) {
+            console.error('Error updating question:', error);
+            alert('Error updating question. Please try again.');
+        } finally {
+            document.getElementById('updateQuestionForm').reset();
+            document.getElementById('updateQuestionFileName').textContent = 'No file chosen';
+            document.getElementById('updateVariantList').innerHTML = '';
+            submitButton.disabled = false;
+            submitButton.textContent = 'Update';
         }
     });
 
     // Module management
+    async function createModule(moduleName) {
+        if (!currentScienceId) {
+            alert('Please select a science before adding a module.');
+            return;
+        }
+        const moduleReq = { name: moduleName, scienceId: currentScienceId };
+        try {
+            const response = await fetch(`${API_BASE}/module`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `${localStorage.getItem('authToken')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(moduleReq)
+            });
+            if (!response.ok) throw new Error('Failed to create module');
+            await loadSciences(); // Refresh sciences list
+            alert('Module created successfully!');
+            document.getElementById('moduleName').value = ''; // Clear input
+        } catch (error) {
+            console.error('Error creating module:', error);
+            alert('Error creating module. Please try again.');
+        }
+    }
+
+    document.getElementById('addModuleForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitButton = document.getElementById('addModuleButton');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Adding...';
+
+        const moduleName = document.getElementById('moduleName').value.trim();
+        if (!moduleName) {
+            alert('Module name is required.');
+            submitButton.disabled = false;
+            submitButton.textContent = 'Add Module';
+            return;
+        }
+
+        await createModule(moduleName);
+        submitButton.disabled = false;
+        submitButton.textContent = 'Add Module';
+    });
+
     async function closeModule() {
         if (!confirm('Are you sure you want to close this module?')) return;
         try {
@@ -1259,7 +1504,3 @@
 </script>
 </body>
 </html>
-
-
-
-
