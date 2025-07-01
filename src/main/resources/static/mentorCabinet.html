@@ -1,789 +1,890 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IPE School</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPE School</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-    .header {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-      color: #333;
-    }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
 
-    .nav-buttons {
-      display: flex;
-      gap: 15px;
-    }
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
 
-    .btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    .btn-primary {
-      background: linear-gradient(45deg, #667eea, #764ba2);
-      color: white;
-    }
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
 
-    .btn-secondary {
-      background: #f8f9fa;
-      color: #333;
-      border: 1px solid #dee2e6;
-    }
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #dee2e6;
+        }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
 
-    .main-content {
-      display: flex;
-      gap: 20px;
-      min-height: 600px;
-    }
+        .main-content {
+            display: flex;
+            gap: 20px;
+            min-height: 600px;
+        }
 
-    .sidebar {
-      width: 300px;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
+        .sidebar {
+            width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
 
-    .content-area {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
+        .content-area {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
 
-    .profile-section {
-      text-align: center;
-      margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #eee;
-    }
+        .profile-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
 
-    .profile-image {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 15px;
-      border: 3px solid #667eea;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+        .profile-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-    .profile-image:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-    }
+        .profile-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
 
-    .profile-name {
-      font-size: 18px;
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 5px;
-    }
+        .profile-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
 
-    .profile-phone {
-      color: #666;
-      font-size: 14px;
-    }
+        .profile-phone {
+            color: #666;
+            font-size: 14px;
+        }
 
-    .groups-list {
-      list-style: none;
-    }
+        .groups-list {
+            list-style: none;
+        }
 
-    .group-item {
-      padding: 12px;
-      margin-bottom: 8px;
-      background: #f8f9fa;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border-left: 4px solid transparent;
-    }
+        .group-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
 
-    .group-item:hover {
-      background: #e9ecef;
-      border-left-color: #667eea;
-    }
+        .group-item:hover {
+            background: #e9ecef;
+            border-left-color: #667eea;
+        }
 
-    .group-item.active {
-      background: linear-gradient(45deg, #667eea, #764ba2);
-      color: white;
-      border-left-color: #fff;
-    }
+        .group-item.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-left-color: #fff;
+        }
 
-    .view {
-      display: none;
-    }
+        .view {
+            display: none;
+        }
 
-    .view.active {
-      display: block;
-    }
+        .view.active {
+            display: block;
+        }
 
-    .form-group {
-      margin-bottom: 20px;
-    }
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: 500;
-      color: #333;
-    }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
 
-    .form-group input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 14px;
-      transition: border-color 0.3s ease;
-    }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
 
-    .form-group input:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
 
-    .mentors-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
-    }
+        .mentors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
 
-    .mentor-card {
-      background: #f8f9fa;
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      transition: all 0.3s ease;
-      border: 1px solid #eee;
-    }
+        .mentor-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+        }
 
-    .mentor-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    }
+        .mentor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
 
-    .mentor-image {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 15px;
-      border: 2px solid #667eea;
-    }
+        .mentor-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 2px solid #667eea;
+        }
 
-    .table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
 
-    .table th,
-    .table td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #eee;
-    }
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
 
-    .table th {
-      background: #f8f9fa;
-      font-weight: 600;
-      color: #333;
-    }
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
 
-    .table tr:hover {
-      background: #f8f9fa;
-    }
+        .table tr:hover {
+            background: #f8f9fa;
+        }
 
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(5px);
-    }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
 
-    .modal-content {
-      background-color: white;
-      margin: 5% auto;
-      padding: 30px;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 600px;
-      max-height: 80vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
 
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-      line-height: 1;
-    }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
 
-    .close:hover {
-      color: #333;
-    }
+        .close:hover {
+            color: #333;
+        }
 
-    .progress-bar {
-      width: 100%;
-      height: 8px;
-      background: #eee;
-      border-radius: 4px;
-      overflow: hidden;
-    }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
 
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(45deg, #667eea, #764ba2);
-      transition: width 0.3s ease;
-    }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
 
-    .video-container {
-      position: relative;
-      width: 100%;
-      height: 0;
-      padding-bottom: 56.25%;
-      margin-bottom: 20px;
-    }
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            margin-bottom: 20px;
+        }
 
-    .video-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border-radius: 8px;
-    }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
 
-    .attachment {
-      display: inline-block;
-      margin: 5px;
-      padding: 10px 15px;
-      background: #f8f9fa;
-      border-radius: 8px;
-      text-decoration: none;
-      color: #333;
-      border: 1px solid #ddd;
-      transition: all 0.3s ease;
-    }
+        .attachment {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
 
-    .attachment:hover {
-      background: #e9ecef;
-      transform: translateY(-2px);
-    }
+        .attachment:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
 
-    .loading {
-      text-align: center;
-      padding: 40px;
-      color: #666;
-    }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
 
-    .spinner {
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid #667eea;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 15px;
-    }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
 
-    .hidden {
-      display: none !important;
-    }
+        .hidden {
+            display: none !important;
+        }
 
-    .group-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      padding-bottom: 15px;
-      border-bottom: 2px solid #eee;
-    }
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
 
-    .module-button {
-      background: linear-gradient(45deg, #28a745, #20c997);
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: all 0.3s ease;
-    }
+        .module-button {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
 
-    .module-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
-    }
+        .module-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
 
-    @media (max-width: 768px) {
-      .main-content {
-        flex-direction: column;
-      }
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
 
-      .sidebar {
-        width: 100%;
-      }
+            .sidebar {
+                width: 100%;
+            }
 
-      .mentors-grid {
-        grid-template-columns: 1fr;
-      }
+            .mentors-grid {
+                grid-template-columns: 1fr;
+            }
 
-      .nav-buttons {
-        flex-direction: column;
-        gap: 10px;
-      }
-    }
-  </style>
+            .nav-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* Add these styles to your existing CSS */
+        .custom-checkbox {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            user-select: none;
+            color: #333;
+        }
+
+        .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 22px;
+            width: 22px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .custom-checkbox:hover input ~ .checkmark {
+            background-color: #e9ecef;
+            border-color: #667eea;
+        }
+
+        .custom-checkbox input:checked ~ .checkmark {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-color: transparent;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .custom-checkbox input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .custom-checkbox .checkmark:after {
+            left: 7px;
+            top: 3px;
+            width: 6px;
+            height: 12px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .password-input-wrapper {
+            position: relative;
+        }
+
+        .password-input-wrapper input {
+            padding-right: 40px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-password:hover {
+            color: #667eea;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-  <header class="header">
-    <div class="logo">
-      <i class="fas fa-graduation-cap"></i> IPE School
-    </div>
-    <div class="nav-buttons">
-      <button class="btn btn-secondary" onclick="showView('mentors')">
-        <i class="fas fa-users"></i> Mentors
-      </button>
-      <button class="btn btn-secondary" onclick="showView('profile')">
-        <i class="fas fa-user"></i> Profile
-      </button>
-      <button class="btn btn-primary" onclick="logout()">
-        <i class="fas fa-sign-out-alt"></i> Logout
-      </button>
-    </div>
-  </header>
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i> IPE School
+        </div>
+        <div class="nav-buttons">
+            <button class="btn btn-secondary" onclick="showView('mentors')">
+                <i class="fas fa-users"></i> Mentors
+            </button>
+            <button class="btn btn-secondary" onclick="showView('profile')">
+                <i class="fas fa-user"></i> Profile
+            </button>
+            <button class="btn btn-primary" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </header>
 
-  <div class="main-content">
-    <div class="sidebar">
-      <div class="profile-section">
-        <img id="sidebarProfileImage" class="profile-image" src="/placeholder.svg?height=80&width=80" alt="Profile" onclick="showView('profile')">
-        <div class="profile-name" id="sidebarProfileName">Loading...</div>
-        <div class="profile-phone" id="sidebarProfilePhone">Loading...</div>
-      </div>
-
-      <div>
-        <h3 style="margin-bottom: 15px; color: #333;">My Groups</h3>
-        <ul class="groups-list" id="groupsList">
-          <li class="loading">
-            <div class="spinner"></div>
-            Loading groups...
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="content-area">
-      <!-- Dashboard View -->
-      <div id="dashboard" class="view active">
-        <p>Select a group from the sidebar to view details, or use the navigation buttons above.</p>
-      </div>
-
-      <!-- Profile View -->
-      <div id="profile" class="view">
-        <h2>User Profile</h2>
-        <form id="profileForm">
-          <div class="form-group">
-            <label>Profile Image</label>
-            <div style="text-align: center; margin-bottom: 20px;">
-              <img id="profileImage" class="profile-image" src="/placeholder.svg?height=80&width=80" alt="Profile" onclick="document.getElementById('imageInput').click()" style="width: 120px; height: 120px;">
-              <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="previewImage(this)">
-              <p style="color: #666; font-size: 12px; margin-top: 10px;">Click image to change</p>
+    <div class="main-content">
+        <div class="sidebar">
+            <div class="profile-section">
+                <img id="sidebarProfileImage" class="profile-image" src="/placeholder.svg?height=80&width=80"
+                     alt="Profile" onclick="showView('profile')">
+                <div class="profile-name" id="sidebarProfileName">Loading...</div>
+                <div class="profile-phone" id="sidebarProfilePhone">Loading...</div>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" required>
-          </div>
-
-          <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" required>
-          </div>
-
-          <div class="form-group">
-            <label for="phoneNumber">Phone Number</label>
-            <input type="tel" id="phoneNumber" required>
-          </div>
-
-          <div class="form-group">
-            <label>
-              <input type="checkbox" id="changePassword" onchange="togglePasswordField()"> Change Password
-            </label>
-          </div>
-
-          <div class="form-group hidden" id="passwordGroup">
-            <label for="password">New Password</label>
-            <input type="password" id="password">
-          </div>
-
-          <button type="submit" class="btn btn-primary">
-            <i class="fas fa-save"></i> Update Profile
-          </button>
-        </form>
-      </div>
-
-      <!-- Mentors View -->
-      <div id="mentors" class="view">
-        <h2>All Mentors</h2>
-        <div id="mentorsGrid" class="mentors-grid">
-          <div class="loading">
-            <div class="spinner"></div>
-            Loading mentors...
-          </div>
-        </div>
-      </div>
-
-      <!-- Group Details View -->
-      <div id="groupDetails" class="view">
-        <div class="group-header">
-          <h2 id="groupName">Group Details</h2>
-          <div>
-            <button id="moduleButton" class="module-button hidden" onclick="showModuleDetails()">
-              <i class="fas fa-book"></i> <span id="moduleName">Module</span>
-            </button>
-            <button class="btn btn-secondary" onclick="showStudentProgress()" style="margin-left: 10px;">
-              <i class="fas fa-chart-line"></i> Student Progress
-            </button>
-          </div>
+            <div>
+                <h3 style="margin-bottom: 15px; color: #333;">My Groups</h3>
+                <ul class="groups-list" id="groupsList">
+                    <li class="loading">
+                        <div class="spinner"></div>
+                        Loading groups...
+                    </li>
+                </ul>
+            </div>
         </div>
 
-        <h3>Students</h3>
-        <table class="table" id="studentsTable">
-          <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Phone Number</th>
-          </tr>
-          </thead>
-          <tbody id="studentsTableBody">
-          </tbody>
-        </table>
-      </div>
+        <div class="content-area">
+            <!-- Dashboard View -->
+            <div id="dashboard" class="view active">
+                <p>Select a group from the sidebar to view details, or use the navigation buttons above.</p>
+            </div>
+
+            <!-- Profile View -->
+            <div id="profile" class="view">
+                <h2>Mentor Profile</h2>
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label>Profile Image</label>
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <img id="profileImage" class="profile-image" src="/placeholder.svg?height=80&width=80"
+                                 alt="Profile" onclick="document.getElementById('imageInput').click()"
+                                 style="width: 120px; height: 120px;">
+                            <input type="file" id="imageInput" accept="image/*" style="display: none;"
+                                   onchange="previewImage(this)">
+                            <p style="color: #666; font-size: 12px; margin-top: 10px;">Click image to change</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="tel" id="phoneNumber" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="changePassword" onchange="togglePasswordField()">
+                            <span class="checkmark"></span>
+                            <span class="label-text">Change Password</span>
+                        </label>
+                    </div>
+
+                    <div class="form-group hidden" id="passwordGroup">
+                        <label for="password">New Password</label>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="password" placeholder="Enter new password">
+                            <i class="fas fa-eye-slash toggle-password" onclick="togglePasswordVisibility()"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Update Profile
+                    </button>
+                </form>
+            </div>
+
+            <!-- Mentors View -->
+            <div id="mentors" class="view">
+                <h2>All Mentors</h2>
+                <div id="mentorsGrid" class="mentors-grid">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Loading mentors...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Group Details View -->
+            <div id="groupDetails" class="view">
+                <div class="group-header">
+                    <h2 id="groupName">Group Details</h2>
+                    <div>
+                        <button id="moduleButton" class="module-button hidden" onclick="showModuleDetails()">
+                            <i class="fas fa-book"></i> <span id="moduleName">Module</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="showStudentProgress()" style="margin-left: 10px;">
+                            <i class="fas fa-chart-line"></i> Student Progress
+                        </button>
+                    </div>
+                </div>
+
+                <h3>Students</h3>
+                <table class="table" id="studentsTable">
+                    <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Phone Number</th>
+                    </tr>
+                    </thead>
+                    <tbody id="studentsTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <!-- Student Progress Modal -->
 <div id="progressModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('progressModal')">&times;</span>
-    <h2>Student Progress</h2>
-    <div id="progressContent">
-      <div class="loading">
-        <div class="spinner"></div>
-        Loading progress...
-      </div>
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('progressModal')">&times;</span>
+        <h2>Student Progress</h2>
+        <div id="progressContent">
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading progress...
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <!-- Module Details Modal -->
 <div id="moduleModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('moduleModal')">&times;</span>
-    <h2 id="moduleModalTitle">Module Details</h2>
-    <div id="moduleContent">
-      <div class="loading">
-        <div class="spinner"></div>
-        Loading module...
-      </div>
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('moduleModal')">&times;</span>
+        <h2 id="moduleModalTitle">Module Details</h2>
+        <div id="moduleContent">
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading module...
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <!-- Task Details Modal -->
 <div id="taskModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('taskModal')">&times;</span>
-    <h2 id="taskModalTitle">Task Details</h2>
-    <div id="taskContent">
-      <div class="loading">
-        <div class="spinner"></div>
-        Loading task...
-      </div>
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('taskModal')">&times;</span>
+        <h2 id="taskModalTitle">Task Details</h2>
+        <div id="taskContent">
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading task...
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <script>
-  // Global variables
-  let currentUser = null;
-  let currentGroupId = null;
-  let currentModuleId = null;
-  let allMentors = [];
-  let mentorGroups = [];
+    // Global variables
+    let currentUser = null;
+    let currentGroupId = null;
+    let currentModuleId = null;
+    let allMentors = [];
+    let mentorGroups = [];
 
-  // Initialize the application
-  document.addEventListener('DOMContentLoaded', function() {
-    loadUserData();
-    loadMentorGroups();
-    loadAllMentors();
-    setupProfileForm();
-  });
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', function () {
+        loadUserData();
+        loadMentorGroups();
+        loadAllMentors();
+        setupProfileForm();
+    });
 
-  // Load user data from localStorage
-  function loadUserData() {
-    const userData = localStorage.getItem('userData');
-    if (!userData) {
-      window.location.href = 'index.html';
-      return;
+    // Load user data from localStorage
+    function loadUserData() {
+        const userData = localStorage.getItem('userData');
+        if (!userData) {
+            window.location.href = 'index.html';
+            return;
+        }
+
+        currentUser = JSON.parse(userData);
+        updateProfileDisplay();
     }
 
-    currentUser = JSON.parse(userData);
-    updateProfileDisplay();
-  }
+    // Update profile display
+    function updateProfileDisplay() {
+        if (!currentUser) return;
 
-  // Update profile display
-  function updateProfileDisplay() {
-    if (!currentUser) return;
+        // Update sidebar profile
+        document.getElementById('sidebarProfileName').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+        document.getElementById('sidebarProfilePhone').textContent = currentUser.phoneNumber;
 
-    // Update sidebar profile
-    document.getElementById('sidebarProfileName').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
-    document.getElementById('sidebarProfilePhone').textContent = currentUser.phoneNumber;
+        if (currentUser.image) {
+            document.getElementById('sidebarProfileImage').src = currentUser.image;
+            document.getElementById('profileImage').src = currentUser.image;
+        }
 
-    if (currentUser.image) {
-      document.getElementById('sidebarProfileImage').src = currentUser.image;
-      document.getElementById('profileImage').src = currentUser.image;
+        // Update profile form
+        document.getElementById('firstName').value = currentUser.firstName || '';
+        document.getElementById('lastName').value = currentUser.lastName || '';
+        document.getElementById('phoneNumber').value = currentUser.phoneNumber || '';
     }
 
-    // Update profile form
-    document.getElementById('firstName').value = currentUser.firstName || '';
-    document.getElementById('lastName').value = currentUser.lastName || '';
-    document.getElementById('phoneNumber').value = currentUser.phoneNumber || '';
-  }
+    // Load mentor groups
+    async function loadMentorGroups() {
+        if (!currentUser || !currentUser.userId) return;
 
-  // Load mentor groups
-  async function loadMentorGroups() {
-    if (!currentUser || !currentUser.userId) return;
-
-    try {
-      const response = await fetch(`/api/v1/admin/mentor/${currentUser.userId}`);
-      if (response.ok) {
-        const mentorData = await response.json();
-        mentorGroups = mentorData.groups || [];
-        displayGroups();
-      } else {
-        console.error('Failed to load mentor groups');
-      }
-    } catch (error) {
-      console.error('Error loading mentor groups:', error);
-    }
-  }
-
-  // Display groups in sidebar
-  function displayGroups() {
-    const groupsList = document.getElementById('groupsList');
-
-    if (mentorGroups.length === 0) {
-      groupsList.innerHTML = '<li style="text-align: center; color: #666;">No groups assigned</li>';
-      return;
+        try {
+            const response = await fetch(`/api/v1/admin/mentor/${currentUser.userId}`);
+            if (response.ok) {
+                const mentorData = await response.json();
+                mentorGroups = mentorData.groups || [];
+                displayGroups();
+            } else {
+                console.error('Failed to load mentor groups');
+            }
+        } catch (error) {
+            console.error('Error loading mentor groups:', error);
+        }
     }
 
-    groupsList.innerHTML = mentorGroups.map(group => `
+    // Display groups in sidebar
+    function displayGroups() {
+        const groupsList = document.getElementById('groupsList');
+
+        if (mentorGroups.length === 0) {
+            groupsList.innerHTML = '<li style="text-align: center; color: #666;">No groups assigned</li>';
+            return;
+        }
+
+        groupsList.innerHTML = mentorGroups.map(group => `
                 <li class="group-item" onclick="selectGroup(${group.id}, '${group.name}')">
                     <i class="fas fa-users"></i> ${group.name}
                 </li>
             `).join('');
-  }
+    }
 
-  // Select a group
-  async function selectGroup(groupId, groupName) {
-    currentGroupId = groupId;
+    // Select a group
+    async function selectGroup(groupId, groupName) {
+        currentGroupId = groupId;
 
-    // Update active state
-    document.querySelectorAll('.group-item').forEach(item => item.classList.remove('active'));
-    event.target.classList.add('active');
+        // Update active state
+        document.querySelectorAll('.group-item').forEach(item => item.classList.remove('active'));
+        event.target.classList.add('active');
+
+        // Load group details
+        await loadGroupDetails(groupId, groupName);
+        showView('groupDetails');
+    }
 
     // Load group details
-    await loadGroupDetails(groupId, groupName);
-    showView('groupDetails');
-  }
-
-  // Load group details
-  async function loadGroupDetails(groupId, groupName) {
-    try {
-      const response = await fetch(`/api/v1/group/${groupId}`,{
-        headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
-      });
-      if (response.ok) {
-        const groupData = await response.json();
-        displayGroupDetails(groupData);
-      } else {
-        console.error('Failed to load group details');
-      }
-    } catch (error) {
-      console.error('Error loading group details:', error);
-    }
-  }
-
-  // Display group details
-  function displayGroupDetails(groupData) {
-    document.getElementById('groupName').textContent = groupData.name;
-
-    // Display module button if module exists
-    if (groupData.modules && groupData.modules.length > 0) {
-      const module = groupData.modules[0]; // Taking first module as mentioned
-      currentModuleId = module.id;
-      document.getElementById('moduleName').textContent = module.moduleName;
-      document.getElementById('moduleButton').classList.remove('hidden');
-    } else {
-      document.getElementById('moduleButton').classList.add('hidden');
+    async function loadGroupDetails(groupId, groupName) {
+        try {
+            const response = await fetch(`/api/v1/group/${groupId}`, {
+                headers: {'Authorization': `${localStorage.getItem('authToken')}`}
+            });
+            if (response.ok) {
+                const groupData = await response.json();
+                displayGroupDetails(groupData);
+            } else {
+                console.error('Failed to load group details');
+            }
+        } catch (error) {
+            console.error('Error loading group details:', error);
+        }
     }
 
-    // Display students
-    const studentsTableBody = document.getElementById('studentsTableBody');
-    if (groupData.students && groupData.students.length > 0) {
-      studentsTableBody.innerHTML = groupData.students.map(student => `
+    // Display group details
+    function displayGroupDetails(groupData) {
+        document.getElementById('groupName').textContent = groupData.name;
+
+        // Display module button if module exists
+        if (groupData.modules && groupData.modules.length > 0) {
+            const module = groupData.modules[0]; // Taking first module as mentioned
+            currentModuleId = module.id;
+            document.getElementById('moduleName').textContent = module.moduleName;
+            document.getElementById('moduleButton').classList.remove('hidden');
+        } else {
+            document.getElementById('moduleButton').classList.add('hidden');
+        }
+
+        // Display students
+        const studentsTableBody = document.getElementById('studentsTableBody');
+        if (groupData.students && groupData.students.length > 0) {
+            studentsTableBody.innerHTML = groupData.students.map(student => `
                     <tr>
                         <td>${student.firstName}</td>
                         <td>${student.lastName}</td>
                         <td>${student.phoneNumber}</td>
                     </tr>
                 `).join('');
-    } else {
-      studentsTableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #666;">No students in this group</td></tr>';
-    }
-  }
-
-  // Load all mentors
-  async function loadAllMentors() {
-    try {
-      const response = await fetch('/api/v1/admin/mentor');
-      if (response.ok) {
-        allMentors = await response.json();
-        displayMentors();
-      } else {
-        console.error('Failed to load mentors');
-      }
-    } catch (error) {
-      console.error('Error loading mentors:', error);
-    }
-  }
-
-  // Display mentors
-  function displayMentors() {
-    const mentorsGrid = document.getElementById('mentorsGrid');
-
-    if (allMentors.length === 0) {
-      mentorsGrid.innerHTML = '<div style="text-align: center; color: #666;">No mentors found</div>';
-      return;
+        } else {
+            studentsTableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #666;">No students in this group</td></tr>';
+        }
     }
 
-    mentorsGrid.innerHTML = allMentors.map(mentor => `
-                <div class="mentor-card">
-                    <img class="mentor-image" src="${mentor.image ? `data:image/jpeg;base64,${arrayBufferToBase64(mentor.image)}` : '/placeholder.svg?height=60&width=60'}" alt="${mentor.firstName}">
-                    <h4>${mentor.firstName} ${mentor.lastName}</h4>
-                    <p style="color: #666; font-size: 14px;">${mentor.phoneNumber}</p>
-                </div>
-            `).join('');
-  }
+    // Load all mentors
+    async function loadAllMentors() {
+        try {
+            const response = await fetch('/api/v1/admin/mentor', {
+                headers: {'Authorization': `${localStorage.getItem('authToken')}`}
+            });
+            if (response.ok) {
+                allMentors = await response.json();
+                displayMentors();
+            } else {
+                console.error('Failed to load mentors');
+            }
+        } catch (error) {
+            console.error('Error loading mentors:', error);
+        }
+    }
 
-  // Show student progress
-  async function showStudentProgress() {
-    if (!currentGroupId) return;
+    // Display mentors
+    function displayMentors() {
+        const mentorsGrid = document.getElementById('mentorsGrid');
 
-    document.getElementById('progressModal').style.display = 'block';
-    document.getElementById('progressContent').innerHTML = `
+        if (allMentors.length === 0) {
+            mentorsGrid.innerHTML = '<div style="text-align: center; color: #666;">No mentors found</div>';
+            return;
+        }
+
+        mentorsGrid.innerHTML = allMentors.map(mentor => `
+    <div class="mentor-card">
+      <img class="mentor-image"
+           src="${mentor.image ? `data:image/jpeg;base64,${mentor.image}` : '/placeholder.svg?height=60&width=60'}"
+           alt="${mentor.firstName}" width="60" height="60">
+      <h4>${mentor.firstName} ${mentor.lastName}</h4>
+      <p style="color: #666; font-size: 14px;">${mentor.phoneNumber}</p>
+    </div>
+  `).join('');
+    }
+
+    // Show student progress
+    async function showStudentProgress() {
+        if (!currentGroupId) return;
+
+        document.getElementById('progressModal').style.display = 'block';
+        document.getElementById('progressContent').innerHTML = `
                 <div class="loading">
                     <div class="spinner"></div>
                     Loading progress...
                 </div>
             `;
 
-    try {
-      const response = await fetch(`/api/v1/group/getProgress/${currentGroupId}`, {
-        headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
-      });
-      if (response.ok) {
-        const progressData = await response.json();
-        displayStudentProgress(progressData);
-      } else {
-        console.error('Failed to load student progress');
-      }
-    } catch (error) {
-      console.error('Error loading student progress:', error);
-    }
-  }
-
-  // Display student progress
-  function displayStudentProgress(progressData) {
-    const progressContent = document.getElementById('progressContent');
-
-    if (progressData.length === 0) {
-      progressContent.innerHTML = '<p style="text-align: center; color: #666;">No progress data available</p>';
-      return;
+        try {
+            const response = await fetch(`/api/v1/group/getProgress/${currentGroupId}`, {
+                headers: {'Authorization': `${localStorage.getItem('authToken')}`}
+            });
+            if (response.ok) {
+                const progressData = await response.json();
+                displayStudentProgress(progressData);
+            } else {
+                console.error('Failed to load student progress');
+            }
+        } catch (error) {
+            console.error('Error loading student progress:', error);
+        }
     }
 
-    progressContent.innerHTML = `
+    // Display student progress
+    function displayStudentProgress(progressData) {
+        const progressContent = document.getElementById('progressContent');
+
+        if (progressData.length === 0) {
+            progressContent.innerHTML = '<p style="text-align: center; color: #666;">No progress data available</p>';
+            return;
+        }
+
+        progressContent.innerHTML = `
                 <table class="table">
                     <thead>
                         <tr>
@@ -810,44 +911,46 @@
                     </tbody>
                 </table>
             `;
-  }
+    }
 
-  // Show module details
-  async function showModuleDetails() {
-    if (!currentModuleId) return;
+    // Show module details
+    async function showModuleDetails() {
+        if (!currentModuleId) return;
 
-    document.getElementById('moduleModal').style.display = 'block';
-    document.getElementById('moduleContent').innerHTML = `
+        document.getElementById('moduleModal').style.display = 'block';
+        document.getElementById('moduleContent').innerHTML = `
                 <div class="loading">
                     <div class="spinner"></div>
                     Loading module...
                 </div>
             `;
 
-    try {
-      const response = await fetch(`/api/v1/module/${currentModuleId}`);
-      if (response.ok) {
-        const moduleData = await response.json();
-        displayModuleDetails(moduleData);
-      } else {
-        console.error('Failed to load module details');
-      }
-    } catch (error) {
-      console.error('Error loading module details:', error);
-    }
-  }
-
-  // Display module details
-  function displayModuleDetails(moduleData) {
-    document.getElementById('moduleModalTitle').textContent = moduleData.moduleName;
-    const moduleContent = document.getElementById('moduleContent');
-
-    if (!moduleData.tasks || moduleData.tasks.length === 0) {
-      moduleContent.innerHTML = '<p style="text-align: center; color: #666;">No tasks available</p>';
-      return;
+        try {
+            const response = await fetch(`/api/v1/module/${currentModuleId}`, {
+                headers: {'Authorization': `${localStorage.getItem('authToken')}`}
+            });
+            if (response.ok) {
+                const moduleData = await response.json();
+                displayModuleDetails(moduleData);
+            } else {
+                console.error('Failed to load module details');
+            }
+        } catch (error) {
+            console.error('Error loading module details:', error);
+        }
     }
 
-    moduleContent.innerHTML = `
+    // Display module details
+    function displayModuleDetails(moduleData) {
+        document.getElementById('moduleModalTitle').textContent = moduleData.moduleName;
+        const moduleContent = document.getElementById('moduleContent');
+
+        if (!moduleData.tasks || moduleData.tasks.length === 0) {
+            moduleContent.innerHTML = '<p style="text-align: center; color: #666;">No tasks available</p>';
+            return;
+        }
+
+        moduleContent.innerHTML = `
                 <table class="table">
                     <thead>
                         <tr>
@@ -869,239 +972,260 @@
                     </tbody>
                 </table>
             `;
-  }
+    }
 
-  // Show task details
-  async function showTaskDetails(taskId, taskName) {
-    document.getElementById('taskModal').style.display = 'block';
-    document.getElementById('taskModalTitle').textContent = taskName;
-    document.getElementById('taskContent').innerHTML = `
+    // Show task details
+    async function showTaskDetails(taskId, taskName) {
+        document.getElementById('taskModal').style.display = 'block';
+        document.getElementById('taskModalTitle').textContent = taskName;
+        document.getElementById('taskContent').innerHTML = `
                 <div class="loading">
                     <div class="spinner"></div>
                     Loading task...
                 </div>
             `;
 
-    try {
-      const response = await fetch(`/api/v1/task/${taskId}`);
-      if (response.ok) {
-        const taskData = await response.json();
-        await displayTaskDetails(taskData);
-      } else {
-        console.error('Failed to load task details');
-      }
-    } catch (error) {
-      console.error('Error loading task details:', error);
+        try {
+            const response = await fetch(`/api/v1/task/${taskId}`, {
+                headers: {'Authorization': `${localStorage.getItem('authToken')}`}
+            });
+            if (response.ok) {
+                const taskData = await response.json();
+                await displayTaskDetails(taskData);
+            } else {
+                console.error('Failed to load task details');
+            }
+        } catch (error) {
+            console.error('Error loading task details:', error);
+        }
     }
-  }
 
-  // Display task details
-  async function displayTaskDetails(taskData) {
-    const taskContent = document.getElementById('taskContent');
-    let content = '';
+    // Display task details
+    async function displayTaskDetails(taskData) {
+        const taskContent = document.getElementById('taskContent');
+        let content = '';
 
-    // YouTube video
-    if (taskData.youtubeURL) {
-      const videoId = extractYouTubeVideoId(taskData.youtubeURL);
-      if (videoId) {
-        content += `
+        // YouTube video
+        if (taskData.youtubeURL) {
+            const videoId = extractYouTubeVideoId(taskData.youtubeURL);
+            if (videoId) {
+                content += `
                         <div class="video-container">
                             <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
                         </div>
                     `;
-      }
-    }
-
-    // Attachments
-    if (taskData.attachmentId && taskData.attachmentId.length > 0) {
-      content += '<h4>Attachments:</h4><div>';
-      for (const attachmentId of taskData.attachmentId) {
-        try {
-          const attachmentResponse = await fetch(`/api/v1/attachments/${attachmentId}`);
-          if (attachmentResponse.ok) {
-            const attachmentData = await attachmentResponse.json();
-            const attachmentUrl = `data:${attachmentData.contentType};base64,${arrayBufferToBase64(attachmentData.content)}`;
-
-            if (attachmentData.contentType.startsWith('image/')) {
-              content += `<img src="${attachmentUrl}" style="max-width: 100%; margin: 10px 0; border-radius: 8px;" alt="Attachment">`;
-            } else {
-              content += `<a href="${attachmentUrl}" class="attachment" download="attachment_${attachmentId}">
-                                    <i class="fas fa-download"></i> Download Attachment
-                                </a>`;
             }
-          }
-        } catch (error) {
-          console.error('Error loading attachment:', error);
         }
-      }
-      content += '</div>';
-    }
 
-    // Questions
-    if (taskData.questionRes && taskData.questionRes.length > 0) {
-      content += '<h4>Questions:</h4>';
-      taskData.questionRes.forEach((question, index) => {
-        content += `<div style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                        <strong>Question ${index + 1}:</strong> ${question.questionText || 'Question details'}
+        // Attachments
+        if (taskData.attachmentId && taskData.attachmentId.length > 0) {
+            content += '<h4>Attachments:</h4><div>';
+            for (const attachmentId of taskData.attachmentId) {
+                try {
+                    const attachmentResponse = await fetch(`/api/v1/attachments/${attachmentId}`, {
+                        headers: {
+                            'Authorization': localStorage.getItem('authToken')
+                        }
+                    });
+
+                    if (attachmentResponse.ok) {
+                        const attachmentData = await attachmentResponse.json();
+
+                        // Agar attachmentData.content BASE64 bo'lsa:
+                        const attachmentUrl = `data:${attachmentData.contentType};base64,${attachmentData.content}`;
+                        content += `<img src="${attachmentUrl}"
+                       style="max-width: 100%; margin: 10px 0; border-radius: 8px;"
+                       alt="Attachment">`;
+
+                    }
+                } catch (error) {
+                    console.error('Error loading attachment:', error);
+                }
+            }
+            content += '</div>';
+        }
+
+        // Questions
+        if (taskData.questionRes && taskData.questionRes.length > 0) {
+            content += '<h4>Questions:</h4>';
+            taskData.questionRes.forEach((question, index) => {
+                content += `<div style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <strong>Question ${index + 1}:</strong> ${question.questionTest || 'Question details'}
                     </div>`;
-      });
+            });
+        }
+
+        if (!content) {
+            content = '<p style="text-align: center; color: #666;">No additional content available</p>';
+        }
+
+        taskContent.innerHTML = content;
     }
 
-    if (!content) {
-      content = '<p style="text-align: center; color: #666;">No additional content available</p>';
+    // Setup profile form
+    function setupProfileForm() {
+        document.getElementById('profileForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            await updateProfile();
+        });
     }
 
-    taskContent.innerHTML = content;
-  }
+    // Update profile
+    async function updateProfile() {
+        const formData = new FormData();
+        formData.append('id', currentUser.userId.toString());
+        formData.append('firstName', document.getElementById('firstName').value);
+        formData.append('lastName', document.getElementById('lastName').value);
+        formData.append('phoneNumber', document.getElementById('phoneNumber').value);
 
-  // Setup profile form
-  function setupProfileForm() {
-    document.getElementById('profileForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      await updateProfile();
-    });
-  }
+        // Add password if changing
+        if (document.getElementById('changePassword').checked) {
+            const password = document.getElementById('password').value;
+            if (password) {
+                formData.append('password', password);
+            }
+        }
 
-  // Update profile
-  async function updateProfile() {
-    const formData = new FormData();
-    formData.append('id', currentUser.userId.toString());
-    formData.append('firstName', document.getElementById('firstName').value);
-    formData.append('lastName', document.getElementById('lastName').value);
-    formData.append('phoneNumber', document.getElementById('phoneNumber').value);
+        // Add image if selected
+        const imageInput = document.getElementById('imageInput');
+        if (imageInput.files[0]) {
+            formData.append('file', imageInput.files[0]);
+        }
 
-    // Add password if changing
-    if (document.getElementById('changePassword').checked) {
-      const password = document.getElementById('password').value;
-      if (password) {
-        formData.append('password', password);
-      }
+        try {
+            const response = await fetch('/api/v1/auth/updateProfile', {
+                headers: {'Authorization': `${localStorage.getItem('authToken')}`},
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                const updatedData = await response.json();
+
+                // Update localStorage (preserve roles and token)
+                const currentUserData = JSON.parse(localStorage.getItem('userData'));
+                const updatedUserData = {
+                    ...currentUserData,
+                    firstName: updatedData.firstName,
+                    lastName: updatedData.lastName,
+                    phoneNumber: updatedData.phoneNumber,
+                    image: updatedData.image || currentUserData.image
+                };
+
+                localStorage.setItem('userData', JSON.stringify(updatedUserData));
+                currentUser = updatedUserData;
+
+                updateProfileDisplay();
+                alert('Profile updated successfully!');
+
+                // Reset password fields
+                document.getElementById('changePassword').checked = false;
+                document.getElementById('password').value = '';
+                togglePasswordField();
+            } else {
+                alert('Failed to update profile');
+            }
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            alert('Error updating profile');
+        }
     }
 
-    // Add image if selected
-    const imageInput = document.getElementById('imageInput');
-    if (imageInput.files[0]) {
-      formData.append('file', imageInput.files[0]);
+    // Preview image
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('profileImage').src = e.target.result;
+                document.getElementById('sidebarProfileImage').src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
     }
 
-    try {
-      const response = await fetch('/api/v1/auth/updateProfile', {
-        method: 'POST',
-        body: formData
-      });
+    // Toggle password field
+    function togglePasswordField() {
+        const passwordGroup = document.getElementById('passwordGroup');
+        const changePassword = document.getElementById('changePassword');
 
-      if (response.ok) {
-        const updatedData = await response.json();
-
-        // Update localStorage (preserve roles and token)
-        const currentUserData = JSON.parse(localStorage.getItem('userData'));
-        const updatedUserData = {
-          ...currentUserData,
-          firstName: updatedData.firstName,
-          lastName: updatedData.lastName,
-          phoneNumber: updatedData.phoneNumber,
-          image: updatedData.image || currentUserData.image
-        };
-
-        localStorage.setItem('userData', JSON.stringify(updatedUserData));
-        currentUser = updatedUserData;
-
-        updateProfileDisplay();
-        alert('Profile updated successfully!');
-
-        // Reset password fields
-        document.getElementById('changePassword').checked = false;
-        document.getElementById('password').value = '';
-        togglePasswordField();
-      } else {
-        alert('Failed to update profile');
-      }
-    } catch (error) {
-      console.error('Error updating profile:', error);
-      alert('Error updating profile');
-    }
-  }
-
-  // Preview image
-  function previewImage(input) {
-    if (input.files && input.files[0]) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        document.getElementById('profileImage').src = e.target.result;
-        document.getElementById('sidebarProfileImage').src = e.target.result;
-      };
-      reader.readAsDataURL(input.files[0]);
-    }
-  }
-
-  // Toggle password field
-  function togglePasswordField() {
-    const passwordGroup = document.getElementById('passwordGroup');
-    const changePassword = document.getElementById('changePassword');
-
-    if (changePassword.checked) {
-      passwordGroup.classList.remove('hidden');
-      document.getElementById('password').required = true;
-    } else {
-      passwordGroup.classList.add('hidden');
-      document.getElementById('password').required = false;
-      document.getElementById('password').value = '';
-    }
-  }
-
-  // Show view
-  function showView(viewName) {
-    document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
-    document.getElementById(viewName).classList.add('active');
-  }
-
-  // Close modal
-  function closeModal(modalId) {
-    document.getElementById(modalId).style.display = 'none';
-  }
-
-  // Logout function
-  function logout() {
-    if (!currentUser || !currentUser.roles) {
-      localStorage.removeItem('userData');
-      window.location.href = 'index.html';
-      return;
+        if (changePassword.checked) {
+            passwordGroup.classList.remove('hidden');
+            document.getElementById('password').required = true;
+        } else {
+            passwordGroup.classList.add('hidden');
+            document.getElementById('password').required = false;
+            document.getElementById('password').value = '';
+        }
     }
 
-    if (currentUser.roles.length === 1) {
-      localStorage.removeItem('userData');
-      window.location.href = 'index.html';
-    } else {
-      window.location.href = 'chooseRole.html';
+    // Show view
+    function showView(viewName) {
+        document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+        document.getElementById(viewName).classList.add('active');
     }
-  }
 
-  // Utility functions
-  function arrayBufferToBase64(buffer) {
-    if (!buffer) return '';
-    const bytes = new Uint8Array(buffer);
-    let binary = '';
-    for (let i = 0; i < bytes.byteLength; i++) {
-      binary += String.fromCharCode(bytes[i]);
+    // Close modal
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
     }
-    return btoa(binary);
-  }
 
-  function extractYouTubeVideoId(url) {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
-  }
+    // Logout function
+    function logout() {
+        if (!currentUser || !currentUser.roles) {
+            localStorage.removeItem('userData');
+            window.location.href = 'index.html';
+            return;
+        }
 
-  // Close modals when clicking outside
-  window.onclick = function(event) {
-    const modals = document.querySelectorAll('.modal');
-    modals.forEach(modal => {
-      if (event.target === modal) {
-        modal.style.display = 'none';
-      }
-    });
-  }
+        if (currentUser.roles.length === 1) {
+            localStorage.removeItem('userData');
+            window.location.href = 'index.html';
+        } else {
+            window.location.href = 'chooseRole.html';
+        }
+    }
+
+    // Utility functions
+    function arrayBufferToBase64(buffer) {
+        if (!buffer) return '';
+        const bytes = new Uint8Array(buffer);
+        let binary = '';
+        for (let i = 0; i < bytes.byteLength; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return btoa(binary);
+    }
+
+    function extractYouTubeVideoId(url) {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    }
+
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.querySelector('.toggle-password');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        }
+    }
+
+    // Close modals when clicking outside
+    window.onclick = function (event) {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
 </script>
 </body>
 </html>
