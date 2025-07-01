@@ -791,7 +791,7 @@
             if (!taskResponse.ok) throw new Error('Failed to fetch task details');
             const task = await taskResponse.json();
 
-            // YouTube Video Embedding Logic (Copied from Mentor Page)
+            // YouTube Video Embedding Logic
             const videoDiv = document.getElementById('taskVideo');
             videoDiv.innerHTML = '';
             if (task.youtubeURL) {
@@ -828,7 +828,7 @@
         }
     }
 
-    // Fetch and display task attachments (Updated to match Mentor Page)
+    // Fetch and display task attachments
     async function loadTaskAttachments(taskId) {
         try {
             const response = await fetch(`${API_BASE}/task/${taskId}`, {
@@ -879,7 +879,7 @@
         }
     }
 
-    // Fetch and display questions
+    // Fetch and display questions with attachments
     async function loadQuestions(taskId) {
         try {
             const response = await fetch(`${API_BASE}/task/${taskId}`, {
@@ -891,7 +891,38 @@
             questionList.innerHTML = '';
 
             if (task.questionRes && task.questionRes.length > 0) {
-                task.questionRes.forEach((question, index) => {
+                for (const [index, question] of task.questionRes.entries()) {
+                    let attachmentHtml = '';
+                    if (question.attachmentId) {
+                        try {
+                            const attachmentResponse = await fetch(`${API_BASE}/attachments/${question.attachmentId}`, {
+                                headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
+                            });
+                            if (attachmentResponse.ok) {
+                                const attachment = await attachmentResponse.json();
+                                if (attachment.contentType?.startsWith('image/')) {
+                                    const imageSrc = `data:${attachment.contentType};base64,${attachment.content}`;
+                                    attachmentHtml = `<img src="${imageSrc}" alt="Question Attachment ${question.attachmentId}" class="mt-2 max-w-full h-auto rounded">`;
+                                } else {
+                                    const dataUrl = `data:${attachment.contentType || 'application/octet-stream'};base64,${attachment.content}`;
+                                    attachmentHtml = `
+                                        <div class="attachment-item mt-2">
+                                            <i class="fas fa-paperclip me-2"></i>
+                                            <span>Question Attachment ${question.attachmentId}</span>
+                                            <a href="${dataUrl}" download class="ms-auto btn btn-link btn-sm">
+                                                <i class="fas fa-download"></i> Download
+                                            </a>
+                                        </div>`;
+                                }
+                            } else {
+                                attachmentHtml = `<p class="text-danger mt-2">Attachment ${question.attachmentId} not found.</p>`;
+                            }
+                        } catch (error) {
+                            console.warn(`Error fetching attachment ${question.attachmentId}:`, error);
+                            attachmentHtml = `<p class="text-danger mt-2">Error loading attachment ${question.attachmentId}.</p>`;
+                        }
+                    }
+
                     const questionCard = document.createElement('div');
                     questionCard.className = 'card question-card mb-3';
                     questionCard.innerHTML = `
@@ -900,6 +931,7 @@
                                 <div>
                                     <h6 class="mb-1">Question ${index + 1}</h6>
                                     <p class="mb-2">${question.questionTest}</p>
+                                    ${attachmentHtml}
                                 </div>
                                 <button class="btn btn-primary btn-sm" onclick="alert('Update question functionality to be implemented')">
                                     <i class="fas fa-edit"></i>
@@ -908,12 +940,12 @@
                             <div class="mt-2">
                                 <p class="mb-1"><strong>Answer Variants:</strong></p>
                                 <ul class="list-unstyled mb-2">${question.variant.map(v => `<li><i class="fas fa-circle me-1" style="font-size: 0.5rem;"></i>${v}</li>`).join('')}</ul>
-                                <p class="mb-0"><strong>Correct Answer:</strong> ${question.currentAnswer || 'Not specified'}</p>
+                                <p class="mb-0"><strong>Correct Answer:</strong> ${question.correctAnswer || 'Not specified'}</p>
                             </div>
                         </div>
                     `;
                     questionList.appendChild(questionCard);
-                });
+                }
             } else {
                 questionList.innerHTML = `<div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>No questions in this task.</div>`;
             }
@@ -1074,8 +1106,8 @@
             const data = await response.json();
             return data.id;
         } catch (error) {
-            console.error('Error uploading attachment:', error);
-            alert('Error uploading attachment.');
+            console.warn('Attachment upload failed:', error);
+            alert('Attachment upload failed.');
             return null;
         }
     }
@@ -1108,6 +1140,9 @@
 
     document.getElementById('addQuestionForm').addEventListener('submit', async (e) => {
         e.preventDefault();
+        const submitButton = document.querySelector('#addQuestionForm button[type="submit"]');
+        submitButton.disabled = true;
+
         const questionText = document.getElementById('questionText').value;
         const file = document.getElementById('questionAttachment').files[0];
         const variantInputs = document.querySelectorAll('#variantList .variant-input');
@@ -1115,12 +1150,14 @@
 
         if (!questionText) {
             alert('Question text is required.');
+            submitButton.disabled = false;
             return;
         }
 
         const variants = Array.from(variantInputs).map(input => input.value.trim()).filter(v => v);
         if (variants.length === 0) {
             alert('At least one variant is required.');
+            submitButton.disabled = false;
             return;
         }
 
@@ -1129,20 +1166,28 @@
             .filter(answer => answer);
         if (correctAnswers.length === 0) {
             alert('At least one correct answer must be selected.');
+            submitButton.disabled = false;
             return;
         }
 
         let attachmentId = null;
         if (file) {
-            attachmentId = await uploadAttachment(file);
-            if (!attachmentId) return;
+            try {
+                attachmentId = await uploadAttachment(file);
+                if (!attachmentId) {
+                    throw new Error('Attachment upload failed');
+                }
+            } catch (error) {
+                console.warn('Attachment upload failed, proceeding without attachment:', error);
+                alert('Attachment upload failed, question will be saved without it.');
+            }
         }
 
         const questionData = {
             questionText,
             attachmentId,
             variant: variants,
-            correctAnswer: correctAnswers.join(','),
+            correctAnswer: correctAnswers.join(', '), // Space-separated for readability
             taskId: currentTaskId
         };
 
@@ -1156,12 +1201,20 @@
                 body: JSON.stringify(questionData)
             });
             if (!response.ok) throw new Error('Failed to add question');
+            const questionRes = await response.json();
+            console.debug('Question added successfully:', questionRes);
             document.getElementById('addQuestionCard').style.display = 'none';
             await loadQuestions(currentTaskId);
             alert('Question added successfully!');
         } catch (error) {
             console.error('Error adding question:', error);
             alert('Error adding question.');
+        } finally {
+            document.getElementById('addQuestionForm').reset();
+            document.getElementById('questionFileName').textContent = 'No file chosen';
+            document.getElementById('variantList').innerHTML = '';
+            addAnswerVariant();
+            submitButton.disabled = false;
         }
     });
 
