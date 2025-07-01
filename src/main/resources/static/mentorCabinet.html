@@ -71,6 +71,16 @@
             border: 1px solid #dee2e6;
         }
 
+        .btn-success {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(45deg, #ffc107, #ff8c00);
+            color: white;
+        }
+
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -207,11 +217,13 @@
             text-align: center;
             transition: all 0.3s ease;
             border: 1px solid #eee;
+            cursor: pointer;
         }
 
         .mentor-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            background: #e9ecef;
         }
 
         .mentor-image {
@@ -264,7 +276,7 @@
             padding: 30px;
             border-radius: 15px;
             width: 90%;
-            max-width: 600px;
+            max-width: 800px;
             max-height: 80vh;
             overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -385,26 +397,6 @@
             box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
         }
 
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-            }
-
-            .mentors-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-buttons {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-
-        /* Add these styles to your existing CSS */
         .custom-checkbox {
             display: block;
             position: relative;
@@ -486,6 +478,152 @@
 
         .toggle-password:hover {
             color: #667eea;
+        }
+
+        .question-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .question-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .question-text {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .variants-list {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .variant-item {
+            padding: 8px 12px;
+            margin-bottom: 5px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        .correct-answer {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+            font-weight: 500;
+        }
+
+        .science-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .science-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .science-card:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+        }
+
+        .science-card.selected {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #eee;
+        }
+
+        .module-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .module-card.selected {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .mentor-groups {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .mentor-group-item {
+            background: white;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .mentors-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .group-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -606,6 +744,9 @@
                         <button id="moduleButton" class="module-button hidden" onclick="showModuleDetails()">
                             <i class="fas fa-book"></i> <span id="moduleName">Module</span>
                         </button>
+                        <button class="btn btn-warning" onclick="showChangeModuleModal()" style="margin-left: 10px;">
+                            <i class="fas fa-exchange-alt"></i> Change Module
+                        </button>
                         <button class="btn btn-secondary" onclick="showStudentProgress()" style="margin-left: 10px;">
                             <i class="fas fa-chart-line"></i> Student Progress
                         </button>
@@ -671,13 +812,62 @@
     </div>
 </div>
 
+<!-- Question Details Modal -->
+<div id="questionModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('questionModal')">&times;</span>
+        <h2 id="questionModalTitle">Question Details</h2>
+        <div id="questionContent">
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading question...
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Module Modal -->
+<div id="changeModuleModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('changeModuleModal')">&times;</span>
+        <h2>Change Module</h2>
+        <div id="changeModuleContent">
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading sciences...
+            </div>
+        </div>
+        <div style="text-align: right; margin-top: 20px;">
+            <button id="updateModuleBtn" class="btn btn-success hidden" onclick="updateGroupModule()">
+                <i class="fas fa-save"></i> Update Module
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Mentor Groups Modal -->
+<div id="mentorGroupsModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('mentorGroupsModal')">&times;</span>
+        <h2 id="mentorGroupsTitle">Mentor Groups</h2>
+        <div id="mentorGroupsContent">
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading groups...
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     // Global variables
     let currentUser = null;
     let currentGroupId = null;
     let currentModuleId = null;
+    let selectedModuleId = null;
     let allMentors = [];
     let mentorGroups = [];
+    let allSciences = [];
 
     // Initialize the application
     document.addEventListener('DOMContentLoaded', function () {
@@ -838,14 +1028,42 @@
         }
 
         mentorsGrid.innerHTML = allMentors.map(mentor => `
-    <div class="mentor-card">
-      <img class="mentor-image"
-           src="${mentor.image ? `data:image/jpeg;base64,${mentor.image}` : '/placeholder.svg?height=60&width=60'}"
-           alt="${mentor.firstName}" width="60" height="60">
-      <h4>${mentor.firstName} ${mentor.lastName}</h4>
-      <p style="color: #666; font-size: 14px;">${mentor.phoneNumber}</p>
-    </div>
-  `).join('');
+            <div class="mentor-card" onclick="showMentorGroups(${mentor.id}, '${mentor.firstName} ${mentor.lastName}')">
+                <img class="mentor-image"
+                     src="${mentor.image ? `data:image/jpeg;base64,${arrayBufferToBase64(mentor.image)}` : '/placeholder.svg?height=60&width=60'}"
+                     alt="${mentor.firstName}" width="60" height="60">
+                <h4>${mentor.firstName} ${mentor.lastName}</h4>
+                <p style="color: #666; font-size: 14px;">${mentor.phoneNumber}</p>
+            </div>
+        `).join('');
+    }
+
+    // Show mentor groups
+    function showMentorGroups(mentorId, mentorName) {
+        const mentor = allMentors.find(m => m.id === mentorId);
+        if (!mentor) return;
+
+        document.getElementById('mentorGroupsTitle').textContent = `${mentorName} - Groups`;
+        document.getElementById('mentorGroupsModal').style.display = 'block';
+
+        const mentorGroupsContent = document.getElementById('mentorGroupsContent');
+
+        if (!mentor.groups || mentor.groups.length === 0) {
+            mentorGroupsContent.innerHTML = '<p style="text-align: center; color: #666;">No groups assigned to this mentor</p>';
+            return;
+        }
+
+        mentorGroupsContent.innerHTML = `
+            <div class="mentors-grid">
+                ${mentor.groups.map(group => `
+                    <div class="mentor-card" style="cursor: default;">
+                        <i class="fas fa-users" style="font-size: 24px; color: #667eea; margin-bottom: 10px;"></i>
+                        <h4>${group.name}</h4>
+                        <p style="color: #666; font-size: 14px;">Group ID: ${group.id}</p>
+                    </div>
+                `).join('')}
+            </div>
+        `;
     }
 
     // Show student progress
@@ -911,6 +1129,121 @@
                     </tbody>
                 </table>
             `;
+    }
+
+    // Show change module modal
+    async function showChangeModuleModal() {
+        if (!currentGroupId) return;
+
+        document.getElementById('changeModuleModal').style.display = 'block';
+        document.getElementById('changeModuleContent').innerHTML = `
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading sciences...
+            </div>
+        `;
+
+        try {
+            const response = await fetch('/api/v1/science', {
+                headers: {'Authorization': `${localStorage.getItem('authToken')}`}
+            });
+            if (response.ok) {
+                allSciences = await response.json();
+                displaySciences();
+            } else {
+                console.error('Failed to load sciences');
+            }
+        } catch (error) {
+            console.error('Error loading sciences:', error);
+        }
+    }
+
+    // Display sciences
+    function displaySciences() {
+        const changeModuleContent = document.getElementById('changeModuleContent');
+
+        if (allSciences.length === 0) {
+            changeModuleContent.innerHTML = '<p style="text-align: center; color: #666;">No sciences available</p>';
+            return;
+        }
+
+        changeModuleContent.innerHTML = `
+            <h3>Select a Science:</h3>
+            <div class="science-grid">
+                ${allSciences.map(science => `
+                    <div class="science-card" onclick="selectScience(${science.id}, '${science.name}')">
+                        <i class="fas fa-flask" style="font-size: 24px; margin-bottom: 10px;"></i>
+                        <h4>${science.name}</h4>
+                        <p style="font-size: 12px; color: #666;">${science.modules ? science.modules.length : 0} modules</p>
+                    </div>
+                `).join('')}
+            </div>
+            <div id="modulesSection" class="hidden">
+                <h3>Select a Module:</h3>
+                <div id="modulesGrid" class="modules-grid"></div>
+            </div>
+        `;
+    }
+
+    // Select science
+    function selectScience(scienceId, scienceName) {
+        // Update selected state
+        document.querySelectorAll('.science-card').forEach(card => card.classList.remove('selected'));
+        event.target.classList.add('selected');
+
+        const science = allSciences.find(s => s.id === scienceId);
+        if (!science || !science.modules) return;
+
+        // Show modules section
+        document.getElementById('modulesSection').classList.remove('hidden');
+        const modulesGrid = document.getElementById('modulesGrid');
+
+        modulesGrid.innerHTML = science.modules.map(module => `
+            <div class="module-card" onclick="selectModule(${module.id}, '${module.name}')">
+                <h4>${module.name}</h4>
+                <p style="color: #666; font-size: 14px;">Module ID: ${module.id}</p>
+            </div>
+        `).join('');
+    }
+
+    // Select module
+    function selectModule(moduleId, moduleName) {
+        selectedModuleId = moduleId;
+
+        // Update selected state
+        document.querySelectorAll('.module-card').forEach(card => card.classList.remove('selected'));
+        event.target.classList.add('selected');
+
+        // Show update button
+        document.getElementById('updateModuleBtn').classList.remove('hidden');
+    }
+
+    // Update group module
+    async function updateGroupModule() {
+        if (!currentGroupId || !selectedModuleId) return;
+
+        try {
+            const response = await fetch(`/api/v1/group/updateModule/${currentGroupId}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `${localStorage.getItem('authToken')}`,
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `moduleId=${selectedModuleId}`
+            });
+
+            if (response.ok) {
+                alert('Module updated successfully!');
+                closeModal('changeModuleModal');
+                // Reload group details
+                await loadGroupDetails(currentGroupId, document.getElementById('groupName').textContent);
+            } else {
+                alert('Failed to update module');
+            }
+        } catch (error) {
+            console.error('Error updating module:', error);
+            alert('Error updating module');
+        }
     }
 
     // Show module details
@@ -1030,13 +1363,10 @@
 
                     if (attachmentResponse.ok) {
                         const attachmentData = await attachmentResponse.json();
-
-                        // Agar attachmentData.content BASE64 bo'lsa:
-                        const attachmentUrl = `data:${attachmentData.contentType};base64,${attachmentData.content}`;
+                        const attachmentUrl = `data:${attachmentData.contentType};base64,${arrayBufferToBase64(attachmentData.content)}`;
                         content += `<img src="${attachmentUrl}"
-                       style="max-width: 100%; margin: 10px 0; border-radius: 8px;"
-                       alt="Attachment">`;
-
+                           style="max-width: 100%; margin: 10px 0; border-radius: 8px;"
+                           alt="Attachment">`;
                     }
                 } catch (error) {
                     console.error('Error loading attachment:', error);
@@ -1048,11 +1378,24 @@
         // Questions
         if (taskData.questionRes && taskData.questionRes.length > 0) {
             content += '<h4>Questions:</h4>';
+            content += '<table class="table">';
+            content += '<thead><tr><th>Question</th><th>Action</th></tr></thead>';
+            content += '<tbody>';
+
             taskData.questionRes.forEach((question, index) => {
-                content += `<div style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                        <strong>Question ${index + 1}:</strong> ${question.questionTest || 'Question details'}
-                    </div>`;
+                content += `
+                    <tr>
+                        <td>Question ${index + 1}: ${question.questionTest || 'Question details'}</td>
+                        <td>
+                            <button class="btn btn-secondary" onclick="showQuestionDetails(${JSON.stringify(question).replace(/"/g, '&quot;')}, ${index + 1})">
+                                <i class="fas fa-eye"></i> View Details
+                            </button>
+                        </td>
+                    </tr>
+                `;
             });
+
+            content += '</tbody></table>';
         }
 
         if (!content) {
@@ -1060,6 +1403,68 @@
         }
 
         taskContent.innerHTML = content;
+    }
+
+    // Show question details
+    async function showQuestionDetails(question, questionNumber) {
+        document.getElementById('questionModal').style.display = 'block';
+        document.getElementById('questionModalTitle').textContent = `Question ${questionNumber}`;
+        document.getElementById('questionContent').innerHTML = `
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading question details...
+            </div>
+        `;
+
+        let content = '';
+
+        // Question text
+        content += `<div class="question-card">`;
+        content += `<div class="question-text"><strong>Question:</strong> ${question.questionTest || 'No question text available'}</div>`;
+
+        // Question attachment
+        if (question.attachmentId) {
+            try {
+                const attachmentResponse = await fetch(`/api/v1/attachments/${question.attachmentId}`, {
+                    headers: {
+                        'Authorization': localStorage.getItem('authToken')
+                    }
+                });
+
+                if (attachmentResponse.ok) {
+                    const attachmentData = await attachmentResponse.json();
+                    const attachmentUrl = `data:${attachmentData.contentType};base64,${arrayBufferToBase64(attachmentData.content)}`;
+                    content += `
+                        <div style="margin: 15px 0;">
+                            <strong>Question Image:</strong><br>
+                            <img src="${attachmentUrl}" style="max-width: 100%; margin-top: 10px; border-radius: 8px;" alt="Question Image">
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading question attachment:', error);
+            }
+        }
+
+        // Variants
+        if (question.variant && question.variant.length > 0) {
+            content += `<div style="margin: 15px 0;"><strong>Options:</strong></div>`;
+            content += `<ul class="variants-list">`;
+            question.variant.forEach((variant, index) => {
+                const isCorrect = variant === question.currentAnswer;
+                content += `<li class="variant-item ${isCorrect ? 'correct-answer' : ''}">${String.fromCharCode(65 + index)}. ${variant}</li>`;
+            });
+            content += `</ul>`;
+        }
+
+        // Correct answer
+        if (question.currentAnswer) {
+            content += `<div style="margin: 15px 0;"><strong>Correct Answer:</strong> <span style="color: #28a745; font-weight: 600;">${question.currentAnswer}</span></div>`;
+        }
+
+        content += `</div>`;
+
+        document.getElementById('questionContent').innerHTML = content;
     }
 
     // Setup profile form
@@ -1167,6 +1572,12 @@
     // Close modal
     function closeModal(modalId) {
         document.getElementById(modalId).style.display = 'none';
+
+        // Reset change module modal state
+        if (modalId === 'changeModuleModal') {
+            selectedModuleId = null;
+            document.getElementById('updateModuleBtn').classList.add('hidden');
+        }
     }
 
     // Logout function
@@ -1188,6 +1599,8 @@
     // Utility functions
     function arrayBufferToBase64(buffer) {
         if (!buffer) return '';
+        if (typeof buffer === 'string') return buffer;
+
         const bytes = new Uint8Array(buffer);
         let binary = '';
         for (let i = 0; i < bytes.byteLength; i++) {
