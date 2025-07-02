@@ -4,439 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Talaba Vazifalari Menedjeri</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        body {
+            background-color: #f8f9fa;
             font-family: 'Segoe UI', 'Roboto', sans-serif;
         }
 
-        :root {
-            --primary: #4361ee;
-            --secondary: #3f37c9;
-            --accent: #4895ef;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --success: #22c55e;
-            --task-color: #f59e0b;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            --shadow-mobile: 0 2px 10px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
-            --border-radius: 12px;
-        }
-
-        body {
-            background: linear-gradient(135deg, #e0e7ff 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            color: var(--dark);
-            font-size: 16px;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-
-        /* Mobile First - Default Layout */
-        @media (min-width: 768px) {
-            .container {
-                padding: 1.5rem;
-                gap: 2rem;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .container {
-                grid-template-columns: 1fr 2fr;
-                padding: 2rem;
-                gap: 2.5rem;
-            }
-        }
-
-        /* Student Profile Card */
-        .student-bar {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-mobile);
+        .student-card {
+            background: linear-gradient(135deg, #007bff, #0056b3);
             color: white;
+            border-radius: 10px;
             cursor: pointer;
-            transition: var(--transition);
-            order: -1;
+            transition: transform 0.2s;
         }
 
-        @media (min-width: 1024px) {
-            .student-bar {
-                order: 0;
-                box-shadow: var(--shadow);
-            }
-
-            .student-bar:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            }
+        .student-card:hover {
+            transform: translateY(-2px);
         }
 
-        .student-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .student-info img {
+        .student-avatar {
             width: 60px;
             height: 60px;
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid rgba(255, 255, 255, 0.3);
-            flex-shrink: 0;
         }
 
-        @media (min-width: 768px) {
-            .student-info img {
-                width: 70px;
-                height: 70px;
-            }
-        }
-
-        .student-details {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .student-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-            word-wrap: break-word;
-        }
-
-        @media (min-width: 768px) {
-            .student-name {
-                font-size: 1.25rem;
-            }
-        }
-
-        .student-phone {
-            font-size: 0.875rem;
-            opacity: 0.9;
-            word-wrap: break-word;
-        }
-
-        .student-progress {
-            width: 100%;
+        .progress-custom {
+            height: 8px;
             background: rgba(255, 255, 255, 0.2);
-            height: 6px;
-            border-radius: 3px;
-            margin-top: 0.75rem;
+            border-radius: 4px;
             overflow: hidden;
         }
 
-        .student-progress-fill {
+        .progress-fill {
             height: 100%;
             background: white;
-            border-radius: 3px;
+            border-radius: 4px;
             width: 0%;
             transition: width 0.8s ease;
         }
 
-        .student-info .error {
-            color: var(--danger);
-            font-size: 0.75rem;
-            margin-top: 0.5rem;
-        }
-
-        .actions {
-            display: flex;
-            justify-content: center;
-            gap: 0.75rem;
-            margin-top: 1rem;
-        }
-
-        .action-btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 25px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 0.875rem;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            min-height: 44px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .action-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-1px);
-        }
-
-        .action-btn.secondary {
-            background: rgba(255, 255, 255, 0.15);
-            width: 100%;
-            justify-content: center;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        /* Level Bar (Modules) */
-        .level-bar {
+        .module-btn, .task-btn {
+            border: 2px solid #dee2e6;
             background: white;
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-mobile);
+            transition: all 0.2s;
         }
 
-        @media (min-width: 1024px) {
-            .level-bar {
-                box-shadow: var(--shadow);
-            }
+        .module-btn:hover, .task-btn:hover {
+            border-color: #007bff;
+            background: rgba(0, 123, 255, 0.05);
         }
 
-        .level-btn {
-            padding: 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            background: white;
-            cursor: pointer;
-            transition: var(--transition);
-            text-align: left;
-            font-size: 0.95rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            min-height: 56px;
-            width: 100%;
-            margin: 0.5rem 0;
+        .module-btn.active, .task-btn.active {
+            border-color: #007bff;
+            background: rgba(0, 123, 255, 0.1);
+            color: #007bff;
         }
 
-        .level-btn:hover {
-            border-color: var(--accent);
-            background: rgba(72, 149, 239, 0.05);
-            transform: translateY(-1px);
-        }
-
-        .level-btn.active {
-            border-color: var(--primary);
-            background: rgba(67, 97, 238, 0.1);
-            color: var(--primary);
-            transform: scale(1.02);
-        }
-
-        /* Tasks Section */
-        .tasks {
-            background: white;
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-mobile);
-        }
-
-        @media (min-width: 1024px) {
-            .tasks {
-                box-shadow: var(--shadow);
-            }
-        }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1.25rem;
-            color: var(--primary);
-            font-size: 1.125rem;
-            font-weight: 600;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px solid var(--accent);
-        }
-
-        .task-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .task {
-            padding: 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: left;
-            font-size: 0.95rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 56px;
+        .task-btn.completed {
+            background: rgba(40, 167, 69, 0.1);
+            border-color: #28a745;
+            color: #28a745;
             position: relative;
-            user-select: none;
         }
 
-        .task:hover:not(.completed) {
-            border-color: var(--task-color);
-            background: rgba(245, 158, 11, 0.05);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
-        }
-
-        .task:active:not(.completed) {
-            transform: translateY(0);
-        }
-
-        .task.active {
-            border-color: var(--task-color);
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--task-color);
-            transform: scale(1.02);
-        }
-
-        .task.completed {
-            background: rgba(34, 197, 94, 0.1);
-            border-color: var(--success);
-            color: var(--success);
-            cursor: pointer;
-        }
-
-        .task.completed:hover {
-            background: rgba(34, 197, 94, 0.15);
-            transform: translateY(-1px);
-        }
-
-        .task.completed::after {
+        .task-btn.completed::after {
             content: "Bajarilgan";
             position: absolute;
             top: -8px;
             right: 8px;
             font-size: 0.7rem;
-            color: var(--success);
+            color: #28a745;
             background: white;
             padding: 2px 8px;
             border-radius: 10px;
-            border: 1px solid var(--success);
+            border: 1px solid #28a745;
         }
 
-        .task i {
-            font-size: 1.1rem;
-            margin-right: 0.5rem;
-        }
-
-        .task span {
-            flex: 1;
-            min-width: 0;
-            word-wrap: break-word;
-        }
-
-        /* Main Content */
-        .question-section {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-mobile);
-            overflow: hidden;
-        }
-
-        @media (min-width: 1024px) {
-            .question-section {
-                box-shadow: var(--shadow);
-            }
-        }
-
-        .question {
-            min-height: 400px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .question-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .question-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--dark);
-            flex: 1;
-            min-width: 0;
-            word-wrap: break-word;
-        }
-
-        .difficulty {
-            background: var(--accent);
-            color: white;
-            padding: 0.375rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
-        .question-content {
-            flex: 1;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .question-text {
-            font-size: 1.125rem;
-            color: var(--dark);
-            text-align: center;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-            max-width: 100%;
-            word-wrap: break-word;
-        }
-
-        @media (min-width: 768px) {
-            .question-text {
-                font-size: 1.25rem;
-                margin-bottom: 2rem;
-            }
-        }
-
-        /* Video Section */
-        #videoContainer {
+        .video-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            padding-bottom: 56.25%;
             height: 0;
             background: #000;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            margin-bottom: 1.5rem;
         }
 
-        #videoContainer iframe {
+        .video-container iframe {
             position: absolute;
             top: 0;
             left: 0;
@@ -444,799 +106,259 @@
             height: 100%;
         }
 
-        .video-message {
-            text-align: center;
-            padding: 1rem;
-            background: rgba(72, 149, 239, 0.1);
+        .question-option {
+            border: 2px solid #dee2e6;
             border-radius: 8px;
-            color: var(--primary);
-            font-weight: 500;
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
-        }
-
-        /* Continue Button */
-        .continue-section {
-            text-align: center;
-            padding: 2rem 0;
-        }
-
-        .continue-btn {
-            padding: 1rem 2rem;
-            background: linear-gradient(135deg, var(--success), #16a34a);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
             cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            min-height: 56px;
+            transition: all 0.2s;
         }
 
-        .continue-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+        .question-option:hover {
+            border-color: #007bff;
+            background: rgba(0, 123, 255, 0.05);
         }
 
-        .continue-btn:disabled {
-            background: #9ca3af;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Questions After Video */
-        .questions-after-video {
-            display: none;
-            width: 100%;
-            animation: fadeInUp 0.5s ease-out;
-        }
-
-        .questions-after-video.active {
-            display: block;
-        }
-
-        .question-card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-left: 4px solid var(--primary);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .question-card-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 1.25rem;
-            line-height: 1.5;
-        }
-
-        .question-card-options {
-            display: grid;
-            gap: 0.75rem;
-        }
-
-        .question-card-option {
-            padding: 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: var(--transition);
-            background: white;
-            display: flex;
-            align-items: center;
-            min-height: 56px;
-        }
-
-        .question-card-option:hover {
-            border-color: var(--accent);
-            background: rgba(72, 149, 239, 0.05);
-        }
-
-        .question-card-option.selected {
-            border-color: var(--success);
-            background: rgba(34, 197, 94, 0.1);
-            color: var(--success);
-            font-weight: 500;
-        }
-
-        .question-card-option input[type="radio"] {
-            display: none;
-        }
-
-        .question-card-option label {
-            cursor: pointer;
-            width: 100%;
-            padding: 0.5rem;
-        }
-
-        /* Question Navigation */
-        .question-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px solid #e5e7eb;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .question-counter {
-            font-size: 0.875rem;
-            color: var(--dark);
-            font-weight: 500;
-            order: 2;
-            width: 100%;
-            text-align: center;
-        }
-
-        @media (min-width: 768px) {
-            .question-counter {
-                order: 0;
-                width: auto;
-            }
-        }
-
-        .question-nav .action-btn {
-            background: var(--primary);
-            color: white;
-            border: 2px solid var(--primary);
-            padding: 0.75rem 1.5rem;
-            font-size: 0.875rem;
-            min-height: 44px;
-        }
-
-        .question-nav .action-btn.secondary {
-            background: white;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-
-        .question-nav .action-btn:hover {
-            background: var(--secondary);
-            border-color: var(--secondary);
-            color: white;
-        }
-
-        .question-nav .action-btn.secondary:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* Submit Button */
-        #submitButton {
-            padding: 1rem 2rem;
-            background: linear-gradient(135deg, var(--success), #16a34a);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            min-height: 56px;
-            margin: 2rem auto;
-        }
-
-        #submitButton:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
-        }
-
-        #submitButton:disabled {
-            background: #9ca3af;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Attachments */
-        .attachment-container {
-            margin: 1.5rem 0;
-            padding: 1rem;
-            background: #f8fafc;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .attachment-container h4 {
-            margin-bottom: 1rem;
-            color: var(--primary);
-            font-size: 1rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .attachment-item {
-            margin-bottom: 1rem;
-            padding: 0.75rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e5e7eb;
+        .question-option.selected {
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
         }
 
         .attachment-image {
             max-width: 100%;
             height: auto;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 0.5rem;
-        }
-
-        .attachment-download {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1rem;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: var(--transition);
-            font-size: 0.875rem;
-            min-height: 44px;
-        }
-
-        .attachment-download:hover {
-            background: var(--secondary);
-            transform: translateY(-1px);
-        }
-
-        .attachment-error {
-            color: var(--danger);
-            text-align: center;
-            padding: 1rem;
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            border-radius: 8px;
-            font-size: 0.875rem;
-        }
-
-        .attachment-loading {
-            text-align: center;
-            padding: 1rem;
-            color: var(--primary);
-            font-size: 0.875rem;
-        }
-
-        /* Progress Container */
-        .progress-container {
-            background: white;
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-mobile);
-            margin-top: 1.5rem;
-        }
-
-        @media (min-width: 1024px) {
-            .progress-container {
-                box-shadow: var(--shadow);
-            }
-        }
-
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.75rem;
-            font-weight: 600;
-        }
-
-        .progress-bar {
-            height: 10px;
-            background: #e5e7eb;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--primary));
-            border-radius: 5px;
-            width: 0%;
-            transition: width 1s ease;
-        }
-
-        /* Task Results */
-        .task-results {
-            margin-top: 1.5rem;
-            padding: 1.5rem;
-            background: rgba(34, 197, 94, 0.1);
-            border-radius: var(--border-radius);
-            border: 1px solid rgba(34, 197, 94, 0.2);
-            display: none;
-            animation: fadeInUp 0.5s ease-out;
-        }
-
-        .task-results.active {
-            display: block;
-        }
-
-        .task-results-header {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--success);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .task-results-content p {
-            margin: 0.5rem 0;
-            font-size: 0.95rem;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 2rem;
-            width: 100%;
-            max-width: 500px;
-            max-height: 90vh;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow-y: auto;
-        }
-
-        .close-modal {
-            position: absolute;
-            right: 1rem;
-            top: 1rem;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #f3f4f6;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            font-size: 1.25rem;
-        }
-
-        .close-modal:hover {
-            background: #e5e7eb;
-        }
-
-        /* Form Styles */
-        .update-profile form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-            margin-top: 1.5rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .update-profile label {
-            font-weight: 500;
-            color: var(--dark);
-            font-size: 0.95rem;
-        }
-
-        .update-profile input {
-            padding: 0.75rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: var(--transition);
-            min-height: 48px;
-        }
-
-        .update-profile input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
-        }
-
-        .phone-group {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .phone-prefix {
-            padding: 0.75rem;
-            background: #f3f4f6;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-weight: 500;
-            color: var(--dark);
-            min-height: 48px;
-            display: flex;
-            align-items: center;
-        }
-
-        .phone-input {
-            flex: 1;
-        }
-
-        .error-message {
-            color: var(--danger);
-            font-size: 0.75rem;
-            margin-top: 0.25rem;
-            display: none;
-        }
-
-        .image-upload {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .image-upload-preview {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--primary);
-            display: none;
-        }
-
-        .image-upload-btn {
-            padding: 0.75rem 1.5rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.875rem;
-            transition: var(--transition);
-            min-height: 44px;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .image-upload-btn:hover {
-            background: var(--secondary);
-        }
-
-        .update-profile button[type="submit"] {
-            padding: 1rem;
-            border: none;
-            border-radius: 25px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-            margin-top: 0.5rem;
-            min-height: 52px;
-            font-size: 1rem;
-        }
-
-        .update-profile button[type="submit"]:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
-        }
-
-        /* Loading States */
-        .loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            color: var(--primary);
         }
 
         .spinner {
             width: 40px;
             height: 40px;
-            border: 4px solid rgba(67, 97, 238, 0.1);
-            border-left-color: var(--primary);
+            border: 4px solid rgba(0, 123, 255, 0.1);
+            border-left-color: #007bff;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 1rem;
         }
 
-        /* Empty States */
-        .empty-state {
-            text-align: center;
-            padding: 2rem 1rem;
-            color: #6b7280;
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #d1d5db;
-        }
-
-        .empty-state h3 {
-            font-size: 1.125rem;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-        }
-
-        .empty-state p {
-            font-size: 0.875rem;
-        }
-
-        /* Animations */
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .modal-content {
+            border-radius: 10px;
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .btn-gradient {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            border: none;
+            color: white;
         }
 
-        /* Responsive Improvements */
-        @media (max-width: 640px) {
-            .container {
-                padding: 0.75rem;
-                gap: 1rem;
-            }
-
-            .student-bar, .level-bar, .tasks, .question-section {
-                padding: 1rem;
-            }
-
-            .question-content {
-                padding: 1rem;
-            }
-
-            .question-nav {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .question-nav .action-btn {
-                justify-content: center;
-            }
-
-            .attachment-container {
-                margin: 1rem 0;
-                padding: 0.75rem;
-            }
-
-            .modal-content {
-                padding: 1.5rem;
-                margin: 0.5rem;
-            }
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, #218838, #1ea085);
+            color: white;
         }
 
-        /* Utility Classes */
-        .hidden { display: none !important; }
-        .text-center { text-align: center; }
-        .text-success { color: var(--success); }
-        .text-danger { color: var(--danger); }
-        .text-muted { color: #6b7280; }
-        .mb-0 { margin-bottom: 0; }
-        .mb-1 { margin-bottom: 0.5rem; }
-        .mb-2 { margin-bottom: 1rem; }
-        .mt-2 { margin-top: 1rem; }
-
-        /* Footer */
-        footer {
-            grid-column: 1 / -1;
-            text-align: center;
-            margin-top: 2rem;
-            padding: 1.5rem;
-            color: #6c757d;
-            font-size: 0.875rem;
-            line-height: 1.4;
+        .results-card {
+            background: rgba(40, 167, 69, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.2);
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="main-content">
-        <div class="question-section">
-            <div class="question" id="questionBox">
-                <div class="question-header">
-                    <div class="question-title">Vazifa tanlanmadi</div>
-                    <div class="difficulty">Daraja tanlanmadi</div>
+<div class="container-fluid py-4">
+    <div class="row g-4">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <!-- Question Section -->
+            <div class="card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0" id="questionTitle">Vazifa tanlanmadi</h5>
+                    <span class="badge bg-primary" id="questionDifficulty">Daraja tanlanmadi</span>
                 </div>
-                <div class="question-content" id="questionContent">
-                    <div class="empty-state">
-                        <i class="fas fa-clipboard-check"></i>
-                        <h3>Vazifa tanlanmadi</h3>
-                        <p>Iltimos, chap tarafdan vazifa tanlang!</p>
-                    </div>
-                    <div class="options" id="optionsContainer"></div>
-                </div>
-            </div>
-            <div class="task-results" id="taskResults">
-                <div class="task-results-header">
-                    <i class="fas fa-check-circle"></i>
-                    Vazifa Natijalari
-                </div>
-                <div class="task-results-content" id="taskResultsContent"></div>
-            </div>
-            <div class="actions">
-                <button class="action-btn" id="submitButton" onclick="submitAnswer()" style="display: none;">
-                    <i class="fas fa-paper-plane"></i> Yuborish
-                </button>
-            </div>
-        </div>
-        <div class="progress-container">
-            <div class="progress-header">
-                <div>Umumiy progress</div>
-                <div id="progressText">0%</div>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-        </div>
-    </div>
-    <div class="sidebar">
-        <div class="student-bar" onclick="showProfileModal()">
-            <div class="student-info">
-                <img id="studentImage" src="/placeholder.svg?height=70&width=70" alt="Student Image">
-                <div class="student-details">
-                    <div class="student-name" id="studentName">Yuklanmoqda...</div>
-                    <div class="student-phone" id="studentPhone">Telefon: Yuklanmoqda...</div>
-                    <div class="student-progress">
-                        <div class="student-progress-fill" id="studentProgressFill"></div>
+                <div class="card-body" id="questionContent">
+                    <div class="text-center py-5">
+                        <i class="fas fa-clipboard-check fa-3x text-muted mb-3"></i>
+                        <h4>Vazifa tanlanmadi</h4>
+                        <p class="text-muted">Iltimos, chap tarafdan vazifa tanlang!</p>
                     </div>
                 </div>
-                <div id="imageError" class="error" style="display: none;">Rasm yuklanmadi</div>
             </div>
-            <div class="actions">
-                <button class="action-btn secondary">
-                    <i class="fas fa-user-edit"></i> Profilni yangilash
+
+            <!-- Task Results -->
+            <div class="card mt-4 d-none" id="taskResults">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-check-circle me-2"></i>Vazifa Natijalari</h5>
+                </div>
+                <div class="card-body" id="taskResultsContent"></div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center mt-4">
+                <button class="btn btn-gradient btn-lg d-none" id="submitButton" onclick="submitAnswer()">
+                    <i class="fas fa-paper-plane me-2"></i>Yuborish
                 </button>
             </div>
-        </div>
-        <div class="level-bar" id="levelBar">
-            <div class="section-title">
-                <i class="fas fa-book"></i>
-                <h2>Modullar</h2>
-            </div>
-            <div class="loading" id="moduleLoading">
-                <div class="spinner"></div>
-                Modullar yuklanmoqda...
-            </div>
-            <div id="modulesList" class="hidden"></div>
-            <div id="modulesEmpty" class="empty-state hidden">
-                <i class="fas fa-book-open"></i>
-                <h3>Modullar mavjud emas</h3>
-                <p>Sizda hozirda modullar mavjud emas. Modulni tanlang.</p>
+
+            <!-- Progress -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Umumiy progress</span>
+                        <span id="progressText">0%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-primary" id="progressFill" style="width: 0%"></div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="tasks">
-            <div class="section-title">
-                <i class="fas fa-tasks"></i>
-                <h2>Vazifalar Ro'yxati</h2>
-            </div>
-            <div class="loading" id="taskLoading" style="display: none;">
-                <div class="spinner"></div>
-                Vazifalar yuklanmoqda...
-            </div>
-            <div class="task-list" id="taskList"></div>
-            <div id="tasksEmpty" class="empty-state hidden">
-                <i class="fas fa-clipboard-list"></i>
-                <h3>Vazifalar mavjud emas</h3>
-                <p>Sizda vazifa mavjud emas. Vazifani tanlang.</p>
-            </div>
-            <div id="tasksSelectModule" class="empty-state">
-                <i class="fas fa-arrow-up"></i>
-                <h3>Modul tanlang</h3>
-                <p>Vazifalarni ko'rish uchun avval modulni tanlang.</p>
-            </div>
-        </div>
-        <div class="actions">
-            <button class="action-btn" onclick="viewStudentsLevels()">
-                <i class="fas fa-users"></i> Talabalar Darajalari
-            </button>
-        </div>
-    </div>
-    <div class="modal" id="profileModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeProfileModal()">×</span>
-            <div class="update-profile">
-                <h3>Profilni Yangilash</h3>
-                <form id="updateProfileForm">
-                    <div class="image-upload">
-                        <img id="imagePreview" class="image-upload-preview" src="/placeholder.svg" alt="Profil rasmi">
-                        <input type="file" id="imageUpload" accept="image/*" style="display: none;">
-                        <button type="button" class="image-upload-btn"
-                                onclick="document.getElementById('imageUpload').click()">
-                            <i class="fas fa-camera"></i> Rasm yuklash
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Student Profile -->
+            <div class="card student-card mb-4" onclick="showProfileModal()">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <img id="studentImage" src="/placeholder.svg?height=60&width=60" alt="Student" class="student-avatar me-3">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1" id="studentName">Yuklanmoqda...</h6>
+                            <small id="studentPhone">Telefon: Yuklanmoqda...</small>
+                            <div class="progress-custom mt-2">
+                                <div class="progress-fill" id="studentProgressFill"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-outline-light btn-sm">
+                            <i class="fas fa-user-edit me-1"></i>Profilni yangilash
                         </button>
                     </div>
-                    <div class="form-group">
-                        <label for="firstName">Ism</label>
-                        <input type="text" id="firstName" placeholder="Ism" required>
+                    <div id="imageError" class="text-danger small mt-2 d-none">Rasm yuklanmadi</div>
+                </div>
+            </div>
+
+            <!-- Modules -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-book me-2"></i>Modullar</h6>
+                </div>
+                <div class="card-body">
+                    <div class="text-center" id="moduleLoading">
+                        <div class="spinner mx-auto mb-2"></div>
+                        <small>Modullar yuklanmoqda...</small>
                     </div>
-                    <div class="form-group">
-                        <label for="lastName">Familiya</label>
-                        <input type="text" id="lastName" placeholder="Familiya" required>
+                    <div id="modulesList" class="d-none"></div>
+                    <div id="modulesEmpty" class="text-center text-muted d-none">
+                        <i class="fas fa-book-open fa-2x mb-2"></i>
+                        <p class="small">Modullar mavjud emas</p>
                     </div>
-                    <div class="form-group">
-                        <label for="phoneNumber">Telefon raqami</label>
-                        <div class="phone-group">
-                            <span class="phone-prefix">+998</span>
-                            <input type="tel" id="phoneNumber" class="phone-input" placeholder="XX1234567"
-                                   pattern="^(90|91|93|94|95|97|98|99|33|77|20|88)[0-9]{7}$" required>
+                </div>
+            </div>
+
+            <!-- Tasks -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-tasks me-2"></i>Vazifalar</h6>
+                </div>
+                <div class="card-body">
+                    <div class="text-center d-none" id="taskLoading">
+                        <div class="spinner mx-auto mb-2"></div>
+                        <small>Vazifalar yuklanmoqda...</small>
+                    </div>
+                    <div id="taskList"></div>
+                    <div id="tasksEmpty" class="text-center text-muted d-none">
+                        <i class="fas fa-clipboard-list fa-2x mb-2"></i>
+                        <p class="small">Vazifalar mavjud emas</p>
+                    </div>
+                    <div id="tasksSelectModule" class="text-center text-muted">
+                        <i class="fas fa-arrow-up fa-2x mb-2"></i>
+                        <h6>Modul tanlang</h6>
+                        <p class="small">Vazifalarni ko'rish uchun avval modulni tanlang</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="d-grid">
+                <button class="btn btn-outline-primary" onclick="viewStudentsLevels()">
+                    <i class="fas fa-users me-2"></i>Talabalar Darajalari
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Profile Modal -->
+<div class="modal fade" id="profileModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Profilni Yangilash</h5>
+                <button type="button" class="btn-close" onclick="closeProfileModal()"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateProfileForm">
+                    <div class="text-center mb-4">
+                        <img id="imagePreview" class="rounded-circle d-none" width="100" height="100" src="/placeholder.svg" alt="Profil rasmi">
+                        <input type="file" id="imageUpload" accept="image/*" class="d-none">
+                        <div class="mt-2">
+                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="document.getElementById('imageUpload').click()">
+                                <i class="fas fa-camera me-1"></i>Rasm yuklash
+                            </button>
                         </div>
-                        <div class="error-message" id="phoneError">Telefon raqami 90, 91, 93, 94, 95, 97, 98, 33, 77,
-                            20, 88 yoki 99 bilan boshlanib, 7 raqamdan iborat bo'lishi kerak!
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Ism</label>
+                        <input type="text" class="form-control" id="firstName" placeholder="Ism" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Familiya</label>
+                        <input type="text" class="form-control" id="lastName" placeholder="Familiya" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Telefon raqami</label>
+                        <div class="input-group">
+                            <span class="input-group-text">+998</span>
+                            <input type="tel" class="form-control" id="phoneNumber" placeholder="XX1234567" required>
+                        </div>
+                        <div class="text-danger small d-none" id="phoneError">
+                            Telefon raqami 90, 91, 93, 94, 95, 97, 98, 33, 77, 20, 88 yoki 99 bilan boshlanib, 7 raqamdan iborat bo'lishi kerak!
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="password">Yangi parol</label>
-                        <input type="password" id="password" placeholder="Yangi parol">
+
+                    <div class="mb-3">
+                        <label class="form-label">Yangi parol</label>
+                        <input type="password" class="form-control" id="password" placeholder="Yangi parol">
                     </div>
-                    <div class="form-group">
-                        <label for="confirmPassword">Parolni tasdiqlash</label>
-                        <input type="password" id="confirmPassword" placeholder="Parolni tasdiqlash">
+
+                    <div class="mb-3">
+                        <label class="form-label">Parolni tasdiqlash</label>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Parolni tasdiqlash">
                     </div>
-                    <button type="submit">
-                        <i class="fas fa-save"></i>
-                        Yangilash
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-save me-2"></i>Yangilash
                     </button>
                 </form>
             </div>
         </div>
     </div>
-    <footer>
-        <p>Talaba Vazifalari Menedjeri © 2025 | Barcha huquqlar himoyalangan</p>
-    </footer>
 </div>
 
+<!-- Footer -->
+<footer class="text-center py-4 mt-5">
+    <p class="text-muted small">Talaba Vazifalari Menedjeri © 2025 | Barcha huquqlar himoyalangan</p>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Axios -->
 <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
 <script>
     let youtubeApiLoaded = false;
 
@@ -1251,7 +373,7 @@
         console.error('YouTube IFrame API yuklanmadi');
         const videoContainer = document.getElementById('videoContainer');
         if (videoContainer) {
-            videoContainer.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>YouTube API yuklanmadi</h3><p>Iltimos, keyinroq qayta urining.</p></div>`;
+            videoContainer.innerHTML = `<div class="text-center py-4"><i class="fas fa-exclamation-triangle fa-2x text-warning mb-2"></i><h5>YouTube API yuklanmadi</h5><p class="text-muted">Iltimos, keyinroq qayta urining.</p></div>`;
             videoCompleted = true;
             displayQuestionsAfterVideo(document.getElementById('questionsAfterVideo'));
         }
@@ -1259,30 +381,6 @@
     document.head.appendChild(youtubeScript);
 
     // Global variables
-    const levelBar = document.getElementById('levelBar');
-    const moduleLoading = document.getElementById('moduleLoading');
-    const taskLoading = document.getElementById('taskLoading');
-    const taskList = document.getElementById('taskList');
-    const questionBox = document.getElementById('questionBox');
-    const questionContent = document.getElementById('questionContent');
-    const optionsContainer = document.getElementById('optionsContainer');
-    const studentNameElement = document.getElementById('studentName');
-    const studentPhoneElement = document.getElementById('studentPhone');
-    const studentImageElement = document.getElementById('studentImage');
-    const studentProgressFill = document.getElementById('studentProgressFill');
-    const imageErrorElement = document.getElementById('imageError');
-    const progressText = document.getElementById('progressText');
-    const progressFill = document.getElementById('progressFill');
-    const updateProfileForm = document.getElementById('updateProfileForm');
-    const profileModal = document.getElementById('profileModal');
-    const imageUpload = document.getElementById('imageUpload');
-    const imagePreview = document.getElementById('imagePreview');
-    const phoneNumberInput = document.getElementById('phoneNumber');
-    const phoneError = document.getElementById('phoneError');
-    const submitButton = document.getElementById('submitButton');
-    const taskResults = document.getElementById('taskResults');
-    const taskResultsContent = document.getElementById('taskResultsContent');
-
     let currentModuleId = null;
     let currentTaskId = null;
     let currentQuestionIndex = 0;
@@ -1297,16 +395,14 @@
 
     function checkAuth() {
         if (!userData || !userData.userId || !userData.token) {
-            questionContent.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <h3>Avtorizatsiya ma'lumotlari topilmadi</h3>
-                    <p>Iltimos, qaytadan kiring.</p>
-                    <button onclick="logout()" style="padding: 0.75rem 1.5rem; margin-top: 1rem; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer;">
-                        Login sahifasiga o'tish
-                    </button>
-                </div>
-            `;
+            document.getElementById('questionContent').innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                        <h4>Avtorizatsiya ma'lumotlari topilmadi</h4>
+                        <p class="text-muted">Iltimos, qaytadan kiring.</p>
+                        <button onclick="logout()" class="btn btn-primary">Login sahifasiga o'tish</button>
+                    </div>
+                `;
             return false;
         }
         return true;
@@ -1320,25 +416,28 @@
 
     function displayUserInfo() {
         if (userData && userData.firstName && userData.lastName) {
-            studentNameElement.textContent = `${userData.firstName} ${userData.lastName}`;
-            studentPhoneElement.textContent = `Telefon: ${userData.phoneNumber || 'Noma\'lum'}`;
+            document.getElementById('studentName').textContent = `${userData.firstName} ${userData.lastName}`;
+            document.getElementById('studentPhone').textContent = `Telefon: ${userData.phoneNumber || 'Noma\'lum'}`;
+
             if (userData.image && typeof userData.image === 'string' && userData.image.startsWith('data:image')) {
-                studentImageElement.src = userData.image;
-                imagePreview.src = userData.image;
-                imagePreview.style.display = 'block';
+                document.getElementById('studentImage').src = userData.image;
+                document.getElementById('imagePreview').src = userData.image;
+                document.getElementById('imagePreview').classList.remove('d-none');
             } else {
-                studentImageElement.src = '/placeholder.svg?height=70&width=70';
-                imageErrorElement.style.display = 'block';
+                document.getElementById('studentImage').src = '/placeholder.svg?height=60&width=60';
+                document.getElementById('imageError').classList.remove('d-none');
             }
+
             if (userData.progress) {
-                studentProgressFill.style.width = `${userData.progress}%`;
+                document.getElementById('studentProgressFill').style.width = `${userData.progress}%`;
             }
         } else {
-            studentNameElement.textContent = 'Foydalanuvchi';
-            studentPhoneElement.textContent = 'Telefon: Noma\'lum';
-            studentImageElement.src = '/placeholder.svg?height=70&width=70';
-            imageErrorElement.style.display = 'block';
+            document.getElementById('studentName').textContent = 'Foydalanuvchi';
+            document.getElementById('studentPhone').textContent = 'Telefon: Noma\'lum';
+            document.getElementById('studentImage').src = '/placeholder.svg?height=60&width=60';
+            document.getElementById('imageError').classList.remove('d-none');
         }
+
         if (userData) {
             document.getElementById('firstName').value = userData.firstName || '';
             document.getElementById('lastName').value = userData.lastName || '';
@@ -1346,7 +445,8 @@
         }
     }
 
-    imageUpload.addEventListener('change', function (e) {
+    // Image upload handler
+    document.getElementById('imageUpload').addEventListener('change', function (e) {
         const file = e.target.files[0];
         if (file) {
             if (file.size > 2 * 1024 * 1024) {
@@ -1355,61 +455,68 @@
             }
             const reader = new FileReader();
             reader.onload = function (event) {
-                imagePreview.src = event.target.result;
-                imagePreview.style.display = 'block';
+                document.getElementById('imagePreview').src = event.target.result;
+                document.getElementById('imagePreview').classList.remove('d-none');
                 newImageFile = file;
             };
             reader.readAsDataURL(file);
         }
     });
 
-    phoneNumberInput.addEventListener('input', function () {
+    // Phone validation
+    document.getElementById('phoneNumber').addEventListener('input', function () {
         const phoneRegex = /^(90|91|93|94|95|97|98|99|33|77|20|88)[0-9]{7}$/;
+        const phoneError = document.getElementById('phoneError');
+
         if (!phoneRegex.test(this.value)) {
-            phoneError.style.display = 'block';
-            this.setCustomValidity('Telefon raqami 90, 91, 93, 94, 95, 97, 98, 33, 77, 20, 88 yoki 99 bilan boshlanib, 7 raqamdan iborat bo\'lishi kerak!');
+            phoneError.classList.remove('d-none');
+            this.setCustomValidity('Telefon raqami noto\'g\'ri formatda!');
         } else {
-            phoneError.style.display = 'none';
+            phoneError.classList.add('d-none');
             this.setCustomValidity('');
         }
     });
 
     function showProfileModal() {
         if (!checkAuth()) return;
-        profileModal.classList.add('active');
+        const modal = new bootstrap.Modal(document.getElementById('profileModal'));
+        modal.show();
     }
 
     function closeProfileModal() {
-        profileModal.classList.remove('active');
-        updateProfileForm.reset();
+        const modal = bootstrap.Modal.getInstance(document.getElementById('profileModal'));
+        if (modal) modal.hide();
+
+        document.getElementById('updateProfileForm').reset();
         newImageFile = null;
-        phoneError.style.display = 'none';
-        phoneNumberInput.setCustomValidity('');
+        document.getElementById('phoneError').classList.add('d-none');
+        document.getElementById('phoneNumber').setCustomValidity('');
+
         if (userData.image) {
-            imagePreview.src = userData.image;
-            imagePreview.style.display = 'block';
+            document.getElementById('imagePreview').src = userData.image;
+            document.getElementById('imagePreview').classList.remove('d-none');
         } else {
-            imagePreview.style.display = 'none';
+            document.getElementById('imagePreview').classList.add('d-none');
         }
     }
 
     async function viewStudentsLevels() {
         if (!checkAuth()) return;
+
         try {
             const response = await axios.get('/api/v1/student/levels', {
                 headers: {'Authorization': userData.token}
             });
             const students = response.data;
-            console.log('Backenddan kelgan ma\'lumotlar:', students);
 
             if (!Array.isArray(students) || students.length === 0) {
-                questionContent.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-users"></i>
-                        <h3>Talabalar ma'lumotlari topilmadi</h3>
-                        <p>Hozirda talabalar reytingi mavjud emas</p>
-                    </div>
-                `;
+                document.getElementById('questionContent').innerHTML = `
+                        <div class="text-center py-5">
+                            <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                            <h4>Talabalar ma'lumotlari topilmadi</h4>
+                            <p class="text-muted">Hozirda talabalar reytingi mavjud emas</p>
+                        </div>
+                    `;
                 return;
             }
 
@@ -1426,97 +533,96 @@
                 groupedStudents[group].sort((a, b) => (b.passedQuery || 0) - (a.passedQuery || 0));
             });
 
-            let htmlContent = `
-                <div class="question-header">
-                    <div class="question-title">Talabalar Reytingi</div>
-                    <div class="difficulty">Guruh bo'yicha</div>
-                </div>
-                <div class="question-content">
-                    <div class="group-list">
-            `;
+            document.getElementById('questionTitle').textContent = 'Talabalar Reytingi';
+            document.getElementById('questionDifficulty').textContent = 'Guruh bo\'yicha';
 
-            if (Object.keys(groupedStudents).length === 0) {
-                htmlContent += '<div class="empty-state"><i class="fas fa-users"></i><h3>Talabalar ma\'lumotlari topilmadi</h3></div>';
-            } else {
-                Object.keys(groupedStudents).forEach(groupName => {
-                    htmlContent += `
-                        <div class="group-item" style="background: #f8fafc; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; border-left: 4px solid var(--primary);">
-                            <h3 style="margin: 0 0 1rem 0; color: var(--primary); font-size: 1.125rem;">${groupName}</h3>
-                            <table class="student-table" style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
-                                <thead>
-                                    <tr style="background: var(--primary); color: white;">
-                                        <th style="padding: 0.75rem 0.5rem; text-align: left; border-bottom: 1px solid #ddd;">#</th>
-                                        <th style="padding: 0.75rem 0.5rem; text-align: left; border-bottom: 1px solid #ddd;">Ism</th>
-                                        <th style="padding: 0.75rem 0.5rem; text-align: left; border-bottom: 1px solid #ddd;">Jami</th>
-                                        <th style="padding: 0.75rem 0.5rem; text-align: left; border-bottom: 1px solid #ddd;">To'g'ri</th>
-                                        <th style="padding: 0.75rem 0.5rem; text-align: left; border-bottom: 1px solid #ddd;">Noto'g'ri</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+            let htmlContent = '<div class="row">';
+
+            Object.keys(groupedStudents).forEach(groupName => {
+                htmlContent += `
+                        <div class="col-12 mb-4">
+                            <div class="card">
+                                <div class="card-header bg-primary text-white">
+                                    <h6 class="mb-0">${groupName}</h6>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Ism</th>
+                                                    <th>Jami</th>
+                                                    <th>To'g'ri</th>
+                                                    <th>Noto'g'ri</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
                     `;
-                    groupedStudents[groupName].forEach((student, index) => {
-                        const studentName = student.fullName || 'Noma\'lum';
-                        const totalQuery = student.totalQuery || 0;
-                        const passedQuery = student.passedQuery || 0;
-                        const failedQuery = student.failedQuery || 0;
-                        htmlContent += `
-                            <tr style="border-bottom: 1px solid #e5e7eb;">
-                                <td style="padding: 0.75rem 0.5rem;">${index + 1}</td>
-                                <td style="padding: 0.75rem 0.5rem;">${studentName}</td>
-                                <td style="padding: 0.75rem 0.5rem;">${totalQuery}</td>
-                                <td style="padding: 0.75rem 0.5rem; color: var(--success);">${passedQuery}</td>
-                                <td style="padding: 0.75rem 0.5rem; color: var(--danger);">${failedQuery}</td>
+
+                groupedStudents[groupName].forEach((student, index) => {
+                    const studentName = student.fullName || 'Noma\'lum';
+                    const totalQuery = student.totalQuery || 0;
+                    const passedQuery = student.passedQuery || 0;
+                    const failedQuery = student.failedQuery || 0;
+
+                    htmlContent += `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${studentName}</td>
+                                <td>${totalQuery}</td>
+                                <td class="text-success">${passedQuery}</td>
+                                <td class="text-danger">${failedQuery}</td>
                             </tr>
                         `;
-                    });
-                    htmlContent += `
-                                </tbody>
-                            </table>
+                });
+
+                htmlContent += `
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     `;
-                });
-            }
+            });
 
-            htmlContent += `
-                    </div>
-                </div>
-            `;
-            questionBox.innerHTML = htmlContent;
+            htmlContent += '</div>';
+            document.getElementById('questionContent').innerHTML = htmlContent;
+
         } catch (error) {
             console.error('Talabalar reytingini yuklashda xato:', error);
-            questionContent.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <h3>Xato yuz berdi</h3>
-                    <p>Talabalar reytingini yuklashda xato: ${error.response?.data?.message || error.message}</p>
-                </div>
-            `;
+            document.getElementById('questionContent').innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                        <h4>Xato yuz berdi</h4>
+                        <p class="text-muted">Talabalar reytingini yuklashda xato: ${error.response?.data?.message || error.message}</p>
+                    </div>
+                `;
         }
     }
 
     async function loadModules() {
         if (!checkAuth()) return;
-        moduleLoading.style.display = 'block';
-        document.getElementById('modulesList').classList.add('hidden');
-        document.getElementById('modulesEmpty').classList.add('hidden');
+
+        document.getElementById('moduleLoading').classList.remove('d-none');
+        document.getElementById('modulesList').classList.add('d-none');
+        document.getElementById('modulesEmpty').classList.add('d-none');
 
         try {
             const response = await axios.get('/api/v1/module', {
                 headers: {'Authorization': userData.token}
             });
+
             if (!response.data || response.data.length === 0) {
                 throw new Error('Hozirda siz uchun modullar mavjud emas');
             }
+
             displayModules(response.data);
         } catch (error) {
             console.error('Modullarni yuklashda xato:', error);
-            moduleLoading.style.display = 'none';
-            document.getElementById('modulesEmpty').classList.remove('hidden');
-            document.getElementById('modulesEmpty').innerHTML = `
-                <i class="fas fa-book-open"></i>
-                <h3>Modullar mavjud emas</h3>
-                <p>Sizda hozirda modullar mavjud emas. Modulni tanlang.</p>
-            `;
+            document.getElementById('moduleLoading').classList.add('d-none');
+            document.getElementById('modulesEmpty').classList.remove('d-none');
         }
     }
 
@@ -1525,81 +631,79 @@
         modulesList.innerHTML = '';
 
         if (!modules || modules.length === 0) {
-            document.getElementById('modulesEmpty').classList.remove('hidden');
-            moduleLoading.style.display = 'none';
+            document.getElementById('modulesEmpty').classList.remove('d-none');
+            document.getElementById('moduleLoading').classList.add('d-none');
             return;
         }
 
         modules.forEach(module => {
             const button = document.createElement('button');
-            button.className = 'level-btn';
-            button.innerHTML = `<i class="fas fa-book"></i> ${module.moduleName || 'Noma\'lum modul'}`;
+            button.className = 'btn module-btn w-100 text-start mb-2 p-3';
+            button.innerHTML = `<i class="fas fa-book me-2"></i>${module.moduleName || 'Noma\'lum modul'}`;
             button.dataset.moduleId = module.id;
-            button.addEventListener('click', () => selectModule(module));
+            button.addEventListener('click', () => selectModule(module, button));
             modulesList.appendChild(button);
         });
 
-        moduleLoading.style.display = 'none';
-        modulesList.classList.remove('hidden');
+        document.getElementById('moduleLoading').classList.add('d-none');
+        modulesList.classList.remove('d-none');
     }
 
-    function selectModule(module) {
+    function selectModule(module, buttonElement) {
         if (!checkAuth()) return;
-        document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
-        const selectedBtn = document.querySelector(`.level-btn[data-module-id="${module.id}"]`);
-        if (selectedBtn) selectedBtn.classList.add('active');
+
+        document.querySelectorAll('.module-btn').forEach(btn => btn.classList.remove('active'));
+        buttonElement.classList.add('active');
         currentModuleId = module.id;
 
-        // Hide tasks select module message
-        document.getElementById('tasksSelectModule').classList.add('hidden');
-
+        document.getElementById('tasksSelectModule').classList.add('d-none');
         loadTasks(module.id);
     }
 
     async function loadTasks(moduleId) {
         if (!checkAuth()) return;
-        taskLoading.style.display = 'block';
-        taskList.innerHTML = '';
-        document.getElementById('tasksEmpty').classList.add('hidden');
+
+        document.getElementById('taskLoading').classList.remove('d-none');
+        document.getElementById('taskList').innerHTML = '';
+        document.getElementById('tasksEmpty').classList.add('d-none');
 
         try {
             const response = await axios.get(`/api/v1/module/get/${moduleId}`, {
                 headers: {'Authorization': userData.token}
             });
+
             if (!response.data || response.data.length === 0) {
                 throw new Error('Vazifalar topilmadi');
             }
+
             await displayTasks(response.data);
         } catch (error) {
             console.error('Vazifalarni yuklashda xato:', error);
-            taskLoading.style.display = 'none';
-            document.getElementById('tasksEmpty').classList.remove('hidden');
-            document.getElementById('tasksEmpty').innerHTML = `
-                <i class="fas fa-clipboard-list"></i>
-                <h3>Vazifalar mavjud emas</h3>
-                <p>Sizda vazifa mavjud emas. Vazifani tanlang.</p>
-            `;
+            document.getElementById('taskLoading').classList.add('d-none');
+            document.getElementById('tasksEmpty').classList.remove('d-none');
         } finally {
-            taskLoading.style.display = 'none';
+            document.getElementById('taskLoading').classList.add('d-none');
         }
     }
 
     async function displayTasks(tasks) {
+        const taskList = document.getElementById('taskList');
         taskList.innerHTML = '';
+
         if (!tasks || tasks.length === 0) {
-            document.getElementById('tasksEmpty').classList.remove('hidden');
+            document.getElementById('tasksEmpty').classList.remove('d-none');
             return;
         }
 
         for (const task of tasks) {
-            const taskElement = document.createElement('div');
-            taskElement.className = 'task';
+            const taskElement = document.createElement('button');
+            taskElement.className = 'btn task-btn w-100 text-start mb-2 p-3';
             taskElement.dataset.taskId = task.id;
             taskElement.innerHTML = `
-                <i class="fas fa-tasks"></i>
-                <span>${task.taskName || 'Noma\'lum vazifa'}</span>
-                <i class="fas fa-chevron-right"></i>
-            `;
+                    <i class="fas fa-tasks me-2"></i>
+                    ${task.taskName || 'Noma\'lum vazifa'}
+                    <i class="fas fa-chevron-right float-end"></i>
+                `;
 
             const isSubmitted = await checkTaskSubmission(task.id);
             if (isSubmitted) {
@@ -1626,7 +730,7 @@
             return;
         }
 
-        document.querySelectorAll('.task').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.task-btn').forEach(t => t.classList.remove('active'));
         if (taskElement) {
             taskElement.classList.add('active');
         }
@@ -1643,6 +747,7 @@
             const response = await axios.get(`/api/v1/task/${task.id}`, {
                 headers: {'Authorization': userData.token}
             });
+
             if (!response.data) {
                 throw new Error('Vazifa ma\'lumotlari topilmadi');
             }
@@ -1652,22 +757,24 @@
             currentQuestionIndex = 0;
             selectedAnswers = new Array(currentQuestions.length).fill(null);
             videoCompleted = false;
-            submitButton.style.display = 'none';
+            document.getElementById('submitButton').classList.add('d-none');
 
             displayTaskDetails(currentTaskDetails);
         } catch (error) {
             console.error('Savollarni yuklashda xato:', error);
-            questionContent.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <h3>Xato yuz berdi</h3>
-                    <p>Savollarni yuklashda xato yuz berdi: ${error.message}</p>
-                </div>`;
+            document.getElementById('questionContent').innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                        <h4>Xato yuz berdi</h4>
+                        <p class="text-muted">Savollarni yuklashda xato yuz berdi: ${error.message}</p>
+                    </div>
+                `;
         }
     }
 
     async function checkTaskSubmission(taskId) {
         if (!checkAuth()) return false;
+
         try {
             const response = await axios.get(`/api/v1/answer/submission/${taskId}/results`, {
                 headers: {'Authorization': userData.token}
@@ -1683,8 +790,9 @@
 
     async function displayTaskResults(taskId) {
         if (!checkAuth()) return;
-        taskResults.classList.remove('active');
-        taskResultsContent.innerHTML = '';
+
+        document.getElementById('taskResults').classList.add('d-none');
+        document.getElementById('taskResultsContent').innerHTML = '';
 
         try {
             const response = await axios.get(`/api/v1/answer/submission/${taskId}/results`, {
@@ -1694,48 +802,54 @@
 
             if (result && result.totalQuery > 0) {
                 isTaskSubmitted = true;
-                submitButton.style.display = 'none';
-                taskResults.classList.add('active');
+                document.getElementById('submitButton').classList.add('d-none');
+                document.getElementById('taskResults').classList.remove('d-none');
 
-                taskResultsContent.innerHTML = `
-                    <p><strong>Talaba:</strong> ${result.studentName || 'Noma\'lum'}</p>
-                    <p><strong>Guruh:</strong> ${result.groupName || 'Noma\'lum'}</p>
-                    <p><strong>Jami savollar:</strong> ${result.totalQuery}</p>
-                    <p><strong>To'g'ri javoblar:</strong> <span style="color: var(--success);">${result.passedQuery}</span></p>
-                    <p><strong>Noto'g'ri javoblar:</strong> <span style="color: var(--danger);">${result.failedQuery}</span></p>
-                    <div style="height: 8px; background: #e5e7eb; border-radius: 4px; margin: 1rem 0; overflow: hidden;">
-                        <div style="height: 100%; width: ${(result.passedQuery / result.totalQuery) * 100}%; background: var(--success); border-radius: 4px; transition: width 0.5s ease;"></div>
-                    </div>
-                `;
-
-                questionBox.innerHTML = `
-                    <div class="question-header">
-                        <div class="question-title">Vazifa Natijalari</div>
-                        <div class="difficulty">Topshirilgan</div>
-                    </div>
-                    <div class="question-content">
-                        <div class="empty-state">
-                            <i class="fas fa-check-circle" style="color: var(--success);"></i>
-                            <h3>Bu vazifa allaqachon topshirilgan</h3>
-                            <div style="margin-top: 1rem; text-align: left; max-width: 400px;">
-                                ${taskResultsContent.innerHTML}
+                document.getElementById('taskResultsContent').innerHTML = `
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Talaba:</strong> ${result.studentName || 'Noma\'lum'}</p>
+                                <p><strong>Guruh:</strong> ${result.groupName || 'Noma\'lum'}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Jami savollar:</strong> ${result.totalQuery}</p>
+                                <p><strong>To'g'ri javoblar:</strong> <span class="text-success fw-bold">${result.passedQuery}</span></p>
+                                <p><strong>Noto'g'ri javoblar:</strong> <span class="text-danger fw-bold">${result.failedQuery}</span></p>
                             </div>
                         </div>
-                    </div>
-                `;
+                        <div class="progress mb-3">
+                            <div class="progress-bar bg-success" style="width: ${(result.passedQuery / result.totalQuery) * 100}%"></div>
+                        </div>
+                        <div class="text-center">
+                            <h5 class="text-primary">Natija: ${Math.round((result.passedQuery / result.totalQuery) * 100)}%</h5>
+                        </div>
+                    `;
+
+                document.getElementById('questionTitle').textContent = 'Vazifa Natijalari';
+                document.getElementById('questionDifficulty').textContent = 'Topshirilgan';
+
+                document.getElementById('questionContent').innerHTML = `
+                        <div class="text-center py-5">
+                            <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
+                            <h4>Bu vazifa allaqachon topshirilgan</h4>
+                            <div class="results-card p-4 mt-4">
+                                ${document.getElementById('taskResultsContent').innerHTML}
+                            </div>
+                        </div>
+                    `;
             } else {
                 isTaskSubmitted = false;
-                submitButton.style.display = 'flex';
+                document.getElementById('submitButton').classList.remove('d-none');
             }
         } catch (error) {
             console.error('Vazifa natijalarini yuklashda xato:', error);
-            questionContent.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <h3>Xato yuz berdi</h3>
-                    <p>Natijalarni yuklashda xato: ${error.response?.data?.message || error.message}</p>
-                </div>
-            `;
+            document.getElementById('questionContent').innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                        <h4>Xato yuz berdi</h4>
+                        <p class="text-muted">Natijalarni yuklashda xato: ${error.response?.data?.message || error.message}</p>
+                    </div>
+                `;
         }
     }
 
@@ -1752,6 +866,7 @@
         return match ? match[1] : null;
     }
 
+    // ASAL KODDAN OLINGAN loadAttachments funksiyasi
     async function loadAttachments(attachmentIds) {
         if (!attachmentIds || attachmentIds.length === 0) {
             return null;
@@ -1774,34 +889,41 @@
         }
     }
 
+    // ASAL KODDAN OLINGAN displayAttachments funksiyasi
     function displayAttachments(attachments, container) {
         if (!attachments || attachments.length === 0) {
             container.innerHTML = `
-                <div class="attachment-container">
-                    <h4><i class="fas fa-paperclip"></i> Qo'shimcha materiallar</h4>
-                    <div class="empty-state">
-                        <i class="fas fa-file"></i>
-                        <p>Ushbu vazifada qo'shimcha materiallar mavjud emas</p>
-                    </div>
-                </div>`;
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h6 class="mb-0"><i class="fas fa-paperclip me-2"></i>Qo'shimcha materiallar</h6>
+                        </div>
+                        <div class="card-body text-center text-muted">
+                            <i class="fas fa-file fa-2x mb-2"></i>
+                            <p class="mb-0">Ushbu vazifada qo'shimcha materiallar mavjud emas</p>
+                        </div>
+                    </div>`;
             return;
         }
 
-        const attachmentContainer = document.createElement('div');
-        attachmentContainer.className = 'attachment-container';
+        const attachmentCard = document.createElement('div');
+        attachmentCard.className = 'card mt-4';
 
-        const title = document.createElement('h4');
-        title.innerHTML = '<i class="fas fa-paperclip"></i> Qo\'shimcha materiallar';
-        attachmentContainer.appendChild(title);
+        const cardHeader = document.createElement('div');
+        cardHeader.className = 'card-header';
+        cardHeader.innerHTML = '<h6 class="mb-0"><i class="fas fa-paperclip me-2"></i>Qo\'shimcha materiallar</h6>';
+
+        const cardBody = document.createElement('div');
+        cardBody.className = 'card-body';
 
         attachments.forEach((attachment, index) => {
             const attachmentItem = document.createElement('div');
-            attachmentItem.className = 'attachment-item';
+            attachmentItem.className = 'mb-3 p-3 border rounded';
 
             try {
                 if (attachment.contentType && attachment.contentType.startsWith('image/')) {
                     const img = document.createElement('img');
-                    img.className = 'attachment-image';
+                    img.className = 'attachment-image img-fluid rounded';
+                    img.style.maxHeight = '300px';
 
                     if (attachment.content) {
                         const imageData = attachment.content.startsWith('data:')
@@ -1821,9 +943,19 @@
 
                     attachmentItem.appendChild(img);
                 } else {
+                    const downloadDiv = document.createElement('div');
+                    downloadDiv.className = 'text-center';
+
+                    const fileIcon = document.createElement('i');
+                    fileIcon.className = 'fas fa-file fa-3x text-primary mb-2';
+
+                    const fileName = document.createElement('p');
+                    fileName.className = 'mb-2';
+                    fileName.textContent = `Fayl ${index + 1} (${getFileExtension(attachment.contentType)})`;
+
                     const downloadLink = document.createElement('a');
-                    downloadLink.className = 'attachment-download';
-                    downloadLink.innerHTML = `<i class="fas fa-download"></i> Yuklab olish: ${getFileExtension(attachment.contentType)}`;
+                    downloadLink.className = 'btn btn-primary btn-sm';
+                    downloadLink.innerHTML = '<i class="fas fa-download me-1"></i>Yuklab olish';
 
                     if (attachment.content) {
                         const fileData = attachment.content.startsWith('data:')
@@ -1839,20 +971,25 @@
                         };
                     }
 
-                    attachmentItem.appendChild(downloadLink);
+                    downloadDiv.appendChild(fileIcon);
+                    downloadDiv.appendChild(fileName);
+                    downloadDiv.appendChild(downloadLink);
+                    attachmentItem.appendChild(downloadDiv);
                 }
             } catch (error) {
                 console.error('Attachmentni ko\'rsatishda xato:', error);
                 const errorDiv = document.createElement('div');
-                errorDiv.className = 'attachment-error';
-                errorDiv.textContent = 'Faylni ko\'rsatishda xato yuz berdi';
+                errorDiv.className = 'alert alert-danger';
+                errorDiv.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i>Faylni ko\'rsatishda xato yuz berdi';
                 attachmentItem.appendChild(errorDiv);
             }
 
-            attachmentContainer.appendChild(attachmentItem);
+            cardBody.appendChild(attachmentItem);
         });
 
-        container.appendChild(attachmentContainer);
+        attachmentCard.appendChild(cardHeader);
+        attachmentCard.appendChild(cardBody);
+        container.appendChild(attachmentCard);
     }
 
     function getFileExtension(contentType) {
@@ -1880,30 +1017,35 @@
             return;
         }
 
-        // Update header
-        document.querySelector('.question-title').textContent = taskDetails.name || 'Vazifa';
-        document.querySelector('.difficulty').textContent = taskDetails.youtubeURL ? 'Video darslik' : 'Test savollar';
+        document.getElementById('questionTitle').textContent = taskDetails.name || 'Vazifa';
+        document.getElementById('questionDifficulty').textContent = taskDetails.youtubeURL && taskDetails.youtubeURL.trim() !== '' ? 'Video darslik' : 'Test savollar';
 
-        if (taskDetails.youtubeURL) {
-            // Show video content
+        // YouTube URL mavjudligini tekshirish
+        const hasVideo = taskDetails.youtubeURL && taskDetails.youtubeURL.trim() !== '';
+
+        // Asosiy konteynerni tozalash
+        const questionContent = document.getElementById('questionContent');
+        questionContent.innerHTML = '';
+
+        if (hasVideo) {
             const videoId = getYouTubeVideoId(taskDetails.youtubeURL);
             if (videoId && youtubeApiLoaded) {
                 questionContent.innerHTML = `
-                    <div id="videoContainer">
-                        <div id="youtubePlayer"></div>
-                    </div>
-                    <div class="video-message" id="videoMessage">
-                        Iltimos, videoni to'liq ko'ring. Video tugagandan keyin savollar ko'rinadi.
-                    </div>
-                    <div id="taskAttachments"></div>
-                    <div class="continue-section" style="display: none;" id="continueSection">
-                        <button id="continueBtn" class="continue-btn" onclick="continueToQuestions()" disabled>
-                            <i class="fas fa-clock"></i>
-                            Video tugashini kuting
-                        </button>
-                    </div>
-                    <div id="questionsAfterVideo" class="questions-after-video"></div>
-                `;
+                <div id="videoContainer" class="video-container mb-4">
+                    <div id="youtubePlayer"></div>
+                </div>
+                <div class="alert alert-info" id="videoMessage">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Iltimos, videoni to'liq ko'ring. Video tugagandan keyin savollar ko'rinadi.
+                </div>
+                <div id="taskAttachments"></div>
+                <div class="text-center d-none" id="continueSection">
+                    <button id="continueBtn" class="btn btn-gradient btn-lg" onclick="continueToQuestions()" disabled>
+                        <i class="fas fa-clock me-2"></i>Video tugashini kuting
+                    </button>
+                </div>
+                <div id="questionsAfterVideo"></div>
+            `;
 
                 try {
                     videoPlayer = new YT.Player('youtubePlayer', {
@@ -1926,74 +1068,95 @@
                 } catch (error) {
                     console.error('YouTube player yuklashda xato:', error);
                     questionContent.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <h3>Video yuklanmadi</h3>
-                            <p>YouTube xatosi yuz berdi</p>
-                        </div>`;
+                    <div class="text-center py-5">
+                        <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                        <h4>Video yuklanmadi</h4>
+                        <p class="text-muted">YouTube xatosi yuz berdi</p>
+                    </div>
+                `;
                     videoCompleted = true;
                     showQuestionsDirectly();
                 }
             } else {
                 questionContent.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <h3>Video yuklanmadi</h3>
-                        <p>${youtubeApiLoaded ? 'YouTube video URLi noto\'g\'ri' : 'YouTube API yuklanmadi'}</p>
-                    </div>`;
+                <div class="text-center py-5">
+                    <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                    <h4>Video yuklanmadi</h4>
+                    <p class="text-muted">${youtubeApiLoaded ? 'YouTube video URLi noto\'g\'ri' : 'YouTube API yuklanmadi'}</p>
+                </div>
+            `;
                 videoCompleted = true;
                 showQuestionsDirectly();
             }
+        } else {
+            // Video yo'q holat
+            questionContent.innerHTML = `
+            <div id="taskAttachments"></div>
+            <div id="questionsContainer"></div>
+        `;
+        }
 
-            // Load attachments for video
-            if (taskDetails.attachmentId && taskDetails.attachmentId.length > 0) {
-                const attachmentsDiv = document.getElementById('taskAttachments');
-                if (attachmentsDiv) {
-                    attachmentsDiv.innerHTML = '<div class="attachment-loading"><div class="spinner"></div>Qo\'shimcha materiallar yuklanmoqda...</div>';
+        // Attachmentlarni yuklash
+        const attachmentsDiv = document.getElementById('taskAttachments');
+        if (taskDetails.attachmentId && taskDetails.attachmentId.length > 0) {
+            attachmentsDiv.innerHTML = `
+            <div class="text-center py-3">
+                <div class="spinner mx-auto mb-2"></div>
+                <small>Qo'shimcha materiallar yuklanmoqda...</small>
+            </div>
+        `;
 
-                    try {
-                        const attachments = await loadAttachments(taskDetails.attachmentId);
-                        attachmentsDiv.innerHTML = '';
-                        displayAttachments(attachments, attachmentsDiv);
-                    } catch (error) {
-                        console.error('Attachmentlarni yuklashda xato:', error);
-                        attachmentsDiv.innerHTML = `
-                            <div class="attachment-container">
-                                <h4><i class="fas fa-paperclip"></i> Qo'shimcha materiallar</h4>
-                                <div class="attachment-error">
-                                    Attachmentlarni yuklashda xato yuz berdi. Iltimos, keyinroq qayta urining.
-                                </div>
-                            </div>
-                        `;
-                    }
-                }
+            try {
+                const attachments = await loadAttachments(taskDetails.attachmentId);
+                attachmentsDiv.innerHTML = ''; // Yuklanmoqda xabarini o'chirish
+                displayAttachments(attachments, attachmentsDiv);
+            } catch (error) {
+                console.error('Attachmentlarni yuklashda xato:', error);
+                attachmentsDiv.innerHTML = `
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-paperclip me-2"></i>Qo'shimcha materiallar</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Attachmentlarni yuklashda xato yuz berdi. Iltimos, keyinroq qayta urining.
+                        </div>
+                    </div>
+                </div>
+            `;
             }
         } else {
-            // Show questions directly
-            videoCompleted = true;
+            // Attachmentlar yo'q bo'lsa, bo'sh konteyner
+            attachmentsDiv.innerHTML = '';
+        }
+
+        // Savollarni ko'rsatish (video bo'lmasa yoki video xatosi bo'lsa)
+        if (!hasVideo || videoCompleted) {
             showQuestionsDirectly();
         }
     }
 
     function showQuestionsDirectly() {
         if (!currentQuestions || currentQuestions.length === 0) {
-            questionContent.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-question-circle"></i>
-                    <h3>Savollar mavjud emas</h3>
-                    <p>Ushbu vazifa uchun savollar topilmadi</p>
-                </div>
-            `;
+            const container = document.getElementById('questionsContainer') || document.getElementById('questionContent');
+            container.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-question-circle fa-3x text-muted mb-3"></i>
+                        <h4>Savollar mavjud emas</h4>
+                        <p class="text-muted">Ushbu vazifa uchun savollar topilmadi</p>
+                    </div>
+                `;
             return;
         }
 
         displayQuestionsAfterVideo();
-        submitButton.style.display = 'flex';
+        document.getElementById('submitButton').classList.remove('d-none');
     }
 
     function onPlayerReady(event) {
         console.log('YouTube player tayyor:', event.target.getVideoUrl());
-        document.getElementById('continueSection').style.display = 'block';
+        document.getElementById('continueSection').classList.remove('d-none');
     }
 
     function onPlayerError(event) {
@@ -2006,12 +1169,13 @@
             150: 'Video egasi tomonidan taqiqlangan'
         };
 
-        questionContent.innerHTML = `
-            <div class="empty-state">
-                <i class="fas fa-exclamation-triangle"></i>
-                <h3>Video yuklanmadi</h3>
-                <p>${errorMessages[event.data] || 'Noma\'lum xato'}</p>
-            </div>`;
+        document.getElementById('questionContent').innerHTML = `
+                <div class="text-center py-5">
+                    <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                    <h4>Video yuklanmadi</h4>
+                    <p class="text-muted">${errorMessages[event.data] || 'Noma\'lum xato'}</p>
+                </div>
+            `;
         videoCompleted = true;
         showQuestionsDirectly();
     }
@@ -2025,13 +1189,12 @@
 
             if (continueBtn) {
                 continueBtn.disabled = false;
-                continueBtn.innerHTML = '<i class="fas fa-arrow-right"></i> O\'tkazish';
+                continueBtn.innerHTML = '<i class="fas fa-arrow-right me-2"></i>Davom etish';
             }
 
             if (videoMessage) {
-                videoMessage.textContent = 'Video tugadi! Davom etish uchun tugmani bosing.';
-                videoMessage.style.background = 'rgba(34, 197, 94, 0.1)';
-                videoMessage.style.color = 'var(--success)';
+                videoMessage.className = 'alert alert-success';
+                videoMessage.innerHTML = '<i class="fas fa-check-circle me-2"></i>Video tugadi! Davom etish uchun tugmani bosing.';
             }
         }
     }
@@ -2042,130 +1205,219 @@
             return;
         }
 
-        // Hide video section and show questions
-        document.getElementById('videoContainer').style.display = 'none';
-        document.getElementById('continueSection').style.display = 'none';
-        document.getElementById('videoMessage').style.display = 'none';
-
-        const questionsContainer = document.getElementById('questionsAfterVideo');
-        questionsContainer.classList.add('active');
+        document.getElementById('videoContainer').classList.add('d-none');
+        document.getElementById('continueSection').classList.add('d-none');
+        document.getElementById('videoMessage').classList.add('d-none');
 
         displayQuestionsAfterVideo();
-        submitButton.style.display = 'flex';
+        document.getElementById('submitButton').classList.remove('d-none');
     }
 
-    function displayQuestionsAfterVideo() {
+    async function displayQuestionsAfterVideo() {
         if (isTaskSubmitted) {
             return;
         }
 
-        if (!videoCompleted && currentTaskDetails.youtubeURL) {
+        if (!videoCompleted && currentTaskDetails && currentTaskDetails.youtubeURL && currentTaskDetails.youtubeURL.trim() !== '') {
             const questionsContainer = document.getElementById('questionsAfterVideo');
             if (questionsContainer) {
                 questionsContainer.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-video"></i>
-                        <h3>Iltimos, avval videoni to'liq ko'ring!</h3>
-                        <p>Video tugagandan keyin savollar ko'rinadi</p>
-                    </div>
-                `;
+                <div class="text-center py-4">
+                    <i class="fas fa-video fa-3x text-primary mb-3"></i>
+                    <h5>Iltimos, avval videoni to'liq ko'ring!</h5>
+                    <p class="text-muted">Video tugagandan keyin savollar ko'rinadi</p>
+                </div>
+            `;
             }
             return;
         }
 
         if (!currentQuestions || currentQuestions.length === 0) {
-            const container = document.getElementById('questionsAfterVideo') || questionContent;
+            const container = document.getElementById('questionsAfterVideo') || document.getElementById('questionsContainer') || document.getElementById('questionContent');
             container.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-question-circle"></i>
-                    <h3>Savollar mavjud emas</h3>
-                    <p>Ushbu vazifa uchun savollar topilmadi</p>
-                </div>
-            `;
+            <div class="text-center py-5">
+                <i class="fas fa-question-circle fa-3x text-muted mb-3"></i>
+                <h4>Savollar mavjud emas</h4>
+                <p class="text-muted">Ushbu vazifa uchun savollar topilmadi</p>
+            </div>
+        `;
             return;
         }
 
-        const container = document.getElementById('questionsAfterVideo') || questionContent;
-        container.innerHTML = '';
-
+        const container = document.getElementById('questionsAfterVideo') || document.getElementById('questionsContainer') || document.getElementById('questionContent');
         const question = currentQuestions[currentQuestionIndex];
+
         if (!question) {
             container.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <h3>Savol yuklanmadi</h3>
-                    <p>Savol ma'lumotlari topilmadi</p>
-                </div>
-            `;
+            <div class="text-center py-5">
+                <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                <h4>Savol yuklanmadi</h4>
+                <p class="text-muted">Savol ma'lumotlari topilmadi</p>
+            </div>
+        `;
             return;
         }
 
-        const questionCard = document.createElement('div');
-        questionCard.className = 'question-card';
+        // Savol konteynerini yaratish
+        container.innerHTML = `
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">${question.questionTest || 'Savol matni mavjud emas'}</h6>
+            </div>
+            <div class="card-body">
+                <div id="questionAttachments" class="mb-4"></div>
+                <div id="optionsContainer" class="mb-4"></div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <button class="btn btn-outline-primary" onclick="navigateQuestionAfterVideo(-1)" ${currentQuestionIndex === 0 ? 'disabled' : ''}>
+                        <i class="fas fa-arrow-left me-1"></i>Oldingi
+                    </button>
+                    <span class="badge bg-secondary">Savol ${currentQuestionIndex + 1}/${currentQuestions.length}</span>
+                    <button class="btn btn-primary" onclick="navigateQuestionAfterVideo(1)" ${currentQuestionIndex >= currentQuestions.length - 1 ? 'disabled' : ''}>
+                        Keyingi<i class="fas fa-arrow-right ms-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
 
-        const questionTitle = document.createElement('div');
-        questionTitle.className = 'question-card-title';
-        questionTitle.textContent = question.questionTest || 'Savol matni mavjud emas';
+        // Attachmentlarni yuklash va ko'rsatish
+        const attachmentsDiv = document.getElementById('questionAttachments');
+        if (question.attachmentId) {
+            attachmentsDiv.innerHTML = `
+            <div class="text-center py-3">
+                <div class="spinner mx-auto mb-2"></div>
+                <small>Savol uchun qo'shimcha materiallar yuklanmoqda...</small>
+            </div>
+        `;
 
-        const optionsContainer = document.createElement('div');
-        optionsContainer.className = 'question-card-options';
+            try {
+                // `/api/v1/attachments/{attachmentId}` endpointidan attachmentni olish
+                const response = await axios.get(`/api/v1/attachments/${question.attachmentId}`, {
+                    headers: {'Authorization': userData.token}
+                });
+                const attachment = response.data;
 
+                attachmentsDiv.innerHTML = ''; // Yuklanmoqda xabarini o'chirish
+                displaySingleAttachment(attachment, attachmentsDiv);
+            } catch (error) {
+                console.error('Savol attachmentini yuklashda xato:', error);
+                attachmentsDiv.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Savol uchun qo'shimcha materialni yuklashda xato yuz berdi.
+                </div>
+            `;
+            }
+        } else {
+            attachmentsDiv.innerHTML = ''; // Attachment yo'q bo'lsa bo'sh qoldirish
+        }
+
+        // Variantlarni ko'rsatish
+        const optionsContainer = document.getElementById('optionsContainer');
         if (question.variant && question.variant.length > 0) {
             question.variant.forEach((variant, index) => {
+                const isSelected = selectedAnswers[currentQuestionIndex] === variant;
                 const option = document.createElement('div');
-                option.className = `question-card-option ${selectedAnswers[currentQuestionIndex] === variant ? 'selected' : ''}`;
+                option.className = `question-option p-3 mb-2 ${isSelected ? 'selected' : ''}`;
                 option.innerHTML = `
-                    <input type="radio" name="question_${question.id}" value="${variant}" id="option_${index}" ${selectedAnswers[currentQuestionIndex] === variant ? 'checked' : ''}>
-                    <label for="option_${index}">${variant}</label>
-                `;
+                <input type="radio" name="question_${question.id}" value="${variant}" id="option_${index}" ${isSelected ? 'checked' : ''} class="d-none">
+                <label for="option_${index}" class="mb-0 w-100 cursor-pointer">${variant}</label>
+            `;
                 option.addEventListener('click', () => {
                     selectedAnswers[currentQuestionIndex] = variant;
-                    document.querySelectorAll('.question-card-option').forEach(opt => opt.classList.remove('selected'));
+                    document.querySelectorAll('.question-option').forEach(opt => opt.classList.remove('selected'));
                     option.classList.add('selected');
                 });
                 optionsContainer.appendChild(option);
             });
         } else {
-            optionsContainer.innerHTML = '<div class="empty-state"><p>Variantlar mavjud emas</p></div>';
+            optionsContainer.innerHTML = '<div class="text-center text-muted py-3">Variantlar mavjud emas</div>';
         }
-
-        const navControls = document.createElement('div');
-        navControls.className = 'question-nav';
-
-        const prevButton = document.createElement('button');
-        prevButton.className = 'action-btn secondary';
-        prevButton.innerHTML = '<i class="fas fa-arrow-left"></i> Oldingi';
-        prevButton.addEventListener('click', () => navigateQuestionAfterVideo(-1));
-        prevButton.disabled = currentQuestionIndex === 0;
-
-        const nextButton = document.createElement('button');
-        nextButton.className = 'action-btn';
-        nextButton.innerHTML = 'Keyingi <i class="fas fa-arrow-right"></i>';
-        nextButton.addEventListener('click', () => navigateQuestionAfterVideo(1));
-        nextButton.disabled = currentQuestionIndex >= currentQuestions.length - 1;
-
-        const counter = document.createElement('div');
-        counter.className = 'question-counter';
-        counter.textContent = `Savol ${currentQuestionIndex + 1}/${currentQuestions.length}`;
-
-        navControls.appendChild(prevButton);
-        navControls.appendChild(counter);
-        navControls.appendChild(nextButton);
-
-        questionCard.appendChild(questionTitle);
-        questionCard.appendChild(optionsContainer);
-        questionCard.appendChild(navControls);
-        container.appendChild(questionCard);
     }
 
-    function navigateQuestionAfterVideo(direction) {
-        if (!currentQuestions || currentQuestions.length === 0 || isTaskSubmitted) return;
+    // Yagona attachmentni ko'rsatish uchun yangi funksiya
+    function displaySingleAttachment(attachment, container) {
+        if (!attachment) {
+            container.innerHTML = `
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Qo'shimcha material topilmadi
+            </div>
+        `;
+            return;
+        }
 
-        currentQuestionIndex += direction;
-        if (currentQuestionIndex < 0) currentQuestionIndex = 0;
-        if (currentQuestionIndex >= currentQuestions.length) currentQuestionIndex = currentQuestions.length - 1;
+        const attachmentItem = document.createElement('div');
+        attachmentItem.className = 'mb-3 p-3 border rounded';
 
-        displayQuestionsAfterVideo();
+        try {
+            if (attachment.contentType && attachment.contentType.startsWith('image/')) {
+                const img = document.createElement('img');
+                img.className = 'attachment-image img-fluid rounded';
+                img.style.maxHeight = '300px';
+
+                if (attachment.content) {
+                    const imageData = attachment.content.startsWith('data:')
+                        ? attachment.content
+                        : `data:${attachment.contentType};base64,${attachment.content}`;
+                    img.src = imageData;
+                } else {
+                    img.src = '/placeholder.svg?height=200&width=300';
+                    img.alt = 'Rasm yuklanmadi';
+                }
+
+                img.alt = `Attachment ${attachment.id || 'noma\'lum'}`;
+                img.onerror = function() {
+                    this.src = '/placeholder.svg?height=200&width=300';
+                    this.alt = 'Rasm yuklanmadi';
+                };
+
+                attachmentItem.appendChild(img);
+            } else {
+                const downloadDiv = document.createElement('div');
+                downloadDiv.className = 'text-center';
+
+                const fileIcon = document.createElement('i');
+                fileIcon.className = 'fas fa-file fa-3x text-primary mb-2';
+
+                const fileName = document.createElement('p');
+                fileName.className = 'mb-2';
+                fileName.textContent = `Fayl (${getFileExtension(attachment.contentType)})`;
+
+                const downloadLink = document.createElement('a');
+                downloadLink.className = 'btn btn-primary btn-sm';
+                downloadLink.innerHTML = '<i class="fas fa-download me-1"></i>Yuklab olish';
+
+                if (attachment.content) {
+                    const fileData = attachment.content.startsWith('data:')
+                        ? attachment.content
+                        : `data:${attachment.contentType};base64,${attachment.content}`;
+                    downloadLink.href = fileData;
+                    downloadLink.download = `attachment_${attachment.id || 'noma\'lum'}.${getFileExtension(attachment.contentType)}`;
+                } else {
+                    downloadLink.href = '#';
+                    downloadLink.onclick = (e) => {
+                        e.preventDefault();
+                        alert('Fayl ma\'lumotlari mavjud emas');
+                    };
+                }
+
+                downloadDiv.appendChild(fileIcon);
+                downloadDiv.appendChild(fileName);
+                downloadDiv.appendChild(downloadLink);
+                attachmentItem.appendChild(downloadDiv);
+            }
+        } catch (error) {
+            console.error('Attachmentni ko\'rsatishda xato:', error);
+            attachmentItem.innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Faylni ko'rsatishda xato yuz berdi
+            </div>
+        `;
+        }
+
+        container.appendChild(attachmentItem);
     }
 
     async function submitAnswer() {
@@ -2207,8 +1459,9 @@
             .filter(answer => answer !== null);
 
         try {
+            const submitButton = document.getElementById('submitButton');
             submitButton.disabled = true;
-            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Yuborilmoqda...';
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Yuborilmoqda...';
 
             const response = await axios.post('/api/v1/answer/submission', answers, {
                 headers: {
@@ -2220,65 +1473,63 @@
             const result = response.data;
             isTaskSubmitted = true;
 
-            // Show results
-            questionBox.innerHTML = `
-                <div class="question-header">
-                    <div class="question-title">Test Natijalari</div>
-                    <div class="difficulty">Yakunlandi</div>
-                </div>
-                <div class="question-content">
-                    <div class="empty-state">
-                        <i class="fas fa-check-circle" style="color: var(--success); font-size: 4rem;"></i>
-                        <h3 style="color: var(--success);">Test muvaffaqiyatli yakunlandi!</h3>
-                        <div style="margin-top: 1.5rem; text-align: left; max-width: 400px; background: #f8fafc; padding: 1.5rem; border-radius: 10px; border-left: 4px solid var(--success);">
-                            <p><strong>Talaba:</strong> ${result.studentName || 'Noma\'lum'}</p>
-                            <p><strong>Guruh:</strong> ${result.groupName || 'Noma\'lum'}</p>
-                            <p><strong>Jami savollar:</strong> ${result.totalQuery}</p>
-                            <p><strong>To'g'ri javoblar:</strong> <span style="color: var(--success); font-weight: 600;">${result.passedQuery}</span></p>
-                            <p><strong>Noto'g'ri javoblar:</strong> <span style="color: var(--danger); font-weight: 600;">${result.failedQuery}</span></p>
-                            <div style="height: 10px; background: #e5e7eb; border-radius: 5px; margin: 1rem 0; overflow: hidden;">
-                                <div style="height: 100%; width: ${(result.passedQuery / result.totalQuery) * 100}%; background: linear-gradient(90deg, var(--success), #16a34a); border-radius: 5px; transition: width 1s ease;"></div>
+            document.getElementById('questionTitle').textContent = 'Test Natijalari';
+            document.getElementById('questionDifficulty').textContent = 'Yakunlandi';
+
+            document.getElementById('questionContent').innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-check-circle fa-4x text-success mb-4"></i>
+                        <h3 class="text-success mb-4">Test muvaffaqiyatli yakunlandi!</h3>
+                        <div class="results-card p-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Talaba:</strong> ${result.studentName || 'Noma\'lum'}</p>
+                                    <p><strong>Guruh:</strong> ${result.groupName || 'Noma\'lum'}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Jami savollar:</strong> ${result.totalQuery}</p>
+                                    <p><strong>To'g'ri javoblar:</strong> <span class="text-success fw-bold">${result.passedQuery}</span></p>
+                                    <p><strong>Noto'g'ri javoblar:</strong> <span class="text-danger fw-bold">${result.failedQuery}</span></p>
+                                </div>
                             </div>
-                            <p style="text-align: center; font-weight: 600; color: var(--primary);">
-                                Natija: ${Math.round((result.passedQuery / result.totalQuery) * 100)}%
-                            </p>
+                            <div class="progress mb-3" style="height: 15px;">
+                                <div class="progress-bar bg-success" style="width: ${(result.passedQuery / result.totalQuery) * 100}%"></div>
+                            </div>
+                            <h4 class="text-primary mb-0">Natija: ${Math.round((result.passedQuery / result.totalQuery) * 100)}%</h4>
                         </div>
                     </div>
-                </div>
-            `;
+                `;
 
-            // Update overall progress
             const totalQuestions = result.totalQuery;
             const progressPercentage = totalQuestions > 0 ? (result.passedQuery / totalQuestions) * 100 : 0;
-            progressText.textContent = `${Math.round(progressPercentage)}%`;
-            progressFill.style.width = `${progressPercentage}%`;
+            document.getElementById('progressText').textContent = `${Math.round(progressPercentage)}%`;
+            document.getElementById('progressFill').style.width = `${progressPercentage}%`;
 
-            // Hide submit button
-            submitButton.style.display = 'none';
-
+            submitButton.classList.add('d-none');
             alert('Javoblar muvaffaqiyatli yuborildi!');
 
-            // Reload tasks to show completion status
             if (currentModuleId) {
                 loadTasks(currentModuleId);
             }
 
         } catch (error) {
             console.error('Javob yuborishda xato:', error);
+            const submitButton = document.getElementById('submitButton');
             submitButton.disabled = false;
-            submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Yuborish';
+            submitButton.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Yuborish';
 
-            questionContent.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <h3>Xato yuz berdi</h3>
-                    <p>Javob yuborishda xato: ${error.response?.data?.message || error.message}</p>
-                </div>
-            `;
+            document.getElementById('questionContent').innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                        <h4>Xato yuz berdi</h4>
+                        <p class="text-muted">Javob yuborishda xato: ${error.response?.data?.message || error.message}</p>
+                    </div>
+                `;
         }
     }
 
-    updateProfileForm.addEventListener('submit', async (e) => {
+    // Profile form submission
+    document.getElementById('updateProfileForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         if (!checkAuth()) return;
 
@@ -2295,8 +1546,7 @@
 
         const phoneRegex = /^\+998(90|91|93|94|95|97|98|99|33|77|20|88)[0-9]{7}$/;
         if (!phoneRegex.test(phoneNumber)) {
-            phoneError.style.display = 'block';
-            phoneNumberInput.setCustomValidity('Telefon raqami 90, 91, 93, 94, 95, 97, 98, 33, 77, 20, 88 yoki 99 bilan boshlanib, 7 raqamdan iborat bo\'lishi kerak!');
+            document.getElementById('phoneError').classList.remove('d-none');
             return;
         }
 
@@ -2336,13 +1586,6 @@
             } else {
                 alert(`Profilni yangilashda xato: ${error.response?.data?.message || error.message}`);
             }
-        }
-    });
-
-    // Close modal when clicking outside
-    profileModal.addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeProfileModal();
         }
     });
 
