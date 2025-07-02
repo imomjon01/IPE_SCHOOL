@@ -26,10 +26,6 @@ import static ipe.school.ipe_school.utils.ApiConstants.*;
 public class AnswerSubmissionController {
 
     private final AnswerSubmissionService answerSubmissionService;
-    private final AnswerSubmissionRepository answerSubmissionRepository;
-    private final TaskService taskService;
-    private final StudentProgressRepository studentProgressRepository;
-    private final GroupRepository groupRepository;
 
     @PostMapping
     public ResponseEntity<StudentProcessRes> submitAnswer(@AuthenticationPrincipal User user, @RequestBody List<AnswerSubmissionReq> answerSubmissionReqs) {
@@ -39,9 +35,7 @@ public class AnswerSubmissionController {
 
     @GetMapping("/{taskId}/results")
     public ResponseEntity<StudentProcessRes> getTaskResults(@AuthenticationPrincipal User user, @PathVariable Long taskId) {
-
         StudentProcessRes studentProcessRes = answerSubmissionService.results(user, taskId);
-
         return ResponseEntity.ok(studentProcessRes);
     }
 }

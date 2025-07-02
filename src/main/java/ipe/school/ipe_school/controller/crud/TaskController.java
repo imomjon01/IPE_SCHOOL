@@ -49,7 +49,6 @@ public class TaskController {
     @GetMapping("/{taskId}")
     public ResponseEntity<TaskDetailsRes> getTask(@PathVariable Long taskId) {
         Task task = taskService.findByActiveTask(taskId);
-
         List<QuestionRes> questionResList = taskMapper.mapQuestions(task);
         List<Long> attachmentIds = taskMapper.extractAttachmentIds(task);
         TaskDetailsRes taskDetailsRes = taskMapper.buildTaskDetails(task, questionResList, attachmentIds);
