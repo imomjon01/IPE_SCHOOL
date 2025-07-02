@@ -19,6 +19,7 @@
             --light-color: #f8f9fa;
             --dark-color: #212529;
             --gray-color: #6c757d;
+            --inactive-color: #6c757d; /* Color for inactive tasks */
         }
 
         body {
@@ -239,6 +240,11 @@
             border-left: 4px solid var(--primary-color);
         }
 
+        .task-card-inactive {
+            border-left: 4px solid var(--inactive-color);
+            background-color: #f8f9fa;
+        }
+
         .question-card {
             border-left: 4px solid var(--success-color);
         }
@@ -401,7 +407,7 @@
                 <!-- Module View -->
                 <div class="card animate-fade" id="moduleView" style="display: none;">
                     <div class="card-header">
-                        <button class="btn btn-link text-white p-5" onclick="back()">
+                        <button class="btn btn-link text-white p-0" onclick="back()">
                             <i class="fas fa-arrow-left me-2"></i>Back
                         </button>
                     </div>
@@ -412,9 +418,33 @@
                                 <button class="btn btn-success me-2" onclick="showAddTaskForm()">
                                     <i class="fas fa-plus me-2"></i>Add Task
                                 </button>
+                                <button class="btn btn-warning me-2" onclick="showUpdateModuleForm()">
+                                    <i class="fas fa-edit me-2"></i>Update Module
+                                </button>
                                 <button class="btn btn-danger" onclick="closeModule()" id="closeModuleButton">
                                     <i class="fas fa-lock me-2"></i>Close Module
                                 </button>
+                            </div>
+                        </div>
+                        <div class="card mt-3" id="updateModuleCard" style="display: none;">
+                            <div class="card-header">
+                                <h6 class="mb-0"><i class="fas fa-edit me-2"></i>Update Module</h6>
+                            </div>
+                            <div class="card-body">
+                                <form id="updateModuleForm">
+                                    <div class="mb-3">
+                                        <label for="updateModuleName" class="form-label">Module Name</label>
+                                        <input type="text" class="form-control" id="updateModuleName" required>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <button type="button" class="btn btn-secondary" onclick="cancelUpdateModule()">
+                                            <i class="fas fa-times me-2"></i>Cancel
+                                        </button>
+                                        <button type="submit" class="btn btn-primary" id="updateModuleButton">
+                                            <i class="fas fa-save me-2"></i>Update Module
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <div class="card mt-3" id="addTaskCard" style="display: none;">
@@ -486,8 +516,15 @@
                                             <label for="updateTaskAttachments" class="file-upload-label w-100 text-center">
                                                 <i class="fas fa-paperclip me-2"></i>Choose Files
                                             </label>
-                                            <input type="file" class="file-upload-input" id="updateTaskAttachments" multiple>
+                                            <input type="file" class="form-control-file" id="updateTaskAttachments" multiple>
                                             <small class="form-text text-muted d-block mt-1" id="updateTaskFilesName">No files chosen</small>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="taskActive" class="form-label">Task Status</label>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="taskActive">
+                                            <label class="form-check-label" for="taskActive">Active</label>
                                         </div>
                                     </div>
                                     <button type="submit" class="btn btn-primary w-100">
@@ -496,7 +533,7 @@
                                 </form>
                             </div>
                         </div>
-                        <!-- Added YouTube Video Display Card -->
+                        <!-- YouTube Video Display Card -->
                         <div class="card mt-4">
                             <div class="card-header">
                                 <h6 class="mb-0"><i class="fas fa-video me-2"></i>YouTube Video</h6>
@@ -508,49 +545,50 @@
                         <div class="card mt-4">
                             <div class="card-header">
                                 <h6 class="mb-0"><i class="fas fa-paperclip me-2"></i>Attachments</h6>
-                                (pipe)                            <div class="card-body">
+                            </div>
+                            <div class="card-body">
                                 <div id="taskAttachmentsList"></div>
                             </div>
+                        </div>
+                        <div class="card mt-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0"><i class="fas fa-question-circle me-2"></i>Questions</h6>
+                                <button class="btn btn-success btn-sm" onclick="showAddQuestionForm()">
+                                    <i class="fas fa-plus me-1"></i>Add
+                                </button>
                             </div>
-                            <div class="card mt-4">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h6 class="mb-0"><i class="fas fa-question-circle me-2"></i>Questions</h6>
-                                    <button class="btn btn-success btn-sm" onclick="showAddQuestionForm()">
-                                        <i class="fas fa-plus me-1"></i>Add
-                                    </button>
-                                </div>
-                                <div class="card-body">
-                                    <div id="questionList"></div>
-                                    <div class="card mt-3" id="addQuestionCard" style="display: none;">
-                                        <div class="card-header">
-                                            <h6 class="mb-0"><i class="fas fa-plus-circle me-2"></i>New Question</h6>
-                                        </div>
-                                        <div class="card-body">
-                                            <form id="addQuestionForm">
-                                                < EAP_div class="mb-3">
+                            <div class="card-body">
+                                <div id="questionList"></div>
+                                <div class="card mt-3" id="addQuestionCard" style="display: none;">
+                                    <div class="card-header">
+                                        <h6 class="mb-0"><i class="fas fa-plus-circle me-2"></i>New Question</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="addQuestionForm">
+                                            <div class="mb-3">
                                                 <label for="questionTest" class="form-label">Question Text</label>
                                                 <textarea class="form-control" id="questionTest" rows="3" required></textarea>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="questionAttachment" class="form-label">Attachment (Optional)</label>
-                                            <div class="file-upload">
-                                                <label for="questionAttachment" class="file-upload-label w-100 text-center">
-                                                    <i class="fas fa-paperclip me-2"></i>Choose File
-                                                </label>
-                                                <input type="file" class="file-upload-input" id="questionAttachment">
-                                                <small class="form-text text-muted d-block mt-1" id="questionFileName">No file chosen</small>
                                             </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <h6><i class="fas fa-list-ol me-2"></i>Answer Variants</h6>
-                                            <div id="variantList" class="mb-2"></div>
-                                            <button type="button" class="btn btn-secondary btn-sm" onclick="addAnswerVariant()">
-                                                <i class="fas fa-plus me-1"></i>Add Variant
+                                            <div class="mb-3">
+                                                <label for="questionAttachment" class="form-label">Attachment (Optional)</label>
+                                                <div class="file-upload">
+                                                    <label for="questionAttachment" class="file-upload-label w-100 text-center">
+                                                        <i class="fas fa-paperclip me-2"></i>Choose File
+                                                    </label>
+                                                    <input type="file" class="form-control-file" id="questionAttachment">
+                                                    <small class="form-text text-muted d-block mt-1" id="questionFileName">No file chosen</small>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <h6><i class="fas fa-list-ol me-2"></i>Answer Variants</h6>
+                                                <div id="variantList" class="mb-2"></div>
+                                                <button type="button" class="btn btn-secondary btn-sm" onclick="addAnswerVariant()">
+                                                    <i class="fas fa-plus me-1"></i>Add Variant
+                                                </button>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary w-100" id="saveQuestionButton">
+                                                <i class="fas fa-save me-2"></i>Save
                                             </button>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary w-100" id="saveQuestionButton">
-                                            <i class="fas fa-save me-2"></i>Save
-                                        </button>
                                         </form>
                                     </div>
                                 </div>
@@ -571,7 +609,7 @@
                                                     <label for="updateQuestionAttachment" class="file-upload-label w-100 text-center">
                                                         <i class="fas fa-paperclip me-2"></i>Choose File
                                                     </label>
-                                                    <input type="file" class="file-upload-input" id="updateQuestionAttachment">
+                                                    <input type="file" class="form-control-file" id="updateQuestionAttachment">
                                                     <small class="form-text text-muted d-block mt-1" id="updateQuestionFileName">No file chosen</small>
                                                 </div>
                                             </div>
@@ -725,7 +763,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="mb-0"><i class="fas fa-flask me-2"></i>${science.name}</h5>
-                            <button class="btn btn-primary btn-sm" onclick="showModules(${science.id}, '${science.name}')">
+                            <button class="btn btn-primary btn-sm" onclick="showModules(${science.id}, '${science.name.replace(/'/g, "\\'")}')">
                                 <i class="fas fa-eye me-1"></i>View Modules
                             </button>
                         </div>
@@ -735,6 +773,8 @@
 
                 if (science.modules && science.modules.length > 0) {
                     science.modules.forEach(module => {
+                        // Escape single quotes in module.name
+                        const escapedName = module.name.replace(/'/g, "\\'");
                         const moduleCard = document.createElement('div');
                         moduleCard.className = 'card module-card mb-2 ms-4 animate-fade';
                         moduleCard.innerHTML = `
@@ -744,7 +784,7 @@
                                         <h6 class="mb-0"><i class="fas fa-book me-2"></i>${module.name}</h6>
                                         <small class="text-muted">Tasks: ${module.tasks?.length || 0}</small>
                                     </div>
-                                    <button class="btn btn-primary btn-sm" onclick="showModuleDetails(${module.id}, '${module.name}')">
+                                    <button class="btn btn-primary btn-sm" onclick="showModuleDetails(${module.id}, '${escapedName}', ${science.id}, '${science.name.replace(/'/g, "\\'")}')">
                                         <i class="fas fa-info-circle me-1"></i>Details
                                     </button>
                                 </div>
@@ -763,22 +803,24 @@
     // Show modules for a specific science
     function showModules(scienceId, scienceName) {
         currentScienceId = scienceId;
-        currentScienceName = scienceName;
+        currentScienceName = scienceName.replace(/'/g, "\\'");
         document.getElementById('currentScienceName').textContent = scienceName;
         // No need to create a separate view, modules are already under sciences
         loadSciences(); // Refresh to show modules
     }
 
     // Show module details
-    async function showModuleDetails(moduleId, moduleName) {
+    async function showModuleDetails(moduleId, moduleName, scienceId, scienceName) {
         try {
             currentModuleId = moduleId;
+            currentScienceId = scienceId;
+            currentScienceName = scienceName.replace(/'/g, "\\'");
             currentView = 'module';
             document.getElementById('dashboardView').style.display = 'none';
             document.getElementById('moduleView').style.display = 'block';
             document.getElementById('taskView').style.display = 'none';
-            document.getElementById('moduleTitle').textContent = moduleName;
             document.getElementById('moduleTitle').innerHTML = `<i class="fas fa-book-open me-2"></i>${moduleName}`;
+            document.getElementById('updateModuleName').value = moduleName;
 
             const response = await fetch(`${API_BASE}/module/${moduleId}`, {
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
@@ -811,11 +853,12 @@
                     const taskCard = document.createElement('div');
                     taskCard.className = 'col-md-6 mb-3';
                     taskCard.innerHTML = `
-                        <div class="card task-card h-100">
+                        <div class="card ${task.active ? 'task-card' : 'task-card-inactive'} h-100">
                             <div class="card-body">
                                 <h6 class="card-title"><i class="fas fa-tasks me-2"></i>${task.taskName}</h6>
                                 <p class="card-text text-muted small"><i class="fas fa-paperclip me-1"></i>${task.attachmentId ? task.attachmentId.length : 0} attachments</p>
-                                <button class="btn btn-primary btn-sm w-100" onclick="showTaskDetails(${task.id}, '${task.taskName}')">
+                                <p class="card-text text-muted small"><i class="fas fa-check-circle me-1"></i>Status: ${task.active ? 'Active' : 'Inactive'}</p>
+                                <button class="btn btn-primary btn-sm w-100" onclick="showTaskDetails(${task.id}, '${task.taskName.replace(/'/g, "\\'")}')">
                                     <i class="fas fa-eye me-1"></i>View Details
                                 </button>
                             </div>
@@ -833,20 +876,20 @@
     }
 
     // Show task details with YouTube video embedding
-    async function showTaskDetails(taskId, taskName) {
+    async function showTaskDetails(taskId, name) {
         try {
             currentTaskId = taskId;
             currentView = 'task';
             document.getElementById('moduleView').style.display = 'none';
             document.getElementById('taskView').style.display = 'block';
-            document.getElementById('taskTitle').textContent = taskName;
-            document.getElementById('taskTitle').innerHTML = `<i class="fas fa-tasks me-2"></i>${taskName}`;
+            document.getElementById('taskTitle').textContent = name.replace(/'/g, "\\'");
+            document.getElementById('taskTitle').innerHTML = `<i class="fas fa-tasks me-2"></i>${name.replace(/'/g, "\\'")}`;
 
             document.getElementById('taskVideo').innerHTML = `<div class="text-center py-3"><div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div><span class="ms-2">Loading video...</span></div>`;
             document.getElementById('taskAttachmentsList').innerHTML = `<div class="text-center py-3"><div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div><span class="ms-2">Loading attachments...</span></div>`;
             document.getElementById('questionList').innerHTML = `<div class="text-center py-3"><div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div><span class="ms-2">Loading questions...</span></div>`;
 
-            const taskResponse = await fetch(`${API_BASE}/task/${taskId}`, {
+            const taskResponse = await fetch(`${API_BASE}/task/mentor/${taskId}`, {
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
             });
             if (!taskResponse.ok) throw new Error('Failed to fetch task details');
@@ -879,8 +922,9 @@
             await loadTaskAttachments(taskId);
             await loadQuestions(taskId);
 
-            document.getElementById('updateTaskName').value = taskName;
+            document.getElementById('updateTaskName').value = task.name;
             document.getElementById('updateYoutubeUrl').value = task.youtubeURL || '';
+            document.getElementById('taskActive').checked = task.active;
         } catch (error) {
             console.error('Error showing task details:', error);
             document.getElementById('taskVideo').innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading video.</div>`;
@@ -892,7 +936,7 @@
     // Fetch and display task attachments
     async function loadTaskAttachments(taskId) {
         try {
-            const response = await fetch(`${API_BASE}/task/${taskId}`, {
+            const response = await fetch(`${API_BASE}/task/mentor/${taskId}`, {
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
             });
             if (!response.ok) throw new Error('Failed to fetch task');
@@ -943,7 +987,7 @@
     // Fetch and display questions with attachments
     async function loadQuestions(taskId) {
         try {
-            const response = await fetch(`${API_BASE}/task/${taskId}`, {
+            const response = await fetch(`${API_BASE}/task/mentor/${taskId}`, {
                 headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
             });
             if (!response.ok) throw new Error('Failed to fetch questions');
@@ -994,7 +1038,7 @@
                                     <p class="mb-2">${question.questionTest}</p>
                                     ${attachmentHtml}
                                 </div>
-                                <button class="btn btn-primary btn-sm" data-question-id="${question.id}" data-question-test="${question.questionTest.replace(/"/g, '&quot;')}" data-variants='${JSON.stringify(question.variant)}' data-current-answer="${question.currentAnswer.replace(/"/g, '&quot;')}" data-attachment-id="${question.attachmentId || ''}" onclick="showUpdateQuestionForm(this)">
+                                <button class="btn btn-primary btn-sm" data-question-id="${question.id}" data-question-test="${question.questionTest.replace(/'/g, "\\'").replace(/"/g, '"')}" data-variants='${JSON.stringify(question.variant)}' data-current-answer="${question.currentAnswer.replace(/'/g, "\\'").replace(/"/g, '"')}" data-attachment-id="${question.attachmentId || ''}" onclick="showUpdateQuestionForm(this)">
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </div>
@@ -1068,7 +1112,7 @@
 
     document.getElementById('addTaskForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const taskName = document.getElementById('taskName').value;
+        const taskName = document.getElementById('taskName').value.replace(/'/g, "\\'");
         const youtubeURL = document.getElementById('youtubeUrl').value;
         const attachments = document.getElementById('taskAttachments').files;
 
@@ -1086,6 +1130,7 @@
         formData.append('taskName', taskName);
         formData.append('youtubeURL', youtubeURL || '');
         formData.append('moduleId', currentModuleId);
+        formData.append('active', 'false');
         for (let file of attachments) {
             formData.append('attachments', file);
         }
@@ -1114,9 +1159,10 @@
 
     document.getElementById('updateTaskForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const taskName = document.getElementById('updateTaskName').value;
+        const taskName = document.getElementById('updateTaskName').value.replace(/'/g, "\\'");
         const youtubeURL = document.getElementById('updateYoutubeUrl').value;
         const attachments = document.getElementById('updateTaskAttachments').files;
+        const active = document.getElementById('taskActive').checked;
 
         if (!taskName) {
             alert('Task name is required.');
@@ -1132,6 +1178,7 @@
         formData.append('taskName', taskName);
         formData.append('youtubeURL', youtubeURL || '');
         formData.append('moduleId', currentModuleId);
+        formData.append('active', active);
         for (let file of attachments) {
             formData.append('attachments', file);
         }
@@ -1144,7 +1191,7 @@
             });
             if (!response.ok) throw new Error('Failed to update task');
             document.getElementById('updateTaskCard').style.display = 'none';
-            await showTaskDetails(currentTaskId, taskName);
+            await showTaskDetails(currentTaskId, taskName); // Refresh with updated taskName
             alert('Task updated successfully!');
         } catch (error) {
             console.error('Error updating task:', error);
@@ -1260,7 +1307,7 @@
         submitButton.disabled = true;
         submitButton.textContent = 'Saving...';
 
-        const questionTest = document.getElementById('questionTest').value.trim();
+        const questionTest = document.getElementById('questionTest').value.trim().replace(/'/g, "\\'");
         const file = document.getElementById('questionAttachment').files[0];
         const variantInputs = document.querySelectorAll('#variantList .variant-input');
         const variantCheckboxes = document.querySelectorAll('#variantList .form-check-input');
@@ -1272,7 +1319,7 @@
             return;
         }
 
-        const variants = Array.from(variantInputs).map(input => input.value.trim()).filter(v => v);
+        const variants = Array.from(variantInputs).map(input => input.value.trim().replace(/'/g, "\\'")).filter(v => v);
         if (variants.length === 0) {
             alert('At least one variant is required.');
             submitButton.disabled = false;
@@ -1343,7 +1390,7 @@
         submitButton.disabled = true;
         submitButton.textContent = 'Updating...';
 
-        const questionTest = document.getElementById('updateQuestionTest').value.trim();
+        const questionTest = document.getElementById('updateQuestionTest').value.trim().replace(/'/g, "\\'");
         const file = document.getElementById('updateQuestionAttachment').files[0];
         const variantInputs = document.querySelectorAll('#updateVariantList .variant-input');
         const variantCheckboxes = document.querySelectorAll('#updateVariantList .form-check-input');
@@ -1355,7 +1402,7 @@
             return;
         }
 
-        const variants = Array.from(variantInputs).map(input => input.value.trim()).filter(v => v);
+        const variants = Array.from(variantInputs).map(input => input.value.trim().replace(/'/g, "\\'")).filter(v => v);
         if (variants.length === 0) {
             alert('At least one variant is required.');
             submitButton.disabled = false;
@@ -1425,7 +1472,7 @@
             alert('Please select a science before adding a module.');
             return;
         }
-        const moduleReq = { name: moduleName, scienceId: currentScienceId };
+        const moduleReq = { name: moduleName.replace(/'/g, "\\'"), scienceId: currentScienceId };
         try {
             const response = await fetch(`${API_BASE}/module`, {
                 method: 'POST',
@@ -1451,7 +1498,7 @@
         submitButton.disabled = true;
         submitButton.textContent = 'Adding...';
 
-        const moduleName = document.getElementById('moduleName').value.trim();
+        const moduleName = document.getElementById('moduleName').value.trim().replace(/'/g, "\\'");
         if (!moduleName) {
             alert('Module name is required.');
             submitButton.disabled = false;
@@ -1479,6 +1526,59 @@
             alert('Error closing module.');
         }
     }
+
+    function showUpdateModuleForm() {
+        document.getElementById('updateModuleCard').style.display = 'block';
+    }
+
+    function cancelUpdateModule() {
+        document.getElementById('updateModuleCard').style.display = 'none';
+        document.getElementById('updateModuleName').value = document.getElementById('moduleTitle').textContent;
+    }
+
+    document.getElementById('updateModuleForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitButton = document.getElementById('updateModuleButton');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Updating...';
+
+        const moduleName = document.getElementById('updateModuleName').value.trim().replace(/'/g, "\\'");
+        if (!moduleName) {
+            alert('Module name is required.');
+            submitButton.disabled = false;
+            submitButton.textContent = 'Update Module';
+            return;
+        }
+
+        if (!currentModuleId) {
+            alert('Please select a module before updating.');
+            submitButton.disabled = false;
+            submitButton.textContent = 'Update Module';
+            return;
+        }
+
+        const moduleReq = { name: moduleName, scienceId: currentScienceId };
+        try {
+            const response = await fetch(`${API_BASE}/module/${currentModuleId}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `${localStorage.getItem('authToken')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(moduleReq)
+            });
+            if (!response.ok) throw new Error('Failed to update module');
+            document.getElementById('updateModuleCard').style.display = 'none';
+            await showModuleDetails(currentModuleId, moduleName, currentScienceId, currentScienceName); // Refresh module view
+            alert('Module updated successfully!');
+        } catch (error) {
+            console.error('Error updating module:', error);
+            alert('Error updating module. Please try again.');
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Update Module';
+        }
+    });
 
     // Navigation
     function back() {

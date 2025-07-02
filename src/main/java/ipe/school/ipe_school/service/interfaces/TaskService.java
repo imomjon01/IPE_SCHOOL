@@ -18,4 +18,5 @@ public interface TaskService {
 
     List<Task> getAllTask();
 
+    Task findById(Long taskId);
 }

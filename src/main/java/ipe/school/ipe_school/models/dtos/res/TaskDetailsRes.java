@@ -11,4 +11,5 @@ public class TaskDetailsRes {
     List<QuestionRes> questionRes;
     List<Long> attachmentId;
     String youtubeURL;
+    Boolean active;
 }

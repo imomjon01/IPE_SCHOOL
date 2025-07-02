@@ -16,4 +16,5 @@ public class TaskReq {
     private String youtubeURL;
     @NotNull(message = "Module ID must not be null")
     private Long moduleId;
+    private Boolean active;
 }

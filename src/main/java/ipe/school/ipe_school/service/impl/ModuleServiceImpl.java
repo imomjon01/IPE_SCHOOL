@@ -100,7 +100,7 @@ public class ModuleServiceImpl implements ModuleService {
                                         .findByStudentIdAndQuestionId(u.getId(), q.getId()).isEmpty());
 
                         if (hasUnanswered && addedTaskIds.add(task.getId())) {
-                            taskResList.add(new TaskRes(task.getId(), task.getTaskName()));
+                            taskResList.add(new TaskRes(task.getId(), task.getTaskName(),task.getActive()));
                         }
                     }
                     return taskResList;

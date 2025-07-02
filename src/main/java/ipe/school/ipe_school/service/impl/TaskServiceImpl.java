@@ -47,11 +47,11 @@ public class TaskServiceImpl implements TaskService {
         }
         task.setTaskName(taskReq.getTaskName());
         task.setYoutubeURL(taskReq.getYoutubeURL());
-        task.setActive(true);
+        task.setActive(false);
         Task savedTask = taskRepository.save(task);
         addCurrentModule(savedTask, taskReq.getModuleId());
         logger.info("Task added successfully: {}", savedTask.getId());
-        return new TaskRes(savedTask.getId(), savedTask.getTaskName());
+        return new TaskRes(savedTask.getId(), savedTask.getTaskName(),savedTask.getActive());
     }
 
     private void addCurrentModule(Task savedTask, Long moduleId) {
@@ -102,8 +102,11 @@ public class TaskServiceImpl implements TaskService {
             List<Attachment> savedAttachments = attachmentRepository.saveAll(attachments);
             task.setAttachment(savedAttachments);
         }
+        if (taskReq.getActive()!=null) {
+            task.setActive(taskReq.getActive());
+        }
         taskRepository.save(task);
-        return new TaskRes(task.getId(), task.getTaskName());
+        return new TaskRes(task.getId(), task.getTaskName(),task.getActive());
     }
 
     @Override
@@ -114,6 +117,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> getAllTask() {
         return taskRepository.findAll();
+    }
+
+    @Override
+    public Task findById(Long taskId) {
+        return taskRepository.findById(taskId).orElseThrow(RuntimeException::new);
     }
 
 }

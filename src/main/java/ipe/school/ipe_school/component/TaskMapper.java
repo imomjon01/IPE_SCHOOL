@@ -36,7 +36,8 @@ public class TaskMapper {
                 task.getTaskName(),
                 questions,
                 attachmentIds,
-                task.getYoutubeURL()
+                task.getYoutubeURL(),
+                task.getActive()
         );
     }
 

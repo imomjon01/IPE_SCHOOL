@@ -23,6 +23,6 @@ public class ModuleMapper {
 
     private TaskRes toTaskRes(Task task) {
         if (task==null) return null;
-        return new TaskRes(task.getId(), task.getTaskName());
+        return new TaskRes(task.getId(), task.getTaskName(),task.getActive());
     }
 }

@@ -6,4 +6,5 @@ import lombok.Value;
 public class TaskRes {
     Long id;
     String taskName;
+    Boolean active;
 }
