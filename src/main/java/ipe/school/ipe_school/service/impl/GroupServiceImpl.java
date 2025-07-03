@@ -118,7 +118,14 @@ public class GroupServiceImpl implements GroupService {
                 .orElse(StudentProgress.builder()
                         .student(student)
                         .groupName("Guruh Yo'q")
+                        .totalQuery(0)
+                        .passedQuery(0)
+                        .failedQuery(0)
+                        .active(true)
                         .build());
+
+        studentProgressRepository.save(progress);
+
 
         handleOldGroup(req.getOldGroupId(), student, progress);
         handleNewGroup(req.getNewGroupId(), student, progress);
