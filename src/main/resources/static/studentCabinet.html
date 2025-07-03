@@ -230,6 +230,8 @@
         /* Menu Content */
         .menu-content {
             padding: 0;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
         }
 
         .menu-section {
@@ -316,7 +318,7 @@
         }
 
         .tasks-container.show {
-            max-height: 500px;
+            max-height: 300px;
             overflow-y: auto;
         }
 
@@ -668,6 +670,7 @@
             border-radius: var(--border-radius);
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            font-size: 14px; /* Kichikroq font */
         }
 
         .table th {
@@ -675,17 +678,38 @@
             border: none;
             font-weight: 600;
             color: var(--text-primary);
-            padding: 16px;
+            padding: 12px 8px; /* Padding kamaytirish */
+            font-size: 12px;
         }
 
         .table td {
             border: none;
-            padding: 16px;
+            padding: 12px 8px; /* Padding kamaytirish */
             vertical-align: middle;
+            font-size: 13px;
         }
 
         .table-hover tbody tr:hover {
             background: #f8fafc;
+        }
+
+        /* Student levels specific styles */
+        .student-levels-table {
+            font-size: 12px;
+        }
+
+        .student-levels-table th,
+        .student-levels-table td {
+            padding: 8px 4px;
+            text-align: center;
+        }
+
+        .student-levels-table .student-name {
+            text-align: left;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         /* Responsive adjustments */
@@ -721,6 +745,24 @@
 
             .question-option {
                 padding: 16px;
+            }
+
+            /* Student levels mobile optimization */
+            .student-levels-table {
+                font-size: 11px;
+            }
+
+            .student-levels-table th,
+            .student-levels-table td {
+                padding: 6px 2px;
+            }
+
+            .student-name {
+                max-width: 80px !important;
+            }
+
+            .alert h6 {
+                font-size: 14px;
             }
         }
 
@@ -2201,23 +2243,23 @@
 
             Object.keys(groupedStudents).forEach(groupName => {
                 htmlContent += `
-                        <div class="mb-4">
-                            <div class="alert alert-primary">
-                                <h6 class="mb-0"><i class="fas fa-users me-2"></i>${groupName}</h6>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table table-sm table-hover">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Ism</th>
-                                            <th>Jami</th>
-                                            <th>To'g'ri</th>
-                                            <th>Noto'g'ri</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                    `;
+    <div class="mb-4">
+        <div class="alert alert-primary">
+            <h6 class="mb-0"><i class="fas fa-users me-2"></i>${groupName}</h6>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-sm table-hover student-levels-table">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 15%;">#</th>
+                        <th style="width: 40%;">Ism</th>
+                        <th style="width: 15%;">Jami</th>
+                        <th style="width: 15%;">To'g'ri</th>
+                        <th style="width: 15%;">Noto'g'ri</th>
+                    </tr>
+                </thead>
+                <tbody>
+`;
 
                 groupedStudents[groupName].forEach((student, index) => {
                     const studentName = student.fullName || 'Noma\'lum';
@@ -2226,14 +2268,14 @@
                     const failedQuery = student.failedQuery || 0;
 
                     htmlContent += `
-                            <tr>
-                                <td><span class="badge bg-secondary">${index + 1}</span></td>
-                                <td class="fw-medium">${studentName}</td>
-                                <td>${totalQuery}</td>
-                                <td class="text-success fw-bold">${passedQuery}</td>
-                                <td class="text-danger fw-bold">${failedQuery}</td>
-                            </tr>
-                        `;
+        <tr>
+            <td><span class="badge bg-secondary">${index + 1}</span></td>
+            <td class="student-name fw-medium" title="${studentName}">${studentName}</td>
+            <td>${totalQuery}</td>
+            <td class="text-success fw-bold">${passedQuery}</td>
+            <td class="text-danger fw-bold">${failedQuery}</td>
+        </tr>
+    `;
                 });
 
                 htmlContent += `
