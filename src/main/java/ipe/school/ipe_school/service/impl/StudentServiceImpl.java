@@ -196,9 +196,6 @@ public class StudentServiceImpl implements StudentService {
             return Collections.emptyList(); // Guruh mavjud emas
         }
 
-        for (User student : optionalGroup.get().getStudents()) {
-            System.out.println(student.getFullName() + optionalGroup.get().getName());
-        }
         List<User> students = optionalGroup.get().getStudents();
 
         if (students == null || students.isEmpty()) {

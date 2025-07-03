@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPE School</title>
+    <title>IPE School - Mentor</title>
+    <link rel="icon" type="image/png" href="/images/favicon.ico" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -19,32 +20,244 @@
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+            max-width: 100%;
+            margin: 0;
+            padding: 10px;
         }
 
         .header {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
 
         .logo {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             color: #333;
         }
 
-        .nav-buttons {
+        .profile-header {
             display: flex;
-            gap: 15px;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .profile-header:hover {
+            background-color: rgba(102, 126, 234, 0.1);
+        }
+
+        .profile-header img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #667eea;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            line-height: 1.2;
+        }
+
+        .profile-phone {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.2;
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            gap: 3px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .close-sidebar {
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .close-sidebar:hover {
+            color: #333;
+        }
+
+        .nav-section {
+            margin-bottom: 25px;
+        }
+
+        .nav-section h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: #e9ecef;
+            border-left-color: #667eea;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-left-color: #fff;
+        }
+
+        .nav-item i {
+            width: 16px;
+            text-align: center;
+        }
+
+        .groups-section {
+            margin-top: 20px;
+        }
+
+        .group-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .group-item:hover {
+            background: #e9ecef;
+        }
+
+        .group-item.active {
+            background: #d4edda;
+            color: #155724;
+            border-left: 3px solid #28a745;
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            min-height: calc(100vh - 120px);
+        }
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
         }
 
         .btn {
@@ -58,6 +271,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            font-size: 14px;
         }
 
         .btn-primary {
@@ -84,98 +298,6 @@
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .main-content {
-            display: flex;
-            gap: 20px;
-            min-height: 600px;
-        }
-
-        .sidebar {
-            width: 300px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .content-area {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .profile-section {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .profile-image {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 15px;
-            border: 3px solid #667eea;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .profile-image:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        }
-
-        .profile-name {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .profile-phone {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .groups-list {
-            list-style: none;
-        }
-
-        .group-item {
-            padding: 12px;
-            margin-bottom: 8px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-left: 4px solid transparent;
-        }
-
-        .group-item:hover {
-            background: #e9ecef;
-            border-left-color: #667eea;
-        }
-
-        .group-item.active {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border-left-color: #fff;
-        }
-
-        .view {
-            display: none;
-        }
-
-        .view.active {
-            display: block;
         }
 
         .form-group {
@@ -206,33 +328,50 @@
 
         .mentors-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: 1fr;
+            gap: 15px;
         }
 
         .mentor-card {
             background: #f8f9fa;
             border-radius: 12px;
-            padding: 20px;
-            text-align: center;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
             transition: all 0.3s ease;
             border: 1px solid #eee;
             cursor: pointer;
         }
 
         .mentor-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             background: #e9ecef;
         }
 
         .mentor-image {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             object-fit: cover;
-            margin-bottom: 15px;
             border: 2px solid #667eea;
+            flex-shrink: 0;
+        }
+
+        .mentor-info {
+            flex: 1;
+        }
+
+        .mentor-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .mentor-phone {
+            color: #666;
+            font-size: 14px;
         }
 
         .table {
@@ -243,9 +382,10 @@
 
         .table th,
         .table td {
-            padding: 12px;
+            padding: 12px 8px;
             text-align: left;
             border-bottom: 1px solid #eee;
+            font-size: 14px;
         }
 
         .table th {
@@ -256,6 +396,44 @@
 
         .table tr:hover {
             background: #f8f9fa;
+        }
+
+        .group-header {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .group-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .group-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .module-button {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 13px;
+        }
+
+        .module-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
         }
 
         .modal {
@@ -273,11 +451,11 @@
         .modal-content {
             background-color: white;
             margin: 5% auto;
-            padding: 30px;
+            padding: 20px;
             border-radius: 15px;
-            width: 90%;
+            width: 95%;
             max-width: 800px;
-            max-height: 80vh;
+            max-height: 85vh;
             overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
@@ -309,40 +487,6 @@
             transition: width 0.3s ease;
         }
 
-        .video-container {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-bottom: 56.25%;
-            margin-bottom: 20px;
-        }
-
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 8px;
-        }
-
-        .attachment {
-            display: inline-block;
-            margin: 5px;
-            padding: 10px 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            text-decoration: none;
-            color: #333;
-            border: 1px solid #ddd;
-            transition: all 0.3s ease;
-        }
-
-        .attachment:hover {
-            background: #e9ecef;
-            transform: translateY(-2px);
-        }
-
         .loading {
             text-align: center;
             padding: 40px;
@@ -360,41 +504,12 @@
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .hidden {
             display: none !important;
-        }
-
-        .group-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #eee;
-        }
-
-        .module-button {
-            background: linear-gradient(45deg, #28a745, #20c997);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .module-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
         }
 
         .custom-checkbox {
@@ -480,6 +595,23 @@
             color: #667eea;
         }
 
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            margin-bottom: 20px;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+
         .question-card {
             background: #f8f9fa;
             border-radius: 12px;
@@ -491,19 +623,6 @@
 
         .question-card:hover {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .question-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .question-title {
-            font-weight: 600;
-            color: #333;
-            font-size: 16px;
         }
 
         .question-text {
@@ -535,8 +654,8 @@
 
         .science-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
             margin-bottom: 20px;
         }
 
@@ -562,8 +681,8 @@
 
         .modules-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
+            grid-template-columns: 1fr;
+            gap: 10px;
             margin-top: 20px;
         }
 
@@ -586,43 +705,60 @@
             background: #d4edda;
         }
 
-        .mentor-groups {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
+        .welcome-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
         }
 
-        .mentor-group-item {
-            background: white;
-            padding: 10px;
-            margin-bottom: 8px;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-            font-size: 14px;
+        .welcome-message i {
+            font-size: 48px;
+            color: #667eea;
+            margin-bottom: 20px;
         }
 
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
-            }
+        .welcome-message h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
 
-            .sidebar {
-                width: 100%;
+        @media (min-width: 768px) {
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
             }
 
             .mentors-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             }
 
-            .nav-buttons {
+            .mentor-card {
                 flex-direction: column;
-                gap: 10px;
+                text-align: center;
+            }
+
+            .mentor-image {
+                width: 60px;
+                height: 60px;
             }
 
             .group-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .group-actions {
+                justify-content: flex-end;
+            }
+
+            .science-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .modules-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
         }
     </style>
@@ -633,139 +769,159 @@
         <div class="logo">
             <i class="fas fa-graduation-cap"></i> IPE School
         </div>
-        <div class="nav-buttons">
-            <button class="btn btn-secondary" onclick="showView('mentors')">
-                <i class="fas fa-users"></i> Mentors
-            </button>
-            <button class="btn btn-secondary" onclick="showView('profile')">
-                <i class="fas fa-user"></i> Profile
-            </button>
-            <button class="btn btn-primary" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
+
+        <div class="profile-header" onclick="showView('profile')">
+            <img id="headerProfileImage" src="/placeholder.svg?height=35&width=35" alt="Profile">
+            <div class="profile-info">
+                <div class="profile-name" id="headerProfileName">Loading...</div>
+                <div class="profile-phone" id="headerProfilePhone">Loading...</div>
+            </div>
+        </div>
+
+        <div class="hamburger" onclick="toggleSidebar()">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
     </header>
 
-    <div class="main-content">
-        <div class="sidebar">
-            <div class="profile-section">
-                <img id="sidebarProfileImage" class="profile-image" src="/placeholder.svg?height=80&width=80"
-                     alt="Profile" onclick="showView('profile')">
-                <div class="profile-name" id="sidebarProfileName">Loading...</div>
-                <div class="profile-phone" id="sidebarProfilePhone">Loading...</div>
-            </div>
+    <div class="sidebar-overlay" onclick="closeSidebar()"></div>
 
-            <div>
-                <h3 style="margin-bottom: 15px; color: #333;">My Groups</h3>
-                <ul class="groups-list" id="groupsList">
-                    <li class="loading">
-                        <div class="spinner"></div>
-                        Loading groups...
-                    </li>
-                </ul>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">Menu</div>
+            <div class="close-sidebar" onclick="closeSidebar()">×</div>
+        </div>
+
+        <div class="nav-section">
+            <h3>Navigation</h3>
+            <div class="nav-item" onclick="showView('mentors'); closeSidebar();">
+                <i class="fas fa-users"></i>
+                <span>All Mentors</span>
+            </div>
+            <div class="nav-item" onclick="showView('profile'); closeSidebar();">
+                <i class="fas fa-user"></i>
+                <span>My Profile</span>
+            </div>
+            <div class="nav-item" onclick="logout();">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
             </div>
         </div>
 
-        <div class="content-area">
-            <!-- Dashboard View -->
-            <div id="dashboard" class="view active">
-                <p>Select a group from the sidebar to view details, or use the navigation buttons above.</p>
+        <div class="nav-section">
+            <h3>My Groups</h3>
+            <div id="sidebarGroupsList">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading groups...
+                </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Profile View -->
-            <div id="profile" class="view">
-                <h2>Mentor Profile</h2>
-                <form id="profileForm">
-                    <div class="form-group">
-                        <label>Profile Image</label>
-                        <div style="text-align: center; margin-bottom: 20px;">
-                            <img id="profileImage" class="profile-image" src="/placeholder.svg?height=80&width=80"
-                                 alt="Profile" onclick="document.getElementById('imageInput').click()"
-                                 style="width: 120px; height: 120px;">
-                            <input type="file" id="imageInput" accept="image/*" style="display: none;"
-                                   onchange="previewImage(this)">
-                            <p style="color: #666; font-size: 12px; margin-top: 10px;">Click image to change</p>
-                        </div>
+    <div class="main-content">
+        <!-- Dashboard View -->
+        <div id="dashboard" class="view active">
+            <div class="welcome-message">
+                <i class="fas fa-graduation-cap"></i>
+                <h2>Welcome to IPE School</h2>
+                <p>Select a group from the menu to view details, or use the navigation options.</p>
+            </div>
+        </div>
+
+        <!-- Profile View -->
+        <div id="profile" class="view">
+            <h2>My Profile</h2>
+            <form id="profileForm">
+                <div class="form-group">
+                    <label>Profile Image</label>
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <img id="profileImage" class="profile-image" src="/placeholder.svg?height=80&width=80"
+                             alt="Profile" onclick="document.getElementById('imageInput').click()"
+                             style="width: 120px; height: 120px; cursor: pointer;">
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;"
+                               onchange="previewImage(this)">
+                        <p style="color: #666; font-size: 12px; margin-top: 10px;">Click image to change</p>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="firstName">First Name</label>
-                        <input type="text" id="firstName" required>
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input type="tel" id="phoneNumber" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="custom-checkbox">
+                        <input type="checkbox" id="changePassword" onchange="togglePasswordField()">
+                        <span class="checkmark"></span>
+                        <span class="label-text">Change Password</span>
+                    </label>
+                </div>
+
+                <div class="form-group hidden" id="passwordGroup">
+                    <label for="password">New Password</label>
+                    <div class="password-input-wrapper">
+                        <input type="password" id="password" placeholder="Enter new password">
+                        <i class="fas fa-eye-slash toggle-password" onclick="togglePasswordVisibility()"></i>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="lastName">Last Name</label>
-                        <input type="text" id="lastName" required>
-                    </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Update Profile
+                </button>
+            </form>
+        </div>
 
-                    <div class="form-group">
-                        <label for="phoneNumber">Phone Number</label>
-                        <input type="tel" id="phoneNumber" required>
-                    </div>
+        <!-- Mentors View -->
+        <div id="mentors" class="view">
+            <h2>All Mentors</h2>
+            <div id="mentorsGrid" class="mentors-grid">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading mentors...
+                </div>
+            </div>
+        </div>
 
-                    <div class="form-group">
-                        <label class="custom-checkbox">
-                            <input type="checkbox" id="changePassword" onchange="togglePasswordField()">
-                            <span class="checkmark"></span>
-                            <span class="label-text">Change Password</span>
-                        </label>
-                    </div>
-
-                    <div class="form-group hidden" id="passwordGroup">
-                        <label for="password">New Password</label>
-                        <div class="password-input-wrapper">
-                            <input type="password" id="password" placeholder="Enter new password">
-                            <i class="fas fa-eye-slash toggle-password" onclick="togglePasswordVisibility()"></i>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Update Profile
+        <!-- Group Details View -->
+        <div id="groupDetails" class="view">
+            <div class="group-header">
+                <h2 class="group-title" id="groupName">Group Details</h2>
+                <div class="group-actions">
+                    <button id="moduleButton" class="module-button hidden" onclick="showModuleDetails()">
+                        <i class="fas fa-book"></i> <span id="moduleName">Module</span>
                     </button>
-                </form>
-            </div>
-
-            <!-- Mentors View -->
-            <div id="mentors" class="view">
-                <h2>All Mentors</h2>
-                <div id="mentorsGrid" class="mentors-grid">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        Loading mentors...
-                    </div>
+                    <button class="btn btn-warning" onclick="showChangeModuleModal()">
+                        <i class="fas fa-exchange-alt"></i> Change Module
+                    </button>
+                    <button class="btn btn-secondary" onclick="showStudentProgress()">
+                        <i class="fas fa-chart-line"></i> Progress
+                    </button>
                 </div>
             </div>
 
-            <!-- Group Details View -->
-            <div id="groupDetails" class="view">
-                <div class="group-header">
-                    <h2 id="groupName">Group Details</h2>
-                    <div>
-                        <button id="moduleButton" class="module-button hidden" onclick="showModuleDetails()">
-                            <i class="fas fa-book"></i> <span id="moduleName">Module</span>
-                        </button>
-                        <button class="btn btn-warning" onclick="showChangeModuleModal()" style="margin-left: 10px;">
-                            <i class="fas fa-exchange-alt"></i> Change Module
-                        </button>
-                        <button class="btn btn-secondary" onclick="showStudentProgress()" style="margin-left: 10px;">
-                            <i class="fas fa-chart-line"></i> Student Progress
-                        </button>
-                    </div>
-                </div>
-
-                <h3>Students</h3>
-                <table class="table" id="studentsTable">
-                    <thead>
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Phone Number</th>
-                    </tr>
-                    </thead>
-                    <tbody id="studentsTableBody">
-                    </tbody>
-                </table>
-            </div>
+            <h3>Students</h3>
+            <table class="table" id="studentsTable">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                </tr>
+                </thead>
+                <tbody id="studentsTableBody">
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -877,6 +1033,28 @@
         setupProfileForm();
     });
 
+    // Toggle sidebar
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        const hamburger = document.querySelector('.hamburger');
+
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+        hamburger.classList.toggle('active');
+    }
+
+    // Close sidebar
+    function closeSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        const hamburger = document.querySelector('.hamburger');
+
+        sidebar.classList.remove('active');
+        overlay.classList.remove('active');
+        hamburger.classList.remove('active');
+    }
+
     // Load user data from localStorage
     function loadUserData() {
         const userData = localStorage.getItem('userData');
@@ -893,12 +1071,12 @@
     function updateProfileDisplay() {
         if (!currentUser) return;
 
-        // Update sidebar profile
-        document.getElementById('sidebarProfileName').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
-        document.getElementById('sidebarProfilePhone').textContent = currentUser.phoneNumber;
+        // Update header profile
+        document.getElementById('headerProfileName').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+        document.getElementById('headerProfilePhone').textContent = currentUser.phoneNumber;
 
         if (currentUser.image) {
-            document.getElementById('sidebarProfileImage').src = currentUser.image;
+            document.getElementById('headerProfileImage').src = currentUser.image;
             document.getElementById('profileImage').src = currentUser.image;
         }
 
@@ -917,7 +1095,7 @@
             if (response.ok) {
                 const mentorData = await response.json();
                 mentorGroups = mentorData.groups || [];
-                displayGroups();
+                displaySidebarGroups();
             } else {
                 console.error('Failed to load mentor groups');
             }
@@ -927,18 +1105,19 @@
     }
 
     // Display groups in sidebar
-    function displayGroups() {
-        const groupsList = document.getElementById('groupsList');
+    function displaySidebarGroups() {
+        const sidebarGroupsList = document.getElementById('sidebarGroupsList');
 
         if (mentorGroups.length === 0) {
-            groupsList.innerHTML = '<li style="text-align: center; color: #666;">No groups assigned</li>';
+            sidebarGroupsList.innerHTML = '<div style="text-align: center; color: #666; padding: 10px;">No groups assigned</div>';
             return;
         }
 
-        groupsList.innerHTML = mentorGroups.map(group => `
-                <li class="group-item" onclick="selectGroup(${group.id}, '${group.name}')">
-                    <i class="fas fa-users"></i> ${group.name}
-                </li>
+        sidebarGroupsList.innerHTML = mentorGroups.map(group => `
+                <div class="group-item" onclick="selectGroup(${group.id}, '${group.name}')">
+                    <i class="fas fa-users"></i>
+                    <span>${group.name}</span>
+                </div>
             `).join('');
     }
 
@@ -953,6 +1132,7 @@
         // Load group details
         await loadGroupDetails(groupId, groupName);
         showView('groupDetails');
+        closeSidebar();
     }
 
     // Load group details
@@ -978,7 +1158,7 @@
 
         // Display module button if module exists
         if (groupData.modules && groupData.modules.length > 0) {
-            const module = groupData.modules[0]; // Taking first module as mentioned
+            const module = groupData.modules[0];
             currentModuleId = module.id;
             document.getElementById('moduleName').textContent = module.moduleName;
             document.getElementById('moduleButton').classList.remove('hidden');
@@ -991,13 +1171,12 @@
         if (groupData.students && groupData.students.length > 0) {
             studentsTableBody.innerHTML = groupData.students.map(student => `
                     <tr>
-                        <td>${student.firstName}</td>
-                        <td>${student.lastName}</td>
+                        <td>${student.firstName} ${student.lastName}</td>
                         <td>${student.phoneNumber}</td>
                     </tr>
                 `).join('');
         } else {
-            studentsTableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #666;">No students in this group</td></tr>';
+            studentsTableBody.innerHTML = '<tr><td colspan="2" style="text-align: center; color: #666;">No students in this group</td></tr>';
         }
     }
 
@@ -1028,14 +1207,16 @@
         }
 
         mentorsGrid.innerHTML = allMentors.map(mentor => `
-            <div class="mentor-card" onclick="showMentorGroups(${mentor.id}, '${mentor.firstName} ${mentor.lastName}')">
-                <img class="mentor-image"
-                     src="${mentor.image ? `data:image/jpeg;base64,${arrayBufferToBase64(mentor.image)}` : '/placeholder.svg?height=60&width=60'}"
-                     alt="${mentor.firstName}" width="60" height="60">
-                <h4>${mentor.firstName} ${mentor.lastName}</h4>
-                <p style="color: #666; font-size: 14px;">${mentor.phoneNumber}</p>
-            </div>
-        `).join('');
+                <div class="mentor-card" onclick="showMentorGroups(${mentor.id}, '${mentor.firstName} ${mentor.lastName}')">
+                    <img class="mentor-image"
+                         src="${mentor.image ? `data:image/jpeg;base64,${arrayBufferToBase64(mentor.image)}` : '/placeholder.svg?height=50&width=50'}"
+                         alt="${mentor.firstName}">
+                    <div class="mentor-info">
+                        <div class="mentor-name">${mentor.firstName} ${mentor.lastName}</div>
+                        <div class="mentor-phone">${mentor.phoneNumber}</div>
+                    </div>
+                </div>
+            `).join('');
     }
 
     // Show mentor groups
@@ -1054,16 +1235,18 @@
         }
 
         mentorGroupsContent.innerHTML = `
-            <div class="mentors-grid">
-                ${mentor.groups.map(group => `
-                    <div class="mentor-card" style="cursor: default;">
-                        <i class="fas fa-users" style="font-size: 24px; color: #667eea; margin-bottom: 10px;"></i>
-                        <h4>${group.name}</h4>
-                        <p style="color: #666; font-size: 14px;">Group ID: ${group.id}</p>
-                    </div>
-                `).join('')}
-            </div>
-        `;
+                <div class="mentors-grid">
+                    ${mentor.groups.map(group => `
+                        <div class="mentor-card" style="cursor: default;">
+                            <i class="fas fa-users" style="font-size: 24px; color: #667eea; margin-right: 10px;"></i>
+                            <div class="mentor-info">
+                                <div class="mentor-name">${group.name}</div>
+                                <div class="mentor-phone">Group ID: ${group.id}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
     }
 
     // Show student progress
@@ -1107,8 +1290,8 @@
                     <thead>
                         <tr>
                             <th>Student Name</th>
-                            <th>Total Queries</th>
-                            <th>Passed Queries</th>
+                            <th>Total</th>
+                            <th>Passed</th>
                             <th>Progress</th>
                         </tr>
                     </thead>
@@ -1137,11 +1320,11 @@
 
         document.getElementById('changeModuleModal').style.display = 'block';
         document.getElementById('changeModuleContent').innerHTML = `
-            <div class="loading">
-                <div class="spinner"></div>
-                Loading sciences...
-            </div>
-        `;
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading sciences...
+                </div>
+            `;
 
         try {
             const response = await fetch('/api/v1/science', {
@@ -1168,21 +1351,21 @@
         }
 
         changeModuleContent.innerHTML = `
-            <h3>Select a Science:</h3>
-            <div class="science-grid">
-                ${allSciences.map(science => `
-                    <div class="science-card" onclick="selectScience(${science.id}, '${science.name}')">
-                        <i class="fas fa-flask" style="font-size: 24px; margin-bottom: 10px;"></i>
-                        <h4>${science.name}</h4>
-                        <p style="font-size: 12px; color: #666;">${science.modules ? science.modules.length : 0} modules</p>
-                    </div>
-                `).join('')}
-            </div>
-            <div id="modulesSection" class="hidden">
-                <h3>Select a Module:</h3>
-                <div id="modulesGrid" class="modules-grid"></div>
-            </div>
-        `;
+                <h3>Select a Science:</h3>
+                <div class="science-grid">
+                    ${allSciences.map(science => `
+                        <div class="science-card" onclick="selectScience(${science.id}, '${science.name}')">
+                            <i class="fas fa-flask" style="font-size: 24px; margin-bottom: 10px;"></i>
+                            <h4>${science.name}</h4>
+                            <p style="font-size: 12px; color: #666;">${science.modules ? science.modules.length : 0} modules</p>
+                        </div>
+                    `).join('')}
+                </div>
+                <div id="modulesSection" class="hidden">
+                    <h3>Select a Module:</h3>
+                    <div id="modulesGrid" class="modules-grid"></div>
+                </div>
+            `;
     }
 
     // Select science
@@ -1199,11 +1382,11 @@
         const modulesGrid = document.getElementById('modulesGrid');
 
         modulesGrid.innerHTML = science.modules.map(module => `
-            <div class="module-card" onclick="selectModule(${module.id}, '${module.name}')">
-                <h4>${module.name}</h4>
-                <p style="color: #666; font-size: 14px;">Module ID: ${module.id}</p>
-            </div>
-        `).join('');
+                <div class="module-card" onclick="selectModule(${module.id}, '${module.name}')">
+                    <h4>${module.name}</h4>
+                    <p style="color: #666; font-size: 14px;">Module ID: ${module.id}</p>
+                </div>
+            `).join('');
     }
 
     // Select module
@@ -1297,7 +1480,7 @@
                                 <td>${task.taskName}</td>
                                 <td>
                                     <button class="btn btn-secondary" onclick="showTaskDetails(${task.id}, '${task.taskName}')">
-                                        <i class="fas fa-eye"></i> View Details
+                                        <i class="fas fa-eye"></i> View
                                     </button>
                                 </td>
                             </tr>
@@ -1365,8 +1548,8 @@
                         const attachmentData = await attachmentResponse.json();
                         const attachmentUrl = `data:${attachmentData.contentType};base64,${arrayBufferToBase64(attachmentData.content)}`;
                         content += `<img src="${attachmentUrl}"
-                           style="max-width: 100%; margin: 10px 0; border-radius: 8px;"
-                           alt="Attachment">`;
+                               style="max-width: 100%; margin: 10px 0; border-radius: 8px;"
+                               alt="Attachment">`;
                     }
                 } catch (error) {
                     console.error('Error loading attachment:', error);
@@ -1384,15 +1567,15 @@
 
             taskData.questionRes.forEach((question, index) => {
                 content += `
-                    <tr>
-                        <td>Question ${index + 1}: ${question.questionTest || 'Question details'}</td>
-                        <td>
-                            <button class="btn btn-secondary" onclick="showQuestionDetails(${JSON.stringify(question).replace(/"/g, '&quot;')}, ${index + 1})">
-                                <i class="fas fa-eye"></i> View Details
-                            </button>
-                        </td>
-                    </tr>
-                `;
+                        <tr>
+                            <td>Question ${index + 1}: ${question.questionTest || 'Question details'}</td>
+                            <td>
+                                <button class="btn btn-secondary" onclick="showQuestionDetails(${JSON.stringify(question).replace(/"/g, '&quot;')}, ${index + 1})">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                            </td>
+                        </tr>
+                    `;
             });
 
             content += '</tbody></table>';
@@ -1410,11 +1593,11 @@
         document.getElementById('questionModal').style.display = 'block';
         document.getElementById('questionModalTitle').textContent = `Question ${questionNumber}`;
         document.getElementById('questionContent').innerHTML = `
-            <div class="loading">
-                <div class="spinner"></div>
-                Loading question details...
-            </div>
-        `;
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading question details...
+                </div>
+            `;
 
         let content = '';
 
@@ -1435,11 +1618,11 @@
                     const attachmentData = await attachmentResponse.json();
                     const attachmentUrl = `data:${attachmentData.contentType};base64,${arrayBufferToBase64(attachmentData.content)}`;
                     content += `
-                        <div style="margin: 15px 0;">
-                            <strong>Question Image:</strong><br>
-                            <img src="${attachmentUrl}" style="max-width: 100%; margin-top: 10px; border-radius: 8px;" alt="Question Image">
-                        </div>
-                    `;
+                            <div style="margin: 15px 0;">
+                                <strong>Question Image:</strong><br>
+                                <img src="${attachmentUrl}" style="max-width: 100%; margin-top: 10px; border-radius: 8px;" alt="Question Image">
+                            </div>
+                        `;
                 }
             } catch (error) {
                 console.error('Error loading question attachment:', error);
@@ -1542,7 +1725,7 @@
             const reader = new FileReader();
             reader.onload = function (e) {
                 document.getElementById('profileImage').src = e.target.result;
-                document.getElementById('sidebarProfileImage').src = e.target.result;
+                document.getElementById('headerProfileImage').src = e.target.result;
             };
             reader.readAsDataURL(input.files[0]);
         }
