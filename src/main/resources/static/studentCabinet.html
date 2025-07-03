@@ -1318,6 +1318,9 @@
     async function selectTask(task, taskElement) {
         if (!checkAuth()) return;
 
+        // Hide task results when selecting new task
+        document.getElementById('taskResults').classList.add('d-none');
+
         resetTaskState();
         document.querySelectorAll('.task-item').forEach(t => t.classList.remove('active'));
         if (taskElement) {
@@ -1385,6 +1388,13 @@
         document.getElementById('questionTitle').textContent = 'Vazifa tanlanmadi';
         document.getElementById('questionDifficulty').textContent = 'Daraja tanlanmadi';
         document.getElementById('taskResults').classList.add('d-none');
+
+        // Hide task results card
+        document.getElementById('taskResults').classList.add('d-none');
+
+        // Reset active states in menu
+        document.querySelectorAll('.task-item').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.module-item').forEach(m => m.classList.remove('active'));
     }
 
     async function checkTaskSubmission(taskId) {
@@ -2147,6 +2157,12 @@
 
     async function viewStudentsLevels() {
         if (!checkAuth()) return;
+
+        // Hide submit button when viewing student levels
+        document.getElementById('submitButtonContainer').classList.add('d-none');
+
+        // Reset task state to clean up UI
+        resetTaskState();
 
         try {
             const response = await axios.get('/api/v1/student/levels', {
