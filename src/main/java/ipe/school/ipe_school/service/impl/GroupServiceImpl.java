@@ -106,41 +106,51 @@ public class GroupServiceImpl implements GroupService {
 
     @Transactional
     @Override
-    public void updateStudent(UpdatetedStudentReq updatetedStudentReq) {
-        if (updatetedStudentReq.getOldGroupId() == null && updatetedStudentReq.getNewGroupId() == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Group not found");
+    public void updateStudent(UpdatetedStudentReq req) {
+        if (req.getStudentId() == null || (req.getOldGroupId() == null && req.getNewGroupId() == null)) {
+            return;
         }
-        if (updatetedStudentReq.getOldGroupId() != null) {
-            Optional<Group> byId = groupRepository.findById(updatetedStudentReq.getOldGroupId());
-            if (byId.isPresent()) {
-                Group group = byId.get();
-                for (User student : group.getStudents()) {
-                    if (student.getId().equals(updatetedStudentReq.getStudentId())) {
-                        group.getStudents().remove(student);
-                        groupRepository.save(group);
-                        break;
-                    }
-                }
 
+        User student = userRepository.findById(req.getStudentId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found"));
+
+        StudentProgress progress = studentProgressRepository.findByStudentId(student.getId())
+                .orElse(StudentProgress.builder()
+                        .student(student)
+                        .groupName("Guruh Yo'q")
+                        .build());
+
+        handleOldGroup(req.getOldGroupId(), student, progress);
+        handleNewGroup(req.getNewGroupId(), student, progress);
+
+        studentProgressRepository.save(progress);
+    }
+
+    private void handleOldGroup(Long oldGroupId, User student, StudentProgress progress) {
+        if (oldGroupId != null) {
+            Optional<Group> oldGroupOptional = groupRepository.findById(oldGroupId);
+            if (oldGroupOptional.isEmpty()){
+                return;
             }
+            Group oldGroup = oldGroupOptional.get();
+            oldGroup.getStudents().remove(student);
+            oldGroup.getStudentProgresses().remove(progress);
+            progress.setGroupName("Guruh Yo'q");
+            groupRepository.save(oldGroup);
         }
-        if (updatetedStudentReq.getNewGroupId() != null) {
-            Optional<Group> byId = groupRepository.findById(updatetedStudentReq.getNewGroupId());
-            if (byId.isPresent()) {
-                Group group = byId.get();
-                Optional<User> byId1 = userRepository.findById(updatetedStudentReq.getStudentId());
-                if (byId1.isPresent()) {
-                    User user = byId1.get();
-                    group.getStudents().add(byId1.get());
-                    Optional<StudentProgress> byStudentId = studentProgressRepository.findByStudentId(user.getId());
-                    if (byStudentId.isPresent()) {
-                        StudentProgress studentProgress = byStudentId.get();
-                        studentProgress.setGroupName(group.getName());
-                        studentProgressRepository.save(studentProgress);
-                    }
-                }
-                groupRepository.save(group);
+    }
+
+    private void handleNewGroup(Long newGroupId, User student, StudentProgress progress) {
+        if (newGroupId != null) {
+            Optional<Group> newGroupOptional = groupRepository.findById(newGroupId);
+            if (newGroupOptional.isEmpty()) {
+                return;
             }
+            Group newGroup = newGroupOptional.get();
+            newGroup.getStudents().add(student);
+            progress.setGroupName(newGroup.getName());
+            newGroup.getStudentProgresses().add(progress);
+            groupRepository.save(newGroup);
         }
     }
 
