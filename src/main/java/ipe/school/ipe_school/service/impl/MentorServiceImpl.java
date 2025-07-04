@@ -101,7 +101,11 @@ public class MentorServiceImpl implements MentorService {
 
     @Override
     public MentorRes getMentorId(Long mentorId) {
-        User user = userRepository.findById(mentorId).get();
+        Optional<User> userOptional = userRepository.findById(mentorId);
+        if (userOptional.isEmpty()) {
+            return null;
+        }
+        User user = userOptional.get();
         if (user.getActive()) {
             if (user.getRoles().contains(rolesRepository.findByName("ROLE_MENTOR"))){
                 List<Group> groups = groupService.getGroupByMentorId(mentorId);
