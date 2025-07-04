@@ -81,9 +81,9 @@ public class ModuleServiceImpl implements ModuleService {
 
     @Override
     @Transactional
-    public void updateModule_Active(Long moduleId) {
+    public void updateModule_Active(Long moduleId, Boolean active) {
         Module module = moduleRepository.findById(moduleId).orElseThrow(RuntimeException::new);
-        module.setActive(false);
+        module.setActive(active);
     }
 
     @Override

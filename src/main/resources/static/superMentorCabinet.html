@@ -3,1604 +3,2228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPE School - Supermentor Cabinet</title>
-    <link rel="icon" type="image/png" href="/images/favicon.ico" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>School Management System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-        :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3f37c9;
-            --accent-color: #4895ef;
-            --danger-color: #f72585;
-            --success-color: #4cc9f0;
-            --warning-color: #f8961e;
-            --light-color: #f8f9fa;
-            --dark-color: #212529;
-            --gray-color: #6c757d;
-            --inactive-color: #6c757d; /* Color for inactive tasks */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f5f7fa;
-            color: var(--dark-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
         }
 
-        .navbar {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            padding: 1rem 0;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        .navbar-brand, .nav-link {
-            color: white !important;
-            font-weight: 500;
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
-        .nav-link {
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .user-profile {
             position: relative;
-            margin: 0 0.5rem;
-            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        .nav-link:hover {
-            transform: translateY(-2px);
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: white;
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
-            color: white;
-            border-bottom: none;
-            padding: 1rem 1.5rem;
-        }
-
-        .card-body {
-            padding: 1.5rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            border: none;
-            border-radius: 8px;
-            padding: 0.5rem 1.25rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, var(--danger-color) 0%, #b5179e 100%);
-            border: none;
-            border-radius: 8px;
-            padding: 0.5rem 1.25rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(247, 37, 133, 0.3);
-        }
-
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(247, 37, 133, 0.4);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, var(--success-color) 0%, #4895ef 100%);
-            border: none;
-            border-radius: 8px;
-            padding: 0.5rem 1.25rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(76, 201, 240, 0.3);
-        }
-
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(76, 201, 240, 0.4);
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, var(--warning-color) 0%, #f3722c 100%);
-            border: none;
-            border-radius: 8px;
-            padding: 0.5rem 1.25rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(248, 150, 30, 0.3);
-        }
-
-        .btn-warning:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(248, 150, 30, 0.4);
-        }
-
-        .profile-img {
-            width: 120px;
-            height: 120px;
+        .profile-avatar {
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            border: 3px solid #667eea;
+            cursor: pointer;
         }
 
-        .section {
-            padding: 3rem 0;
+        .profile-info {
+            display: flex;
+            flex-direction: column;
         }
 
-        .footer {
-            background: linear-gradient(135deg, var(--dark-color) 0%, #343a40 100%);
-            color: white;
-            padding: 3rem 0;
+        .profile-name {
+            font-weight: bold;
+            color: #333;
         }
 
-        .badge-count {
-            background: linear-gradient(135deg, var(--accent-color) 0%, var(--primary-color) 100%);
-            color: white;
-            border-radius: 20px;
-            padding: 0.25rem 0.75rem;
-            font-weight: 500;
-            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.2);
+        .profile-phone {
+            font-size: 12px;
+            color: #666;
         }
 
-        .file-upload {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-        }
-
-        .file-upload-input {
+        .profile-dropdown {
             position: absolute;
-            font-size: 100px;
-            opacity: 0;
+            top: 100%;
             right: 0;
-            top: 0;
-            cursor: pointer;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            min-width: 200px;
+            display: none;
+            z-index: 1000;
         }
 
-        .file-upload-label {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background-color: var(--light-color);
+        .profile-dropdown.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 10px 15px;
+            cursor: pointer;
             border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .file-upload-label:hover {
-            background-color: #e9ecef;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-fade {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        .animate-slide-right {
-            animation: slideInRight 0.5s ease-out forwards;
-        }
-
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .animate-delay-1 { animation-delay: 0.1s; }
-        .animate-delay-2 { animation-delay: 0.2s; }
-        .animate-delay-3 { animation-delay: 0.3s; }
-
-        .science-card {
-            border-left: 4px solid var(--warning-color);
-        }
-
-        .module-card {
-            border-left: 4px solid var(--accent-color);
-        }
-
-        .task-card {
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .task-card-inactive {
-            border-left: 4px solid var(--inactive-color);
+        .dropdown-item:hover {
             background-color: #f8f9fa;
         }
 
-        .question-card {
-            border-left: 4px solid var(--success-color);
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
-        .attachment-item {
+        .sciences-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .science-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .science-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .science-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .science-stats {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 0.75rem;
-            background-color: var(--light-color);
+            margin-bottom: 20px;
+        }
+
+        .module-count {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-primary {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd8;
+            border-color: #5a6fd8;
+        }
+
+        .btn-success {
+            background: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            border-color: #218838;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            border-color: #c82333;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            border-color: #ffc107;
+            color: #212529;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+            border-color: #e0a800;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .modules-list {
+            margin-top: 20px;
+        }
+
+        .module-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #28a745;
+            transition: transform 0.3s;
+        }
+
+        .module-item.inactive {
+            border-left-color: #dc3545;
+            opacity: 0.8;
+        }
+
+        .module-item:hover {
+            transform: translateX(5px);
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .module-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .module-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .task-count {
+            background: #e9ecef;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .tasks-list {
+            margin-top: 15px;
+        }
+
+        .task-item {
+            background: #f8f9fa;
             border-radius: 8px;
-            margin-bottom: 0.5rem;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .variant-input-group {
+        .task-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .questions-list {
+            margin-top: 15px;
+        }
+
+        .question-item {
+            background: #fff3cd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .variants-list {
+            margin-left: 20px;
+        }
+
+        .variant-item {
+            margin-bottom: 5px;
             display: flex;
             align-items: center;
-            margin-bottom: 0.5rem;
+            gap: 10px;
         }
 
         .variant-input {
-            flex-grow: 1;
-            margin-right: 0.5rem;
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .file-upload {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: #667eea;
+        }
+
+        .file-upload.dragover {
+            border-color: #667eea;
+            background-color: rgba(102, 126, 234, 0.1);
+        }
+
+        .attachment-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .attachment-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .attachment-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .attachment-remove {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(220, 53, 69, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .breadcrumb {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb-item {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb-item:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb-separator {
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .sciences-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+                padding: 20px;
+            }
+
+            .module-header,
+            .task-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .module-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn {
+                padding: 8px 15px;
+                font-size: 12px;
+            }
+
+            .modal-content {
+                margin: 5% auto;
+                padding: 15px;
+            }
+
+            .science-card {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-        <a class="navbar-brand animate-slide-left" href="#">
-            <i class="fas fa-graduation-cap me-2"></i>IPE School
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item animate-slide-right animate-delay-1">
-                    <a class="nav-link" href="/index.html"><i class="fas fa-home me-1"></i> Home</a>
-                </li>
-                <li class="nav-item animate-slide-right animate-delay-2">
-                    <a class="nav-link" href="#about"><i class="fas fa-info-circle me-1"></i> About</a>
-                </li>
-                <li class="nav-item animate-slide-right animate-delay-3">
-                    <a class="nav-link" href="#mentors"><i class="fas fa-users me-1"></i> Mentors</a>
-                </li>
-                <li class="nav-item animate-slide-right animate-delay-3">
-                    <a class="nav-link" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-1"></i> Logout</a>
-                </li>
-            </ul>
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            School Management System
         </div>
-    </div>
-</nav>
-
-<!-- Main Content -->
-<div class="section">
-    <div class="container">
-        <div class="row">
-            <!-- Profile Column -->
-            <div class="col-lg-4 mb-4">
-                <div class="card animate-fade animate-delay-1">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="fas fa-user-circle me-2"></i>Supermentor Profile</h5>
-                    </div>
-                    <div class="card-body text-center">
-                        <img id="profilePicture" src="" alt="Profile Picture" class="profile-img mb-3">
-                        <div id="profileInfo" class="text-start">
-                            <p class="mb-2"><strong><i class="fas fa-user me-2"></i>First Name:</strong> <span id="firstName" class="float-end"></span></p>
-                            <p class="mb-2"><strong><i class="fas fa-user me-2"></i>Last Name:</strong> <span id="lastName" class="float-end"></span></p>
-                            <p class="mb-3"><strong><i class="fas fa-phone me-2"></i>Phone Number:</strong> <span id="phoneNumber" class="float-end"></span></p>
-                            <button class="btn btn-primary w-100" onclick="showEditProfile()">
-                                <i class="fas fa-edit me-2"></i>Edit Profile
-                            </button>
-                        </div>
-                    </div>
+        <div class="user-profile" id="userProfile">
+            <img src="/placeholder.svg?height=50&width=50" alt="Profile" class="profile-avatar" id="profileAvatar">
+            <div class="profile-info">
+                <div class="profile-name" id="profileName">Loading...</div>
+                <div class="profile-phone" id="profilePhone">Loading...</div>
+            </div>
+            <div class="profile-dropdown" id="profileDropdown">
+                <div class="dropdown-item" onclick="openUpdateProfile()">
+                    <i class="fas fa-user-edit"></i>
+                    Update Profile
                 </div>
-
-                <div class="card animate-fade" id="editProfileCard" style="display: none;">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="fas fa-user-edit me-2"></i>Edit Profile</h5>
-                    </div>
-                    <div class="card-body">
-                        <form id="editProfileForm">
-                            <div class="mb-3">
-                                <label for="editFirstName" class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="editFirstName" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="editLastName" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="editLastName" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="editPhoneNumber" class="form-label">Phone Number</label>
-                                <input type="text" class="form-control" id="editPhoneNumber" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="editProfilePicture" class="form-label">Profile Picture</label>
-                                <div class="file-upload">
-                                    <label for="editProfilePicture" class="file-upload-label w-100 text-center">
-                                        <i class="fas fa-cloud-upload-alt me-2"></i>Choose File
-                                    </label>
-                                    <input type="file" class="file-upload-input" id="editProfilePicture">
-                                    <small class="form-text text-muted d-block mt-1" id="profilePictureFileName">No file chosen</small>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <button type="button" class="btn btn-secondary" onclick="cancelEditProfile()">
-                                    <i class="fas fa-times me-2"></i>Cancel
-                                </button>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save me-2"></i>Update Profile
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                <div class="dropdown-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Dashboard Column -->
-            <div class="col-lg-8">
-                <!-- Dashboard Card -->
-                <div class="card animate-fade animate-delay-2" id="dashboardView">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0"><i class="fas fa-tachometer-alt me-2"></i>Supermentor Dashboard</h5>
-                        <span class="badge-count"><i class="fas fa-flask me-1"></i> <span id="scienceCount">0</span> Sciences</span>
-                    </div>
-                    <div class="card-body">
-                        <p class="lead">Welcome to your supermentor cabinet. Manage your sciences below.</p>
-                        <div class="mt-4">
-                            <h5><i class="fas fa-flask me-2"></i>Sciences</h5>
-                            <div id="scienceList" class="mt-2">
-                                <div class="text-center py-4">
-                                    <div class="spinner-border text-primary" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div>
-                                    <p class="mt-2">Loading sciences...</p>
-                                </div>
-                            </div>
-                            <div class="card mt-4" id="addModuleCard">
-                                <div class="card-header">
-                                    <h6 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Add New Module</h6>
-                                </div>
-                                <div class="card-body">
-                                    <p class="mb-3"><strong>Current Science:</strong> <span id="currentScienceName">N/A</span></p>
-                                    <form id="addModuleForm">
-                                        <div class="mb-3">
-                                            <label for="moduleName" class="form-label">Module Name</label>
-                                            <input type="text" class="form-control" id="moduleName" required>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary w-100" id="addModuleButton">
-                                            <i class="fas fa-save me-2"></i>Add Module
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="breadcrumb" id="breadcrumb">
+            <a href="#" class="breadcrumb-item" onclick="showSciences()">
+                <i class="fas fa-home"></i> Sciences
+            </a>
+        </div>
 
-                <!-- Module View -->
-                <div class="card animate-fade" id="moduleView" style="display: none;">
-                    <div class="card-header">
-                        <button class="btn btn-link text-white p-0" onclick="back()">
-                            <i class="fas fa-arrow-left me-2"></i>Back
-                        </button>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h4 id="moduleTitle" class="mb-0"><i class="fas fa-book-open me-2"></i></h4>
-                            <div>
-                                <button class="btn btn-success me-2" onclick="showAddTaskForm()">
-                                    <i class="fas fa-plus me-2"></i>Add Task
-                                </button>
-                                <button class="btn btn-warning me-2" onclick="showUpdateModuleForm()">
-                                    <i class="fas fa-edit me-2"></i>Update Module
-                                </button>
-                                <button class="btn btn-danger" onclick="closeModule()" id="closeModuleButton">
-                                    <i class="fas fa-lock me-2"></i>Close Module
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card mt-3" id="updateModuleCard" style="display: none;">
-                            <div class="card-header">
-                                <h6 class="mb-0"><i class="fas fa-edit me-2"></i>Update Module</h6>
-                            </div>
-                            <div class="card-body">
-                                <form id="updateModuleForm">
-                                    <div class="mb-3">
-                                        <label for="updateModuleName" class="form-label">Module Name</label>
-                                        <input type="text" class="form-control" id="updateModuleName" required>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <button type="button" class="btn btn-secondary" onclick="cancelUpdateModule()">
-                                            <i class="fas fa-times me-2"></i>Cancel
-                                        </button>
-                                        <button type="submit" class="btn btn-primary" id="updateModuleButton">
-                                            <i class="fas fa-save me-2"></i>Update Module
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="card mt-3" id="addTaskCard" style="display: none;">
-                            <div class="card-header">
-                                <h6 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Add New Task</h6>
-                            </div>
-                            <div class="card-body">
-                                <form id="addTaskForm">
-                                    <div class="mb-3">
-                                        <label for="taskName" class="form-label">Task Name</label>
-                                        <input type="text" class="form-control" id="taskName" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="youtubeUrl" class="form-label">YouTube URL</label>
-                                        <input type="url" class="form-control" id="youtubeUrl">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="taskAttachments" class="form-label">Attachments</label>
-                                        <div class="file-upload">
-                                            <label for="taskAttachments" class="file-upload-label w-100 text-center">
-                                                <i class="fas fa-paperclip me-2"></i>Choose Files
-                                            </label>
-                                            <input type="file" class="file-upload-input" id="taskAttachments" multiple>
-                                            <small class="form-text text-muted d-block mt-1" id="taskFilesName">No files chosen</small>
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-100">
-                                        <i class="fas fa-save me-2"></i>Add Task
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                        <h5 class="mt-4"><i class="fas fa-tasks me-2"></i>Tasks</h5>
-                        <div id="taskList" class="row mt-2"></div>
-                    </div>
-                </div>
+        <!-- Sciences View -->
+        <div id="sciencesView">
+            <h2>Available Sciences</h2>
+            <div class="sciences-grid" id="sciencesGrid">
+                <!-- Sciences will be loaded here -->
+            </div>
+        </div>
 
-                <!-- Task View -->
-                <div class="card animate-fade" id="taskView" style="display: none;">
-                    <div class="card-header">
-                        <button class="btn btn-link text-white p-0" onclick="back()">
-                            <i class="fas fa-arrow-left me-2"></i>Back to Module
-                        </button>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h4 id="taskTitle" class="mb-0"><i class="fas fa-tasks me-2"></i></h4>
-                            <button class="btn btn-warning" onclick="showUpdateTaskForm()">
-                                <i class="fas fa-edit me-2"></i>Update Task
-                            </button>
-                        </div>
-                        <div class="card mt-3" id="updateTaskCard" style="display: none;">
-                            <div class="card-header">
-                                <h6 class="mb-0"><i class="fas fa-edit me-2"></i>Update Task</h6>
-                            </div>
-                            <div class="card-body">
-                                <form id="updateTaskForm">
-                                    <div class="mb-3">
-                                        <label for="updateTaskName" class="form-label">Task Name</label>
-                                        <input type="text" class="form-control" id="updateTaskName" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="updateYoutubeUrl" class="form-label">YouTube URL</label>
-                                        <input type="url" class="form-control" id="updateYoutubeUrl">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="updateTaskAttachments" class="form-label">Attachments</label>
-                                        <div class="file-upload">
-                                            <label for="updateTaskAttachments" class="file-upload-label w-100 text-center">
-                                                <i class="fas fa-paperclip me-2"></i>Choose Files
-                                            </label>
-                                            <input type="file" class="form-control-file" id="updateTaskAttachments" multiple>
-                                            <small class="form-text text-muted d-block mt-1" id="updateTaskFilesName">No files chosen</small>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="taskActive" class="form-label">Task Status</label>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="taskActive">
-                                            <label class="form-check-label" for="taskActive">Active</label>
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-100">
-                                        <i class="fas fa-save me-2"></i>Update Task
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                        <!-- YouTube Video Display Card -->
-                        <div class="card mt-4">
-                            <div class="card-header">
-                                <h6 class="mb-0"><i class="fas fa-video me-2"></i>YouTube Video</h6>
-                            </div>
-                            <div class="card-body">
-                                <div id="taskVideo"></div>
-                            </div>
-                        </div>
-                        <div class="card mt-4">
-                            <div class="card-header">
-                                <h6 class="mb-0"><i class="fas fa-paperclip me-2"></i>Attachments</h6>
-                            </div>
-                            <div class="card-body">
-                                <div id="taskAttachmentsList"></div>
-                            </div>
-                        </div>
-                        <div class="card mt-4">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0"><i class="fas fa-question-circle me-2"></i>Questions</h6>
-                                <button class="btn btn-success btn-sm" onclick="showAddQuestionForm()">
-                                    <i class="fas fa-plus me-1"></i>Add
-                                </button>
-                            </div>
-                            <div class="card-body">
-                                <div id="questionList"></div>
-                                <div class="card mt-3" id="addQuestionCard" style="display: none;">
-                                    <div class="card-header">
-                                        <h6 class="mb-0"><i class="fas fa-plus-circle me-2"></i>New Question</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <form id="addQuestionForm">
-                                            <div class="mb-3">
-                                                <label for="questionTest" class="form-label">Question Text</label>
-                                                <textarea class="form-control" id="questionTest" rows="3" required></textarea>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="questionAttachment" class="form-label">Attachment (Optional)</label>
-                                                <div class="file-upload">
-                                                    <label for="questionAttachment" class="file-upload-label w-100 text-center">
-                                                        <i class="fas fa-paperclip me-2"></i>Choose File
-                                                    </label>
-                                                    <input type="file" class="form-control-file" id="questionAttachment">
-                                                    <small class="form-text text-muted d-block mt-1" id="questionFileName">No file chosen</small>
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <h6><i class="fas fa-list-ol me-2"></i>Answer Variants</h6>
-                                                <div id="variantList" class="mb-2"></div>
-                                                <button type="button" class="btn btn-secondary btn-sm" onclick="addAnswerVariant()">
-                                                    <i class="fas fa-plus me-1"></i>Add Variant
-                                                </button>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary w-100" id="saveQuestionButton">
-                                                <i class="fas fa-save me-2"></i>Save
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="card mt-3" id="updateQuestionCard" style="display: none;">
-                                    <div class="card-header">
-                                        <h6 class="mb-0"><i class="fas fa-edit me-2"></i>Update Question</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <form id="updateQuestionForm">
-                                            <input type="hidden" id="currentAttachmentId" value="">
-                                            <div class="mb-3">
-                                                <label for="updateQuestionTest" class="form-label">Question Text</label>
-                                                <textarea class="form-control" id="updateQuestionTest" rows="3" required></textarea>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="updateQuestionAttachment" class="form-label">Attachment (Optional)</label>
-                                                <div class="file-upload">
-                                                    <label for="updateQuestionAttachment" class="file-upload-label w-100 text-center">
-                                                        <i class="fas fa-paperclip me-2"></i>Choose File
-                                                    </label>
-                                                    <input type="file" class="form-control-file" id="updateQuestionAttachment">
-                                                    <small class="form-text text-muted d-block mt-1" id="updateQuestionFileName">No file chosen</small>
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <h6><i class="fas fa-list-ol me-2"></i>Answer Variants</h6>
-                                                <div id="updateVariantList" class="mb-2"></div>
-                                                <button type="button" class="btn btn-secondary btn-sm" onclick="addUpdateVariantInput()">
-                                                    <i class="fas fa-plus me-1"></i>Add Variant
-                                                </button>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary w-100" id="updateQuestionButton">
-                                                <i class="fas fa-save me-2"></i>Update
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Modules View -->
+        <div id="modulesView" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                <h2 id="scienceTitle">Modules</h2>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <span class="module-count" id="moduleCount">0 modules</span>
+                    <button class="btn btn-primary" onclick="openAddModule()">
+                        <i class="fas fa-plus"></i> Add Module
+                    </button>
                 </div>
+            </div>
+            <div class="modules-list" id="modulesList">
+                <!-- Modules will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Tasks View -->
+        <div id="tasksView" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                <h2 id="moduleTitle">Tasks</h2>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <span class="task-count" id="taskCount">0 tasks</span>
+                    <button class="btn btn-primary" onclick="openAddTask()">
+                        <i class="fas fa-plus"></i> Add Task
+                    </button>
+                    <button class="btn btn-warning" onclick="openUpdateModule()">
+                        <i class="fas fa-edit"></i> Update Module
+                    </button>
+                    <button class="btn" id="moduleStatusBtn" onclick="toggleModuleStatus()">
+                        <i class="fas fa-eye"></i> Present to Mentors
+                    </button>
+                </div>
+            </div>
+            <div class="tasks-list" id="tasksList">
+                <!-- Tasks will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Questions View -->
+        <div id="questionsView" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                <h2 id="taskTitle">Questions</h2>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <span class="task-count" id="questionCount">0 questions</span>
+                    <button class="btn btn-primary" onclick="openAddQuestion()">
+                        <i class="fas fa-plus"></i> Add Question
+                    </button>
+                    <button class="btn btn-warning" onclick="openUpdateTask()">
+                        <i class="fas fa-edit"></i> Update Task
+                    </button>
+                </div>
+            </div>
+            <div id="taskDetails" style="margin-bottom: 20px;">
+                <!-- Task details will be loaded here -->
+            </div>
+            <div class="questions-list" id="questionsList">
+                <!-- Questions will be loaded here -->
             </div>
         </div>
     </div>
 </div>
 
-<!-- Footer -->
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 mb-4 mb-md-0">
-                <h5><i class="fas fa-graduation-cap me-2"></i>About Us</h5>
-                <p>IPE School is a leading educational institution dedicated to providing quality education with expert mentors and modern facilities.</p>
-            </div>
-            <div class="col-md-4 mb-4 mb-md-0">
-                <h5><i class="fas fa-link me-2"></i>Quick Links</h5>
-                <ul class="list-unstyled">
-                    <li class="mb-2"><a href="/index.html"><i class="fas fa-chevron-right me-2"></i>Home</a></li>
-                    <li class="mb-2"><a href="#about"><i class="fas fa-chevron-right me-2"></i>About</a></li>
-                    <li class="mb-2"><a href="#mentors"><i class="fas fa-chevron-right me-2"></i>Mentors</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <h5><i class="fas fa-envelope me-2"></i>Contact Info</h5>
-                <ul class="list-unstyled">
-                    <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>123 Education Street, Tashkent</li>
-                    <li class="mb-2"><i class="fas fa-phone me-2"></i>+998 90 123 45 67</li>
-                    <li class="mb-2"><i class="fas fa-envelope me-2"></i>info@ipeschool.com</li>
-                </ul>
-            </div>
+<!-- Update Profile Modal -->
+<div id="updateProfileModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Update Profile</h3>
+            <span class="close" onclick="closeModal('updateProfileModal')">&times;</span>
         </div>
-        <hr class="mt-4 mb-3" style="border-color: rgba(255,255,255,0.1);">
-        <div class="text-center">
-            <p class="mb-0">© 2023 IPE School. All Rights Reserved.</p>
-        </div>
+        <form id="updateProfileForm">
+            <div class="form-group">
+                <label class="form-label">Profile Image</label>
+                <div class="file-upload" onclick="document.getElementById('profileImageInput').click()">
+                    <i class="fas fa-camera"></i>
+                    <p>Click to select profile image</p>
+                    <input type="file" id="profileImageInput" accept="image/*" style="display: none;" onchange="previewProfileImage(this)">
+                </div>
+                <div id="profileImagePreview" class="attachment-preview"></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">First Name</label>
+                <input type="text" class="form-control" id="updateFirstName" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="updateLastName" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="updatePhoneNumber" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password (Optional)</label>
+                <input type="password" class="form-control" id="updatePassword" placeholder="Leave empty to keep current password">
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button type="button" class="btn" onclick="closeModal('updateProfileModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary">
+                    <span id="updateProfileLoading" class="loading" style="display: none;"></span>
+                    Update Profile
+                </button>
+            </div>
+        </form>
     </div>
-</footer>
+</div>
 
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Add Module Modal -->
+<div id="addModuleModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Add New Module</h3>
+            <span class="close" onclick="closeModal('addModuleModal')">&times;</span>
+        </div>
+        <form id="addModuleForm">
+            <div class="form-group">
+                <label class="form-label">Module Name</label>
+                <input type="text" class="form-control" id="moduleName" required>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button type="button" class="btn" onclick="closeModal('addModuleModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary">
+                    <span id="addModuleLoading" class="loading" style="display: none;"></span>
+                    Add Module
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Add Task Modal -->
+<div id="addTaskModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Add New Task</h3>
+            <span class="close" onclick="closeModal('addTaskModal')">&times;</span>
+        </div>
+        <form id="addTaskForm">
+            <div class="form-group">
+                <label class="form-label">Task Name</label>
+                <input type="text" class="form-control" id="taskName" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">YouTube URL (Optional)</label>
+                <input type="url" class="form-control" id="youtubeURL" placeholder="https://youtube.com/watch?v=...">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Attachments (Optional)</label>
+                <div class="file-upload" onclick="document.getElementById('taskAttachments').click()">
+                    <i class="fas fa-paperclip"></i>
+                    <p>Click to select attachments</p>
+                    <input type="file" id="taskAttachments" multiple accept="image/*" style="display: none;" onchange="previewTaskAttachments(this)">
+                </div>
+                <div id="taskAttachmentsPreview" class="attachment-preview"></div>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button type="button" class="btn" onclick="closeModal('addTaskModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary">
+                    <span id="addTaskLoading" class="loading" style="display: none;"></span>
+                    Add Task
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Update Task Modal -->
+<div id="updateTaskModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Update Task</h3>
+            <span class="close" onclick="closeModal('updateTaskModal')">&times;</span>
+        </div>
+        <form id="updateTaskForm">
+            <div class="form-group">
+                <label class="form-label">Task Name</label>
+                <input type="text" class="form-control" id="updateTaskName" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">YouTube URL (Optional)</label>
+                <input type="url" class="form-control" id="updateYoutubeURL" placeholder="https://youtube.com/watch?v=...">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Current Attachments</label>
+                <div id="currentAttachments" class="attachment-preview"></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Add New Attachments (Optional)</label>
+                <div class="file-upload" onclick="document.getElementById('updateTaskAttachments').click()">
+                    <i class="fas fa-paperclip"></i>
+                    <p>Click to select new attachments</p>
+                    <input type="file" id="updateTaskAttachments" multiple accept="image/*" style="display: none;" onchange="previewUpdateTaskAttachments(this)">
+                </div>
+                <div id="updateTaskAttachmentsPreview" class="attachment-preview"></div>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button type="button" class="btn" onclick="closeModal('updateTaskModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary">
+                    <span id="updateTaskLoading" class="loading" style="display: none;"></span>
+                    Update Task
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Add Question Modal -->
+<div id="addQuestionModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Add New Question</h3>
+            <span class="close" onclick="closeModal('addQuestionModal')">&times;</span>
+        </div>
+        <form id="addQuestionForm">
+            <div class="form-group">
+                <label class="form-label">Question Text</label>
+                <textarea class="form-control" id="questionText" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Question Attachment (Optional)</label>
+                <div class="file-upload" onclick="document.getElementById('questionAttachment').click()">
+                    <i class="fas fa-image"></i>
+                    <p>Click to select question image</p>
+                    <input type="file" id="questionAttachment" accept="image/*" style="display: none;" onchange="previewQuestionAttachment(this)">
+                </div>
+                <div id="questionAttachmentPreview" class="attachment-preview"></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Answer Variants</label>
+                <div id="variantsList">
+                    <div class="variant-item">
+                        <input type="text" class="variant-input" placeholder="Variant 1" required>
+                        <input type="radio" name="correctAnswer" value="0" required>
+                        <label>Correct</label>
+                        <button type="button" class="btn btn-danger" onclick="removeVariant(this)" style="padding: 5px 10px; font-size: 12px;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="variant-item">
+                        <input type="text" class="variant-input" placeholder="Variant 2" required>
+                        <input type="radio" name="correctAnswer" value="1" required>
+                        <label>Correct</label>
+                        <button type="button" class="btn btn-danger" onclick="removeVariant(this)" style="padding: 5px 10px; font-size: 12px;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-success" onclick="addVariant()" style="margin-top: 10px;">
+                    <i class="fas fa-plus"></i> Add Variant
+                </button>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button type="button" class="btn" onclick="closeModal('addQuestionModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary">
+                    <span id="addQuestionLoading" class="loading" style="display: none;"></span>
+                    Add Question
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Update Question Modal -->
+<div id="updateQuestionModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Update Question</h3>
+            <span class="close" onclick="closeModal('updateQuestionModal')">&times;</span>
+        </div>
+        <form id="updateQuestionForm">
+            <div class="form-group">
+                <label class="form-label">Question Text</label>
+                <textarea class="form-control" id="updateQuestionText" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Current Attachment</label>
+                <div id="currentQuestionAttachment" class="attachment-preview"></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Update Attachment (Optional)</label>
+                <div class="file-upload" onclick="document.getElementById('updateQuestionAttachment').click()">
+                    <i class="fas fa-image"></i>
+                    <p>Click to select new question image</p>
+                    <input type="file" id="updateQuestionAttachment" accept="image/*" style="display: none;" onchange="previewUpdateQuestionAttachment(this)">
+                </div>
+                <div id="updateQuestionAttachmentPreview" class="attachment-preview"></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Answer Variants</label>
+                <div id="updateVariantsList">
+                    <!-- Variants will be loaded here -->
+                </div>
+                <button type="button" class="btn btn-success" onclick="addUpdateVariant()" style="margin-top: 10px;">
+                    <i class="fas fa-plus"></i> Add Variant
+                </button>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button type="button" class="btn" onclick="closeModal('updateQuestionModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary">
+                    <span id="updateQuestionLoading" class="loading" style="display: none;"></span>
+                    Update Question
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
-    const API_BASE = '/api/v1';
-    let currentScienceId = null;
-    let currentScienceName = null;
-    let currentModuleId = null;
-    let currentTaskId = null;
-    let currentView = 'dashboard';
-    let currentQuestionId = null;
+    // Global variables
+    let currentScience = null;
+    let currentModule = null;
+    let currentTask = null;
+    let currentQuestion = null;
+    let userData = null;
 
-    // Initialize file input change handlers
+    // Initialize the application
     document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('editProfilePicture').addEventListener('change', function() {
-            document.getElementById('profilePictureFileName').textContent = this.files[0] ? this.files[0].name : 'No file chosen';
-        });
-
-        document.getElementById('taskAttachments').addEventListener('change', function() {
-            const files = this.files;
-            document.getElementById('taskFilesName').textContent = files.length > 0 ? (files.length === 1 ? files[0].name : `${files.length} files selected`) : 'No files chosen';
-        });
-
-        document.getElementById('updateTaskAttachments').addEventListener('change', function() {
-            const files = this.files;
-            document.getElementById('updateTaskFilesName').textContent = files.length > 0 ? (files.length === 1 ? files[0].name : `${files.length} files selected`) : 'No files chosen';
-        });
-
-        document.getElementById('questionAttachment').addEventListener('change', function() {
-            document.getElementById('questionFileName').textContent = this.files[0] ? this.files[0].name : 'No file chosen';
-        });
-
-        document.getElementById('updateQuestionAttachment').addEventListener('change', function() {
-            document.getElementById('updateQuestionFileName').textContent = this.files[0] ? this.files[0].name : 'No file chosen';
-        });
-
-        if (!localStorage.getItem('authToken')) window.location.href = '/index.html';
-        loadProfile();
+        loadUserData();
         loadSciences();
-        addAnswerVariant();
+        setupEventListeners();
     });
 
-    // Fetch and display supermentor profile
-    async function loadProfile() {
+    // Setup event listeners
+    function setupEventListeners() {
+        // Profile dropdown toggle
+        document.getElementById('userProfile').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.remove('show');
+        });
+
+        // Form submissions
+        document.getElementById('updateProfileForm').addEventListener('submit', handleUpdateProfile);
+        document.getElementById('addModuleForm').addEventListener('submit', handleAddModule);
+        document.getElementById('addTaskForm').addEventListener('submit', handleAddTask);
+        document.getElementById('updateTaskForm').addEventListener('submit', handleUpdateTask);
+        document.getElementById('addQuestionForm').addEventListener('submit', handleAddQuestion);
+        document.getElementById('updateQuestionForm').addEventListener('submit', handleUpdateQuestion);
+    }
+
+    // Load user data from localStorage
+    function loadUserData() {
+        const userDataStr = localStorage.getItem('userData');
+        if (!userDataStr) {
+            window.location.href = 'login.html';
+            return;
+        }
+
         try {
-            const profile = JSON.parse(localStorage.getItem('userData')) || {};
-            document.getElementById('firstName').textContent = profile.firstName || 'N/A';
-            document.getElementById('lastName').textContent = profile.lastName || 'N/A';
-            document.getElementById('phoneNumber').textContent = profile.phoneNumber || 'N/A';
-
-            if (profile.image) {
-                document.getElementById('profilePicture').style.display = 'block';
-                if (typeof profile.image === 'string' && profile.image.startsWith('data:image')) {
-                    document.getElementById('profilePicture').src = profile.image;
-                } else if (Array.isArray(profile.image)) {
-                    const byteArray = new Uint8Array(profile.image);
-                    const blob = new Blob([byteArray], {type: 'image/jpeg'});
-                    document.getElementById('profilePicture').src = URL.createObjectURL(blob);
-                } else {
-                    document.getElementById('profilePicture').src = profile.image || '';
-                }
-            } else {
-                document.getElementById('profilePicture').style.display = 'none';
-            }
-
-            document.getElementById('editFirstName').value = profile.firstName || '';
-            document.getElementById('editLastName').value = profile.lastName || '';
-            document.getElementById('editPhoneNumber').value = profile.phoneNumber || '';
+            userData = JSON.parse(userDataStr);
+            updateUserProfile();
         } catch (error) {
-            console.error('Error loading profile:', error);
+            console.error('Error parsing user data:', error);
+            window.location.href = 'login.html';
         }
     }
 
-    // Fetch and display sciences
+    // Update user profile display
+    function updateUserProfile() {
+        document.getElementById('profileName').textContent = `${userData.firstName} ${userData.lastName}`;
+        document.getElementById('profilePhone').textContent = userData.phoneNumber;
+
+        if (userData.image) {
+            document.getElementById('profileAvatar').src = userData.image;
+        }
+    }
+
+    // Load sciences from API
     async function loadSciences() {
         try {
-            const response = await fetch(`${API_BASE}/science`, {
-                headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
+            const response = await fetch('/api/v1/science', {
+                headers: {
+                    'Authorization': localStorage.getItem('authToken')
+                }
             });
-            if (!response.ok) throw new Error('Failed to fetch sciences');
-            const sciences = await response.json();
-            document.getElementById('scienceCount').textContent = sciences.length;
-            const scienceList = document.getElementById('scienceList');
-            scienceList.innerHTML = '';
 
-            if (sciences.length === 0) {
-                scienceList.innerHTML = `<div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>No sciences assigned.</div>`;
-                return;
+            if (!response.ok) {
+                throw new Error('Failed to load sciences');
             }
 
-            sciences.forEach(science => {
-                const scienceCard = document.createElement('div');
-                scienceCard.className = 'card science-card mb-3 animate-fade';
-                scienceCard.innerHTML = `
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0"><i class="fas fa-flask me-2"></i>${science.name}</h5>
-                            <button class="btn btn-primary btn-sm" onclick="showModules(${science.id}, '${science.name.replace(/'/g, "\\'")}')">
-                                <i class="fas fa-eye me-1"></i>View Modules
+            const sciences = await response.json();
+            displaySciences(sciences);
+        } catch (error) {
+            console.error('Error loading sciences:', error);
+            alert('Error loading sciences. Please try again.');
+        }
+    }
+
+    // Display sciences
+    function displaySciences(sciences) {
+        const grid = document.getElementById('sciencesGrid');
+        grid.innerHTML = '';
+
+        sciences.forEach(science => {
+            const card = document.createElement('div');
+            card.className = 'science-card';
+            card.innerHTML = `
+                    <div class="science-name">${science.name}</div>
+                    <div class="science-stats">
+                        <div class="module-count">${science.modules.length} modules</div>
+                    </div>
+                    <button class="btn" onclick="viewScienceModules(${science.id}, '${science.name}')">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                `;
+            grid.appendChild(card);
+        });
+    }
+
+    // View science modules
+    async function viewScienceModules(scienceId, scienceName) {
+        currentScience = { id: scienceId, name: scienceName };
+
+        try {
+            const response = await fetch('/api/v1/science', {
+                headers: {
+                    'Authorization': localStorage.getItem('authToken')
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to load science details');
+            }
+
+            const sciences = await response.json();
+            const science = sciences.find(s => s.id === scienceId);
+
+            if (science) {
+                displayModules(science.modules, scienceName);
+                updateBreadcrumb([
+                    { text: 'Sciences', onclick: 'showSciences()' },
+                    { text: scienceName, onclick: null }
+                ]);
+            }
+        } catch (error) {
+            console.error('Error loading science modules:', error);
+            alert('Error loading modules. Please try again.');
+        }
+    }
+
+    // Display modules
+    function displayModules(modules, scienceName) {
+        document.getElementById('sciencesView').style.display = 'none';
+        document.getElementById('tasksView').style.display = 'none';
+        document.getElementById('questionsView').style.display = 'none';
+        document.getElementById('modulesView').style.display = 'block';
+
+        document.getElementById('scienceTitle').textContent = `${scienceName} - Modules`;
+        document.getElementById('moduleCount').textContent = `${modules.length} modules`;
+
+        const modulesList = document.getElementById('modulesList');
+        modulesList.innerHTML = '';
+
+        modules.forEach(module => {
+            const moduleItem = document.createElement('div');
+            moduleItem.className = `module-item ${!module.active ? 'inactive' : ''}`;
+            moduleItem.innerHTML = `
+                    <div class="module-header">
+                        <div>
+                            <div class="module-name">${module.name}</div>
+                            <div class="task-count">${module.taskCount} tasks</div>
+                        </div>
+                        <div class="module-actions">
+                            <button class="btn btn-primary" onclick="viewModuleTasks(${module.id}, '${module.name}')">
+                                <i class="fas fa-eye"></i> View Details
                             </button>
                         </div>
                     </div>
                 `;
-                scienceList.appendChild(scienceCard);
-
-                if (science.modules && science.modules.length > 0) {
-                    science.modules.forEach(module => {
-                        // Escape single quotes in module.name
-                        const escapedName = module.name.replace(/'/g, "\\'");
-                        const moduleCard = document.createElement('div');
-                        moduleCard.className = 'card module-card mb-2 ms-4 animate-fade';
-                        moduleCard.innerHTML = `
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-0"><i class="fas fa-book me-2"></i>${module.name}</h6>
-                                        <small class="text-muted">Tasks: ${module.tasks?.length || 0}</small>
-                                    </div>
-                                    <button class="btn btn-primary btn-sm" onclick="showModuleDetails(${module.id}, '${escapedName}', ${science.id}, '${science.name.replace(/'/g, "\\'")}')">
-                                        <i class="fas fa-info-circle me-1"></i>Details
-                                    </button>
-                                </div>
-                            </div>
-                        `;
-                        scienceList.appendChild(moduleCard);
-                    });
-                }
-            });
-        } catch (error) {
-            console.error('Error loading sciences:', error);
-            document.getElementById('scienceList').innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading sciences.</div>`;
-        }
-    }
-
-    // Show modules for a specific science
-    function showModules(scienceId, scienceName) {
-        currentScienceId = scienceId;
-        currentScienceName = scienceName.replace(/'/g, "\\'");
-        document.getElementById('currentScienceName').textContent = scienceName;
-        // No need to create a separate view, modules are already under sciences
-        loadSciences(); // Refresh to show modules
-    }
-
-    // Show module details
-    async function showModuleDetails(moduleId, moduleName, scienceId, scienceName) {
-        try {
-            currentModuleId = moduleId;
-            currentScienceId = scienceId;
-            currentScienceName = scienceName.replace(/'/g, "\\'");
-            currentView = 'module';
-            document.getElementById('dashboardView').style.display = 'none';
-            document.getElementById('moduleView').style.display = 'block';
-            document.getElementById('taskView').style.display = 'none';
-            document.getElementById('moduleTitle').innerHTML = `<i class="fas fa-book-open me-2"></i>${moduleName}`;
-            document.getElementById('updateModuleName').value = moduleName;
-
-            const response = await fetch(`${API_BASE}/module/${moduleId}`, {
-                headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
-            });
-            if (!response.ok) throw new Error('Failed to fetch module');
-            const module = await response.json();
-            document.getElementById('closeModuleButton').style.display = module.active ? 'inline-block' : 'none';
-
-            document.getElementById('taskList').innerHTML = `<div class="col-12 text-center py-4"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading tasks...</p></div>`;
-            await loadTasks(moduleId);
-        } catch (error) {
-            console.error('Error showing module details:', error);
-            document.getElementById('taskList').innerHTML = `<div class="col-12"><div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading tasks.</div></div>`;
-        }
-    }
-
-    // Fetch and display tasks
-    async function loadTasks(moduleId) {
-        try {
-            const response = await fetch(`${API_BASE}/module/${moduleId}`, {
-                headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
-            });
-            if (!response.ok) throw new Error('Failed to fetch tasks');
-            const module = await response.json();
-            const taskList = document.getElementById('taskList');
-            taskList.innerHTML = '';
-
-            if (module.tasks && module.tasks.length > 0) {
-                module.tasks.forEach(task => {
-                    const taskCard = document.createElement('div');
-                    taskCard.className = 'col-md-6 mb-3';
-                    taskCard.innerHTML = `
-                        <div class="card ${task.active ? 'task-card' : 'task-card-inactive'} h-100">
-                            <div class="card-body">
-                                <h6 class="card-title"><i class="fas fa-tasks me-2"></i>${task.taskName}</h6>
-                                <p class="card-text text-muted small"><i class="fas fa-paperclip me-1"></i>${task.attachmentId ? task.attachmentId.length : 0} attachments</p>
-                                <p class="card-text text-muted small"><i class="fas fa-check-circle me-1"></i>Status: ${task.active ? 'Active' : 'Inactive'}</p>
-                                <button class="btn btn-primary btn-sm w-100" onclick="showTaskDetails(${task.id}, '${task.taskName.replace(/'/g, "\\'")}')">
-                                    <i class="fas fa-eye me-1"></i>View Details
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    taskList.appendChild(taskCard);
-                });
-            } else {
-                taskList.innerHTML = `<div class="col-12"><div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>No tasks in this module.</div></div>`;
-            }
-        } catch (error) {
-            console.error('Error loading tasks:', error);
-            document.getElementById('taskList').innerHTML = `<div class="col-12"><div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading tasks.</div></div>`;
-        }
-    }
-
-    // Show task details with YouTube video embedding
-    async function showTaskDetails(taskId, name) {
-        try {
-            currentTaskId = taskId;
-            currentView = 'task';
-            document.getElementById('moduleView').style.display = 'none';
-            document.getElementById('taskView').style.display = 'block';
-            document.getElementById('taskTitle').textContent = name.replace(/'/g, "\\'");
-            document.getElementById('taskTitle').innerHTML = `<i class="fas fa-tasks me-2"></i>${name.replace(/'/g, "\\'")}`;
-
-            document.getElementById('taskVideo').innerHTML = `<div class="text-center py-3"><div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div><span class="ms-2">Loading video...</span></div>`;
-            document.getElementById('taskAttachmentsList').innerHTML = `<div class="text-center py-3"><div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div><span class="ms-2">Loading attachments...</span></div>`;
-            document.getElementById('questionList').innerHTML = `<div class="text-center py-3"><div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div><span class="ms-2">Loading questions...</span></div>`;
-
-            const taskResponse = await fetch(`${API_BASE}/task/mentor/${taskId}`, {
-                headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
-            });
-            if (!taskResponse.ok) throw new Error('Failed to fetch task details');
-            const task = await taskResponse.json();
-
-            // YouTube Video Embedding Logic
-            const videoDiv = document.getElementById('taskVideo');
-            videoDiv.innerHTML = '';
-            if (task.youtubeURL) {
-                try {
-                    const url = new URL(task.youtubeURL);
-                    const videoId = url.searchParams.get('v') || url.pathname.split('/').pop();
-                    if (videoId) {
-                        const embedUrl = `https://www.youtube.com/embed/${videoId}`;
-                        videoDiv.innerHTML = `
-                            <iframe width="100%" height="315" src="${embedUrl}" title="YouTube video player"
-                                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                allowfullscreen class="max-w-full"></iframe>
-                        `;
-                    } else {
-                        videoDiv.innerHTML = `<p class="text-danger">Invalid YouTube URL: <a href="${task.youtubeURL}" class="text-primary">${task.youtubeURL}</a></p>`;
-                    }
-                } catch (e) {
-                    videoDiv.innerHTML = `<p class="text-danger">Invalid YouTube URL: <a href="${task.youtubeURL}" class="text-primary">${task.youtubeURL}</a></p>`;
-                }
-            } else {
-                videoDiv.innerHTML = `<p class="text-muted">No YouTube video provided.</p>`;
-            }
-
-            await loadTaskAttachments(taskId);
-            await loadQuestions(taskId);
-
-            document.getElementById('updateTaskName').value = task.name;
-            document.getElementById('updateYoutubeUrl').value = task.youtubeURL || '';
-            document.getElementById('taskActive').checked = task.active;
-        } catch (error) {
-            console.error('Error showing task details:', error);
-            document.getElementById('taskVideo').innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading video.</div>`;
-            document.getElementById('taskAttachmentsList').innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading attachments.</div>`;
-            document.getElementById('questionList').innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading questions.</div>`;
-        }
-    }
-
-    // Fetch and display task attachments
-    async function loadTaskAttachments(taskId) {
-        try {
-            const response = await fetch(`${API_BASE}/task/mentor/${taskId}`, {
-                headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
-            });
-            if (!response.ok) throw new Error('Failed to fetch task');
-            const task = await response.json();
-            const attachmentsList = document.getElementById('taskAttachmentsList');
-            attachmentsList.innerHTML = '';
-
-            if (task.attachmentId && task.attachmentId.length > 0) {
-                for (const id of task.attachmentId) {
-                    const attachmentResponse = await fetch(`${API_BASE}/attachments/${id}`, {
-                        headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
-                    });
-                    if (!attachmentResponse.ok) {
-                        console.warn(`Failed to fetch attachment ${id}`);
-                        continue;
-                    }
-                    const attachment = await attachmentResponse.json();
-
-                    const attachmentDiv = document.createElement('div');
-                    attachmentDiv.className = 'mb-2';
-
-                    if (attachment.contentType?.startsWith('image/')) {
-                        const imageSrc = `data:${attachment.contentType};base64,${attachment.content}`;
-                        attachmentDiv.innerHTML = `<img src="${imageSrc}" alt="Attachment ${id}" class="max-w-full h-auto rounded">`;
-                    } else {
-                        const dataUrl = `data:${attachment.contentType || 'application/octet-stream'};base64,${attachment.content}`;
-                        attachmentDiv.innerHTML = `
-                            <div class="attachment-item">
-                                <i class="fas fa-paperclip me-2"></i>
-                                <span>Attachment ${id}</span>
-                                <a href="${dataUrl}" download class="ms-auto btn btn-link btn-sm">
-                                    <i class="fas fa-download"></i> Download
-                                </a>
-                            </div>
-                        `;
-                    }
-                    attachmentsList.appendChild(attachmentDiv);
-                }
-            } else {
-                attachmentsList.innerHTML = `<div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>No attachments for this task.</div>`;
-            }
-        } catch (error) {
-            console.error('Error loading attachments:', error);
-            document.getElementById('taskAttachmentsList').innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading attachments.</div>`;
-        }
-    }
-
-    // Fetch and display questions with attachments
-    async function loadQuestions(taskId) {
-        try {
-            const response = await fetch(`${API_BASE}/task/mentor/${taskId}`, {
-                headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
-            });
-            if (!response.ok) throw new Error('Failed to fetch questions');
-            const task = await response.json();
-            const questionList = document.getElementById('questionList');
-            questionList.innerHTML = '';
-
-            if (task.questionRes && task.questionRes.length > 0) {
-                for (const [index, question] of task.questionRes.entries()) {
-                    let attachmentHtml = '';
-                    if (question.attachmentId) {
-                        try {
-                            const attachmentResponse = await fetch(`${API_BASE}/attachments/${question.attachmentId}`, {
-                                headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
-                            });
-                            if (attachmentResponse.ok) {
-                                const attachment = await attachmentResponse.json();
-                                if (attachment.contentType?.startsWith('image/')) {
-                                    const imageSrc = `data:${attachment.contentType};base64,${attachment.content}`;
-                                    attachmentHtml = `<img src="${imageSrc}" alt="Question Attachment ${question.attachmentId}" class="mt-2 max-w-full h-auto rounded">`;
-                                } else {
-                                    const dataUrl = `data:${attachment.contentType || 'application/octet-stream'};base64,${attachment.content}`;
-                                    attachmentHtml = `
-                                        <div class="attachment-item mt-2">
-                                            <i class="fas fa-paperclip me-2"></i>
-                                            <span>Question Attachment ${question.attachmentId}</span>
-                                            <a href="${dataUrl}" download class="ms-auto btn btn-link btn-sm">
-                                                <i class="fas fa-download"></i> Download
-                                            </a>
-                                        </div>`;
-                                }
-                            } else {
-                                attachmentHtml = `<p class="text-danger mt-2">Attachment ${question.attachmentId} not found.</p>`;
-                            }
-                        } catch (error) {
-                            console.warn(`Error fetching attachment ${question.attachmentId}:`, error);
-                            attachmentHtml = `<p class="text-danger mt-2">Error loading attachment ${question.attachmentId}.</p>`;
-                        }
-                    }
-
-                    const questionCard = document.createElement('div');
-                    questionCard.className = 'card question-card mb-3';
-                    questionCard.innerHTML = `
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <h6 class="mb-1">Question ${index + 1}</h6>
-                                    <p class="mb-2">${question.questionTest}</p>
-                                    ${attachmentHtml}
-                                </div>
-                                <button class="btn btn-primary btn-sm" data-question-id="${question.id}" data-question-test="${question.questionTest.replace(/'/g, "\\'").replace(/"/g, '"')}" data-variants='${JSON.stringify(question.variant)}' data-current-answer="${question.currentAnswer.replace(/'/g, "\\'").replace(/"/g, '"')}" data-attachment-id="${question.attachmentId || ''}" onclick="showUpdateQuestionForm(this)">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </div>
-                            <div class="mt-2">
-                                <p class="mb-1"><strong>Answer Variants:</strong></p>
-                                <ul class="list-unstyled mb-2">${question.variant.map(v => `<li><i class="fas fa-circle me-1" style="font-size: 0.5rem;"></i>${v}</li>`).join('')}</ul>
-                                <p class="mb-0"><strong>Correct Answer:</strong> ${question.currentAnswer || 'Not specified'}</p>
-                            </div>
-                        </div>
-                    `;
-                    questionList.appendChild(questionCard);
-                }
-            } else {
-                questionList.innerHTML = `<div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>No questions in this task.</div>`;
-            }
-        } catch (error) {
-            console.error('Error loading questions:', error);
-            document.getElementById('questionList').innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading questions.</div>`;
-        }
-    }
-
-    // Profile management
-    function showEditProfile() {
-        document.getElementById('profileInfo').style.display = 'none';
-        document.getElementById('editProfileCard').style.display = 'block';
-    }
-
-    function cancelEditProfile() {
-        document.getElementById('profileInfo').style.display = 'block';
-        document.getElementById('editProfileCard').style.display = 'none';
-        document.getElementById('profilePictureFileName').textContent = 'No file chosen';
-        document.getElementById('editProfilePicture').value = '';
-    }
-
-    document.getElementById('editProfileForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append('firstName', document.getElementById('editFirstName').value);
-        formData.append('lastName', document.getElementById('editLastName').value);
-        formData.append('phoneNumber', document.getElementById('editPhoneNumber').value);
-
-        const file = document.getElementById('editProfilePicture').files[0];
-        if (file) formData.append('profilePicture', file);
-
-        try {
-            const response = await fetch(`${API_BASE}/profile`, {
-                method: 'PUT',
-                headers: { 'Authorization': `${localStorage.getItem('authToken')}` },
-                body: formData
-            });
-            if (!response.ok) throw new Error('Failed to update profile');
-            const updatedProfile = await response.json();
-            localStorage.setItem('userData', JSON.stringify(updatedProfile));
-            cancelEditProfile();
-            loadProfile();
-            alert('Profile updated successfully!');
-        } catch (error) {
-            console.error('Error updating profile:', error);
-            alert('Error updating profile.');
-        }
-    });
-
-    // Task management
-    function showAddTaskForm() {
-        document.getElementById('addTaskCard').style.display = 'block';
-        document.getElementById('taskName').value = '';
-        document.getElementById('youtubeUrl').value = '';
-        document.getElementById('taskAttachments').value = '';
-        document.getElementById('taskFilesName').textContent = 'No files chosen';
-    }
-
-    document.getElementById('addTaskForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const taskName = document.getElementById('taskName').value.replace(/'/g, "\\'");
-        const youtubeURL = document.getElementById('youtubeUrl').value;
-        const attachments = document.getElementById('taskAttachments').files;
-
-        if (!taskName) {
-            alert('Task name is required.');
-            return;
-        }
-
-        if (!currentModuleId) {
-            alert('Please select a module before adding a task.');
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('taskName', taskName);
-        formData.append('youtubeURL', youtubeURL || '');
-        formData.append('moduleId', currentModuleId);
-        formData.append('active', 'false');
-        for (let file of attachments) {
-            formData.append('attachments', file);
-        }
-
-        try {
-            const response = await fetch(`${API_BASE}/task`, {
-                method: 'POST',
-                headers: { 'Authorization': `${localStorage.getItem('authToken')}` },
-                body: formData
-            });
-            if (!response.ok) throw new Error('Failed to add task');
-            document.getElementById('addTaskCard').style.display = 'none';
-            await loadTasks(currentModuleId);
-            alert('Task added successfully!');
-        } catch (error) {
-            console.error('Error adding task:', error);
-            alert('Error adding task.');
-        }
-    });
-
-    function showUpdateTaskForm() {
-        document.getElementById('updateTaskCard').style.display = 'block';
-        document.getElementById('updateTaskAttachments').value = '';
-        document.getElementById('updateTaskFilesName').textContent = 'No files chosen';
-    }
-
-    document.getElementById('updateTaskForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const taskName = document.getElementById('updateTaskName').value.replace(/'/g, "\\'");
-        const youtubeURL = document.getElementById('updateYoutubeUrl').value;
-        const attachments = document.getElementById('updateTaskAttachments').files;
-        const active = document.getElementById('taskActive').checked;
-
-        if (!taskName) {
-            alert('Task name is required.');
-            return;
-        }
-
-        if (!currentTaskId || !currentModuleId) {
-            alert('Please select a task and module before updating.');
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('taskName', taskName);
-        formData.append('youtubeURL', youtubeURL || '');
-        formData.append('moduleId', currentModuleId);
-        formData.append('active', active);
-        for (let file of attachments) {
-            formData.append('attachments', file);
-        }
-
-        try {
-            const response = await fetch(`${API_BASE}/task/${currentTaskId}`, {
-                method: 'POST',
-                headers: { 'Authorization': `${localStorage.getItem('authToken')}` },
-                body: formData
-            });
-            if (!response.ok) throw new Error('Failed to update task');
-            document.getElementById('updateTaskCard').style.display = 'none';
-            await showTaskDetails(currentTaskId, taskName); // Refresh with updated taskName
-            alert('Task updated successfully!');
-        } catch (error) {
-            console.error('Error updating task:', error);
-            alert('Error updating task.');
-        }
-    });
-
-    // Question management
-    async function uploadAttachment(file) {
-        if (!file) return null;
-        const formData = new FormData();
-        formData.append('attachment', file);
-        try {
-            const response = await fetch(`${API_BASE}/attachments`, {
-                method: 'POST',
-                headers: { 'Authorization': `${localStorage.getItem('authToken')}` },
-                body: formData
-            });
-            if (!response.ok) throw new Error('Failed to upload attachment');
-            const data = await response.json();
-            console.log('Attachment upload response:', data);
-            if (data) {
-                return data;
-            } else {
-                throw new Error('No ID returned from attachment upload');
-            }
-        } catch (error) {
-            console.warn('Attachment upload failed:', error);
-            alert('Attachment upload failed. Please try again.');
-            return null;
-        }
-    }
-
-    function addAnswerVariant() {
-        const variantList = document.getElementById('variantList');
-        const variantDiv = document.createElement('div');
-        variantDiv.className = 'variant-input-group';
-        variantDiv.innerHTML = `
-            <input type="text" class="form-control variant-input" placeholder="Answer variant" required>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch">
-                <label class="form-check-label">Correct</label>
-            </div>
-            <button type="button" class="btn btn-danger btn-sm" onclick="this.parentNode.remove()">
-                <i class="fas fa-times"></i>
-            </button>
-        `;
-        variantList.appendChild(variantDiv);
-    }
-
-    function addUpdateVariantInput() {
-        const variantList = document.getElementById('updateVariantList');
-        const variantDiv = document.createElement('div');
-        variantDiv.className = 'variant-input-group';
-        variantDiv.innerHTML = `
-            <input type="text" class="form-control variant-input" placeholder="Answer variant" required>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch">
-                <label class="form-check-label">Correct</label>
-            </div>
-            <button type="button" class="btn btn-danger btn-sm" onclick="this.parentNode.remove()">
-                <i class="fas fa-times"></i>
-            </button>
-        `;
-        variantList.appendChild(variantDiv);
-    }
-
-    function showAddQuestionForm() {
-        document.getElementById('addQuestionCard').style.display = 'block';
-        document.getElementById('questionTest').value = '';
-        document.getElementById('questionAttachment').value = '';
-        document.getElementById('questionFileName').textContent = 'No file chosen';
-        document.getElementById('variantList').innerHTML = '';
-        addAnswerVariant();
-    }
-
-    function showUpdateQuestionForm(button) {
-        const questionId = button.dataset.questionId;
-        const questionTest = button.dataset.questionTest;
-        const variants = JSON.parse(button.dataset.variants);
-        const currentAnswer = button.dataset.currentAnswer;
-        const attachmentId = button.dataset.attachmentId || null;
-
-        currentQuestionId = questionId;
-        document.getElementById('updateQuestionCard').style.display = 'block';
-        document.getElementById('updateQuestionTest').value = questionTest;
-        document.getElementById('currentAttachmentId').value = attachmentId || '';
-        document.getElementById('updateQuestionAttachment').value = '';
-        document.getElementById('updateQuestionFileName').textContent = attachmentId ? `Attached: ${attachmentId}` : 'No file chosen';
-        const variantList = document.getElementById('updateVariantList');
-        variantList.innerHTML = '';
-        variants.forEach((variant, index) => {
-            const variantDiv = document.createElement('div');
-            variantDiv.className = 'variant-input-group';
-            const isCorrect = currentAnswer.split(', ').includes(variant);
-            variantDiv.innerHTML = `
-                <input type="text" class="form-control variant-input" value="${variant}" required>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" ${isCorrect ? 'checked' : ''}>
-                    <label class="form-check-label">Correct</label>
-                </div>
-                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentNode.remove()">
-                    <i class="fas fa-times"></i>
-                </button>
-            `;
-            variantList.appendChild(variantDiv);
+            modulesList.appendChild(moduleItem);
         });
     }
 
-    document.getElementById('addQuestionForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const submitButton = document.getElementById('saveQuestionButton');
-        submitButton.disabled = true;
-        submitButton.textContent = 'Saving...';
-
-        const questionTest = document.getElementById('questionTest').value.trim().replace(/'/g, "\\'");
-        const file = document.getElementById('questionAttachment').files[0];
-        const variantInputs = document.querySelectorAll('#variantList .variant-input');
-        const variantCheckboxes = document.querySelectorAll('#variantList .form-check-input');
-
-        if (!questionTest) {
-            alert('Question text is required.');
-            submitButton.disabled = false;
-            submitButton.textContent = 'Save';
-            return;
-        }
-
-        const variants = Array.from(variantInputs).map(input => input.value.trim().replace(/'/g, "\\'")).filter(v => v);
-        if (variants.length === 0) {
-            alert('At least one variant is required.');
-            submitButton.disabled = false;
-            submitButton.textContent = 'Save';
-            return;
-        }
-
-        const correctAnswers = Array.from(variantCheckboxes)
-            .map((checkbox, index) => checkbox.checked ? variants[index] : null)
-            .filter(answer => answer);
-        if (correctAnswers.length === 0) {
-            alert('At least one correct answer must be selected.');
-            submitButton.disabled = false;
-            submitButton.textContent = 'Save';
-            return;
-        }
-
-        let attachmentId = null;
-        if (file) {
-            attachmentId = await uploadAttachment(file);
-            if (!attachmentId) {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Save';
-                return;
-            }
-        }
-
-        const questionData = {
-            questionTest,
-            attachmentId,
-            variant: variants,
-            currentAnswer: correctAnswers.join(', '),
-            taskId: currentTaskId
-        };
-        console.log('Sending question data:', JSON.stringify(questionData));
+    // View module tasks
+    async function viewModuleTasks(moduleId, moduleName) {
+        currentModule = { id: moduleId, name: moduleName };
 
         try {
-            const response = await fetch(`${API_BASE}/questions`, {
-                method: 'POST',
+            const response = await fetch(`/api/v1/module/${moduleId}`, {
                 headers: {
-                    'Authorization': `${localStorage.getItem('authToken')}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(questionData)
+                    'Authorization': localStorage.getItem('authToken')
+                }
             });
-            if (!response.ok) throw new Error('Failed to add question');
-            const questionRes = await response.json();
-            console.debug('Question added successfully:', questionRes);
-            document.getElementById('addQuestionCard').style.display = 'none';
-            await loadQuestions(currentTaskId);
-            alert('Question added successfully!');
+
+            if (!response.ok) {
+                throw new Error('Failed to load module details');
+            }
+
+            const moduleDetails = await response.json();
+            displayTasks(moduleDetails, moduleName);
+            updateBreadcrumb([
+                { text: 'Sciences', onclick: 'showSciences()' },
+                { text: currentScience.name, onclick: `viewScienceModules(${currentScience.id}, '${currentScience.name}')` },
+                { text: moduleName, onclick: null }
+            ]);
         } catch (error) {
-            console.error('Error adding question:', error);
-            alert('Error adding question. Please try again.');
-        } finally {
-            document.getElementById('addQuestionForm').reset();
-            document.getElementById('questionFileName').textContent = 'No file chosen';
-            document.getElementById('variantList').innerHTML = '';
-            addAnswerVariant();
-            submitButton.disabled = false;
-            submitButton.textContent = 'Save';
+            console.error('Error loading module tasks:', error);
+            alert('Error loading tasks. Please try again.');
         }
-    });
+    }
 
-    document.getElementById('updateQuestionForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const submitButton = document.getElementById('updateQuestionButton');
-        submitButton.disabled = true;
-        submitButton.textContent = 'Updating...';
+    // Display tasks
+    function displayTasks(moduleDetails, moduleName) {
+        document.getElementById('sciencesView').style.display = 'none';
+        document.getElementById('modulesView').style.display = 'none';
+        document.getElementById('questionsView').style.display = 'none';
+        document.getElementById('tasksView').style.display = 'block';
 
-        const questionTest = document.getElementById('updateQuestionTest').value.trim().replace(/'/g, "\\'");
-        const file = document.getElementById('updateQuestionAttachment').files[0];
-        const variantInputs = document.querySelectorAll('#updateVariantList .variant-input');
-        const variantCheckboxes = document.querySelectorAll('#updateVariantList .form-check-input');
+        document.getElementById('moduleTitle').textContent = `${moduleName} - Tasks`;
+        document.getElementById('taskCount').textContent = `${moduleDetails.tasks.length} tasks`;
 
-        if (!questionTest) {
-            alert('Question text is required.');
-            submitButton.disabled = false;
-            submitButton.textContent = 'Update';
-            return;
+        // Update module status button
+        const statusBtn = document.getElementById('moduleStatusBtn');
+        if (moduleDetails.active === false) {
+            statusBtn.innerHTML = '<i class="fas fa-eye"></i> Present to Mentors';
+            statusBtn.className = 'btn btn-success';
+        } else {
+            statusBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Remove from Mentors';
+            statusBtn.className = 'btn btn-danger';
         }
 
-        const variants = Array.from(variantInputs).map(input => input.value.trim().replace(/'/g, "\\'")).filter(v => v);
-        if (variants.length === 0) {
-            alert('At least one variant is required.');
-            submitButton.disabled = false;
-            submitButton.textContent = 'Update';
-            return;
-        }
+        const tasksList = document.getElementById('tasksList');
+        tasksList.innerHTML = '';
 
-        const correctAnswers = Array.from(variantCheckboxes)
-            .map((checkbox, index) => checkbox.checked ? variants[index] : null)
-            .filter(answer => answer);
-        if (correctAnswers.length === 0) {
-            alert('At least one correct answer must be selected.');
-            submitButton.disabled = false;
-            submitButton.textContent = 'Update';
-            return;
-        }
+        moduleDetails.tasks.forEach(task => {
+            const taskItem = document.createElement('div');
+            taskItem.className = 'task-item';
+            taskItem.innerHTML = `
+                    <div>
+                        <div class="task-name">${task.taskName}</div>
+                        <div class="task-count">Status: ${task.active ? 'Active' : 'Inactive'}</div>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="viewTaskQuestions(${task.id}, '${task.taskName}')">
+                            <i class="fas fa-eye"></i> View Details
+                        </button>
+                    </div>
+                `;
+            tasksList.appendChild(taskItem);
+        });
+    }
 
-        let attachmentId = document.getElementById('currentAttachmentId').value || null;
-        if (file) {
-            attachmentId = await uploadAttachment(file);
-            if (!attachmentId) {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Update';
-                return;
-            }
-        }
-
-        const questionData = {
-            questionTest,
-            attachmentId,
-            variant: variants,
-            currentAnswer: correctAnswers.join(', '),
-            taskId: currentTaskId
-        };
-        console.log('Sending updated question data:', JSON.stringify(questionData));
+    // View task questions
+    async function viewTaskQuestions(taskId, taskName) {
+        currentTask = { id: taskId, name: taskName };
 
         try {
-            const response = await fetch(`${API_BASE}/questions/${currentQuestionId}`, {
+            const response = await fetch(`/api/v1/task/${taskId}`, {
+                headers: {
+                    'Authorization': localStorage.getItem('authToken')
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to load task details');
+            }
+
+            const taskDetails = await response.json();
+            await displayQuestions(taskDetails, taskName);
+            updateBreadcrumb([
+                { text: 'Sciences', onclick: 'showSciences()' },
+                { text: currentScience.name, onclick: `viewScienceModules(${currentScience.id}, '${currentScience.name}')` },
+                { text: currentModule.name, onclick: `viewModuleTasks(${currentModule.id}, '${currentModule.name}')` },
+                { text: taskName, onclick: null }
+            ]);
+        } catch (error) {
+            console.error('Error loading task questions:', error);
+            alert('Error loading questions. Please try again.');
+        }
+    }
+
+    // Display questions
+    async function displayQuestions(taskDetails, taskName) {
+        document.getElementById('sciencesView').style.display = 'none';
+        document.getElementById('modulesView').style.display = 'none';
+        document.getElementById('tasksView').style.display = 'none';
+        document.getElementById('questionsView').style.display = 'block';
+
+        document.getElementById('taskTitle').textContent = `${taskName} - Questions`;
+        document.getElementById('questionCount').textContent = `${taskDetails.questionRes.length} questions`;
+
+        // Display task details
+        const taskDetailsDiv = document.getElementById('taskDetails');
+        let taskDetailsHTML = `
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h4>Task Information</h4>
+                    <p><strong>Name:</strong> ${taskDetails.name}</p>
+                    <p><strong>Status:</strong> ${taskDetails.active ? 'Active' : 'Inactive'}</p>
+            `;
+
+        if (taskDetails.youtubeURL) {
+            taskDetailsHTML += `<p><strong>YouTube URL:</strong> <a href="${taskDetails.youtubeURL}" target="_blank">${taskDetails.youtubeURL}</a></p>`;
+        }
+
+        if (taskDetails.attachmentId && taskDetails.attachmentId.length > 0) {
+            taskDetailsHTML += `<p><strong>Attachments:</strong></p><div class="attachment-preview" id="taskAttachmentsList"></div>`;
+        }
+
+        taskDetailsHTML += `</div>`;
+        taskDetailsDiv.innerHTML = taskDetailsHTML;
+
+        // Load and display attachments
+        if (taskDetails.attachmentId && taskDetails.attachmentId.length > 0) {
+            await loadTaskAttachments(taskDetails.attachmentId);
+        }
+
+        // Display questions
+        const questionsList = document.getElementById('questionsList');
+        questionsList.innerHTML = '';
+
+        taskDetails.questionRes.forEach(question => {
+            const questionItem = document.createElement('div');
+            questionItem.className = 'question-item';
+            questionItem.innerHTML = `
+                    <div class="question-text">${question.questionTest}</div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+                        <button class="btn btn-primary" onclick="viewQuestionDetails(${question.id})">
+                            <i class="fas fa-eye"></i> View Details
+                        </button>
+                        <button class="btn btn-warning" onclick="openUpdateQuestion(${question.id})">
+                            <i class="fas fa-edit"></i> Update
+                        </button>
+                    </div>
+                `;
+            questionsList.appendChild(questionItem);
+        });
+    }
+
+    // Load task attachments
+    async function loadTaskAttachments(attachmentIds) {
+        try {
+            const params = new URLSearchParams();
+            attachmentIds.forEach(id => params.append('attachmentIds', id));
+
+            const response = await fetch(`/api/v1/attachments?${params}`, {
+                headers: {
+                    'Authorization': localStorage.getItem('authToken')
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to load attachments');
+            }
+
+            const attachments = await response.json();
+            displayTaskAttachments(attachments);
+        } catch (error) {
+            console.error('Error loading attachments:', error);
+        }
+    }
+
+    // Display task attachments
+    function displayTaskAttachments(attachments) {
+        const container = document.getElementById('taskAttachmentsList');
+        if (!container) return;
+
+        container.innerHTML = '';
+        attachments.forEach(attachment => {
+            const attachmentDiv = document.createElement('div');
+            attachmentDiv.className = 'attachment-item';
+
+            const blob = new Blob([new Uint8Array(attachment.content)], { type: attachment.contentType });
+            const url = URL.createObjectURL(blob);
+
+            attachmentDiv.innerHTML = `
+                    <img src="${url}" alt="Attachment" class="attachment-image">
+                `;
+            container.appendChild(attachmentDiv);
+        });
+    }
+
+    // View question details
+    async function viewQuestionDetails(questionId) {
+        try {
+            const response = await fetch(`/api/v1/questions/${questionId}`, {
+                headers: {
+                    'Authorization': localStorage.getItem('authToken')
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to load question details');
+            }
+
+            const question = await response.json();
+            displayQuestionDetails(question);
+        } catch (error) {
+            console.error('Error loading question details:', error);
+            alert('Error loading question details. Please try again.');
+        }
+    }
+
+    // Display question details
+    function displayQuestionDetails(question) {
+        let detailsHTML = `
+                <div style="background: #fff3cd; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #ffc107;">
+                    <h4>Question Details</h4>
+                    <p><strong>Question:</strong> ${question.questionTest}</p>
+                    <p><strong>Variants:</strong></p>
+                    <ul>
+            `;
+
+        question.variant.forEach((variant, index) => {
+            const isCorrect = variant === question.currentAnswer;
+            detailsHTML += `<li style="color: ${isCorrect ? 'green' : 'black'}; font-weight: ${isCorrect ? 'bold' : 'normal'};">${variant} ${isCorrect ? '(Correct Answer)' : ''}</li>`;
+        });
+
+        detailsHTML += `</ul>`;
+
+        if (question.attachmentId) {
+            detailsHTML += `<div id="questionAttachmentDisplay"></div>`;
+        }
+
+        detailsHTML += `</div>`;
+
+        // Insert after the question item
+        const questionItems = document.querySelectorAll('.question-item');
+        questionItems.forEach(item => {
+            const existingDetails = item.nextElementSibling;
+            if (existingDetails && existingDetails.classList.contains('question-details')) {
+                existingDetails.remove();
+            }
+        });
+
+        const questionItem = Array.from(questionItems).find(item =>
+            item.innerHTML.includes(`viewQuestionDetails(${question.id})`)
+        );
+
+        if (questionItem) {
+            const detailsDiv = document.createElement('div');
+            detailsDiv.className = 'question-details';
+            detailsDiv.innerHTML = detailsHTML;
+            questionItem.parentNode.insertBefore(detailsDiv, questionItem.nextSibling);
+
+            // Load attachment if exists
+            if (question.attachmentId) {
+                loadQuestionAttachment(question.attachmentId);
+            }
+        }
+    }
+
+    // Load question attachment
+    async function loadQuestionAttachment(attachmentId) {
+        try {
+            const response = await fetch(`/api/v1/attachments/${attachmentId}`, {
+                headers: {
+                    'Authorization': localStorage.getItem('authToken')
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to load attachment');
+            }
+
+            const attachment = await response.json();
+            const container = document.getElementById('questionAttachmentDisplay');
+            if (container) {
+                const blob = new Blob([new Uint8Array(attachment.content)], { type: attachment.contentType });
+                const url = URL.createObjectURL(blob);
+
+                container.innerHTML = `
+                        <p><strong>Attachment:</strong></p>
+                        <img src="${url}" alt="Question Attachment" style="max-width: 300px; border-radius: 8px;">
+                    `;
+            }
+        } catch (error) {
+            console.error('Error loading question attachment:', error);
+        }
+    }
+
+    // Navigation functions
+    function showSciences() {
+        document.getElementById('sciencesView').style.display = 'block';
+        document.getElementById('modulesView').style.display = 'none';
+        document.getElementById('tasksView').style.display = 'none';
+        document.getElementById('questionsView').style.display = 'none';
+        updateBreadcrumb([{ text: 'Sciences', onclick: null }]);
+    }
+
+    // Update breadcrumb
+    function updateBreadcrumb(items) {
+        const breadcrumb = document.getElementById('breadcrumb');
+        breadcrumb.innerHTML = '';
+
+        items.forEach((item, index) => {
+            if (index > 0) {
+                const separator = document.createElement('span');
+                separator.className = 'breadcrumb-separator';
+                separator.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                breadcrumb.appendChild(separator);
+            }
+
+            const breadcrumbItem = document.createElement('a');
+            breadcrumbItem.className = 'breadcrumb-item';
+            breadcrumbItem.textContent = item.text;
+
+            if (item.onclick) {
+                breadcrumbItem.href = '#';
+                breadcrumbItem.onclick = () => eval(item.onclick);
+            } else {
+                breadcrumbItem.style.color = '#999';
+                breadcrumbItem.style.cursor = 'default';
+            }
+
+            breadcrumb.appendChild(breadcrumbItem);
+        });
+    }
+
+    // Modal functions
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'block';
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+
+    // Profile functions
+    function openUpdateProfile() {
+        document.getElementById('updateFirstName').value = userData.firstName;
+        document.getElementById('updateLastName').value = userData.lastName;
+        document.getElementById('updatePhoneNumber').value = userData.phoneNumber;
+        document.getElementById('updatePassword').value = '';
+
+        if (userData.image) {
+            document.getElementById('profileImagePreview').innerHTML = `
+                    <div class="attachment-item">
+                        <img src="${userData.image}" alt="Current Profile" class="attachment-image">
+                    </div>
+                `;
+        }
+
+        openModal('updateProfileModal');
+    }
+
+    function previewProfileImage(input) {
+        const preview = document.getElementById('profileImagePreview');
+        preview.innerHTML = '';
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = `
+                        <div class="attachment-item">
+                            <img src="${e.target.result}" alt="Profile Preview" class="attachment-image">
+                        </div>
+                    `;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    async function handleUpdateProfile(e) {
+        e.preventDefault();
+
+        const loading = document.getElementById('updateProfileLoading');
+        loading.style.display = 'inline-block';
+
+        try {
+            const formData = new FormData();
+            formData.append('id', userData.userId);
+            formData.append('firstName', document.getElementById('updateFirstName').value);
+            formData.append('lastName', document.getElementById('updateLastName').value);
+            formData.append('phoneNumber', document.getElementById('updatePhoneNumber').value);
+
+            const password = document.getElementById('updatePassword').value;
+            if (password) {
+                formData.append('password', password);
+            }
+
+            const fileInput = document.getElementById('profileImageInput');
+            if (fileInput.files && fileInput.files[0]) {
+                formData.append('file', fileInput.files[0]);
+            }
+
+            const response = await fetch('/api/v1/auth/updateProfile', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `${localStorage.getItem('authToken')}`,
-                    'Content-Type': 'application/json'
+                    'Authorization': localStorage.getItem('authToken')
                 },
-                body: JSON.stringify(questionData)
+                body: formData
             });
-            if (!response.ok) throw new Error('Failed to update question');
-            const questionRes = await response.json();
-            console.debug('Question updated successfully:', questionRes);
-            document.getElementById('updateQuestionCard').style.display = 'none';
-            await loadQuestions(currentTaskId);
+
+            if (!response.ok) {
+                throw new Error('Failed to update profile');
+            }
+
+            const result = await response.json();
+
+            // Update localStorage
+            userData.firstName = result.firstName;
+            userData.lastName = result.lastName;
+            userData.phoneNumber = result.phoneNumber;
+            if (result.image) {
+                userData.image = result.image;
+            }
+
+            localStorage.setItem('userData', JSON.stringify(userData));
+            updateUserProfile();
+
+            closeModal('updateProfileModal');
+            alert('Profile updated successfully!');
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            alert('Error updating profile. Please try again.');
+        } finally {
+            loading.style.display = 'none';
+        }
+    }
+
+    function logout() {
+        const roles = userData.roles;
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userData');
+
+        if (Array.isArray(roles) && roles.length > 1) {
+            window.location.href = 'chooseRole.html';
+        } else {
+            window.location.href = 'index.html';
+        }
+    }
+
+    // Module functions
+    function openAddModule() {
+        document.getElementById('moduleName').value = '';
+        openModal('addModuleModal');
+    }
+
+    async function handleAddModule(e) {
+        e.preventDefault();
+
+        const loading = document.getElementById('addModuleLoading');
+        loading.style.display = 'inline-block';
+
+        try {
+            const moduleReq = {
+                name: document.getElementById('moduleName').value,
+                scienceId: currentScience.id
+            };
+
+            const response = await fetch('/api/v1/module', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('authToken')
+                },
+                body: JSON.stringify(moduleReq)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create module');
+            }
+
+            const result = await response.json();
+            closeModal('addModuleModal');
+            alert('Module created successfully!');
+
+            // Refresh modules view
+            viewScienceModules(currentScience.id, currentScience.name);
+        } catch (error) {
+            console.error('Error creating module:', error);
+            alert('Error creating module. Please try again.');
+        } finally {
+            loading.style.display = 'none';
+        }
+    }
+
+    async function toggleModuleStatus() {
+        if (!currentModule) return;
+
+        try {
+            // Get current module status first
+            const moduleResponse = await fetch(`/api/v1/module/${currentModule.id}`, {
+                headers: {
+                    'Authorization': localStorage.getItem('authToken')
+                }
+            });
+
+            if (!moduleResponse.ok) {
+                throw new Error('Failed to get module status');
+            }
+
+            const moduleDetails = await moduleResponse.json();
+
+            let response;
+            if (moduleDetails.active === false) {
+                // Present to mentors (activate)
+                response = await fetch(`/api/v1/module/${currentModule.id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': localStorage.getItem('authToken')
+                    }
+                });
+            } else {
+                // Remove from mentors (deactivate)
+                response = await fetch(`/api/v1/module/${currentModule.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': localStorage.getItem('authToken')
+                    }
+                });
+            }
+
+            if (!response.ok) {
+                throw new Error('Failed to update module status');
+            }
+
+            alert('Module status updated successfully!');
+
+            // Refresh tasks view
+            viewModuleTasks(currentModule.id, currentModule.name);
+        } catch (error) {
+            console.error('Error updating module status:', error);
+            alert('Error updating module status. Please try again.');
+        }
+    }
+
+    // Task functions
+    function openAddTask() {
+        document.getElementById('taskName').value = '';
+        document.getElementById('youtubeURL').value = '';
+        document.getElementById('taskAttachmentsPreview').innerHTML = '';
+        openModal('addTaskModal');
+    }
+
+    function previewTaskAttachments(input) {
+        const preview = document.getElementById('taskAttachmentsPreview');
+        preview.innerHTML = '';
+
+        if (input.files) {
+            Array.from(input.files).forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const attachmentDiv = document.createElement('div');
+                    attachmentDiv.className = 'attachment-item';
+                    attachmentDiv.innerHTML = `
+                            <img src="${e.target.result}" alt="Attachment ${index + 1}" class="attachment-image">
+                            <button type="button" class="attachment-remove" onclick="removeTaskAttachment(${index})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                    preview.appendChild(attachmentDiv);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    }
+
+    function removeTaskAttachment(index) {
+        const input = document.getElementById('taskAttachments');
+        const dt = new DataTransfer();
+
+        Array.from(input.files).forEach((file, i) => {
+            if (i !== index) {
+                dt.items.add(file);
+            }
+        });
+
+        input.files = dt.files;
+        previewTaskAttachments(input);
+    }
+
+    async function handleAddTask(e) {
+        e.preventDefault();
+
+        const loading = document.getElementById('addTaskLoading');
+        loading.style.display = 'inline-block';
+
+        try {
+            const formData = new FormData();
+            formData.append('taskName', document.getElementById('taskName').value);
+            formData.append('youtubeURL', document.getElementById('youtubeURL').value);
+            formData.append('moduleId', currentModule.id);
+            formData.append('active', true);
+
+            const attachments = document.getElementById('taskAttachments').files;
+            Array.from(attachments).forEach(file => {
+                formData.append('attachments', file);
+            });
+
+            const response = await fetch('/api/v1/task', {
+                method: 'POST',
+                headers: {
+                    'Authorization': localStorage.getItem('authToken')
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create task');
+            }
+
+            const result = await response.json();
+            closeModal('addTaskModal');
+            alert('Task created successfully!');
+
+            // Refresh tasks view
+            viewModuleTasks(currentModule.id, currentModule.name);
+        } catch (error) {
+            console.error('Error creating task:', error);
+            alert('Error creating task. Please try again.');
+        } finally {
+            loading.style.display = 'none';
+        }
+    }
+
+    function openUpdateTask() {
+        if (!currentTask) return;
+
+        // Load current task data
+        fetch(`/api/v1/task/${currentTask.id}`, {
+            headers: {
+                'Authorization': localStorage.getItem('authToken')
+            }
+        })
+            .then(response => response.json())
+            .then(taskDetails => {
+                document.getElementById('updateTaskName').value = taskDetails.name;
+                document.getElementById('updateYoutubeURL').value = taskDetails.youtubeURL || '';
+
+                // Load current attachments
+                if (taskDetails.attachmentId && taskDetails.attachmentId.length > 0) {
+                    loadCurrentTaskAttachments(taskDetails.attachmentId);
+                }
+
+                document.getElementById('updateTaskAttachmentsPreview').innerHTML = '';
+                openModal('updateTaskModal');
+            })
+            .catch(error => {
+                console.error('Error loading task details:', error);
+                alert('Error loading task details. Please try again.');
+            });
+    }
+
+    async function loadCurrentTaskAttachments(attachmentIds) {
+        try {
+            const params = new URLSearchParams();
+            attachmentIds.forEach(id => params.append('attachmentIds', id));
+
+            const response = await fetch(`/api/v1/attachments?${params}`, {
+                headers: {
+                    'Authorization': localStorage.getItem('authToken')
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to load current attachments');
+            }
+
+            const attachments = await response.json();
+            const container = document.getElementById('currentAttachments');
+            container.innerHTML = '';
+
+            attachments.forEach(attachment => {
+                const attachmentDiv = document.createElement('div');
+                attachmentDiv.className = 'attachment-item';
+
+                const blob = new Blob([new Uint8Array(attachment.content)], { type: attachment.contentType });
+                const url = URL.createObjectURL(blob);
+
+                attachmentDiv.innerHTML = `
+                        <img src="${url}" alt="Current Attachment" class="attachment-image">
+                    `;
+                container.appendChild(attachmentDiv);
+            });
+        } catch (error) {
+            console.error('Error loading current attachments:', error);
+        }
+    }
+
+    function previewUpdateTaskAttachments(input) {
+        const preview = document.getElementById('updateTaskAttachmentsPreview');
+        preview.innerHTML = '';
+
+        if (input.files) {
+            Array.from(input.files).forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const attachmentDiv = document.createElement('div');
+                    attachmentDiv.className = 'attachment-item';
+                    attachmentDiv.innerHTML = `
+                            <img src="${e.target.result}" alt="New Attachment ${index + 1}" class="attachment-image">
+                            <button type="button" class="attachment-remove" onclick="removeUpdateTaskAttachment(${index})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                    preview.appendChild(attachmentDiv);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    }
+
+    function removeUpdateTaskAttachment(index) {
+        const input = document.getElementById('updateTaskAttachments');
+        const dt = new DataTransfer();
+
+        Array.from(input.files).forEach((file, i) => {
+            if (i !== index) {
+                dt.items.add(file);
+            }
+        });
+
+        input.files = dt.files;
+        previewUpdateTaskAttachments(input);
+    }
+
+    async function handleUpdateTask(e) {
+        e.preventDefault();
+
+        const loading = document.getElementById('updateTaskLoading');
+        loading.style.display = 'inline-block';
+
+        try {
+            const formData = new FormData();
+            formData.append('taskName', document.getElementById('updateTaskName').value);
+            formData.append('youtubeURL', document.getElementById('updateYoutubeURL').value);
+            formData.append('moduleId', currentModule.id);
+            formData.append('active', true);
+
+            const attachments = document.getElementById('updateTaskAttachments').files;
+            Array.from(attachments).forEach(file => {
+                formData.append('attachments', file);
+            });
+
+            const response = await fetch(`/api/v1/task/${currentTask.id}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': localStorage.getItem('authToken')
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update task');
+            }
+
+            closeModal('updateTaskModal');
+            alert('Task updated successfully!');
+
+            // Refresh questions view
+            viewTaskQuestions(currentTask.id, currentTask.name);
+        } catch (error) {
+            console.error('Error updating task:', error);
+            alert('Error updating task. Please try again.');
+        } finally {
+            loading.style.display = 'none';
+        }
+    }
+
+    // Question functions
+    function openAddQuestion() {
+        document.getElementById('questionText').value = '';
+        document.getElementById('questionAttachmentPreview').innerHTML = '';
+
+        // Reset variants
+        const variantsList = document.getElementById('variantsList');
+        variantsList.innerHTML = `
+                <div class="variant-item">
+                    <input type="text" class="variant-input" placeholder="Variant 1" required>
+                    <input type="radio" name="correctAnswer" value="0" required>
+                    <label>Correct</label>
+                    <button type="button" class="btn btn-danger" onclick="removeVariant(this)" style="padding: 5px 10px; font-size: 12px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <div class="variant-item">
+                    <input type="text" class="variant-input" placeholder="Variant 2" required>
+                    <input type="radio" name="correctAnswer" value="1" required>
+                    <label>Correct</label>
+                    <button type="button" class="btn btn-danger" onclick="removeVariant(this)" style="padding: 5px 10px; font-size: 12px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+
+        openModal('addQuestionModal');
+    }
+
+    function addVariant() {
+        const variantsList = document.getElementById('variantsList');
+        const variantCount = variantsList.children.length;
+
+        const variantDiv = document.createElement('div');
+        variantDiv.className = 'variant-item';
+        variantDiv.innerHTML = `
+                <input type="text" class="variant-input" placeholder="Variant ${variantCount + 1}" required>
+                <input type="radio" name="correctAnswer" value="${variantCount}" required>
+                <label>Correct</label>
+                <button type="button" class="btn btn-danger" onclick="removeVariant(this)" style="padding: 5px 10px; font-size: 12px;">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+
+        variantsList.appendChild(variantDiv);
+    }
+
+    function removeVariant(button) {
+        const variantsList = document.getElementById('variantsList');
+        if (variantsList.children.length > 2) {
+            button.parentElement.remove();
+
+            // Update radio button values and placeholders
+            Array.from(variantsList.children).forEach((variant, index) => {
+                const radio = variant.querySelector('input[type="radio"]');
+                const textInput = variant.querySelector('.variant-input');
+                radio.value = index;
+                textInput.placeholder = `Variant ${index + 1}`;
+            });
+        } else {
+            alert('At least 2 variants are required.');
+        }
+    }
+
+    function previewQuestionAttachment(input) {
+        const preview = document.getElementById('questionAttachmentPreview');
+        preview.innerHTML = '';
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = `
+                        <div class="attachment-item">
+                            <img src="${e.target.result}" alt="Question Attachment" class="attachment-image">
+                        </div>
+                    `;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    async function handleAddQuestion(e) {
+        e.preventDefault();
+
+        const loading = document.getElementById('addQuestionLoading');
+        loading.style.display = 'inline-block';
+
+        try {
+            // Get variants and correct answer
+            const variantInputs = document.querySelectorAll('#variantsList .variant-input');
+            const correctAnswerRadio = document.querySelector('input[name="correctAnswer"]:checked');
+
+            if (!correctAnswerRadio) {
+                alert('Please select the correct answer.');
+                return;
+            }
+
+            const variants = Array.from(variantInputs).map(input => input.value.trim()).filter(v => v);
+            const correctAnswerIndex = parseInt(correctAnswerRadio.value);
+            const correctAnswer = variants[correctAnswerIndex];
+
+            if (variants.length < 2) {
+                alert('At least 2 variants are required.');
+                return;
+            }
+
+            // Upload attachment if exists
+            let attachmentId = null;
+            const attachmentFile = document.getElementById('questionAttachment').files[0];
+            if (attachmentFile) {
+                const formData = new FormData();
+                formData.append('file', attachmentFile);
+
+                const attachmentResponse = await fetch('/api/v1/attachments', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': localStorage.getItem('authToken')
+                    },
+                    body: formData
+                });
+
+                if (attachmentResponse.ok) {
+                    const attachmentResult = await attachmentResponse.json();
+                    attachmentId = attachmentResult.id;
+                }
+            }
+
+            const questionReq = {
+                attachmentId: attachmentId,
+                questionTest: document.getElementById('questionText').value,
+                variant: variants,
+                currentAnswer: correctAnswer,
+                taskId: currentTask.id
+            };
+
+            const response = await fetch('/api/v1/questions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('authToken')
+                },
+                body: JSON.stringify(questionReq)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create question');
+            }
+
+            closeModal('addQuestionModal');
+            alert('Question created successfully!');
+
+            // Refresh questions view
+            viewTaskQuestions(currentTask.id, currentTask.name);
+        } catch (error) {
+            console.error('Error creating question:', error);
+            alert('Error creating question. Please try again.');
+        } finally {
+            loading.style.display = 'none';
+        }
+    }
+
+    async function openUpdateQuestion(questionId) {
+        currentQuestion = { id: questionId };
+
+        try {
+            const response = await fetch(`/api/v1/questions/${questionId}`, {
+                headers: {
+                    'Authorization': localStorage.getItem('authToken')
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to load question details');
+            }
+
+            const question = await response.json();
+
+            // Fill form with current data
+            document.getElementById('updateQuestionText').value = question.questionTest;
+
+            // Load current attachment
+            if (question.attachmentId) {
+                loadCurrentQuestionAttachment(question.attachmentId);
+            } else {
+                document.getElementById('currentQuestionAttachment').innerHTML = '<p>No current attachment</p>';
+            }
+
+            // Load variants
+            const variantsList = document.getElementById('updateVariantsList');
+            variantsList.innerHTML = '';
+
+            question.variant.forEach((variant, index) => {
+                const isCorrect = variant === question.currentAnswer;
+                const variantDiv = document.createElement('div');
+                variantDiv.className = 'variant-item';
+                variantDiv.innerHTML = `
+                        <input type="text" class="variant-input" placeholder="Variant ${index + 1}" value="${variant}" required>
+                        <input type="radio" name="updateCorrectAnswer" value="${index}" ${isCorrect ? 'checked' : ''} required>
+                        <label>Correct</label>
+                        <button type="button" class="btn btn-danger" onclick="removeUpdateVariant(this)" style="padding: 5px 10px; font-size: 12px;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
+                variantsList.appendChild(variantDiv);
+            });
+
+            document.getElementById('updateQuestionAttachmentPreview').innerHTML = '';
+            openModal('updateQuestionModal');
+        } catch (error) {
+            console.error('Error loading question details:', error);
+            alert('Error loading question details. Please try again.');
+        }
+    }
+
+    async function loadCurrentQuestionAttachment(attachmentId) {
+        try {
+            const response = await fetch(`/api/v1/attachments/${attachmentId}`, {
+                headers: {
+                    'Authorization': localStorage.getItem('authToken')
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to load current attachment');
+            }
+
+            const attachment = await response.json();
+            const container = document.getElementById('currentQuestionAttachment');
+
+            const blob = new Blob([new Uint8Array(attachment.content)], { type: attachment.contentType });
+            const url = URL.createObjectURL(blob);
+
+            container.innerHTML = `
+                    <div class="attachment-item">
+                        <img src="${url}" alt="Current Question Attachment" class="attachment-image">
+                    </div>
+                `;
+        } catch (error) {
+            console.error('Error loading current question attachment:', error);
+            document.getElementById('currentQuestionAttachment').innerHTML = '<p>Error loading current attachment</p>';
+        }
+    }
+
+    function addUpdateVariant() {
+        const variantsList = document.getElementById('updateVariantsList');
+        const variantCount = variantsList.children.length;
+
+        const variantDiv = document.createElement('div');
+        variantDiv.className = 'variant-item';
+        variantDiv.innerHTML = `
+                <input type="text" class="variant-input" placeholder="Variant ${variantCount + 1}" required>
+                <input type="radio" name="updateCorrectAnswer" value="${variantCount}" required>
+                <label>Correct</label>
+                <button type="button" class="btn btn-danger" onclick="removeUpdateVariant(this)" style="padding: 5px 10px; font-size: 12px;">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+
+        variantsList.appendChild(variantDiv);
+    }
+
+    function removeUpdateVariant(button) {
+        const variantsList = document.getElementById('updateVariantsList');
+        if (variantsList.children.length > 2) {
+            button.parentElement.remove();
+
+            // Update radio button values and placeholders
+            Array.from(variantsList.children).forEach((variant, index) => {
+                const radio = variant.querySelector('input[type="radio"]');
+                const textInput = variant.querySelector('.variant-input');
+                radio.value = index;
+                textInput.placeholder = `Variant ${index + 1}`;
+            });
+        } else {
+            alert('At least 2 variants are required.');
+        }
+    }
+
+    function previewUpdateQuestionAttachment(input) {
+        const preview = document.getElementById('updateQuestionAttachmentPreview');
+        preview.innerHTML = '';
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = `
+                        <div class="attachment-item">
+                            <img src="${e.target.result}" alt="New Question Attachment" class="attachment-image">
+                        </div>
+                    `;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    async function handleUpdateQuestion(e) {
+        e.preventDefault();
+
+        const loading = document.getElementById('updateQuestionLoading');
+        loading.style.display = 'inline-block';
+
+        try {
+            // Get variants and correct answer
+            const variantInputs = document.querySelectorAll('#updateVariantsList .variant-input');
+            const correctAnswerRadio = document.querySelector('input[name="updateCorrectAnswer"]:checked');
+
+            if (!correctAnswerRadio) {
+                alert('Please select the correct answer.');
+                return;
+            }
+
+            const variants = Array.from(variantInputs).map(input => input.value.trim()).filter(v => v);
+            const correctAnswerIndex = parseInt(correctAnswerRadio.value);
+            const correctAnswer = variants[correctAnswerIndex];
+
+            if (variants.length < 2) {
+                alert('At least 2 variants are required.');
+                return;
+            }
+
+            // Upload new attachment if exists
+            let attachmentId = null;
+            const attachmentFile = document.getElementById('updateQuestionAttachment').files[0];
+            if (attachmentFile) {
+                const formData = new FormData();
+                formData.append('file', attachmentFile);
+
+                const attachmentResponse = await fetch('/api/v1/attachments', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': localStorage.getItem('authToken')
+                    },
+                    body: formData
+                });
+
+                if (attachmentResponse.ok) {
+                    const attachmentResult = await attachmentResponse.json();
+                    attachmentId = attachmentResult.id;
+                }
+            }
+
+            const questionReq = {
+                attachmentId: attachmentId,
+                questionTest: document.getElementById('updateQuestionText').value,
+                variant: variants,
+                currentAnswer: correctAnswer,
+                taskId: currentTask.id
+            };
+
+            const response = await fetch(`/api/v1/questions/${currentQuestion.id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('authToken')
+                },
+                body: JSON.stringify(questionReq)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update question');
+            }
+
+            closeModal('updateQuestionModal');
             alert('Question updated successfully!');
+
+            // Refresh questions view
+            viewTaskQuestions(currentTask.id, currentTask.name);
         } catch (error) {
             console.error('Error updating question:', error);
             alert('Error updating question. Please try again.');
         } finally {
-            document.getElementById('updateQuestionForm').reset();
-            document.getElementById('updateQuestionFileName').textContent = 'No file chosen';
-            document.getElementById('updateVariantList').innerHTML = '';
-            submitButton.disabled = false;
-            submitButton.textContent = 'Update';
-        }
-    });
-
-    // Module management
-    async function createModule(moduleName) {
-        if (!currentScienceId) {
-            alert('Please select a science before adding a module.');
-            return;
-        }
-        const moduleReq = { name: moduleName.replace(/'/g, "\\'"), scienceId: currentScienceId };
-        try {
-            const response = await fetch(`${API_BASE}/module`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `${localStorage.getItem('authToken')}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(moduleReq)
-            });
-            if (!response.ok) throw new Error('Failed to create module');
-            await loadSciences(); // Refresh sciences list
-            alert('Module created successfully!');
-            document.getElementById('moduleName').value = ''; // Clear input
-        } catch (error) {
-            console.error('Error creating module:', error);
-            alert('Error creating module. Please try again.');
+            loading.style.display = 'none';
         }
     }
 
-    document.getElementById('addModuleForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const submitButton = document.getElementById('addModuleButton');
-        submitButton.disabled = true;
-        submitButton.textContent = 'Adding...';
-
-        const moduleName = document.getElementById('moduleName').value.trim().replace(/'/g, "\\'");
-        if (!moduleName) {
-            alert('Module name is required.');
-            submitButton.disabled = false;
-            submitButton.textContent = 'Add Module';
-            return;
-        }
-
-        await createModule(moduleName);
-        submitButton.disabled = false;
-        submitButton.textContent = 'Add Module';
-    });
-
-    async function closeModule() {
-        if (!confirm('Are you sure you want to close this module?')) return;
-        try {
-            const response = await fetch(`${API_BASE}/module/${currentModuleId}`, {
-                method: 'DELETE',
-                headers: { 'Authorization': `${localStorage.getItem('authToken')}` }
-            });
-            if (!response.ok) throw new Error('Failed to close module');
-            alert('Module closed successfully!');
-            back();
-        } catch (error) {
-            console.error('Error closing module:', error);
-            alert('Error closing module.');
-        }
-    }
-
-    function showUpdateModuleForm() {
-        document.getElementById('updateModuleCard').style.display = 'block';
-    }
-
-    function cancelUpdateModule() {
-        document.getElementById('updateModuleCard').style.display = 'none';
-        document.getElementById('updateModuleName').value = document.getElementById('moduleTitle').textContent;
-    }
-
-    document.getElementById('updateModuleForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const submitButton = document.getElementById('updateModuleButton');
-        submitButton.disabled = true;
-        submitButton.textContent = 'Updating...';
-
-        const moduleName = document.getElementById('updateModuleName').value.trim().replace(/'/g, "\\'");
-        if (!moduleName) {
-            alert('Module name is required.');
-            submitButton.disabled = false;
-            submitButton.textContent = 'Update Module';
-            return;
-        }
-
-        if (!currentModuleId) {
-            alert('Please select a module before updating.');
-            submitButton.disabled = false;
-            submitButton.textContent = 'Update Module';
-            return;
-        }
-
-        const moduleReq = { name: moduleName, scienceId: currentScienceId };
-        try {
-            const response = await fetch(`${API_BASE}/module/${currentModuleId}`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `${localStorage.getItem('authToken')}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(moduleReq)
-            });
-            if (!response.ok) throw new Error('Failed to update module');
-            document.getElementById('updateModuleCard').style.display = 'none';
-            await showModuleDetails(currentModuleId, moduleName, currentScienceId, currentScienceName); // Refresh module view
-            alert('Module updated successfully!');
-        } catch (error) {
-            console.error('Error updating module:', error);
-            alert('Error updating module. Please try again.');
-        } finally {
-            submitButton.disabled = false;
-            submitButton.textContent = 'Update Module';
-        }
-    });
-
-    // Navigation
-    function back() {
-        if (currentView === 'task') {
-            currentView = 'module';
-            document.getElementById('taskView').style.display = 'none';
-            document.getElementById('moduleView').style.display = 'block';
-            loadTasks(currentModuleId);
-        } else if (currentView === 'module') {
-            currentView = 'dashboard';
-            document.getElementById('moduleView').style.display = 'none';
-            document.getElementById('dashboardView').style.display = 'block';
-            loadSciences();
-        }
-    }
-
-    // Logout
-    function logout() {
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('userData');
-        window.location.href = '/index.html';
+    // Close modals when clicking outside
+    window.onclick = function(event) {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
     }
 </script>
 </body>

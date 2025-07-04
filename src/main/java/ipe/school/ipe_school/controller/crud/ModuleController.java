@@ -19,7 +19,6 @@ import java.util.List;
 import static ipe.school.ipe_school.utils.ApiConstants.*;
 
 @RestController
-//api/v1/module
 @RequestMapping(API_PATH + API_VERSION + MODULE)
 @RequiredArgsConstructor
 public class ModuleController {
@@ -50,7 +49,7 @@ public class ModuleController {
         return new ResponseEntity<>(taskRes, HttpStatus.OK);
     }
 
-    @PostMapping("/{moduleId}")
+    @PostMapping("update/{moduleId}")
     public ResponseEntity<ModuleDetailsRes> updateModule(@PathVariable Long moduleId, @RequestBody ModuleReq moduleReq) {
         ModuleDetailsRes moduleDetailsRes = moduleService.updateModule(moduleId, moduleReq);
         return new ResponseEntity<>(moduleDetailsRes, HttpStatus.OK);
@@ -58,7 +57,13 @@ public class ModuleController {
 
     @DeleteMapping("/{moduleId}")
     public ResponseEntity<ModuleRes> deleteModule(@PathVariable Long moduleId) {
-        moduleService.updateModule_Active(moduleId);
+        moduleService.updateModule_Active(moduleId, false);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/{moduleId}")
+    public ResponseEntity<Void> updateModule(@PathVariable Long moduleId) {
+        moduleService.updateModule_Active(moduleId, true);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

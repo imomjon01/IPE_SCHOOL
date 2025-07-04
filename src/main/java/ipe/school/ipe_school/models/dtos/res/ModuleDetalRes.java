@@ -7,4 +7,5 @@ public class ModuleDetalRes {
     Long id;
     String name;
     Integer taskCount;
+    Boolean active;
 }

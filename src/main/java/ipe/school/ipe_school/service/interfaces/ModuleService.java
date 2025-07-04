@@ -17,7 +17,7 @@ public interface ModuleService {
 
     ModuleDetailsRes updateModule(Long moduleId, ModuleReq moduleReq);
 
-    void updateModule_Active(Long moduleId);
+    void updateModule_Active(Long moduleId, Boolean active);
 
     List<TaskRes> getAllModuleById(User user,Long moduleId);
 }
