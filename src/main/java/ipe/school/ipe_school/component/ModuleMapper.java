@@ -15,6 +15,7 @@ public class ModuleMapper {
         ModuleDetailsRes moduleDetailsRes=new ModuleDetailsRes();
         moduleDetailsRes.setModuleName(module.getModuleName());
         moduleDetailsRes.setId(module.getId());
+        moduleDetailsRes.setActive(module.getActive());
         moduleDetailsRes.setTasks(module.getTasks().stream()
                 .map(this::toTaskRes)
                 .toList());

@@ -47,7 +47,7 @@ public class TaskServiceImpl implements TaskService {
         }
         task.setTaskName(taskReq.getTaskName());
         task.setYoutubeURL(taskReq.getYoutubeURL());
-        task.setActive(false);
+        task.setActive(true);
         Task savedTask = taskRepository.save(task);
         addCurrentModule(savedTask, taskReq.getModuleId());
         logger.info("Task added successfully: {}", savedTask.getId());

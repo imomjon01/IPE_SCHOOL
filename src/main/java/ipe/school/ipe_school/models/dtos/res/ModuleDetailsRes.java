@@ -14,4 +14,5 @@ public class ModuleDetailsRes {
     Long id;
     String moduleName;
     List<TaskRes> tasks;
+    Boolean active;
 }

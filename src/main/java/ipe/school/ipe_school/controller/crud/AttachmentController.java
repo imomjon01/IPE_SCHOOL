@@ -2,13 +2,10 @@ package ipe.school.ipe_school.controller.crud;
 
 import ipe.school.ipe_school.models.dtos.req.AttachmentReq;
 import ipe.school.ipe_school.models.dtos.res.AttachmentRes;
-import ipe.school.ipe_school.models.entity.Attachment;
 import ipe.school.ipe_school.service.interfaces.AttachmentService;
-import jakarta.servlet.annotation.MultipartConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 

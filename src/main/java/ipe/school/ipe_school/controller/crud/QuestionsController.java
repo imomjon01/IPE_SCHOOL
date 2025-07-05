@@ -18,6 +18,7 @@ public class QuestionsController {
 
     @PostMapping()
     public ResponseEntity<QuestionRes> createTask(@RequestBody QuestionReq questionReq) {
+        System.out.println(questionReq.getAttachmentId());
         QuestionRes questionRes = questionService.save(questionReq);
         return ResponseEntity.ok(questionRes);
     }

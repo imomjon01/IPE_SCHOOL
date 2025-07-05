@@ -54,4 +54,13 @@ public class TaskController {
         TaskDetailsRes taskDetailsRes = taskMapper.buildTaskDetails(task, questionResList, attachmentIds);
         return ResponseEntity.ok(taskDetailsRes);
     }
+
+    @GetMapping("/getActives/{taskId}")
+    public ResponseEntity<TaskDetailsRes> getTaskActive(@PathVariable Long taskId) {
+        Task task = taskService.findById(taskId); // active false larni ham userga korsatadi
+        List<QuestionRes> questionResList = taskMapper.mapQuestions(task);
+        List<Long> attachmentIds = taskMapper.extractAttachmentIds(task);
+        TaskDetailsRes taskDetailsRes = taskMapper.buildTaskDetails(task, questionResList, attachmentIds);
+        return ResponseEntity.ok(taskDetailsRes);
+    }
 }

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Management System</title>
+    <link rel="icon" type="image/png" href="/images/favicon.ico"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -550,7 +551,7 @@
     <div class="header">
         <div class="logo">
             <i class="fas fa-graduation-cap"></i>
-            School Management System
+            IPE School Management System
         </div>
         <div class="user-profile" id="userProfile">
             <img src="/placeholder.svg?height=50&width=50" alt="Profile" class="profile-avatar" id="profileAvatar">
@@ -642,6 +643,7 @@
             <div id="taskDetails" style="margin-bottom: 20px;">
                 <!-- Task details will be loaded here -->
             </div>
+            <div id="taskAttachmentsList"></div>
             <div class="questions-list" id="questionsList">
                 <!-- Questions will be loaded here -->
             </div>
@@ -662,7 +664,8 @@
                 <div class="file-upload" onclick="document.getElementById('profileImageInput').click()">
                     <i class="fas fa-camera"></i>
                     <p>Click to select profile image</p>
-                    <input type="file" id="profileImageInput" accept="image/*" style="display: none;" onchange="previewProfileImage(this)">
+                    <input type="file" id="profileImageInput" accept="image/*" style="display: none;"
+                           onchange="previewProfileImage(this)">
                 </div>
                 <div id="profileImagePreview" class="attachment-preview"></div>
             </div>
@@ -680,7 +683,8 @@
             </div>
             <div class="form-group">
                 <label class="form-label">Password (Optional)</label>
-                <input type="password" class="form-control" id="updatePassword" placeholder="Leave empty to keep current password">
+                <input type="password" class="form-control" id="updatePassword"
+                       placeholder="Leave empty to keep current password">
             </div>
             <div style="display: flex; gap: 10px; justify-content: flex-end;">
                 <button type="button" class="btn" onclick="closeModal('updateProfileModal')">Cancel</button>
@@ -737,7 +741,8 @@
                 <div class="file-upload" onclick="document.getElementById('taskAttachments').click()">
                     <i class="fas fa-paperclip"></i>
                     <p>Click to select attachments</p>
-                    <input type="file" id="taskAttachments" multiple accept="image/*" style="display: none;" onchange="previewTaskAttachments(this)">
+                    <input type="file" id="taskAttachments" multiple accept="image/*" style="display: none;"
+                           onchange="previewTaskAttachments(this)">
                 </div>
                 <div id="taskAttachmentsPreview" class="attachment-preview"></div>
             </div>
@@ -746,6 +751,28 @@
                 <button type="submit" class="btn btn-primary">
                     <span id="addTaskLoading" class="loading" style="display: none;"></span>
                     Add Task
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="updateModuleModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Update Module</h3>
+            <span class="close" onclick="closeModal('updateModuleModal')">×</span>
+        </div>
+        <form id="updateModuleForm">
+            <div class="form-group">
+                <label class="form-label">Module Name</label>
+                <input type="text" class="form-control" id="updateModuleName" required>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button type="button" class="btn" onclick="closeModal('updateModuleModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary">
+                    <span id="updateModuleLoading" class="loading" style="display: none;"></span>
+                    Update Module
                 </button>
             </div>
         </form>
@@ -766,7 +793,8 @@
             </div>
             <div class="form-group">
                 <label class="form-label">YouTube URL (Optional)</label>
-                <input type="url" class="form-control" id="updateYoutubeURL" placeholder="https://youtube.com/watch?v=...">
+                <input type="url" class="form-control" id="updateYoutubeURL"
+                       placeholder="https://youtube.com/watch?v=...">
             </div>
             <div class="form-group">
                 <label class="form-label">Current Attachments</label>
@@ -777,7 +805,8 @@
                 <div class="file-upload" onclick="document.getElementById('updateTaskAttachments').click()">
                     <i class="fas fa-paperclip"></i>
                     <p>Click to select new attachments</p>
-                    <input type="file" id="updateTaskAttachments" multiple accept="image/*" style="display: none;" onchange="previewUpdateTaskAttachments(this)">
+                    <input type="file" id="updateTaskAttachments" multiple accept="image/*" style="display: none;"
+                           onchange="previewUpdateTaskAttachments(this)">
                 </div>
                 <div id="updateTaskAttachmentsPreview" class="attachment-preview"></div>
             </div>
@@ -809,7 +838,8 @@
                 <div class="file-upload" onclick="document.getElementById('questionAttachment').click()">
                     <i class="fas fa-image"></i>
                     <p>Click to select question image</p>
-                    <input type="file" id="questionAttachment" accept="image/*" style="display: none;" onchange="previewQuestionAttachment(this)">
+                    <input type="file" id="questionAttachment" accept="image/*" style="display: none;"
+                           onchange="previewQuestionAttachment(this)">
                 </div>
                 <div id="questionAttachmentPreview" class="attachment-preview"></div>
             </div>
@@ -820,7 +850,8 @@
                         <input type="text" class="variant-input" placeholder="Variant 1" required>
                         <input type="radio" name="correctAnswer" value="0" required>
                         <label>Correct</label>
-                        <button type="button" class="btn btn-danger" onclick="removeVariant(this)" style="padding: 5px 10px; font-size: 12px;">
+                        <button type="button" class="btn btn-danger" onclick="removeVariant(this)"
+                                style="padding: 5px 10px; font-size: 12px;">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -828,7 +859,8 @@
                         <input type="text" class="variant-input" placeholder="Variant 2" required>
                         <input type="radio" name="correctAnswer" value="1" required>
                         <label>Correct</label>
-                        <button type="button" class="btn btn-danger" onclick="removeVariant(this)" style="padding: 5px 10px; font-size: 12px;">
+                        <button type="button" class="btn btn-danger" onclick="removeVariant(this)"
+                                style="padding: 5px 10px; font-size: 12px;">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -869,7 +901,8 @@
                 <div class="file-upload" onclick="document.getElementById('updateQuestionAttachment').click()">
                     <i class="fas fa-image"></i>
                     <p>Click to select new question image</p>
-                    <input type="file" id="updateQuestionAttachment" accept="image/*" style="display: none;" onchange="previewUpdateQuestionAttachment(this)">
+                    <input type="file" id="updateQuestionAttachment" accept="image/*" style="display: none;"
+                           onchange="previewUpdateQuestionAttachment(this)">
                 </div>
                 <div id="updateQuestionAttachmentPreview" class="attachment-preview"></div>
             </div>
@@ -902,7 +935,7 @@
     let userData = null;
 
     // Initialize the application
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         loadUserData();
         loadSciences();
         setupEventListeners();
@@ -911,14 +944,14 @@
     // Setup event listeners
     function setupEventListeners() {
         // Profile dropdown toggle
-        document.getElementById('userProfile').addEventListener('click', function(e) {
+        document.getElementById('userProfile').addEventListener('click', function (e) {
             e.stopPropagation();
             const dropdown = document.getElementById('profileDropdown');
             dropdown.classList.toggle('show');
         });
 
         // Close dropdown when clicking outside
-        document.addEventListener('click', function() {
+        document.addEventListener('click', function () {
             const dropdown = document.getElementById('profileDropdown');
             dropdown.classList.remove('show');
         });
@@ -1003,7 +1036,7 @@
 
     // View science modules
     async function viewScienceModules(scienceId, scienceName) {
-        currentScience = { id: scienceId, name: scienceName };
+        currentScience = {id: scienceId, name: scienceName};
 
         try {
             const response = await fetch('/api/v1/science', {
@@ -1022,8 +1055,8 @@
             if (science) {
                 displayModules(science.modules, scienceName);
                 updateBreadcrumb([
-                    { text: 'Sciences', onclick: 'showSciences()' },
-                    { text: scienceName, onclick: null }
+                    {text: 'Sciences', onclick: 'showSciences()'},
+                    {text: scienceName, onclick: null}
                 ]);
             }
         } catch (error) {
@@ -1067,13 +1100,14 @@
 
     // View module tasks
     async function viewModuleTasks(moduleId, moduleName) {
-        currentModule = { id: moduleId, name: moduleName };
+        currentModule = {id: moduleId, name: moduleName};
 
         try {
             const response = await fetch(`/api/v1/module/${moduleId}`, {
                 headers: {
                     'Authorization': localStorage.getItem('authToken')
-                }
+                },
+                mentod: 'GET'
             });
 
             if (!response.ok) {
@@ -1083,13 +1117,80 @@
             const moduleDetails = await response.json();
             displayTasks(moduleDetails, moduleName);
             updateBreadcrumb([
-                { text: 'Sciences', onclick: 'showSciences()' },
-                { text: currentScience.name, onclick: `viewScienceModules(${currentScience.id}, '${currentScience.name}')` },
-                { text: moduleName, onclick: null }
+                {text: 'Sciences', onclick: 'showSciences()'},
+                {
+                    text: currentScience.name,
+                    onclick: `viewScienceModules(${currentScience.id}, '${currentScience.name}')`
+                },
+                {text: moduleName, onclick: null}
             ]);
         } catch (error) {
             console.error('Error loading module tasks:', error);
             alert('Error loading tasks. Please try again.');
+        }
+    }
+
+    // Add event listener for update module form submission
+    function setupEventListeners() {
+        // Existing event listeners
+        document.getElementById('updateProfileForm').addEventListener('submit', handleUpdateProfile);
+        document.getElementById('addModuleForm').addEventListener('submit', handleAddModule);
+        document.getElementById('addTaskForm').addEventListener('submit', handleAddTask);
+        document.getElementById('updateTaskForm').addEventListener('submit', handleUpdateTask);
+        document.getElementById('addQuestionForm').addEventListener('submit', handleAddQuestion);
+        document.getElementById('updateQuestionForm').addEventListener('submit', handleUpdateQuestion);
+        // Add new event listener for update module
+        document.getElementById('updateModuleForm').addEventListener('submit', handleUpdateModule);
+    }
+
+    // Open update module modal
+    function openUpdateModule() {
+        if (!currentModule) return;
+
+        // Pre-fill the form with current module name
+        document.getElementById('updateModuleName').value = currentModule.name;
+        openModal('updateModuleModal');
+    }
+
+    // Handle update module form submission
+    async function handleUpdateModule(e) {
+        e.preventDefault();
+
+        const loading = document.getElementById('updateModuleLoading');
+        loading.style.display = 'inline-block';
+
+        try {
+            const moduleReq = {
+                name: document.getElementById('updateModuleName').value,
+                scienceId: null // scienceId is optional and can be null
+            };
+
+            const response = await fetch(`/api/v1/module/update/${currentModule.id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('authToken')
+                },
+                body: JSON.stringify(moduleReq)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update module');
+            }
+
+            // Update currentModule name
+            currentModule.name = moduleReq.name;
+
+            closeModal('updateModuleModal');
+            alert('Module updated successfully!');
+
+            // Refresh tasks view to reflect updated module name
+            viewModuleTasks(currentModule.id, currentModule.name);
+        } catch (error) {
+            console.error('Error updating module:', error);
+            alert('Error updating module. Please try again.');
+        } finally {
+            loading.style.display = 'none';
         }
     }
 
@@ -1136,10 +1237,10 @@
 
     // View task questions
     async function viewTaskQuestions(taskId, taskName) {
-        currentTask = { id: taskId, name: taskName };
+        currentTask = {id: taskId, name: taskName};
 
         try {
-            const response = await fetch(`/api/v1/task/${taskId}`, {
+            const response = await fetch(`/api/v1/task/getActives/${taskId}`, {
                 headers: {
                     'Authorization': localStorage.getItem('authToken')
                 }
@@ -1152,10 +1253,13 @@
             const taskDetails = await response.json();
             await displayQuestions(taskDetails, taskName);
             updateBreadcrumb([
-                { text: 'Sciences', onclick: 'showSciences()' },
-                { text: currentScience.name, onclick: `viewScienceModules(${currentScience.id}, '${currentScience.name}')` },
-                { text: currentModule.name, onclick: `viewModuleTasks(${currentModule.id}, '${currentModule.name}')` },
-                { text: taskName, onclick: null }
+                {text: 'Sciences', onclick: 'showSciences()'},
+                {
+                    text: currentScience.name,
+                    onclick: `viewScienceModules(${currentScience.id}, '${currentScience.name}')`
+                },
+                {text: currentModule.name, onclick: `viewModuleTasks(${currentModule.id}, '${currentModule.name}')`},
+                {text: taskName, onclick: null}
             ]);
         } catch (error) {
             console.error('Error loading task questions:', error);
@@ -1163,104 +1267,144 @@
         }
     }
 
-    // Display questions
+    // Display questions in a stylish way
     async function displayQuestions(taskDetails, taskName) {
+        // Hide other views and show questions view
         document.getElementById('sciencesView').style.display = 'none';
         document.getElementById('modulesView').style.display = 'none';
         document.getElementById('tasksView').style.display = 'none';
         document.getElementById('questionsView').style.display = 'block';
 
-        document.getElementById('taskTitle').textContent = `${taskName} - Questions`;
-        document.getElementById('questionCount').textContent = `${taskDetails.questionRes.length} questions`;
+        // Set task title and question count
+        document.getElementById('taskTitle').textContent = `${taskName}`;
+        document.getElementById('questionCount').textContent = `${taskDetails.questionRes.length} Questions`;
 
-        // Display task details
+        // Display task details in a card
         const taskDetailsDiv = document.getElementById('taskDetails');
         let taskDetailsHTML = `
-                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                    <h4>Task Information</h4>
-                    <p><strong>Name:</strong> ${taskDetails.name}</p>
-                    <p><strong>Status:</strong> ${taskDetails.active ? 'Active' : 'Inactive'}</p>
-            `;
+        <div class="task-info-card">
+            <div class="task-info-header">
+                <h4><i class="fas fa-info-circle"></i> Task Details</h4>
+            </div>
+            <div class="task-info-body">
+                <div class="task-info-row">
+                    <span class="task-info-label">Name:</span>
+                    <span class="task-info-value">${taskDetails.name}</span>
+                </div>
+                <div class="task-info-row">
+                    <span class="task-info-label">Status:</span>
+                    <span class="task-info-value ${taskDetails.active ? 'status-active' : 'status-inactive'}">
+                        ${taskDetails.active ? 'Active' : 'Inactive'}
+                    </span>
+                </div>
+    `;
 
+        // YouTube Video
         if (taskDetails.youtubeURL) {
-            taskDetailsHTML += `<p><strong>YouTube URL:</strong> <a href="${taskDetails.youtubeURL}" target="_blank">${taskDetails.youtubeURL}</a></p>`;
+            const videoId = getYoutubeVideoId(taskDetails.youtubeURL);
+            if (videoId) {
+                taskDetailsHTML += `
+                <div class="task-info-row">
+                    <span class="task-info-label">Video:</span>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/${videoId}"
+                                frameborder="0"
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+            `;
+            } else {
+                taskDetailsHTML += `
+                <div class="task-info-row">
+                    <span class="task-info-label">Video:</span>
+                    <span class="invalid-url-warning">
+                        <i class="fas fa-exclamation-triangle"></i> Invalid YouTube URL
+                    </span>
+                </div>
+            `;
+            }
         }
 
-        if (taskDetails.attachmentId && taskDetails.attachmentId.length > 0) {
-            taskDetailsHTML += `<p><strong>Attachments:</strong></p><div class="attachment-preview" id="taskAttachmentsList"></div>`;
-        }
-
-        taskDetailsHTML += `</div>`;
+        taskDetailsHTML += `</div></div>`;
         taskDetailsDiv.innerHTML = taskDetailsHTML;
 
-        // Load and display attachments
         if (taskDetails.attachmentId && taskDetails.attachmentId.length > 0) {
-            await loadTaskAttachments(taskDetails.attachmentId);
+            for (const attachmentId of taskDetails.attachmentId) {
+                try {
+                    const attachmentResponse = await fetch(`/api/v1/attachments/${attachmentId}`, {
+                        headers: {
+                            'Authorization': localStorage.getItem('authToken')
+                        }
+                    });
+
+                    if (attachmentResponse.ok) {
+                        const attachmentData = await attachmentResponse.json();
+                        const attachmentUrl = `data:${attachmentData.contentType};base64,${arrayBufferToBase64(attachmentData.content)}`;
+                        content += `<img src="${attachmentUrl}"
+                               style="max-width: 100%; margin: 10px 0; border-radius: 8px;"
+                               alt="Attachment">`;
+                    }
+                } catch (error) {
+                    console.error('Error loading attachment:', error);
+                }
+            }
         }
 
-        // Display questions
+
+        // Display questions in a modern list
         const questionsList = document.getElementById('questionsList');
         questionsList.innerHTML = '';
 
-        taskDetails.questionRes.forEach(question => {
-            const questionItem = document.createElement('div');
-            questionItem.className = 'question-item';
-            questionItem.innerHTML = `
-                    <div class="question-text">${question.questionTest}</div>
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
-                        <button class="btn btn-primary" onclick="viewQuestionDetails(${question.id})">
-                            <i class="fas fa-eye"></i> View Details
+        if (taskDetails.questionRes.length === 0) {
+            questionsList.innerHTML = `
+            <div class="no-questions-message">
+                <i class="fas fa-question-circle"></i>
+                <p>No questions available for this task</p>
+            </div>
+        `;
+        } else {
+            taskDetails.questionRes.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question-card';
+                questionItem.innerHTML = `
+                <div class="question-card-header">
+                    <span class="question-number">Question #${index + 1}</span>
+                    <div class="question-actions">
+                        <button class="btn-action btn-view" onclick="viewQuestionDetails(${question.id})" title="View Details">
+                            <i class="fas fa-eye"></i>
                         </button>
-                        <button class="btn btn-warning" onclick="openUpdateQuestion(${question.id})">
-                            <i class="fas fa-edit"></i> Update
+                        <button class="btn-action btn-edit" onclick="openUpdateQuestion(${question.id})" title="Edit Question">
+                            <i class="fas fa-edit"></i>
                         </button>
                     </div>
-                `;
-            questionsList.appendChild(questionItem);
-        });
-    }
-
-    // Load task attachments
-    async function loadTaskAttachments(attachmentIds) {
-        try {
-            const params = new URLSearchParams();
-            attachmentIds.forEach(id => params.append('attachmentIds', id));
-
-            const response = await fetch(`/api/v1/attachments?${params}`, {
-                headers: {
-                    'Authorization': localStorage.getItem('authToken')
-                }
+                </div>
+                <div class="question-content">
+                    ${question.questionTest}
+                </div>
+            `;
+                questionsList.appendChild(questionItem);
             });
-
-            if (!response.ok) {
-                throw new Error('Failed to load attachments');
-            }
-
-            const attachments = await response.json();
-            displayTaskAttachments(attachments);
-        } catch (error) {
-            console.error('Error loading attachments:', error);
         }
     }
 
-    // Display task attachments
-    function displayTaskAttachments(attachments) {
-        const container = document.getElementById('taskAttachmentsList');
-        if (!container) return;
+    function getYoutubeVideoId(url) {
+        const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/;
+        const match = url.match(regex);
+        return match ? match[1] : null;
+    }
 
-        container.innerHTML = '';
-        attachments.forEach(attachment => {
-            const attachmentDiv = document.createElement('div');
-            attachmentDiv.className = 'attachment-item';
+    // Utility functions
+    function arrayBufferToBase64(buffer) {
+        if (!buffer) return '';
+        if (typeof buffer === 'string') return buffer;
 
-            const blob = new Blob([new Uint8Array(attachment.content)], { type: attachment.contentType });
-            const url = URL.createObjectURL(blob);
-
-            attachmentDiv.innerHTML = `
-                    <img src="${url}" alt="Attachment" class="attachment-image">
-                `;
-            container.appendChild(attachmentDiv);
-        });
+        const bytes = new Uint8Array(buffer);
+        let binary = '';
+        for (let i = 0; i < bytes.byteLength; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return btoa(binary);
     }
 
     // View question details
@@ -1349,7 +1493,7 @@
             const attachment = await response.json();
             const container = document.getElementById('questionAttachmentDisplay');
             if (container) {
-                const blob = new Blob([new Uint8Array(attachment.content)], { type: attachment.contentType });
+                const blob = new Blob([new Uint8Array(attachment.content)], {type: attachment.contentType});
                 const url = URL.createObjectURL(blob);
 
                 container.innerHTML = `
@@ -1368,7 +1512,7 @@
         document.getElementById('modulesView').style.display = 'none';
         document.getElementById('tasksView').style.display = 'none';
         document.getElementById('questionsView').style.display = 'none';
-        updateBreadcrumb([{ text: 'Sciences', onclick: null }]);
+        updateBreadcrumb([{text: 'Sciences', onclick: null}]);
     }
 
     // Update breadcrumb
@@ -1433,7 +1577,7 @@
 
         if (input.files && input.files[0]) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 preview.innerHTML = `
                         <div class="attachment-item">
                             <img src="${e.target.result}" alt="Profile Preview" class="attachment-image">
@@ -1503,13 +1647,11 @@
     }
 
     function logout() {
-        const roles = userData.roles;
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('userData');
-
-        if (Array.isArray(roles) && roles.length > 1) {
+        const roles = userData.roles || [];
+        if (roles.length > 1) {
             window.location.href = 'chooseRole.html';
         } else {
+            localStorage.removeItem('userData');
             window.location.href = 'index.html';
         }
     }
@@ -1624,7 +1766,7 @@
         if (input.files) {
             Array.from(input.files).forEach((file, index) => {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     const attachmentDiv = document.createElement('div');
                     attachmentDiv.className = 'attachment-item';
                     attachmentDiv.innerHTML = `
@@ -1749,7 +1891,7 @@
                 const attachmentDiv = document.createElement('div');
                 attachmentDiv.className = 'attachment-item';
 
-                const blob = new Blob([new Uint8Array(attachment.content)], { type: attachment.contentType });
+                const blob = new Blob([new Uint8Array(attachment.content)], {type: attachment.contentType});
                 const url = URL.createObjectURL(blob);
 
                 attachmentDiv.innerHTML = `
@@ -1769,7 +1911,7 @@
         if (input.files) {
             Array.from(input.files).forEach((file, index) => {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     const attachmentDiv = document.createElement('div');
                     attachmentDiv.className = 'attachment-item';
                     attachmentDiv.innerHTML = `
@@ -1912,7 +2054,7 @@
 
         if (input.files && input.files[0]) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 preview.innerHTML = `
                         <div class="attachment-item">
                             <img src="${e.target.result}" alt="Question Attachment" class="attachment-image">
@@ -2004,7 +2146,7 @@
     }
 
     async function openUpdateQuestion(questionId) {
-        currentQuestion = { id: questionId };
+        currentQuestion = {id: questionId};
 
         try {
             const response = await fetch(`/api/v1/questions/${questionId}`, {
@@ -2071,7 +2213,7 @@
             const attachment = await response.json();
             const container = document.getElementById('currentQuestionAttachment');
 
-            const blob = new Blob([new Uint8Array(attachment.content)], { type: attachment.contentType });
+            const blob = new Blob([new Uint8Array(attachment.content)], {type: attachment.contentType});
             const url = URL.createObjectURL(blob);
 
             container.innerHTML = `
@@ -2126,7 +2268,7 @@
 
         if (input.files && input.files[0]) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 preview.innerHTML = `
                         <div class="attachment-item">
                             <img src="${e.target.result}" alt="New Question Attachment" class="attachment-image">
@@ -2218,7 +2360,7 @@
     }
 
     // Close modals when clicking outside
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         const modals = document.querySelectorAll('.modal');
         modals.forEach(modal => {
             if (event.target === modal) {
