@@ -94,6 +94,10 @@ public class AnswerSubmissionServiceImpl implements AnswerSubmissionService {
 
     @Override
     public StudentProcessRes results(User user, Long taskId) {
+        Task byActiveTask = taskService.findByActiveTask(taskId);
+        if (byActiveTask==null){
+            return new StudentProcessRes();
+        }
         List<AnswerSubmission> submissions = answerSubmissionRepository
                 .findByStudentIdAndQuestionIn(user.getId(), taskService.findByActiveTask(taskId).getQuestions());
 

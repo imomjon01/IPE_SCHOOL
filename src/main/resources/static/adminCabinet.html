@@ -1266,23 +1266,23 @@
         if (e.target.classList.contains('remove-group-btn')) {
             const groupId = e.target.getAttribute('data-group-id');
             const scienceId = document.getElementById('science-id').value;
-            
+
             if (confirm('Guruhni fandan oʻchirishni tasdiqlaysizmi?')) {
                 axios.delete(`/api/v1/science/${scienceId}/groups/${groupId}`, {
                     headers: {
                         Authorization: `${userData.token}`
                     }
                 })
-                .then(response => {
-                    // Muvaffaqiyatli o'chirilgandan so'ng
-                    showAlert('success', 'Guruh fandan muvaffaqiyatli oʻchirildi');
-                    // Guruhni DOMdan o'chirish
-                    e.target.closest('.list-group-item').remove();
-                    // Mavjud guruhlar ro'yxatini yangilash
-                    loadAvailableGroups(scienceId);
-                    // Fanlar jadvalini yangilash
-                    loadSciences();
-                })
+                    .then(response => {
+                        // Muvaffaqiyatli o'chirilgandan so'ng
+                        showAlert('success', 'Guruh fandan muvaffaqiyatli oʻchirildi');
+                        // Guruhni DOMdan o'chirish
+                        e.target.closest('.list-group-item').remove();
+                        // Mavjud guruhlar ro'yxatini yangilash
+                        loadAvailableGroups(scienceId);
+                        // Fanlar jadvalini yangilash
+                        loadSciences();
+                    })
                     .catch(error => {
                         console.error('Xatolik yuz berdi:', error);
                         showAlert('danger', 'Guruhni o\'chirishda xatolik yuz berdi');

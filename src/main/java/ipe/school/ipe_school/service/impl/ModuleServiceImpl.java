@@ -99,13 +99,14 @@ public class ModuleServiceImpl implements ModuleService {
                                 .anyMatch(q -> answerSubmissionRepository
                                         .findByStudentIdAndQuestionId(u.getId(), q.getId()).isEmpty());
 
-                        if (hasUnanswered && addedTaskIds.add(task.getId())) {
-                            taskResList.add(new TaskRes(task.getId(), task.getTaskName(),task.getActive()));
+                        if (task.getActive() && hasUnanswered && addedTaskIds.add(task.getId())) {
+                            taskResList.add(new TaskRes(task.getId(), task.getTaskName(), true));
                         }
                     }
                     return taskResList;
                 })
                 .orElse(Collections.emptyList());
     }
+
 
 }

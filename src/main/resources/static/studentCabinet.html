@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -155,6 +154,12 @@
             border-radius: 0 24px 0 0;
         }
 
+        .menu-content {
+            padding: 20px 0 0 0; /* Add top padding for spacing */
+            max-height: calc(100vh - 220px); /* Adjust for the added padding */
+            overflow-y: auto;
+        }
+
         .menu-close {
             position: absolute;
             top: 20px;
@@ -267,9 +272,21 @@
             font-size: 16px;
         }
 
+        /* Fixed: Menu section content with proper collapsible behavior */
         .menu-section-content {
-            padding: 0 20px 20px 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             background: #f8fafc;
+        }
+
+        .menu-section-content.show {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .menu-section-content-inner {
+            padding: 0 20px 20px 20px;
         }
 
         .module-item, .task-item {
@@ -670,7 +687,7 @@
             border-radius: var(--border-radius);
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            font-size: 14px; /* Kichikroq font */
+            font-size: 14px;
         }
 
         .table th {
@@ -678,13 +695,13 @@
             border: none;
             font-weight: 600;
             color: var(--text-primary);
-            padding: 12px 8px; /* Padding kamaytirish */
+            padding: 12px 8px;
             font-size: 12px;
         }
 
         .table td {
             border: none;
-            padding: 12px 8px; /* Padding kamaytirish */
+            padding: 12px 8px;
             vertical-align: middle;
             font-size: 13px;
         }
@@ -747,7 +764,6 @@
                 padding: 16px;
             }
 
-            /* Student levels mobile optimization */
             .student-levels-table {
                 font-size: 11px;
             }
@@ -802,6 +818,7 @@
     </style>
 </head>
 <body>
+
 <!-- Menu Overlay -->
 <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
 
@@ -826,7 +843,6 @@
         <button class="menu-close" onclick="closeMenu()">
             <i class="fas fa-times"></i>
         </button>
-
         <div class="menu-profile">
             <img id="menuAvatar" src="/placeholder.svg?height=70&width=70" alt="Student" class="menu-avatar">
             <div class="menu-profile-info flex-grow-1">
@@ -834,7 +850,6 @@
                 <small id="menuStudentPhone">Telefon: Yuklanmoqda...</small>
             </div>
         </div>
-
         <button class="btn edit-profile-btn" onclick="toggleProfileEdit()">
             <i class="fas fa-user-edit me-2"></i>Profilni tahrirlash
         </button>
@@ -855,17 +870,14 @@
                             </button>
                         </div>
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label">Ism</label>
                         <input type="text" class="form-control" id="firstName" placeholder="Ism" required>
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label">Familiya</label>
                         <input type="text" class="form-control" id="lastName" placeholder="Familiya" required>
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label">Telefon raqami</label>
                         <div class="input-group">
@@ -876,17 +888,14 @@
                             Telefon raqami 90, 91, 93, 94, 95, 97, 98, 33, 77, 20, 88 yoki 99 bilan boshlanib, 7 raqamdan iborat bo'lishi kerak!
                         </div>
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label">Yangi parol</label>
                         <input type="password" class="form-control" id="password" placeholder="Yangi parol">
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label">Parolni tasdiqlash</label>
                         <input type="password" class="form-control" id="confirmPassword" placeholder="Parolni tasdiqlash">
                     </div>
-
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-primary flex-grow-1">
                             <i class="fas fa-save me-2"></i>Yangilash
@@ -906,14 +915,16 @@
                 <i class="fas fa-chevron-down" id="modulesChevron"></i>
             </div>
             <div class="menu-section-content" id="modulesContainer">
-                <div class="text-center py-3" id="moduleLoading">
-                    <div class="spinner mx-auto mb-2"></div>
-                    <small>Modullar yuklanmoqda...</small>
-                </div>
-                <div id="modulesList"></div>
-                <div id="modulesEmpty" class="text-center text-muted d-none">
-                    <i class="fas fa-book-open fa-2x mb-2"></i>
-                    <p class="small">Modullar mavjud emas</p>
+                <div class="menu-section-content-inner">
+                    <div class="text-center py-3" id="moduleLoading">
+                        <div class="spinner mx-auto mb-2"></div>
+                        <small>Modullar yuklanmoqda...</small>
+                    </div>
+                    <div id="modulesList"></div>
+                    <div id="modulesEmpty" class="text-center text-muted d-none">
+                        <i class="fas fa-book-open fa-2x mb-2"></i>
+                        <p class="small">Modullar mavjud emas</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -924,17 +935,19 @@
                 <span><i class="fas fa-tasks"></i>Vazifalar</span>
                 <i class="fas fa-chevron-down" id="tasksChevron"></i>
             </div>
-            <div class="menu-section-content">
-                <div class="tasks-container" id="tasksContainer">
-                    <div id="tasksList"></div>
-                    <div id="tasksEmpty" class="text-center text-muted d-none">
-                        <i class="fas fa-clipboard-list fa-2x mb-2"></i>
-                        <p class="small">Vazifalar mavjud emas</p>
-                    </div>
-                    <div id="tasksSelectModule" class="text-center text-muted">
-                        <i class="fas fa-arrow-up fa-2x mb-2"></i>
-                        <h6>Modul tanlang</h6>
-                        <p class="small">Vazifalarni ko'rish uchun avval modulni tanlang</p>
+            <div class="menu-section-content" id="tasksSection">
+                <div class="menu-section-content-inner">
+                    <div class="tasks-container" id="tasksContainer">
+                        <div id="tasksList"></div>
+                        <div id="tasksEmpty" class="text-center text-muted d-none">
+                            <i class="fas fa-clipboard-list fa-2x mb-2"></i>
+                            <p class="small">Sizda hozirda vazifalar yo'q</p>
+                        </div>
+                        <div id="tasksSelectModule" class="text-center text-muted">
+                            <i class="fas fa-arrow-up fa-2x mb-2"></i>
+                            <h6>Modul tanlang</h6>
+                            <p class="small">Vazifalarni ko'rish uchun avval modulni tanlang</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -942,10 +955,15 @@
 
         <!-- Actions Section -->
         <div class="menu-section">
-            <div class="menu-section-content">
-                <button class="btn btn-outline-primary w-100" onclick="viewStudentsLevels(); closeMenu();">
-                    <i class="fas fa-users me-2"></i>Talabalar Darajalari
-                </button>
+            <div class="menu-section-content show">
+                <div class="menu-section-content-inner">
+                    <button class="btn btn-outline-primary w-100 mb-3" onclick="viewStudentsLevels(); closeMenu();">
+                        <i class="fas fa-users me-2"></i>Talabalar Darajalari
+                    </button>
+                    <button class="btn btn-outline-danger w-100" onclick="logoutUser()">
+                        <i class="fas fa-sign-out-alt me-2"></i>Chiqish
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1042,7 +1060,6 @@
     function toggleMenu() {
         const menu = document.getElementById('mobileMenu');
         const overlay = document.getElementById('menuOverlay');
-
         isMenuOpen = !isMenuOpen;
 
         if (isMenuOpen) {
@@ -1053,7 +1070,6 @@
             menu.classList.remove('show');
             overlay.classList.remove('show');
             document.body.style.overflow = '';
-
             // Close profile edit if open
             if (isProfileEditOpen) {
                 toggleProfileEdit();
@@ -1064,7 +1080,6 @@
     function closeMenu() {
         const menu = document.getElementById('mobileMenu');
         const overlay = document.getElementById('menuOverlay');
-
         isMenuOpen = false;
         menu.classList.remove('show');
         overlay.classList.remove('show');
@@ -1089,7 +1104,6 @@
             newImageFile = null;
             document.getElementById('phoneError').classList.add('d-none');
             document.getElementById('phoneNumber').setCustomValidity('');
-
             if (userData.image) {
                 document.getElementById('imagePreview').src = userData.image;
                 document.getElementById('imagePreview').classList.remove('d-none');
@@ -1099,31 +1113,34 @@
         }
     }
 
+    // Fixed: Proper toggle functions for modules and tasks sections
     function toggleModulesSection() {
+        const modulesContainer = document.getElementById('modulesContainer');
         const chevron = document.getElementById('modulesChevron');
         isModulesSectionOpen = !isModulesSectionOpen;
 
         if (isModulesSectionOpen) {
+            modulesContainer.classList.add('show');
             chevron.classList.add('fa-chevron-up');
             chevron.classList.remove('fa-chevron-down');
         } else {
+            modulesContainer.classList.remove('show');
             chevron.classList.remove('fa-chevron-up');
             chevron.classList.add('fa-chevron-down');
         }
     }
 
     function toggleTasksSection() {
-        const tasksContainer = document.getElementById('tasksContainer');
+        const tasksSection = document.getElementById('tasksSection');
         const chevron = document.getElementById('tasksChevron');
-
         isTasksSectionOpen = !isTasksSectionOpen;
 
         if (isTasksSectionOpen) {
-            tasksContainer.classList.add('show');
+            tasksSection.classList.add('show');
             chevron.classList.add('fa-chevron-up');
             chevron.classList.remove('fa-chevron-down');
         } else {
-            tasksContainer.classList.remove('show');
+            tasksSection.classList.remove('show');
             chevron.classList.remove('fa-chevron-up');
             chevron.classList.add('fa-chevron-down');
         }
@@ -1133,13 +1150,13 @@
     function checkAuth() {
         if (!userData || !userData.userId || !userData.token) {
             document.getElementById('questionContent').innerHTML = `
-                    <div class="text-center py-5">
-                        <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
-                        <h5>Avtorizatsiya ma'lumotlari topilmadi</h5>
-                        <p class="text-muted">Iltimos, qaytadan kiring.</p>
-                        <button onclick="logout()" class="btn btn-primary">Login sahifasiga o'tish</button>
-                    </div>
-                `;
+                <div class="text-center py-5">
+                    <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                    <h5>Avtorizatsiya ma'lumotlari topilmadi</h5>
+                    <p class="text-muted">Iltimos, qaytadan kiring.</p>
+                    <button onclick="logout()" class="btn btn-primary">Login sahifasiga o'tish</button>
+                </div>
+            `;
             return false;
         }
         return true;
@@ -1149,6 +1166,15 @@
         localStorage.removeItem('userData');
         userData = {};
         window.location.href = '/login.html';
+    }
+
+    function logoutUser() {
+        const confirmLogout = confirm('Haqiqatan ham chiqishni xohlaysizmi?');
+        if (confirmLogout) {
+            localStorage.removeItem('userData');
+            userData = {};
+            window.location.href = '/index.html';
+        }
     }
 
     function displayUserInfo() {
@@ -1233,14 +1259,14 @@
             const moduleDiv = document.createElement('div');
             moduleDiv.className = 'module-item';
             moduleDiv.innerHTML = `
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <i class="fas fa-book me-3 text-primary"></i>
-                            <span class="fw-medium">${module.moduleName || 'Noma\'lum modul'}</span>
-                        </div>
-                        <i class="fas fa-chevron-right text-muted"></i>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <i class="fas fa-book me-3 text-primary"></i>
+                        <span class="fw-medium">${module.moduleName || 'Noma\'lum modul'}</span>
                     </div>
-                `;
+                    <i class="fas fa-chevron-right text-muted"></i>
+                </div>
+            `;
             moduleDiv.dataset.moduleId = module.id;
             moduleDiv.addEventListener('click', () => selectModule(module, moduleDiv));
             modulesList.appendChild(moduleDiv);
@@ -1252,12 +1278,16 @@
     function selectModule(module, moduleElement) {
         if (!checkAuth()) return;
 
+        // Fixed: Clear previous state properly
         resetTaskState();
+
+        // Remove active class from all modules
         document.querySelectorAll('.module-item').forEach(item => item.classList.remove('active'));
         moduleElement.classList.add('active');
-        currentModuleId = module.id;
 
+        currentModuleId = module.id;
         document.getElementById('tasksSelectModule').classList.add('d-none');
+
         loadTasks(module.id);
 
         // Auto-open tasks section
@@ -1272,11 +1302,11 @@
 
         const tasksList = document.getElementById('tasksList');
         tasksList.innerHTML = `
-                <div class="text-center py-3">
-                    <div class="spinner mx-auto mb-2"></div>
-                    <small>Vazifalar yuklanmoqda...</small>
-                </div>
-            `;
+            <div class="text-center py-3">
+                <div class="spinner mx-auto mb-2"></div>
+                <small>Vazifalar yuklanmoqda...</small>
+            </div>
+        `;
         document.getElementById('tasksEmpty').classList.add('d-none');
 
         try {
@@ -1343,15 +1373,15 @@
             }
 
             taskDiv.innerHTML = `
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <i class="fas fa-tasks me-3 text-primary"></i>
-                            <span class="fw-medium">${task.taskName || 'Noma\'lum vazifa'}</span>
-                            ${statusBadge}
-                        </div>
-                        <i class="fas fa-chevron-right text-muted"></i>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <i class="fas fa-tasks me-3 text-primary"></i>
+                        <span class="fw-medium">${task.taskName || 'Noma\'lum vazifa'}</span>
+                        ${statusBadge}
                     </div>
-                `;
+                    <i class="fas fa-chevron-right text-muted"></i>
+                </div>
+            `;
 
             tasksList.appendChild(taskDiv);
         }
@@ -1360,10 +1390,11 @@
     async function selectTask(task, taskElement) {
         if (!checkAuth()) return;
 
-        // Hide task results when selecting new task
+        // Fixed: Proper cleanup when selecting new task
         document.getElementById('taskResults').classList.add('d-none');
-
         resetTaskState();
+
+        // Remove active class from all tasks
         document.querySelectorAll('.task-item').forEach(t => t.classList.remove('active'));
         if (taskElement) {
             taskElement.classList.add('active');
@@ -1396,12 +1427,12 @@
         } catch (error) {
             console.error('Savollarni yuklashda xato:', error);
             document.getElementById('questionContent').innerHTML = `
-                    <div class="text-center py-5">
-                        <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
-                        <h5>Xato yuz berdi</h5>
-                        <p class="text-muted">Savollarni yuklashda xato: ${error.message}</p>
-                    </div>
-                `;
+                <div class="text-center py-5">
+                    <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                    <h5>Xato yuz berdi</h5>
+                    <p class="text-muted">Savollarni yuklashda xato: ${error.message}</p>
+                </div>
+            `;
         }
     }
 
@@ -1421,22 +1452,16 @@
         document.getElementById('submitButton').innerHTML = '<i class="fas fa-paper-plane me-2"></i>Yuborish';
 
         document.getElementById('questionContent').innerHTML = `
-                <div class="text-center py-5">
-                    <i class="fas fa-clipboard-check fa-3x text-muted mb-3"></i>
-                    <h5>Vazifa tanlanmadi</h5>
-                    <p class="text-muted">Iltimos, menyudan vazifa tanlang!</p>
-                </div>
-            `;
+            <div class="text-center py-5">
+                <i class="fas fa-clipboard-check fa-3x text-muted mb-3"></i>
+                <h5>Vazifa tanlanmadi</h5>
+                <p class="text-muted">Iltimos, menyudan vazifa tanlang!</p>
+            </div>
+        `;
+
         document.getElementById('questionTitle').textContent = 'Vazifa tanlanmadi';
         document.getElementById('questionDifficulty').textContent = 'Daraja tanlanmadi';
         document.getElementById('taskResults').classList.add('d-none');
-
-        // Hide task results card
-        document.getElementById('taskResults').classList.add('d-none');
-
-        // Reset active states in menu
-        document.querySelectorAll('.task-item').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.module-item').forEach(m => m.classList.remove('active'));
     }
 
     async function checkTaskSubmission(taskId) {
@@ -1465,7 +1490,6 @@
         document.getElementById('questionDifficulty').textContent = taskDetails.youtubeURL && taskDetails.youtubeURL.trim() !== '' ? 'Video darslik' : 'Test savollar';
 
         const hasVideo = taskDetails.youtubeURL && taskDetails.youtubeURL.trim() !== '';
-
         const questionContent = document.getElementById('questionContent');
         questionContent.innerHTML = '';
 
@@ -1572,12 +1596,12 @@
         if (!currentQuestions || currentQuestions.length === 0) {
             const container = document.getElementById('questionsContainer') || document.getElementById('questionContent');
             container.innerHTML = `
-                    <div class="text-center py-5">
-                        <i class="fas fa-question-circle fa-3x text-muted mb-3"></i>
-                        <h5>Savollar mavjud emas</h5>
-                        <p class="text-muted">Ushbu vazifa uchun savollar topilmadi</p>
-                    </div>
-                `;
+                <div class="text-center py-5">
+                    <i class="fas fa-question-circle fa-3x text-muted mb-3"></i>
+                    <h5>Savollar mavjud emas</h5>
+                    <p class="text-muted">Ushbu vazifa uchun savollar topilmadi</p>
+                </div>
+            `;
             return;
         }
 
@@ -1591,6 +1615,7 @@
             console.error('YouTube URL noto\'g\'ri yoki mavjud emas:', url);
             return null;
         }
+
         const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
         const match = url.match(regex);
         if (!match) {
@@ -1615,12 +1640,12 @@
         };
 
         document.getElementById('questionContent').innerHTML = `
-                <div class="text-center py-5">
-                    <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
-                    <h5>Video yuklanmadi</h5>
-                    <p class="text-muted">${errorMessages[event.data] || 'Noma\'lum xato'}</p>
-                </div>
-            `;
+            <div class="text-center py-5">
+                <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                <h5>Video yuklanmadi</h5>
+                <p class="text-muted">${errorMessages[event.data] || 'Noma\'lum xato'}</p>
+            </div>
+        `;
         videoCompleted = true;
         showQuestionsDirectly();
     }
@@ -1695,57 +1720,56 @@
 
         if (!question) {
             container.innerHTML = `
-                <div class="text-center py-5">
-                    <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
-                    <h5>Savol yuklanmadi</h5>
-                    <p class="text-muted">Savol ma'lumotlari topilmadi</p>
-                </div>
-            `;
+            <div class="text-center py-5">
+                <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                <h5>Savol yuklanmadi</h5>
+                <p class="text-muted">Savol ma'lumotlari topilmadi</p>
+            </div>
+        `;
             return;
         }
 
         container.innerHTML = `
-    <div class="mb-4">
-        <h6 class="mb-3 fw-medium">${question.questionTest || 'Savol matni mavjud emas'}</h6>
-        <div id="questionAttachments" class="mb-4"></div>
-        <div id="optionsContainer" class="mb-4"></div>
-        <div class="question-navigation d-flex justify-content-between align-items-center">
-            <button class="btn btn-outline-primary btn-sm" onclick="navigateQuestionAfterVideo(-1)" ${currentQuestionIndex === 0 ? 'disabled' : ''}>
-                <i class="fas fa-arrow-left me-1"></i>Oldingi
-            </button>
-            <span class="badge bg-secondary px-3 py-2">Savol ${currentQuestionIndex + 1}/${currentQuestions.length}</span>
-            <button class="btn btn-primary btn-sm" onclick="navigateQuestionAfterVideo(1)" ${currentQuestionIndex >= currentQuestions.length - 1 ? 'disabled' : ''}>
-                Keyingi<i class="fas fa-arrow-right ms-1"></i>
-            </button>
+        <div class="mb-4">
+            <h6 class="mb-3 fw-medium">${question.questionTest || 'Savol matni mavjud emas'}</h6>
+            <div id="questionAttachments" class="mb-4"></div>
+            <div id="optionsContainer" class="mb-4"></div>
+            <div class="question-navigation d-flex justify-content-between align-items-center">
+                <button class="btn btn-outline-primary btn-sm" onclick="navigateQuestionAfterVideo(-1)" ${currentQuestionIndex === 0 ? 'disabled' : ''}>
+                    <i class="fas fa-arrow-left me-1"></i>Oldingi
+                </button>
+                <span class="badge bg-secondary px-3 py-2">Savol ${currentQuestionIndex + 1}/${currentQuestions.length}</span>
+                <button class="btn btn-primary btn-sm" onclick="navigateQuestionAfterVideo(1)" ${currentQuestionIndex >= currentQuestions.length - 1 ? 'disabled' : ''}>
+                    Keyingi<i class="fas fa-arrow-right ms-1"></i>
+                </button>
+            </div>
         </div>
-    </div>
-`;
+    `;
 
         const attachmentsDiv = document.getElementById('questionAttachments');
         if (question.attachmentId) {
             attachmentsDiv.innerHTML = `
-                <div class="text-center py-3">
-                    <div class="spinner mx-auto mb-2"></div>
-                    <small>Savol uchun qo'shimcha materiallar yuklanmoqda...</small>
-                </div>
-            `;
+            <div class="text-center py-3">
+                <div class="spinner mx-auto mb-2"></div>
+                <small>Savol uchun qo'shimcha materiallar yuklanmoqda...</small>
+            </div>
+        `;
 
             try {
                 const response = await axios.get(`/api/v1/attachments/${question.attachmentId}`, {
                     headers: {'Authorization': userData.token}
                 });
                 const attachment = response.data;
-
                 attachmentsDiv.innerHTML = '';
                 displaySingleAttachment(attachment, attachmentsDiv);
             } catch (error) {
                 console.error('Savol attachmentini yuklashda xato:', error);
                 attachmentsDiv.innerHTML = `
-                    <div class="alert alert-danger">
-                        <i class="fas fa-exclamation-triangle me-2"></i>
-                        Savol uchun qo'shimcha materialni yuklashda xato yuz berdi.
-                    </div>
-                `;
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Savol uchun qo'shimcha materialni yuklashda xato yuz berdi.
+                </div>
+            `;
             }
         } else {
             attachmentsDiv.innerHTML = '';
@@ -1758,9 +1782,9 @@
                 const option = document.createElement('div');
                 option.className = `question-option ${isSelected ? 'selected' : ''}`;
                 option.innerHTML = `
-                    <input type="radio" name="question_${question.id}" value="${variant}" id="option_${index}" ${isSelected ? 'checked' : ''} class="d-none">
-                    <label for="option_${index}" class="mb-0 w-100 fw-medium">${variant}</label>
-                `;
+                <input type="radio" name="question_${question.id}" value="${variant}" id="option_${index}" ${isSelected ? 'checked' : ''} class="d-none">
+                <label for="option_${index}" class="mb-0 w-100 fw-medium">${variant}</label>
+            `;
                 option.addEventListener('click', () => {
                     selectedAnswers[currentQuestionIndex] = variant;
                     document.querySelectorAll('.question-option').forEach(opt => opt.classList.remove('selected'));
@@ -1795,7 +1819,6 @@
             const response = await axios.get(`/api/v1/attachments?${params.toString()}`, {
                 headers: {'Authorization': userData.token}
             });
-
             return response.data;
         } catch (error) {
             console.error('Attachmentlarni yuklashda xato:', error);
@@ -1806,10 +1829,10 @@
     function displayAttachments(attachments, container) {
         if (!attachments || attachments.length === 0) {
             container.innerHTML = `
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle me-2"></i>
-                        Ushbu vazifada qo'shimcha materiallar mavjud emas
-                    </div>`;
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                Ushbu vazifada qo'shimcha materiallar mavjud emas
+            </div>`;
             return;
         }
 
@@ -1891,11 +1914,11 @@
     function displaySingleAttachment(attachment, container) {
         if (!attachment) {
             container.innerHTML = `
-                <div class="alert alert-warning">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    Qo'shimcha material topilmadi
-                </div>
-            `;
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Qo'shimcha material topilmadi
+            </div>
+        `;
             return;
         }
 
@@ -1964,11 +1987,11 @@
         } catch (error) {
             console.error('Attachmentni ko\'rsatishda xato:', error);
             attachmentItem.innerHTML = `
-                <div class="alert alert-danger">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    Faylni ko\'rsatishda xato yuz berdi
-                </div>
-            `;
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Faylni ko\'rsatishda xato yuz berdi
+            </div>
+        `;
         }
 
         container.appendChild(attachmentItem);
@@ -2015,7 +2038,6 @@
         const confirmSubmit = confirm(
             "Javobingiz qattiymi, boshqa bu savolga qayta olmaysiz. Javoblaringizni yuborishni xohlaysizmi?"
         );
-
         if (!confirmSubmit) {
             return;
         }
@@ -2113,7 +2135,6 @@
             if (currentModuleId) {
                 loadTasks(currentModuleId);
             }
-
         } catch (error) {
             console.error('Javob yuborishda xato:', error);
             const submitButton = document.getElementById('submitButton');
@@ -2135,6 +2156,7 @@
             const response = await axios.get(`/api/v1/answer/submission/${taskId}/results`, {
                 headers: {'Authorization': userData.token}
             });
+
             const result = response.data;
 
             document.getElementById('questionTitle').textContent = 'Test Natijalari';
@@ -2184,7 +2206,6 @@
                 <h6 class="text-primary">Natija: ${Math.round((result.passedQuery / result.totalQuery) * 100)}%</h6>
             </div>
         `;
-
         } catch (error) {
             console.error('Natijalarni yuklashda xato:', error);
             document.getElementById('questionContent').innerHTML = `
@@ -2210,16 +2231,17 @@
             const response = await axios.get('/api/v1/student/levels', {
                 headers: {'Authorization': userData.token}
             });
+
             const students = response.data;
 
             if (!Array.isArray(students) || students.length === 0) {
                 document.getElementById('questionContent').innerHTML = `
-                        <div class="text-center py-5">
-                            <i class="fas fa-users fa-3x text-muted mb-3"></i>
-                            <h5>Talabalar ma'lumotlari topilmadi</h5>
-                            <p class="text-muted">Hozirda talabalar reytingi mavjud emas</p>
-                        </div>
-                    `;
+                <div class="text-center py-5">
+                    <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                    <h5>Talabalar ma'lumotlari topilmadi</h5>
+                    <p class="text-muted">Hozirda talabalar reytingi mavjud emas</p>
+                </div>
+            `;
                 return;
             }
 
@@ -2243,23 +2265,23 @@
 
             Object.keys(groupedStudents).forEach(groupName => {
                 htmlContent += `
-    <div class="mb-4">
-        <div class="alert alert-primary">
-            <h6 class="mb-0"><i class="fas fa-users me-2"></i>${groupName}</h6>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-sm table-hover student-levels-table">
-                <thead class="table-light">
-                    <tr>
-                        <th style="width: 15%;">#</th>
-                        <th style="width: 40%;">Ism</th>
-                        <th style="width: 15%;">Jami</th>
-                        <th style="width: 15%;">To'g'ri</th>
-                        <th style="width: 15%;">Noto'g'ri</th>
-                    </tr>
-                </thead>
-                <tbody>
-`;
+                <div class="mb-4">
+                    <div class="alert alert-primary">
+                        <h6 class="mb-0"><i class="fas fa-users me-2"></i>${groupName}</h6>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover student-levels-table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 15%;">#</th>
+                                    <th style="width: 40%;">Ism</th>
+                                    <th style="width: 15%;">Jami</th>
+                                    <th style="width: 15%;">To'g'ri</th>
+                                    <th style="width: 15%;">Noto'g'ri</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
 
                 groupedStudents[groupName].forEach((student, index) => {
                     const studentName = student.fullName || 'Noma\'lum';
@@ -2268,35 +2290,34 @@
                     const failedQuery = student.failedQuery || 0;
 
                     htmlContent += `
-        <tr>
-            <td><span class="badge bg-secondary">${index + 1}</span></td>
-            <td class="student-name fw-medium" title="${studentName}">${studentName}</td>
-            <td>${totalQuery}</td>
-            <td class="text-success fw-bold">${passedQuery}</td>
-            <td class="text-danger fw-bold">${failedQuery}</td>
-        </tr>
-    `;
+                    <tr>
+                        <td><span class="badge bg-secondary">${index + 1}</span></td>
+                        <td class="student-name fw-medium" title="${studentName}">${studentName}</td>
+                        <td>${totalQuery}</td>
+                        <td class="text-success fw-bold">${passedQuery}</td>
+                        <td class="text-danger fw-bold">${failedQuery}</td>
+                    </tr>
+                `;
                 });
 
                 htmlContent += `
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    `;
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
             });
 
             document.getElementById('questionContent').innerHTML = htmlContent;
-
         } catch (error) {
             console.error('Talabalar reytingini yuklashda xato:', error);
             document.getElementById('questionContent').innerHTML = `
-                    <div class="text-center py-5">
-                        <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
-                        <h5>Xato yuz berdi</h5>
-                        <p class="text-muted">Talabalar reytingini yuklashda xato: ${error.response?.data?.message || error.message}</p>
-                    </div>
-                `;
+            <div class="text-center py-5">
+                <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                <h5>Xato yuz berdi</h5>
+                <p class="text-muted">Talabalar reytingini yuklashda xato: ${error.response?.data?.message || error.message}</p>
+            </div>
+        `;
         }
     }
 
@@ -2308,6 +2329,7 @@
                 alert('Rasm hajmi 2MB dan katta bo\'lmasligi kerak!');
                 return;
             }
+
             const reader = new FileReader();
             reader.onload = function (event) {
                 document.getElementById('imagePreview').src = event.target.result;
@@ -2400,11 +2422,13 @@
             userData = {};
             localStorage.setItem('userData', JSON.stringify(userData));
         }
+
         if (checkAuth()) {
             displayUserInfo();
             loadModules();
         }
     });
 </script>
+
 </body>
 </html>
