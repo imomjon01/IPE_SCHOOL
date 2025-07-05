@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Management System</title>
+    <link rel="icon" type="image/png" href="/images/favicon.ico" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -472,33 +473,32 @@
 
         .file-preview {
             position: relative;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            margin: 10px;
         }
-
         .file-preview img {
-            width: 100px;
-            height: 100px;
+            max-width: 100px;
+            max-height: 100px;
             object-fit: cover;
         }
-
         .file-remove {
             position: absolute;
-            top: 5px;
-            right: 5px;
-            background: rgba(220, 53, 69, 0.8);
+            top: -10px;
+            right: -10px;
+            background: red;
             color: white;
             border: none;
             border-radius: 50%;
-            width: 25px;
-            height: 25px;
             cursor: pointer;
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-
+        .file-remove i {
+            font-size: 12px;
+        }
         .variants-container {
             margin-bottom: 20px;
         }
@@ -835,7 +835,6 @@
     </div>
 </div>
 
-
 <!-- Add Module Modal -->
 <div id="addModuleModal" class="modal">
     <div class="modal-content">
@@ -1067,6 +1066,7 @@
     let currentTask = null;
     let currentQuestion = null;
     let sciences = [];
+    let allFiles = [];
 
     // Initialize the application
     document.addEventListener('DOMContentLoaded', function () {
@@ -1370,24 +1370,31 @@
         // Display task info
         const taskInfo = document.createElement('div');
         taskInfo.className = 'task-item';
+
+        const youtubeEmbed = currentTask.youtubeURL
+            ? `<div class="task-video">
+         <iframe width="300" height="200" src="https://www.youtube.com/embed/${getYoutubeVideoId(currentTask.youtubeURL)}"
+             frameborder="0" allowfullscreen></iframe>
+       </div>`
+            : '';
+
         taskInfo.innerHTML = `
-                <div class="task-info">
-                    <div class="task-name">Task: ${currentTask.name}</div>
-                    <div class="task-meta">
-                        ${currentTask.youtubeURL ? `YouTube: <a href="${currentTask.youtubeURL}" target="_blank">${currentTask.youtubeURL}</a><br>` : ''}
-                        Status: ${currentTask.active ? 'Active' : 'Inactive'}
-                    </div>
-                    ${currentTask.attachments ? `
-                        <div class="task-attachments">
-                            <strong>Attachments:</strong><br>
-                            ${currentTask.attachments.map(att => `
-                                <img src="data:${att.contentType};base64,${btoa(String.fromCharCode(...new Uint8Array(att.content)))}"
-                                     style="max-width: 100px; max-height: 100px; margin: 5px; border-radius: 5px;">
-                            `).join('')}
-                        </div>
-                    ` : ''}
-                </div>
-            `;
+    <div class="task-info">
+        <div class="task-name">Task: ${currentTask.name}</div>
+        <div class="task-meta">
+            Status: ${currentTask.active ? 'Active' : 'Inactive'}
+        </div>
+        ${youtubeEmbed}
+        ${currentTask.attachments ? `
+            <div class="task-attachments">
+                <strong>Attachments:</strong><br>
+                ${currentTask.attachments.map(att => `
+                    <img src="data:${att.contentType};base64,${typeof att.content === 'string' ? att.content : arrayBufferToBase64(att.content)}"
+                        style="max-width: 100px; max-height: 100px; margin: 5px; border-radius: 8px;"
+                        alt="Attachment">`).join('')}
+            </div>` : ''}
+    </div>`;
+
         container.appendChild(taskInfo);
 
         // Display questions
@@ -1412,6 +1419,25 @@
             container.appendChild(questionItem);
         });
     }
+
+    // Utility functions
+    function arrayBufferToBase64(buffer) {
+        if (!buffer) return '';
+        if (typeof buffer === 'string') return buffer;
+
+        const bytes = new Uint8Array(buffer);
+        let binary = '';
+        for (let i = 0; i < bytes.byteLength; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return btoa(binary);
+    }
+
+    function getYoutubeVideoId(url) {
+        const match = url.match(/(?:youtube\.com.*v=|youtu\.be\/)([^&\n?#]+)/);
+        return match ? match[1] : '';
+    }
+
 
     // View question details
     async function viewQuestion(questionId) {
@@ -1825,6 +1851,7 @@
             console.error('Error adding task:', error);
             showAlert('Error adding task', 'danger');
         } finally {
+            allFiles = [];
             loading.style.display = 'none';
         }
     }
@@ -2115,26 +2142,80 @@
 
     function previewTaskFiles(input) {
         const container = document.getElementById('taskFilesPreviews');
+
+        // Yangi tanlangan fayllarni olish
+        const newFiles = Array.from(input.files).filter(file => file.type.startsWith('image/'));
+
+        // Yangi fayllarni avvalgi fayllar bilan birlashtirish
+        allFiles = [...allFiles, ...newFiles];
+
+        // Preview'larni tozalash va qayta chizish
         container.innerHTML = '';
 
-        for (let i = 0; i < input.files.length; i++) {
-            const file = input.files[i];
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const preview = document.createElement('div');
-                    preview.className = 'file-preview';
-                    preview.innerHTML = `
-                            <img src="${e.target.result}" alt="Preview">
-                            <button type="button" class="file-remove" onclick="removeTaskFile(${i})">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        `;
-                    container.appendChild(preview);
-                };
-                reader.readAsDataURL(file);
-            }
-        }
+        allFiles.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const preview = document.createElement('div');
+                preview.className = 'file-preview';
+                preview.setAttribute('data-index', index); // Indeksni saqlash
+                preview.innerHTML = `
+                <img src="${e.target.result}" alt="Preview">
+                <button type="button" class="file-remove" onclick="removeTaskFile(${index})">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+                container.appendChild(preview);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Input fayllarini yangilash
+        updateInputFiles(input);
+    }
+
+    function removeTaskFile(index) {
+        const input = document.getElementById('taskAttachments');
+        const container = document.getElementById('taskFilesPreviews');
+
+        // Faylni global ro‘yxatdan o‘chirish
+        allFiles.splice(index, 1);
+
+        // Input fayllarini yangilash
+        updateInputFiles(input);
+
+        // Preview'larni qayta chizish
+        container.innerHTML = '';
+        allFiles.forEach((file, newIndex) => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const preview = document.createElement('div');
+                preview.className = 'file-preview';
+                preview.setAttribute('data-index', newIndex);
+                preview.innerHTML = `
+                <img src="${e.target.result}" alt="Preview">
+                <button type="button" class="file-remove" onclick="removeTaskFile(${newIndex})">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+                container.appendChild(preview);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function updateInputFiles(input) {
+        // Input fayllarini yangilash uchun DataTransfer obyekti
+        const dataTransfer = new DataTransfer();
+        allFiles.forEach(file => dataTransfer.items.add(file));
+        input.files = dataTransfer.files;
+    }
+
+
+    function updateInputFiles(input) {
+        // Input fayllarini yangilash uchun DataTransfer obyekti
+        const dataTransfer = new DataTransfer();
+        allFiles.forEach(file => dataTransfer.items.add(file));
+        input.files = dataTransfer.files;
     }
 
     function previewUpdateTaskFiles(input) {
