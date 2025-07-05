@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Management System</title>
-    <link rel="icon" type="image/png" href="/images/favicon.ico"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -67,7 +66,7 @@
         }
 
         .profile-name {
-            font-weight: bold;
+            font-weight: 600;
             color: #333;
         }
 
@@ -94,13 +93,14 @@
         }
 
         .dropdown-item {
-            padding: 10px 15px;
+            padding: 3px 8px;
+            font-size: 14px;
             cursor: pointer;
             border-radius: 8px;
             transition: background-color 0.3s;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
         }
 
         .dropdown-item:hover {
@@ -115,11 +115,19 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
         .sciences-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
-            margin-top: 20px;
+            margin-bottom: 30px;
         }
 
         .science-card {
@@ -137,8 +145,8 @@
         }
 
         .science-name {
-            font-size: 20px;
-            font-weight: bold;
+            font-size: 22px;
+            font-weight: 600;
             margin-bottom: 15px;
         }
 
@@ -149,11 +157,18 @@
             margin-bottom: 20px;
         }
 
-        .module-count {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 14px;
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
         }
 
         .btn {
@@ -164,7 +179,7 @@
             border-radius: 25px;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 14px;
+            font-weight: 500;
             text-decoration: none;
             display: inline-block;
             text-align: center;
@@ -209,7 +224,7 @@
         .btn-warning {
             background: #ffc107;
             border-color: #ffc107;
-            color: #212529;
+            color: #333;
         }
 
         .btn-warning:hover {
@@ -245,22 +260,22 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             padding-bottom: 15px;
             border-bottom: 2px solid #f8f9fa;
         }
 
         .modal-title {
             font-size: 24px;
-            font-weight: bold;
+            font-weight: 600;
             color: #333;
         }
 
         .close {
-            color: #aaa;
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
+            color: #aaa;
             transition: color 0.3s;
         }
 
@@ -275,7 +290,7 @@
         .form-label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 600;
+            font-weight: 500;
             color: #333;
         }
 
@@ -294,41 +309,58 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .modules-list {
-            margin-top: 20px;
+        .modules-container {
+            margin-top: 30px;
         }
 
-        .module-item {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            border-left: 5px solid #28a745;
-            transition: transform 0.3s;
-        }
-
-        .module-item.inactive {
-            border-left-color: #dc3545;
-            opacity: 0.8;
-        }
-
-        .module-item:hover {
-            transform: translateX(5px);
-        }
-
-        .module-header {
+        .modules-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 20px;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .module-card {
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .module-card.active {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .module-card.inactive {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: white;
+        }
+
+        .module-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
         }
 
         .module-name {
             font-size: 18px;
-            font-weight: bold;
-            color: #333;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .module-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
         .module-actions {
@@ -337,109 +369,121 @@
             flex-wrap: wrap;
         }
 
-        .task-count {
-            background: #e9ecef;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 12px;
-            color: #666;
-        }
-
-        .tasks-list {
-            margin-top: 15px;
+        .tasks-container {
+            margin-top: 30px;
         }
 
         .task-item {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 10px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
+        }
+
+        .task-info {
+            flex: 1;
         }
 
         .task-name {
-            font-weight: 600;
-            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 5px;
         }
 
-        .questions-list {
-            margin-top: 15px;
+        .task-meta {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .questions-container {
+            margin-top: 20px;
         }
 
         .question-item {
-            background: #fff3cd;
+            background: #f8f9fa;
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 10px;
-            border-left: 4px solid #ffc107;
+            border-left: 4px solid #667eea;
         }
 
         .question-text {
-            font-weight: 600;
+            font-weight: 500;
             margin-bottom: 10px;
         }
 
-        .variants-list {
-            margin-left: 20px;
+        .question-variants {
+            margin-bottom: 10px;
         }
 
         .variant-item {
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            padding: 5px 0;
+            font-size: 14px;
         }
 
-        .variant-input {
-            flex: 1;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        .variant-item.correct {
+            color: #28a745;
+            font-weight: 500;
+        }
+
+        .question-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .file-upload {
-            border: 2px dashed #ddd;
-            border-radius: 10px;
+            border: 2px dashed #ccc;
             padding: 20px;
             text-align: center;
             cursor: pointer;
-            transition: border-color 0.3s;
+            border-radius: 10px;
+            transition: background-color 0.3s;
         }
 
         .file-upload:hover {
-            border-color: #667eea;
+            background-color: #f8f9fa;
         }
 
-        .file-upload.dragover {
-            border-color: #667eea;
-            background-color: rgba(102, 126, 234, 0.1);
+        .attachment-preview img {
+            display: block;
+            margin: 0 auto;
         }
 
-        .attachment-preview {
+
+        .uploaded-files {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             margin-top: 15px;
         }
 
-        .attachment-item {
+        .file-preview {
             position: relative;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .attachment-image {
+        .file-preview img {
             width: 100px;
             height: 100px;
             object-fit: cover;
         }
 
-        .attachment-remove {
+        .file-remove {
             position: absolute;
             top: 5px;
             right: 5px;
@@ -455,44 +499,80 @@
             justify-content: center;
         }
 
+        .variants-container {
+            margin-bottom: 20px;
+        }
+
+        .variant-input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .variant-input {
+            flex: 1;
+        }
+
+        .correct-checkbox {
+            width: 20px;
+            height: 20px;
+        }
+
         .loading {
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
+            border: 3px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
         }
 
         .breadcrumb {
-            background: rgba(102, 126, 234, 0.1);
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
-            flex-wrap: wrap;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #666;
         }
 
         .breadcrumb-item {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.3s;
         }
 
         .breadcrumb-item:hover {
-            text-decoration: underline;
+            color: #667eea;
         }
 
         .breadcrumb-separator {
-            color: #999;
+            color: #ccc;
         }
 
         @media (max-width: 768px) {
@@ -510,38 +590,87 @@
                 grid-template-columns: 1fr;
             }
 
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+
             .modal-content {
                 margin: 10% auto;
                 width: 95%;
                 padding: 20px;
             }
 
-            .module-header,
             .task-item {
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: stretch;
+            }
+
+            .task-actions {
+                justify-content: center;
             }
 
             .module-actions {
-                width: 100%;
-                justify-content: flex-start;
+                justify-content: center;
+            }
+
+            .modules-header {
+                flex-direction: column;
+                align-items: stretch;
             }
         }
 
         @media (max-width: 480px) {
-            .btn {
-                padding: 8px 15px;
-                font-size: 12px;
+            .section-title {
+                font-size: 24px;
+            }
+
+            .science-name {
+                font-size: 18px;
             }
 
             .modal-content {
-                margin: 5% auto;
                 padding: 15px;
             }
 
-            .science-card {
-                padding: 20px;
+            .btn {
+                padding: 8px 16px;
+                font-size: 14px;
             }
+        }
+        .manga-counter {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: linear-gradient(dodgerblue 0%, #1e90ff 100%);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .manga-counter:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+        }
+
+        .manga-icon {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M18 22H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8l6 6v12a2 2 0 0 1-2 2zm-5-8h5v-2h-5v2z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .count {
+            margin: 0 4px;
+            font-weight: 700;
+            font-size: 15px;
         }
     </style>
 </head>
@@ -562,11 +691,11 @@
             <div class="profile-dropdown" id="profileDropdown">
                 <div class="dropdown-item" onclick="openUpdateProfile()">
                     <i class="fas fa-user-edit"></i>
-                    Update Profile
-                </div>
-                <div class="dropdown-item" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Logout
+                    Profile
+                    <div class="dropdown-item" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </div>
                 </div>
             </div>
         </div>
@@ -574,15 +703,14 @@
 
     <!-- Main Content -->
     <div class="main-content">
+        <!-- Breadcrumb -->
         <div class="breadcrumb" id="breadcrumb">
-            <a href="#" class="breadcrumb-item" onclick="showSciences()">
-                <i class="fas fa-home"></i> Sciences
-            </a>
+            <span class="breadcrumb-item" onclick="showSciences()">Sciences</span>
         </div>
 
         <!-- Sciences View -->
         <div id="sciencesView">
-            <h2>Available Sciences</h2>
+            <h2 class="section-title">Sciences & Subjects</h2>
             <div class="sciences-grid" id="sciencesGrid">
                 <!-- Sciences will be loaded here -->
             </div>
@@ -590,26 +718,28 @@
 
         <!-- Modules View -->
         <div id="modulesView" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
-                <h2 id="scienceTitle">Modules</h2>
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <span class="module-count" id="moduleCount">0 modules</span>
+            <div class="modules-header">
+                <h2 class="section-title" id="modulesTitle">Modules</h2>
+                <div>
                     <button class="btn btn-primary" onclick="openAddModule()">
                         <i class="fas fa-plus"></i> Add Module
                     </button>
+                    <span class="badge manga-counter" id="moduleCount">
+                        <i class="manga-icon"></i>
+                        <span class="count">0</span> modules
+                    </span>
                 </div>
             </div>
-            <div class="modules-list" id="modulesList">
+            <div class="modules-grid" id="modulesGrid">
                 <!-- Modules will be loaded here -->
             </div>
         </div>
 
         <!-- Tasks View -->
         <div id="tasksView" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
-                <h2 id="moduleTitle">Tasks</h2>
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <span class="task-count" id="taskCount">0 tasks</span>
+            <div class="modules-header">
+                <h2 class="section-title" id="tasksTitle">Tasks</h2>
+                <div>
                     <button class="btn btn-primary" onclick="openAddTask()">
                         <i class="fas fa-plus"></i> Add Task
                     </button>
@@ -617,34 +747,37 @@
                         <i class="fas fa-edit"></i> Update Module
                     </button>
                     <button class="btn" id="moduleStatusBtn" onclick="toggleModuleStatus()">
-                        <i class="fas fa-eye"></i> Present to Mentors
+                        <i class="fas fa-eye"></i> Show to Mentors
                     </button>
+                    <span class="badge manga-counter" id="taskCount">
+                        <i class="manga-icon"></i>
+                        <span class="count">0</span> modules
+                    </span>
                 </div>
             </div>
-            <div class="tasks-list" id="tasksList">
+            <div class="tasks-container" id="tasksContainer">
                 <!-- Tasks will be loaded here -->
             </div>
         </div>
 
         <!-- Questions View -->
         <div id="questionsView" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
-                <h2 id="taskTitle">Questions</h2>
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <span class="task-count" id="questionCount">0 questions</span>
+            <div class="modules-header">
+                <h2 class="section-title" id="questionsTitle">Questions</h2>
+                <div>
                     <button class="btn btn-primary" onclick="openAddQuestion()">
                         <i class="fas fa-plus"></i> Add Question
                     </button>
                     <button class="btn btn-warning" onclick="openUpdateTask()">
                         <i class="fas fa-edit"></i> Update Task
                     </button>
+                    <span class="badge manga-counter" id="questionCount">
+                        <i class="manga-icon"></i>
+                        <span class="count">0</span> modules
+                    </span>
                 </div>
             </div>
-            <div id="taskDetails" style="margin-bottom: 20px;">
-                <!-- Task details will be loaded here -->
-            </div>
-            <div id="taskAttachmentsList"></div>
-            <div class="questions-list" id="questionsList">
+            <div class="questions-container" id="questionsContainer">
                 <!-- Questions will be loaded here -->
             </div>
         </div>
@@ -662,31 +795,36 @@
             <div class="form-group">
                 <label class="form-label">Profile Image</label>
                 <div class="file-upload" onclick="document.getElementById('profileImageInput').click()">
-                    <i class="fas fa-camera"></i>
+                    <i class="fas fa-camera fa-2x"></i>
                     <p>Click to select profile image</p>
                     <input type="file" id="profileImageInput" accept="image/*" style="display: none;"
                            onchange="previewProfileImage(this)">
                 </div>
-                <div id="profileImagePreview" class="attachment-preview"></div>
+                <div id="profileImagePreview" class="attachment-preview" style="margin-top: 10px;"></div>
             </div>
+
             <div class="form-group">
                 <label class="form-label">First Name</label>
                 <input type="text" class="form-control" id="updateFirstName" required>
             </div>
+
             <div class="form-group">
                 <label class="form-label">Last Name</label>
                 <input type="text" class="form-control" id="updateLastName" required>
             </div>
+
             <div class="form-group">
                 <label class="form-label">Phone Number</label>
                 <input type="tel" class="form-control" id="updatePhoneNumber" required>
             </div>
+
             <div class="form-group">
                 <label class="form-label">Password (Optional)</label>
                 <input type="password" class="form-control" id="updatePassword"
                        placeholder="Leave empty to keep current password">
             </div>
-            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+
+            <div class="form-group" style="display: flex; gap: 10px; justify-content: flex-end;">
                 <button type="button" class="btn" onclick="closeModal('updateProfileModal')">Cancel</button>
                 <button type="submit" class="btn btn-primary">
                     <span id="updateProfileLoading" class="loading" style="display: none;"></span>
@@ -696,6 +834,7 @@
         </form>
     </div>
 </div>
+
 
 <!-- Add Module Modal -->
 <div id="addModuleModal" class="modal">
@@ -709,11 +848,32 @@
                 <label class="form-label">Module Name</label>
                 <input type="text" class="form-control" id="moduleName" required>
             </div>
-            <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                <button type="button" class="btn" onclick="closeModal('addModuleModal')">Cancel</button>
-                <button type="submit" class="btn btn-primary">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
                     <span id="addModuleLoading" class="loading" style="display: none;"></span>
                     Add Module
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Update Module Modal -->
+<div id="updateModuleModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Update Module</h3>
+            <span class="close" onclick="closeModal('updateModuleModal')">&times;</span>
+        </div>
+        <form id="updateModuleForm">
+            <div class="form-group">
+                <label class="form-label">Module Name</label>
+                <input type="text" class="form-control" id="updateModuleName" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <span id="updateModuleLoading" class="loading" style="display: none;"></span>
+                    Update Module
                 </button>
             </div>
         </form>
@@ -734,45 +894,23 @@
             </div>
             <div class="form-group">
                 <label class="form-label">YouTube URL (Optional)</label>
-                <input type="url" class="form-control" id="youtubeURL" placeholder="https://youtube.com/watch?v=...">
+                <input type="url" class="form-control" id="taskYoutubeUrl"
+                       placeholder="https://youtube.com/watch?v=...">
             </div>
             <div class="form-group">
                 <label class="form-label">Attachments (Optional)</label>
-                <div class="file-upload" onclick="document.getElementById('taskAttachments').click()">
-                    <i class="fas fa-paperclip"></i>
-                    <p>Click to select attachments</p>
-                    <input type="file" id="taskAttachments" multiple accept="image/*" style="display: none;"
-                           onchange="previewTaskAttachments(this)">
+                <div class="file-upload-area" onclick="document.getElementById('taskAttachments').click()">
+                    <i class="fas fa-cloud-upload-alt fa-2x"></i>
+                    <p>Click to select files or drag and drop</p>
                 </div>
-                <div id="taskAttachmentsPreview" class="attachment-preview"></div>
+                <input type="file" id="taskAttachments" multiple accept="image/*" style="display: none;"
+                       onchange="previewTaskFiles(this)">
+                <div class="uploaded-files" id="taskFilesPreviews"></div>
             </div>
-            <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                <button type="button" class="btn" onclick="closeModal('addTaskModal')">Cancel</button>
-                <button type="submit" class="btn btn-primary">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
                     <span id="addTaskLoading" class="loading" style="display: none;"></span>
                     Add Task
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div id="updateModuleModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title">Update Module</h3>
-            <span class="close" onclick="closeModal('updateModuleModal')">×</span>
-        </div>
-        <form id="updateModuleForm">
-            <div class="form-group">
-                <label class="form-label">Module Name</label>
-                <input type="text" class="form-control" id="updateModuleName" required>
-            </div>
-            <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                <button type="button" class="btn" onclick="closeModal('updateModuleModal')">Cancel</button>
-                <button type="submit" class="btn btn-primary">
-                    <span id="updateModuleLoading" class="loading" style="display: none;"></span>
-                    Update Module
                 </button>
             </div>
         </form>
@@ -793,26 +931,25 @@
             </div>
             <div class="form-group">
                 <label class="form-label">YouTube URL (Optional)</label>
-                <input type="url" class="form-control" id="updateYoutubeURL"
+                <input type="url" class="form-control" id="updateTaskYoutubeUrl"
                        placeholder="https://youtube.com/watch?v=...">
             </div>
             <div class="form-group">
                 <label class="form-label">Current Attachments</label>
-                <div id="currentAttachments" class="attachment-preview"></div>
+                <div id="currentTaskAttachments"></div>
             </div>
             <div class="form-group">
-                <label class="form-label">Add New Attachments (Optional)</label>
-                <div class="file-upload" onclick="document.getElementById('updateTaskAttachments').click()">
-                    <i class="fas fa-paperclip"></i>
-                    <p>Click to select new attachments</p>
-                    <input type="file" id="updateTaskAttachments" multiple accept="image/*" style="display: none;"
-                           onchange="previewUpdateTaskAttachments(this)">
+                <label class="form-label">New Attachments (Optional)</label>
+                <div class="file-upload-area" onclick="document.getElementById('updateTaskAttachments').click()">
+                    <i class="fas fa-cloud-upload-alt fa-2x"></i>
+                    <p>Click to select new files</p>
                 </div>
-                <div id="updateTaskAttachmentsPreview" class="attachment-preview"></div>
+                <input type="file" id="updateTaskAttachments" multiple accept="image/*" style="display: none;"
+                       onchange="previewUpdateTaskFiles(this)">
+                <div class="uploaded-files" id="updateTaskFilesPreviews"></div>
             </div>
-            <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                <button type="button" class="btn" onclick="closeModal('updateTaskModal')">Cancel</button>
-                <button type="submit" class="btn btn-primary">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
                     <span id="updateTaskLoading" class="loading" style="display: none;"></span>
                     Update Task
                 </button>
@@ -834,44 +971,41 @@
                 <textarea class="form-control" id="questionText" rows="3" required></textarea>
             </div>
             <div class="form-group">
-                <label class="form-label">Question Attachment (Optional)</label>
-                <div class="file-upload" onclick="document.getElementById('questionAttachment').click()">
-                    <i class="fas fa-image"></i>
-                    <p>Click to select question image</p>
-                    <input type="file" id="questionAttachment" accept="image/*" style="display: none;"
-                           onchange="previewQuestionAttachment(this)">
+                <label class="form-label">Attachment (Optional)</label>
+                <div class="file-upload-area" onclick="document.getElementById('questionAttachment').click()">
+                    <i class="fas fa-image fa-2x"></i>
+                    <p>Click to select image</p>
                 </div>
-                <div id="questionAttachmentPreview" class="attachment-preview"></div>
+                <input type="file" id="questionAttachment" accept="image/*" style="display: none;"
+                       onchange="previewQuestionAttachment(this)">
+                <div id="questionAttachmentPreview"></div>
             </div>
             <div class="form-group">
                 <label class="form-label">Answer Variants</label>
-                <div id="variantsList">
-                    <div class="variant-item">
-                        <input type="text" class="variant-input" placeholder="Variant 1" required>
-                        <input type="radio" name="correctAnswer" value="0" required>
-                        <label>Correct</label>
+                <div class="variants-container" id="variantsContainer">
+                    <div class="variant-input-group">
+                        <input type="text" class="form-control variant-input" placeholder="Variant 1" required>
+                        <input type="checkbox" class="correct-checkbox" title="Mark as correct answer">
                         <button type="button" class="btn btn-danger" onclick="removeVariant(this)"
-                                style="padding: 5px 10px; font-size: 12px;">
+                                style="display: none;">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
-                    <div class="variant-item">
-                        <input type="text" class="variant-input" placeholder="Variant 2" required>
-                        <input type="radio" name="correctAnswer" value="1" required>
-                        <label>Correct</label>
+                    <div class="variant-input-group">
+                        <input type="text" class="form-control variant-input" placeholder="Variant 2" required>
+                        <input type="checkbox" class="correct-checkbox" title="Mark as correct answer">
                         <button type="button" class="btn btn-danger" onclick="removeVariant(this)"
-                                style="padding: 5px 10px; font-size: 12px;">
+                                style="display: none;">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
                 </div>
-                <button type="button" class="btn btn-success" onclick="addVariant()" style="margin-top: 10px;">
+                <button type="button" class="btn btn-secondary" onclick="addVariant()">
                     <i class="fas fa-plus"></i> Add Variant
                 </button>
             </div>
-            <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                <button type="button" class="btn" onclick="closeModal('addQuestionModal')">Cancel</button>
-                <button type="submit" class="btn btn-primary">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
                     <span id="addQuestionLoading" class="loading" style="display: none;"></span>
                     Add Question
                 </button>
@@ -894,30 +1028,29 @@
             </div>
             <div class="form-group">
                 <label class="form-label">Current Attachment</label>
-                <div id="currentQuestionAttachment" class="attachment-preview"></div>
+                <div id="currentQuestionAttachment"></div>
             </div>
             <div class="form-group">
-                <label class="form-label">Update Attachment (Optional)</label>
-                <div class="file-upload" onclick="document.getElementById('updateQuestionAttachment').click()">
-                    <i class="fas fa-image"></i>
-                    <p>Click to select new question image</p>
-                    <input type="file" id="updateQuestionAttachment" accept="image/*" style="display: none;"
-                           onchange="previewUpdateQuestionAttachment(this)">
+                <label class="form-label">New Attachment (Optional)</label>
+                <div class="file-upload-area" onclick="document.getElementById('updateQuestionAttachment').click()">
+                    <i class="fas fa-image fa-2x"></i>
+                    <p>Click to select new image</p>
                 </div>
-                <div id="updateQuestionAttachmentPreview" class="attachment-preview"></div>
+                <input type="file" id="updateQuestionAttachment" accept="image/*" style="display: none;"
+                       onchange="previewUpdateQuestionAttachment(this)">
+                <div id="updateQuestionAttachmentPreview"></div>
             </div>
             <div class="form-group">
                 <label class="form-label">Answer Variants</label>
-                <div id="updateVariantsList">
+                <div class="variants-container" id="updateVariantsContainer">
                     <!-- Variants will be loaded here -->
                 </div>
-                <button type="button" class="btn btn-success" onclick="addUpdateVariant()" style="margin-top: 10px;">
+                <button type="button" class="btn btn-secondary" onclick="addUpdateVariant()">
                     <i class="fas fa-plus"></i> Add Variant
                 </button>
             </div>
-            <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                <button type="button" class="btn" onclick="closeModal('updateQuestionModal')">Cancel</button>
-                <button type="submit" class="btn btn-primary">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
                     <span id="updateQuestionLoading" class="loading" style="display: none;"></span>
                     Update Question
                 </button>
@@ -928,15 +1061,16 @@
 
 <script>
     // Global variables
+    let currentUser = null;
     let currentScience = null;
     let currentModule = null;
     let currentTask = null;
     let currentQuestion = null;
-    let userData = null;
+    let sciences = [];
 
     // Initialize the application
     document.addEventListener('DOMContentLoaded', function () {
-        loadUserData();
+        loadUserProfile();
         loadSciences();
         setupEventListeners();
     });
@@ -952,43 +1086,41 @@
 
         // Close dropdown when clicking outside
         document.addEventListener('click', function () {
-            const dropdown = document.getElementById('profileDropdown');
-            dropdown.classList.remove('show');
+            document.getElementById('profileDropdown').classList.remove('show');
         });
 
         // Form submissions
         document.getElementById('updateProfileForm').addEventListener('submit', handleUpdateProfile);
         document.getElementById('addModuleForm').addEventListener('submit', handleAddModule);
+        document.getElementById('updateModuleForm').addEventListener('submit', handleUpdateModule);
         document.getElementById('addTaskForm').addEventListener('submit', handleAddTask);
         document.getElementById('updateTaskForm').addEventListener('submit', handleUpdateTask);
         document.getElementById('addQuestionForm').addEventListener('submit', handleAddQuestion);
         document.getElementById('updateQuestionForm').addEventListener('submit', handleUpdateQuestion);
+
+        // File upload drag and drop
+        setupFileUpload();
     }
 
-    // Load user data from localStorage
-    function loadUserData() {
-        const userDataStr = localStorage.getItem('userData');
-        if (!userDataStr) {
-            window.location.href = 'login.html';
-            return;
-        }
-
+    // Load user profile from localStorage
+    function loadUserProfile() {
         try {
-            userData = JSON.parse(userDataStr);
-            updateUserProfile();
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                currentUser = userData;
+                document.getElementById('profileName').textContent = `${userData.firstName} ${userData.lastName}`;
+                document.getElementById('profilePhone').textContent = userData.phoneNumber;
+
+                if (userData.image) {
+                    document.getElementById('profileAvatar').src = userData.image;
+                }
+            } else {
+                // Redirect to login if no user data
+                window.location.href = 'index.html';
+            }
         } catch (error) {
-            console.error('Error parsing user data:', error);
-            window.location.href = 'login.html';
-        }
-    }
-
-    // Update user profile display
-    function updateUserProfile() {
-        document.getElementById('profileName').textContent = `${userData.firstName} ${userData.lastName}`;
-        document.getElementById('profilePhone').textContent = userData.phoneNumber;
-
-        if (userData.image) {
-            document.getElementById('profileAvatar').src = userData.image;
+            console.error('Error loading user profile:', error);
+            window.location.href = 'index.html';
         }
     }
 
@@ -1001,20 +1133,20 @@
                 }
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to load sciences');
+            if (response.ok) {
+                sciences = await response.json();
+                displaySciences();
+            } else {
+                showAlert('Failed to load sciences', 'danger');
             }
-
-            const sciences = await response.json();
-            displaySciences(sciences);
         } catch (error) {
             console.error('Error loading sciences:', error);
-            alert('Error loading sciences. Please try again.');
+            showAlert('Error loading sciences', 'danger');
         }
     }
 
     // Display sciences
-    function displaySciences(sciences) {
+    function displaySciences() {
         const grid = document.getElementById('sciencesGrid');
         grid.innerHTML = '';
 
@@ -1024,9 +1156,16 @@
             card.innerHTML = `
                     <div class="science-name">${science.name}</div>
                     <div class="science-stats">
-                        <div class="module-count">${science.modules.length} modules</div>
+                        <div class="stat-item">
+                            <div class="stat-number">${science.modules.length}</div>
+                            <div class="stat-label">Modules</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${science.modules.reduce((total, module) => total + module.taskCount, 0)}</div>
+                            <div class="stat-label">Tasks</div>
+                        </div>
                     </div>
-                    <button class="btn" onclick="viewScienceModules(${science.id}, '${science.name}')">
+                    <button class="btn" onclick="showModules(${science.id})">
                         <i class="fas fa-eye"></i> View Details
                     </button>
                 `;
@@ -1034,381 +1173,248 @@
         });
     }
 
-    // View science modules
-    async function viewScienceModules(scienceId, scienceName) {
-        currentScience = {id: scienceId, name: scienceName};
+    // Show modules for a science
+    async function showModules(scienceId) {
+        currentScience = sciences.find(s => s.id === scienceId);
+        if (!currentScience) return;
 
-        try {
-            const response = await fetch('/api/v1/science', {
-                headers: {
-                    'Authorization': localStorage.getItem('authToken')
-                }
-            });
+        // Update breadcrumb
+        updateBreadcrumb([
+            {text: 'Sciences', action: 'showSciences()'},
+            {text: currentScience.name, action: null}
+        ]);
 
-            if (!response.ok) {
-                throw new Error('Failed to load science details');
-            }
+        // Show modules view
+        document.getElementById('sciencesView').style.display = 'none';
+        document.getElementById('modulesView').style.display = 'block';
+        document.getElementById('tasksView').style.display = 'none';
+        document.getElementById('questionsView').style.display = 'none';
 
-            const sciences = await response.json();
-            const science = sciences.find(s => s.id === scienceId);
+        document.getElementById('modulesTitle').textContent = `${currentScience.name} - Modules`;
+        document.getElementById('moduleCount').textContent = `${currentScience.modules.length} modules`;
 
-            if (science) {
-                displayModules(science.modules, scienceName);
-                updateBreadcrumb([
-                    {text: 'Sciences', onclick: 'showSciences()'},
-                    {text: scienceName, onclick: null}
-                ]);
-            }
-        } catch (error) {
-            console.error('Error loading science modules:', error);
-            alert('Error loading modules. Please try again.');
-        }
+        displayModules();
     }
 
     // Display modules
-    function displayModules(modules, scienceName) {
-        document.getElementById('sciencesView').style.display = 'none';
-        document.getElementById('tasksView').style.display = 'none';
-        document.getElementById('questionsView').style.display = 'none';
-        document.getElementById('modulesView').style.display = 'block';
+    function displayModules() {
+        const grid = document.getElementById('modulesGrid');
+        grid.innerHTML = '';
 
-        document.getElementById('scienceTitle').textContent = `${scienceName} - Modules`;
-        document.getElementById('moduleCount').textContent = `${modules.length} modules`;
-
-        const modulesList = document.getElementById('modulesList');
-        modulesList.innerHTML = '';
-
-        modules.forEach(module => {
-            const moduleItem = document.createElement('div');
-            moduleItem.className = `module-item ${!module.active ? 'inactive' : ''}`;
-            moduleItem.innerHTML = `
-                    <div class="module-header">
-                        <div>
-                            <div class="module-name">${module.name}</div>
-                            <div class="task-count">${module.taskCount} tasks</div>
+        currentScience.modules.forEach(module => {
+            const card = document.createElement('div');
+            card.className = `module-card ${module.active ? 'active' : 'inactive'}`;
+            card.innerHTML = `
+                    <div class="module-name">${module.name}</div>
+                    <div class="module-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">${module.taskCount}</div>
+                            <div class="stat-label">Tasks</div>
                         </div>
-                        <div class="module-actions">
-                            <button class="btn btn-primary" onclick="viewModuleTasks(${module.id}, '${module.name}')">
-                                <i class="fas fa-eye"></i> View Details
-                            </button>
+                        <div class="stat-item">
+                            <div class="stat-number">${module.active ? 'Active' : 'Inactive'}</div>
+                            <div class="stat-label">Status</div>
                         </div>
                     </div>
-                `;
-            modulesList.appendChild(moduleItem);
-        });
-    }
-
-    // View module tasks
-    async function viewModuleTasks(moduleId, moduleName) {
-        currentModule = {id: moduleId, name: moduleName};
-
-        try {
-            const response = await fetch(`/api/v1/module/${moduleId}`, {
-                headers: {
-                    'Authorization': localStorage.getItem('authToken')
-                },
-                mentod: 'GET'
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to load module details');
-            }
-
-            const moduleDetails = await response.json();
-            displayTasks(moduleDetails, moduleName);
-            updateBreadcrumb([
-                {text: 'Sciences', onclick: 'showSciences()'},
-                {
-                    text: currentScience.name,
-                    onclick: `viewScienceModules(${currentScience.id}, '${currentScience.name}')`
-                },
-                {text: moduleName, onclick: null}
-            ]);
-        } catch (error) {
-            console.error('Error loading module tasks:', error);
-            alert('Error loading tasks. Please try again.');
-        }
-    }
-
-    // Add event listener for update module form submission
-    function setupEventListeners() {
-        // Existing event listeners
-        document.getElementById('updateProfileForm').addEventListener('submit', handleUpdateProfile);
-        document.getElementById('addModuleForm').addEventListener('submit', handleAddModule);
-        document.getElementById('addTaskForm').addEventListener('submit', handleAddTask);
-        document.getElementById('updateTaskForm').addEventListener('submit', handleUpdateTask);
-        document.getElementById('addQuestionForm').addEventListener('submit', handleAddQuestion);
-        document.getElementById('updateQuestionForm').addEventListener('submit', handleUpdateQuestion);
-        // Add new event listener for update module
-        document.getElementById('updateModuleForm').addEventListener('submit', handleUpdateModule);
-    }
-
-    // Open update module modal
-    function openUpdateModule() {
-        if (!currentModule) return;
-
-        // Pre-fill the form with current module name
-        document.getElementById('updateModuleName').value = currentModule.name;
-        openModal('updateModuleModal');
-    }
-
-    // Handle update module form submission
-    async function handleUpdateModule(e) {
-        e.preventDefault();
-
-        const loading = document.getElementById('updateModuleLoading');
-        loading.style.display = 'inline-block';
-
-        try {
-            const moduleReq = {
-                name: document.getElementById('updateModuleName').value,
-                scienceId: null // scienceId is optional and can be null
-            };
-
-            const response = await fetch(`/api/v1/module/update/${currentModule.id}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': localStorage.getItem('authToken')
-                },
-                body: JSON.stringify(moduleReq)
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to update module');
-            }
-
-            // Update currentModule name
-            currentModule.name = moduleReq.name;
-
-            closeModal('updateModuleModal');
-            alert('Module updated successfully!');
-
-            // Refresh tasks view to reflect updated module name
-            viewModuleTasks(currentModule.id, currentModule.name);
-        } catch (error) {
-            console.error('Error updating module:', error);
-            alert('Error updating module. Please try again.');
-        } finally {
-            loading.style.display = 'none';
-        }
-    }
-
-    // Display tasks
-    function displayTasks(moduleDetails, moduleName) {
-        document.getElementById('sciencesView').style.display = 'none';
-        document.getElementById('modulesView').style.display = 'none';
-        document.getElementById('questionsView').style.display = 'none';
-        document.getElementById('tasksView').style.display = 'block';
-
-        document.getElementById('moduleTitle').textContent = `${moduleName} - Tasks`;
-        document.getElementById('taskCount').textContent = `${moduleDetails.tasks.length} tasks`;
-
-        // Update module status button
-        const statusBtn = document.getElementById('moduleStatusBtn');
-        if (moduleDetails.active === false) {
-            statusBtn.innerHTML = '<i class="fas fa-eye"></i> Present to Mentors';
-            statusBtn.className = 'btn btn-success';
-        } else {
-            statusBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Remove from Mentors';
-            statusBtn.className = 'btn btn-danger';
-        }
-
-        const tasksList = document.getElementById('tasksList');
-        tasksList.innerHTML = '';
-
-        moduleDetails.tasks.forEach(task => {
-            const taskItem = document.createElement('div');
-            taskItem.className = 'task-item';
-            taskItem.innerHTML = `
-                    <div>
-                        <div class="task-name">${task.taskName}</div>
-                        <div class="task-count">Status: ${task.active ? 'Active' : 'Inactive'}</div>
-                    </div>
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <button class="btn btn-primary" onclick="viewTaskQuestions(${task.id}, '${task.taskName}')">
+                    <div class="module-actions">
+                        <button class="btn" onclick="showTasks(${module.id})">
                             <i class="fas fa-eye"></i> View Details
                         </button>
                     </div>
                 `;
-            tasksList.appendChild(taskItem);
+            grid.appendChild(card);
         });
     }
 
-    // View task questions
-    async function viewTaskQuestions(taskId, taskName) {
-        currentTask = {id: taskId, name: taskName};
-
+    // Show tasks for a module
+    async function showTasks(moduleId) {
         try {
-            const response = await fetch(`/api/v1/task/getActives/${taskId}`, {
+            const response = await fetch(`/api/v1/module/${moduleId}`, {
                 headers: {
                     'Authorization': localStorage.getItem('authToken')
                 }
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to load task details');
-            }
+            if (response.ok) {
+                currentModule = await response.json();
 
-            const taskDetails = await response.json();
-            await displayQuestions(taskDetails, taskName);
-            updateBreadcrumb([
-                {text: 'Sciences', onclick: 'showSciences()'},
-                {
-                    text: currentScience.name,
-                    onclick: `viewScienceModules(${currentScience.id}, '${currentScience.name}')`
-                },
-                {text: currentModule.name, onclick: `viewModuleTasks(${currentModule.id}, '${currentModule.name}')`},
-                {text: taskName, onclick: null}
-            ]);
-        } catch (error) {
-            console.error('Error loading task questions:', error);
-            alert('Error loading questions. Please try again.');
-        }
-    }
+                // Update breadcrumb
+                updateBreadcrumb([
+                    {text: 'Sciences', action: 'showSciences()'},
+                    {text: currentScience.name, action: `showModules(${currentScience.id})`},
+                    {text: currentModule.moduleName, action: null}
+                ]);
 
-    // Display questions in a stylish way
-    async function displayQuestions(taskDetails, taskName) {
-        // Hide other views and show questions view
-        document.getElementById('sciencesView').style.display = 'none';
-        document.getElementById('modulesView').style.display = 'none';
-        document.getElementById('tasksView').style.display = 'none';
-        document.getElementById('questionsView').style.display = 'block';
+                // Show tasks view
+                document.getElementById('sciencesView').style.display = 'none';
+                document.getElementById('modulesView').style.display = 'none';
+                document.getElementById('tasksView').style.display = 'block';
+                document.getElementById('questionsView').style.display = 'none';
 
-        // Set task title and question count
-        document.getElementById('taskTitle').textContent = `${taskName}`;
-        document.getElementById('questionCount').textContent = `${taskDetails.questionRes.length} Questions`;
+                document.getElementById('tasksTitle').textContent = `${currentModule.moduleName} - Tasks`;
+                document.getElementById('taskCount').textContent = `${currentModule.tasks.length} tasks`;
 
-        // Display task details in a card
-        const taskDetailsDiv = document.getElementById('taskDetails');
-        let taskDetailsHTML = `
-        <div class="task-info-card">
-            <div class="task-info-header">
-                <h4><i class="fas fa-info-circle"></i> Task Details</h4>
-            </div>
-            <div class="task-info-body">
-                <div class="task-info-row">
-                    <span class="task-info-label">Name:</span>
-                    <span class="task-info-value">${taskDetails.name}</span>
-                </div>
-                <div class="task-info-row">
-                    <span class="task-info-label">Status:</span>
-                    <span class="task-info-value ${taskDetails.active ? 'status-active' : 'status-inactive'}">
-                        ${taskDetails.active ? 'Active' : 'Inactive'}
-                    </span>
-                </div>
-    `;
-
-        // YouTube Video
-        if (taskDetails.youtubeURL) {
-            const videoId = getYoutubeVideoId(taskDetails.youtubeURL);
-            if (videoId) {
-                taskDetailsHTML += `
-                <div class="task-info-row">
-                    <span class="task-info-label">Video:</span>
-                    <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed/${videoId}"
-                                frameborder="0"
-                                allowfullscreen>
-                        </iframe>
-                    </div>
-                </div>
-            `;
-            } else {
-                taskDetailsHTML += `
-                <div class="task-info-row">
-                    <span class="task-info-label">Video:</span>
-                    <span class="invalid-url-warning">
-                        <i class="fas fa-exclamation-triangle"></i> Invalid YouTube URL
-                    </span>
-                </div>
-            `;
-            }
-        }
-
-        taskDetailsHTML += `</div></div>`;
-        taskDetailsDiv.innerHTML = taskDetailsHTML;
-
-        if (taskDetails.attachmentId && taskDetails.attachmentId.length > 0) {
-            for (const attachmentId of taskDetails.attachmentId) {
-                try {
-                    const attachmentResponse = await fetch(`/api/v1/attachments/${attachmentId}`, {
-                        headers: {
-                            'Authorization': localStorage.getItem('authToken')
-                        }
-                    });
-
-                    if (attachmentResponse.ok) {
-                        const attachmentData = await attachmentResponse.json();
-                        const attachmentUrl = `data:${attachmentData.contentType};base64,${arrayBufferToBase64(attachmentData.content)}`;
-                        content += `<img src="${attachmentUrl}"
-                               style="max-width: 100%; margin: 10px 0; border-radius: 8px;"
-                               alt="Attachment">`;
-                    }
-                } catch (error) {
-                    console.error('Error loading attachment:', error);
+                // Update module status button
+                const statusBtn = document.getElementById('moduleStatusBtn');
+                if (currentModule.active === false) {
+                    statusBtn.innerHTML = '<i class="fas fa-eye"></i> Show to Mentors';
+                    statusBtn.className = 'btn btn-success';
+                } else {
+                    statusBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Hide from Mentors';
+                    statusBtn.className = 'btn btn-danger';
                 }
+
+                displayTasks();
+            } else {
+                showAlert('Failed to load module details', 'danger');
             }
+        } catch (error) {
+            console.error('Error loading module:', error);
+            showAlert('Error loading module', 'danger');
         }
+    }
 
+    // Display tasks
+    function displayTasks() {
+        const container = document.getElementById('tasksContainer');
+        container.innerHTML = '';
 
-        // Display questions in a modern list
-        const questionsList = document.getElementById('questionsList');
-        questionsList.innerHTML = '';
-
-        if (taskDetails.questionRes.length === 0) {
-            questionsList.innerHTML = `
-            <div class="no-questions-message">
-                <i class="fas fa-question-circle"></i>
-                <p>No questions available for this task</p>
-            </div>
-        `;
-        } else {
-            taskDetails.questionRes.forEach((question, index) => {
-                const questionItem = document.createElement('div');
-                questionItem.className = 'question-card';
-                questionItem.innerHTML = `
-                <div class="question-card-header">
-                    <span class="question-number">Question #${index + 1}</span>
-                    <div class="question-actions">
-                        <button class="btn-action btn-view" onclick="viewQuestionDetails(${question.id})" title="View Details">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="btn-action btn-edit" onclick="openUpdateQuestion(${question.id})" title="Edit Question">
-                            <i class="fas fa-edit"></i>
+        currentModule.tasks.forEach(task => {
+            const taskItem = document.createElement('div');
+            taskItem.className = 'task-item';
+            taskItem.innerHTML = `
+                    <div class="task-info">
+                        <div class="task-name">${task.taskName}</div>
+                        <div class="task-meta">Status: ${task.active ? 'Active' : 'Inactive'}</div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="btn btn-primary" onclick="showQuestions(${task.id})">
+                            <i class="fas fa-eye"></i> View Details
                         </button>
                     </div>
-                </div>
-                <div class="question-content">
-                    ${question.questionTest}
+                `;
+            container.appendChild(taskItem);
+        });
+    }
+
+    // Show questions for a task
+    async function showQuestions(taskId) {
+        try {
+            const response = await fetch(`/api/v1/task/${taskId}`, {
+                headers: {
+                    'Authorization': localStorage.getItem('authToken')
+                }
+            });
+
+            if (response.ok) {
+                currentTask = await response.json();
+
+                // Update breadcrumb
+                updateBreadcrumb([
+                    {text: 'Sciences', action: 'showSciences()'},
+                    {text: currentScience.name, action: `showModules(${currentScience.id})`},
+                    {text: currentModule.moduleName, action: `showTasks(${currentModule.id})`},
+                    {text: currentTask.name, action: null}
+                ]);
+
+                // Show questions view
+                document.getElementById('sciencesView').style.display = 'none';
+                document.getElementById('modulesView').style.display = 'none';
+                document.getElementById('tasksView').style.display = 'none';
+                document.getElementById('questionsView').style.display = 'block';
+
+                document.getElementById('questionsTitle').textContent = `${currentTask.name} - Questions`;
+                document.getElementById('questionCount').textContent = `${currentTask.questionRes.length} questions`;
+
+                // Load and display attachments if any
+                if (currentTask.attachmentId && currentTask.attachmentId.length > 0) {
+                    await loadTaskAttachments();
+                }
+
+                displayQuestions();
+            } else {
+                showAlert('Failed to load task details', 'danger');
+            }
+        } catch (error) {
+            console.error('Error loading task:', error);
+            showAlert('Error loading task', 'danger');
+        }
+    }
+
+    // Load task attachments
+    async function loadTaskAttachments() {
+        try {
+            const params = new URLSearchParams();
+            currentTask.attachmentId.forEach(id => params.append('attachmentIds', id));
+
+            const response = await fetch(`/api/v1/attachments?${params}`, {
+                headers: {
+                    'Authorization': localStorage.getItem('authToken')
+                }
+            });
+
+            if (response.ok) {
+                const attachments = await response.json();
+                currentTask.attachments = attachments;
+            }
+        } catch (error) {
+            console.error('Error loading attachments:', error);
+        }
+    }
+
+    // Display questions
+    function displayQuestions() {
+        const container = document.getElementById('questionsContainer');
+        container.innerHTML = '';
+
+        // Display task info
+        const taskInfo = document.createElement('div');
+        taskInfo.className = 'task-item';
+        taskInfo.innerHTML = `
+                <div class="task-info">
+                    <div class="task-name">Task: ${currentTask.name}</div>
+                    <div class="task-meta">
+                        ${currentTask.youtubeURL ? `YouTube: <a href="${currentTask.youtubeURL}" target="_blank">${currentTask.youtubeURL}</a><br>` : ''}
+                        Status: ${currentTask.active ? 'Active' : 'Inactive'}
+                    </div>
+                    ${currentTask.attachments ? `
+                        <div class="task-attachments">
+                            <strong>Attachments:</strong><br>
+                            ${currentTask.attachments.map(att => `
+                                <img src="data:${att.contentType};base64,${btoa(String.fromCharCode(...new Uint8Array(att.content)))}"
+                                     style="max-width: 100px; max-height: 100px; margin: 5px; border-radius: 5px;">
+                            `).join('')}
+                        </div>
+                    ` : ''}
                 </div>
             `;
-                questionsList.appendChild(questionItem);
-            });
-        }
-    }
+        container.appendChild(taskInfo);
 
-    function getYoutubeVideoId(url) {
-        const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/;
-        const match = url.match(regex);
-        return match ? match[1] : null;
-    }
-
-    // Utility functions
-    function arrayBufferToBase64(buffer) {
-        if (!buffer) return '';
-        if (typeof buffer === 'string') return buffer;
-
-        const bytes = new Uint8Array(buffer);
-        let binary = '';
-        for (let i = 0; i < bytes.byteLength; i++) {
-            binary += String.fromCharCode(bytes[i]);
-        }
-        return btoa(binary);
+        // Display questions
+        currentTask.questionRes.forEach(question => {
+            const questionItem = document.createElement('div');
+            questionItem.className = 'question-item';
+            questionItem.innerHTML = `
+                    <div class="question-text">${question.questionTest}</div>
+                    <div class="question-variants">
+                        ${question.variant.map(variant => `
+                            <div class="variant-item ${variant === question.currentAnswer ? 'correct' : ''}">
+                                ${variant === question.currentAnswer ? '✓ ' : '• '}${variant}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="question-actions">
+                        <button class="btn btn-primary" onclick="viewQuestion(${question.id})">
+                            <i class="fas fa-eye"></i> View Details
+                        </button>
+                    </div>
+                `;
+            container.appendChild(questionItem);
+        });
     }
 
     // View question details
-    async function viewQuestionDetails(questionId) {
+    async function viewQuestion(questionId) {
         try {
             const response = await fetch(`/api/v1/questions/${questionId}`, {
                 headers: {
@@ -1416,64 +1422,21 @@
                 }
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to load question details');
-            }
+            if (response.ok) {
+                currentQuestion = await response.json();
 
-            const question = await response.json();
-            displayQuestionDetails(question);
+                // Load attachment if exists
+                if (currentQuestion.attachmentId) {
+                    await loadQuestionAttachment(currentQuestion.attachmentId);
+                }
+
+                showQuestionDetails();
+            } else {
+                showAlert('Failed to load question details', 'danger');
+            }
         } catch (error) {
-            console.error('Error loading question details:', error);
-            alert('Error loading question details. Please try again.');
-        }
-    }
-
-    // Display question details
-    function displayQuestionDetails(question) {
-        let detailsHTML = `
-                <div style="background: #fff3cd; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #ffc107;">
-                    <h4>Question Details</h4>
-                    <p><strong>Question:</strong> ${question.questionTest}</p>
-                    <p><strong>Variants:</strong></p>
-                    <ul>
-            `;
-
-        question.variant.forEach((variant, index) => {
-            const isCorrect = variant === question.currentAnswer;
-            detailsHTML += `<li style="color: ${isCorrect ? 'green' : 'black'}; font-weight: ${isCorrect ? 'bold' : 'normal'};">${variant} ${isCorrect ? '(Correct Answer)' : ''}</li>`;
-        });
-
-        detailsHTML += `</ul>`;
-
-        if (question.attachmentId) {
-            detailsHTML += `<div id="questionAttachmentDisplay"></div>`;
-        }
-
-        detailsHTML += `</div>`;
-
-        // Insert after the question item
-        const questionItems = document.querySelectorAll('.question-item');
-        questionItems.forEach(item => {
-            const existingDetails = item.nextElementSibling;
-            if (existingDetails && existingDetails.classList.contains('question-details')) {
-                existingDetails.remove();
-            }
-        });
-
-        const questionItem = Array.from(questionItems).find(item =>
-            item.innerHTML.includes(`viewQuestionDetails(${question.id})`)
-        );
-
-        if (questionItem) {
-            const detailsDiv = document.createElement('div');
-            detailsDiv.className = 'question-details';
-            detailsDiv.innerHTML = detailsHTML;
-            questionItem.parentNode.insertBefore(detailsDiv, questionItem.nextSibling);
-
-            // Load attachment if exists
-            if (question.attachmentId) {
-                loadQuestionAttachment(question.attachmentId);
-            }
+            console.error('Error loading question:', error);
+            showAlert('Error loading question', 'danger');
         }
     }
 
@@ -1486,33 +1449,49 @@
                 }
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to load attachment');
-            }
-
-            const attachment = await response.json();
-            const container = document.getElementById('questionAttachmentDisplay');
-            if (container) {
-                const blob = new Blob([new Uint8Array(attachment.content)], {type: attachment.contentType});
-                const url = URL.createObjectURL(blob);
-
-                container.innerHTML = `
-                        <p><strong>Attachment:</strong></p>
-                        <img src="${url}" alt="Question Attachment" style="max-width: 300px; border-radius: 8px;">
-                    `;
+            if (response.ok) {
+                const attachment = await response.json();
+                currentQuestion.attachment = attachment;
             }
         } catch (error) {
             console.error('Error loading question attachment:', error);
         }
     }
 
-    // Navigation functions
-    function showSciences() {
-        document.getElementById('sciencesView').style.display = 'block';
-        document.getElementById('modulesView').style.display = 'none';
-        document.getElementById('tasksView').style.display = 'none';
-        document.getElementById('questionsView').style.display = 'none';
-        updateBreadcrumb([{text: 'Sciences', onclick: null}]);
+    // Show question details modal
+    function showQuestionDetails() {
+        // Populate update question form
+        document.getElementById('updateQuestionText').value = currentQuestion.questionTest;
+
+        // Show current attachment
+        const currentAttachment = document.getElementById('currentQuestionAttachment');
+        if (currentQuestion.attachment) {
+            currentAttachment.innerHTML = `
+                    <img src="data:${currentQuestion.attachment.contentType};base64,${btoa(String.fromCharCode(...new Uint8Array(currentQuestion.attachment.content)))}"
+                         style="max-width: 200px; max-height: 200px; border-radius: 10px;">
+                `;
+        } else {
+            currentAttachment.innerHTML = '<p>No attachment</p>';
+        }
+
+        // Populate variants
+        const container = document.getElementById('updateVariantsContainer');
+        container.innerHTML = '';
+
+        currentQuestion.variant.forEach((variant, index) => {
+            const variantGroup = document.createElement('div');
+            variantGroup.className = 'variant-input-group';
+            variantGroup.innerHTML = `
+                    <input type="text" class="form-control variant-input" value="${variant}" required>
+                    <input type="checkbox" class="correct-checkbox" title="Mark as correct answer" ${variant === currentQuestion.currentAnswer ? 'checked' : ''}>
+                    <button type="button" class="btn btn-danger" onclick="removeUpdateVariant(this)" ${currentQuestion.variant.length <= 2 ? 'style="display: none;"' : ''}>
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+            container.appendChild(variantGroup);
+        });
+
+        openModal('updateQuestionModal');
     }
 
     // Update breadcrumb
@@ -1528,20 +1507,29 @@
                 breadcrumb.appendChild(separator);
             }
 
-            const breadcrumbItem = document.createElement('a');
+            const breadcrumbItem = document.createElement('span');
             breadcrumbItem.className = 'breadcrumb-item';
             breadcrumbItem.textContent = item.text;
 
-            if (item.onclick) {
-                breadcrumbItem.href = '#';
-                breadcrumbItem.onclick = () => eval(item.onclick);
+            if (item.action) {
+                breadcrumbItem.onclick = () => eval(item.action);
             } else {
-                breadcrumbItem.style.color = '#999';
+                breadcrumbItem.style.color = '#333';
                 breadcrumbItem.style.cursor = 'default';
             }
 
             breadcrumb.appendChild(breadcrumbItem);
         });
+    }
+
+    // Show sciences view
+    function showSciences() {
+        document.getElementById('sciencesView').style.display = 'block';
+        document.getElementById('modulesView').style.display = 'none';
+        document.getElementById('tasksView').style.display = 'none';
+        document.getElementById('questionsView').style.display = 'none';
+
+        updateBreadcrumb([{text: 'Sciences', action: null}]);
     }
 
     // Modal functions
@@ -1553,41 +1541,91 @@
         document.getElementById(modalId).style.display = 'none';
     }
 
-    // Profile functions
     function openUpdateProfile() {
-        document.getElementById('updateFirstName').value = userData.firstName;
-        document.getElementById('updateLastName').value = userData.lastName;
-        document.getElementById('updatePhoneNumber').value = userData.phoneNumber;
+        document.getElementById('updateFirstName').value = currentUser.firstName;
+        document.getElementById('updateLastName').value = currentUser.lastName;
+        document.getElementById('updatePhoneNumber').value = currentUser.phoneNumber;
         document.getElementById('updatePassword').value = '';
 
-        if (userData.image) {
-            document.getElementById('profileImagePreview').innerHTML = `
-                    <div class="attachment-item">
-                        <img src="${userData.image}" alt="Current Profile" class="attachment-image">
-                    </div>
-                `;
+        const previewContainer = document.getElementById('profileImagePreview');
+        previewContainer.innerHTML = ''; // eski previewni tozalash
+
+        if (currentUser.image) {
+            const img = document.createElement('img');
+            img.src = currentUser.image;
+            img.style.maxWidth = '200px';
+            img.style.maxHeight = '200px';
+            img.style.borderRadius = '10px';
+            previewContainer.appendChild(img);
         }
 
         openModal('updateProfileModal');
     }
 
-    function previewProfileImage(input) {
-        const preview = document.getElementById('profileImagePreview');
-        preview.innerHTML = '';
 
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                preview.innerHTML = `
-                        <div class="attachment-item">
-                            <img src="${e.target.result}" alt="Profile Preview" class="attachment-image">
-                        </div>
-                    `;
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
+    function openAddModule() {
+        document.getElementById('moduleName').value = '';
+        openModal('addModuleModal');
     }
 
+    function openUpdateModule() {
+        document.getElementById('updateModuleName').value = currentModule.moduleName;
+        openModal('updateModuleModal');
+    }
+
+    function openAddTask() {
+        document.getElementById('taskName').value = '';
+        document.getElementById('taskYoutubeUrl').value = '';
+        document.getElementById('taskFilesPreviews').innerHTML = '';
+        openModal('addTaskModal');
+    }
+
+    function openUpdateTask() {
+        document.getElementById('updateTaskName').value = currentTask.name;
+        document.getElementById('updateTaskYoutubeUrl').value = currentTask.youtubeURL || '';
+
+        // Show current attachments
+        const currentAttachments = document.getElementById('currentTaskAttachments');
+        if (currentTask.attachments && currentTask.attachments.length > 0) {
+            currentAttachments.innerHTML = currentTask.attachments.map(att => `
+                    <img src="data:${att.contentType};base64,${btoa(String.fromCharCode(...new Uint8Array(att.content)))}"
+                         style="max-width: 100px; max-height: 100px; margin: 5px; border-radius: 5px;">
+                `).join('');
+        } else {
+            currentAttachments.innerHTML = '<p>No current attachments</p>';
+        }
+
+        document.getElementById('updateTaskFilesPreviews').innerHTML = '';
+        openModal('updateTaskModal');
+    }
+
+    function openAddQuestion() {
+        document.getElementById('questionText').value = '';
+        document.getElementById('questionAttachmentPreview').innerHTML = '';
+
+        // Reset variants
+        const container = document.getElementById('variantsContainer');
+        container.innerHTML = `
+                <div class="variant-input-group">
+                    <input type="text" class="form-control variant-input" placeholder="Variant 1" required>
+                    <input type="checkbox" class="correct-checkbox" title="Mark as correct answer">
+                    <button type="button" class="btn btn-danger" onclick="removeVariant(this)" style="display: none;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <div class="variant-input-group">
+                    <input type="text" class="form-control variant-input" placeholder="Variant 2" required>
+                    <input type="checkbox" class="correct-checkbox" title="Mark as correct answer">
+                    <button type="button" class="btn btn-danger" onclick="removeVariant(this)" style="display: none;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+
+        openModal('addQuestionModal');
+    }
+
+    // Form handlers
     async function handleUpdateProfile(e) {
         e.preventDefault();
 
@@ -1596,7 +1634,7 @@
 
         try {
             const formData = new FormData();
-            formData.append('id', userData.userId);
+            formData.append('id', currentUser.userId);
             formData.append('firstName', document.getElementById('updateFirstName').value);
             formData.append('lastName', document.getElementById('updateLastName').value);
             formData.append('phoneNumber', document.getElementById('updatePhoneNumber').value);
@@ -1607,7 +1645,7 @@
             }
 
             const fileInput = document.getElementById('profileImageInput');
-            if (fileInput.files && fileInput.files[0]) {
+            if (fileInput.files[0]) {
                 formData.append('file', fileInput.files[0]);
             }
 
@@ -1619,47 +1657,34 @@
                 body: formData
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to update profile');
+            if (response.ok) {
+                const result = await response.json();
+
+                // Update localStorage
+                const userData = JSON.parse(localStorage.getItem('userData'));
+                userData.firstName = result.firstName;
+                userData.lastName = result.lastName;
+                userData.phoneNumber = result.phoneNumber;
+                if (result.image) {
+                    userData.image = result.image;
+                }
+                localStorage.setItem('userData', JSON.stringify(userData));
+
+                // Update UI
+                currentUser = userData;
+                loadUserProfile();
+
+                showAlert('Profile updated successfully!', 'success');
+                closeModal('updateProfileModal');
+            } else {
+                showAlert('Failed to update profile', 'danger');
             }
-
-            const result = await response.json();
-
-            // Update localStorage
-            userData.firstName = result.firstName;
-            userData.lastName = result.lastName;
-            userData.phoneNumber = result.phoneNumber;
-            if (result.image) {
-                userData.image = result.image;
-            }
-
-            localStorage.setItem('userData', JSON.stringify(userData));
-            updateUserProfile();
-
-            closeModal('updateProfileModal');
-            alert('Profile updated successfully!');
         } catch (error) {
             console.error('Error updating profile:', error);
-            alert('Error updating profile. Please try again.');
+            showAlert('Error updating profile', 'danger');
         } finally {
             loading.style.display = 'none';
         }
-    }
-
-    function logout() {
-        const roles = userData.roles || [];
-        if (roles.length > 1) {
-            window.location.href = 'chooseRole.html';
-        } else {
-            localStorage.removeItem('userData');
-            window.location.href = 'index.html';
-        }
-    }
-
-    // Module functions
-    function openAddModule() {
-        document.getElementById('moduleName').value = '';
-        openModal('addModuleModal');
     }
 
     async function handleAddModule(e) {
@@ -1669,7 +1694,7 @@
         loading.style.display = 'inline-block';
 
         try {
-            const moduleReq = {
+            const moduleData = {
                 name: document.getElementById('moduleName').value,
                 scienceId: currentScience.id
             };
@@ -1680,120 +1705,79 @@
                     'Content-Type': 'application/json',
                     'Authorization': localStorage.getItem('authToken')
                 },
-                body: JSON.stringify(moduleReq)
+                body: JSON.stringify(moduleData)
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to create module');
+            if (response.ok) {
+                const result = await response.json();
+
+                // Add to current science modules
+                currentScience.modules.push({
+                    id: result.id,
+                    name: result.moduleName,
+                    taskCount: 0,
+                    active: result.active
+                });
+
+                displayModules();
+                showAlert('Module added successfully!', 'success');
+                closeModal('addModuleModal');
+            } else {
+                showAlert('Failed to add module', 'danger');
             }
-
-            const result = await response.json();
-            closeModal('addModuleModal');
-            alert('Module created successfully!');
-
-            // Refresh modules view
-            viewScienceModules(currentScience.id, currentScience.name);
         } catch (error) {
-            console.error('Error creating module:', error);
-            alert('Error creating module. Please try again.');
+            console.error('Error adding module:', error);
+            showAlert('Error adding module', 'danger');
         } finally {
             loading.style.display = 'none';
         }
     }
 
-    async function toggleModuleStatus() {
-        if (!currentModule) return;
+    async function handleUpdateModule(e) {
+        e.preventDefault();
+
+        const loading = document.getElementById('updateModuleLoading');
+        loading.style.display = 'inline-block';
 
         try {
-            // Get current module status first
-            const moduleResponse = await fetch(`/api/v1/module/${currentModule.id}`, {
+            const moduleData = {
+                name: document.getElementById('updateModuleName').value,
+                scienceId: null
+            };
+
+            const response = await fetch(`/api/v1/module/update/${currentModule.id}`, {
+                method: 'POST',
                 headers: {
+                    'Content-Type': 'application/json',
                     'Authorization': localStorage.getItem('authToken')
+                },
+                body: JSON.stringify(moduleData)
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+
+                // Update current module
+                currentModule.moduleName = result.moduleName;
+                document.getElementById('tasksTitle').textContent = `${currentModule.moduleName} - Tasks`;
+
+                // Update in science modules list
+                const moduleIndex = currentScience.modules.findIndex(m => m.id === currentModule.id);
+                if (moduleIndex !== -1) {
+                    currentScience.modules[moduleIndex].name = result.moduleName;
                 }
-            });
 
-            if (!moduleResponse.ok) {
-                throw new Error('Failed to get module status');
-            }
-
-            const moduleDetails = await moduleResponse.json();
-
-            let response;
-            if (moduleDetails.active === false) {
-                // Present to mentors (activate)
-                response = await fetch(`/api/v1/module/${currentModule.id}`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': localStorage.getItem('authToken')
-                    }
-                });
+                showAlert('Module updated successfully!', 'success');
+                closeModal('updateModuleModal');
             } else {
-                // Remove from mentors (deactivate)
-                response = await fetch(`/api/v1/module/${currentModule.id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': localStorage.getItem('authToken')
-                    }
-                });
+                showAlert('Failed to update module', 'danger');
             }
-
-            if (!response.ok) {
-                throw new Error('Failed to update module status');
-            }
-
-            alert('Module status updated successfully!');
-
-            // Refresh tasks view
-            viewModuleTasks(currentModule.id, currentModule.name);
         } catch (error) {
-            console.error('Error updating module status:', error);
-            alert('Error updating module status. Please try again.');
+            console.error('Error updating module:', error);
+            showAlert('Error updating module', 'danger');
+        } finally {
+            loading.style.display = 'none';
         }
-    }
-
-    // Task functions
-    function openAddTask() {
-        document.getElementById('taskName').value = '';
-        document.getElementById('youtubeURL').value = '';
-        document.getElementById('taskAttachmentsPreview').innerHTML = '';
-        openModal('addTaskModal');
-    }
-
-    function previewTaskAttachments(input) {
-        const preview = document.getElementById('taskAttachmentsPreview');
-        preview.innerHTML = '';
-
-        if (input.files) {
-            Array.from(input.files).forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const attachmentDiv = document.createElement('div');
-                    attachmentDiv.className = 'attachment-item';
-                    attachmentDiv.innerHTML = `
-                            <img src="${e.target.result}" alt="Attachment ${index + 1}" class="attachment-image">
-                            <button type="button" class="attachment-remove" onclick="removeTaskAttachment(${index})">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        `;
-                    preview.appendChild(attachmentDiv);
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-    }
-
-    function removeTaskAttachment(index) {
-        const input = document.getElementById('taskAttachments');
-        const dt = new DataTransfer();
-
-        Array.from(input.files).forEach((file, i) => {
-            if (i !== index) {
-                dt.items.add(file);
-            }
-        });
-
-        input.files = dt.files;
-        previewTaskAttachments(input);
     }
 
     async function handleAddTask(e) {
@@ -1805,14 +1789,17 @@
         try {
             const formData = new FormData();
             formData.append('taskName', document.getElementById('taskName').value);
-            formData.append('youtubeURL', document.getElementById('youtubeURL').value);
             formData.append('moduleId', currentModule.id);
-            formData.append('active', true);
 
-            const attachments = document.getElementById('taskAttachments').files;
-            Array.from(attachments).forEach(file => {
-                formData.append('attachments', file);
-            });
+            const youtubeUrl = document.getElementById('taskYoutubeUrl').value;
+            if (youtubeUrl) {
+                formData.append('youtubeURL', youtubeUrl);
+            }
+
+            const fileInput = document.getElementById('taskAttachments');
+            for (let i = 0; i < fileInput.files.length; i++) {
+                formData.append('attachments', fileInput.files[i]);
+            }
 
             const response = await fetch('/api/v1/task', {
                 method: 'POST',
@@ -1822,123 +1809,24 @@
                 body: formData
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to create task');
+            if (response.ok) {
+                const result = await response.json();
+
+                // Add to current module tasks
+                currentModule.tasks.push(result);
+
+                displayTasks();
+                showAlert('Task added successfully!', 'success');
+                closeModal('addTaskModal');
+            } else {
+                showAlert('Failed to add task', 'danger');
             }
-
-            const result = await response.json();
-            closeModal('addTaskModal');
-            alert('Task created successfully!');
-
-            // Refresh tasks view
-            viewModuleTasks(currentModule.id, currentModule.name);
         } catch (error) {
-            console.error('Error creating task:', error);
-            alert('Error creating task. Please try again.');
+            console.error('Error adding task:', error);
+            showAlert('Error adding task', 'danger');
         } finally {
             loading.style.display = 'none';
         }
-    }
-
-    function openUpdateTask() {
-        if (!currentTask) return;
-
-        // Load current task data
-        fetch(`/api/v1/task/${currentTask.id}`, {
-            headers: {
-                'Authorization': localStorage.getItem('authToken')
-            }
-        })
-            .then(response => response.json())
-            .then(taskDetails => {
-                document.getElementById('updateTaskName').value = taskDetails.name;
-                document.getElementById('updateYoutubeURL').value = taskDetails.youtubeURL || '';
-
-                // Load current attachments
-                if (taskDetails.attachmentId && taskDetails.attachmentId.length > 0) {
-                    loadCurrentTaskAttachments(taskDetails.attachmentId);
-                }
-
-                document.getElementById('updateTaskAttachmentsPreview').innerHTML = '';
-                openModal('updateTaskModal');
-            })
-            .catch(error => {
-                console.error('Error loading task details:', error);
-                alert('Error loading task details. Please try again.');
-            });
-    }
-
-    async function loadCurrentTaskAttachments(attachmentIds) {
-        try {
-            const params = new URLSearchParams();
-            attachmentIds.forEach(id => params.append('attachmentIds', id));
-
-            const response = await fetch(`/api/v1/attachments?${params}`, {
-                headers: {
-                    'Authorization': localStorage.getItem('authToken')
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to load current attachments');
-            }
-
-            const attachments = await response.json();
-            const container = document.getElementById('currentAttachments');
-            container.innerHTML = '';
-
-            attachments.forEach(attachment => {
-                const attachmentDiv = document.createElement('div');
-                attachmentDiv.className = 'attachment-item';
-
-                const blob = new Blob([new Uint8Array(attachment.content)], {type: attachment.contentType});
-                const url = URL.createObjectURL(blob);
-
-                attachmentDiv.innerHTML = `
-                        <img src="${url}" alt="Current Attachment" class="attachment-image">
-                    `;
-                container.appendChild(attachmentDiv);
-            });
-        } catch (error) {
-            console.error('Error loading current attachments:', error);
-        }
-    }
-
-    function previewUpdateTaskAttachments(input) {
-        const preview = document.getElementById('updateTaskAttachmentsPreview');
-        preview.innerHTML = '';
-
-        if (input.files) {
-            Array.from(input.files).forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const attachmentDiv = document.createElement('div');
-                    attachmentDiv.className = 'attachment-item';
-                    attachmentDiv.innerHTML = `
-                            <img src="${e.target.result}" alt="New Attachment ${index + 1}" class="attachment-image">
-                            <button type="button" class="attachment-remove" onclick="removeUpdateTaskAttachment(${index})">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        `;
-                    preview.appendChild(attachmentDiv);
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-    }
-
-    function removeUpdateTaskAttachment(index) {
-        const input = document.getElementById('updateTaskAttachments');
-        const dt = new DataTransfer();
-
-        Array.from(input.files).forEach((file, i) => {
-            if (i !== index) {
-                dt.items.add(file);
-            }
-        });
-
-        input.files = dt.files;
-        previewUpdateTaskAttachments(input);
     }
 
     async function handleUpdateTask(e) {
@@ -1950,14 +1838,17 @@
         try {
             const formData = new FormData();
             formData.append('taskName', document.getElementById('updateTaskName').value);
-            formData.append('youtubeURL', document.getElementById('updateYoutubeURL').value);
             formData.append('moduleId', currentModule.id);
-            formData.append('active', true);
 
-            const attachments = document.getElementById('updateTaskAttachments').files;
-            Array.from(attachments).forEach(file => {
-                formData.append('attachments', file);
-            });
+            const youtubeUrl = document.getElementById('updateTaskYoutubeUrl').value;
+            if (youtubeUrl) {
+                formData.append('youtubeURL', youtubeUrl);
+            }
+
+            const fileInput = document.getElementById('updateTaskAttachments');
+            for (let i = 0; i < fileInput.files.length; i++) {
+                formData.append('attachments', fileInput.files[i]);
+            }
 
             const response = await fetch(`/api/v1/task/${currentTask.id}`, {
                 method: 'POST',
@@ -1967,101 +1858,31 @@
                 body: formData
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to update task');
+            if (response.ok) {
+                // Update current task
+                currentTask.name = document.getElementById('updateTaskName').value;
+                currentTask.youtubeURL = youtubeUrl;
+
+                // Update in module tasks list
+                const taskIndex = currentModule.tasks.findIndex(t => t.id === currentTask.id);
+                if (taskIndex !== -1) {
+                    currentModule.tasks[taskIndex].taskName = currentTask.name;
+                }
+
+                // Refresh task display
+                document.getElementById('questionsTitle').textContent = `${currentTask.name} - Questions`;
+                displayQuestions();
+
+                showAlert('Task updated successfully!', 'success');
+                closeModal('updateTaskModal');
+            } else {
+                showAlert('Failed to update task', 'danger');
             }
-
-            closeModal('updateTaskModal');
-            alert('Task updated successfully!');
-
-            // Refresh questions view
-            viewTaskQuestions(currentTask.id, currentTask.name);
         } catch (error) {
             console.error('Error updating task:', error);
-            alert('Error updating task. Please try again.');
+            showAlert('Error updating task', 'danger');
         } finally {
             loading.style.display = 'none';
-        }
-    }
-
-    // Question functions
-    function openAddQuestion() {
-        document.getElementById('questionText').value = '';
-        document.getElementById('questionAttachmentPreview').innerHTML = '';
-
-        // Reset variants
-        const variantsList = document.getElementById('variantsList');
-        variantsList.innerHTML = `
-                <div class="variant-item">
-                    <input type="text" class="variant-input" placeholder="Variant 1" required>
-                    <input type="radio" name="correctAnswer" value="0" required>
-                    <label>Correct</label>
-                    <button type="button" class="btn btn-danger" onclick="removeVariant(this)" style="padding: 5px 10px; font-size: 12px;">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-                <div class="variant-item">
-                    <input type="text" class="variant-input" placeholder="Variant 2" required>
-                    <input type="radio" name="correctAnswer" value="1" required>
-                    <label>Correct</label>
-                    <button type="button" class="btn btn-danger" onclick="removeVariant(this)" style="padding: 5px 10px; font-size: 12px;">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            `;
-
-        openModal('addQuestionModal');
-    }
-
-    function addVariant() {
-        const variantsList = document.getElementById('variantsList');
-        const variantCount = variantsList.children.length;
-
-        const variantDiv = document.createElement('div');
-        variantDiv.className = 'variant-item';
-        variantDiv.innerHTML = `
-                <input type="text" class="variant-input" placeholder="Variant ${variantCount + 1}" required>
-                <input type="radio" name="correctAnswer" value="${variantCount}" required>
-                <label>Correct</label>
-                <button type="button" class="btn btn-danger" onclick="removeVariant(this)" style="padding: 5px 10px; font-size: 12px;">
-                    <i class="fas fa-trash"></i>
-                </button>
-            `;
-
-        variantsList.appendChild(variantDiv);
-    }
-
-    function removeVariant(button) {
-        const variantsList = document.getElementById('variantsList');
-        if (variantsList.children.length > 2) {
-            button.parentElement.remove();
-
-            // Update radio button values and placeholders
-            Array.from(variantsList.children).forEach((variant, index) => {
-                const radio = variant.querySelector('input[type="radio"]');
-                const textInput = variant.querySelector('.variant-input');
-                radio.value = index;
-                textInput.placeholder = `Variant ${index + 1}`;
-            });
-        } else {
-            alert('At least 2 variants are required.');
-        }
-    }
-
-    function previewQuestionAttachment(input) {
-        const preview = document.getElementById('questionAttachmentPreview');
-        preview.innerHTML = '';
-
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                preview.innerHTML = `
-                        <div class="attachment-item">
-                            <img src="${e.target.result}" alt="Question Attachment" class="attachment-image">
-                        </div>
-                    `;
-            };
-            reader.readAsDataURL(input.files[0]);
         }
     }
 
@@ -2072,51 +1893,35 @@
         loading.style.display = 'inline-block';
 
         try {
-            // Get variants and correct answer
-            const variantInputs = document.querySelectorAll('#variantsList .variant-input');
-            const correctAnswerRadio = document.querySelector('input[name="correctAnswer"]:checked');
+            // Collect variants and find correct answer
+            const variantInputs = document.querySelectorAll('#variantsContainer .variant-input');
+            const correctCheckboxes = document.querySelectorAll('#variantsContainer .correct-checkbox');
 
-            if (!correctAnswerRadio) {
-                alert('Please select the correct answer.');
-                return;
-            }
+            const variants = [];
+            let correctAnswer = '';
+            let hasCorrectAnswer = false;
 
-            const variants = Array.from(variantInputs).map(input => input.value.trim()).filter(v => v);
-            const correctAnswerIndex = parseInt(correctAnswerRadio.value);
-            const correctAnswer = variants[correctAnswerIndex];
-
-            if (variants.length < 2) {
-                alert('At least 2 variants are required.');
-                return;
-            }
-
-            // Upload attachment if exists
-            let attachmentId = null;
-            const attachmentFile = document.getElementById('questionAttachment').files[0];
-            if (attachmentFile) {
-                const formData = new FormData();
-                formData.append('file', attachmentFile);
-
-                const attachmentResponse = await fetch('/api/v1/attachments', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': localStorage.getItem('authToken')
-                    },
-                    body: formData
-                });
-
-                if (attachmentResponse.ok) {
-                    const attachmentResult = await attachmentResponse.json();
-                    attachmentId = attachmentResult.id;
+            variantInputs.forEach((input, index) => {
+                if (input.value.trim()) {
+                    variants.push(input.value.trim());
+                    if (correctCheckboxes[index].checked) {
+                        correctAnswer = input.value.trim();
+                        hasCorrectAnswer = true;
+                    }
                 }
+            });
+
+            if (!hasCorrectAnswer) {
+                showAlert('Please select at least one correct answer', 'danger');
+                return;
             }
 
-            const questionReq = {
-                attachmentId: attachmentId,
+            const questionData = {
                 questionTest: document.getElementById('questionText').value,
                 variant: variants,
                 currentAnswer: correctAnswer,
-                taskId: currentTask.id
+                taskId: currentTask.id,
+                attachmentId: null // Will be handled separately if needed
             };
 
             const response = await fetch('/api/v1/questions', {
@@ -2125,157 +1930,26 @@
                     'Content-Type': 'application/json',
                     'Authorization': localStorage.getItem('authToken')
                 },
-                body: JSON.stringify(questionReq)
+                body: JSON.stringify(questionData)
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to create question');
+            if (response.ok) {
+                const result = await response.json();
+
+                // Add to current task questions
+                currentTask.questionRes.push(result);
+
+                displayQuestions();
+                showAlert('Question added successfully!', 'success');
+                closeModal('addQuestionModal');
+            } else {
+                showAlert('Failed to add question', 'danger');
             }
-
-            closeModal('addQuestionModal');
-            alert('Question created successfully!');
-
-            // Refresh questions view
-            viewTaskQuestions(currentTask.id, currentTask.name);
         } catch (error) {
-            console.error('Error creating question:', error);
-            alert('Error creating question. Please try again.');
+            console.error('Error adding question:', error);
+            showAlert('Error adding question', 'danger');
         } finally {
             loading.style.display = 'none';
-        }
-    }
-
-    async function openUpdateQuestion(questionId) {
-        currentQuestion = {id: questionId};
-
-        try {
-            const response = await fetch(`/api/v1/questions/${questionId}`, {
-                headers: {
-                    'Authorization': localStorage.getItem('authToken')
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to load question details');
-            }
-
-            const question = await response.json();
-
-            // Fill form with current data
-            document.getElementById('updateQuestionText').value = question.questionTest;
-
-            // Load current attachment
-            if (question.attachmentId) {
-                loadCurrentQuestionAttachment(question.attachmentId);
-            } else {
-                document.getElementById('currentQuestionAttachment').innerHTML = '<p>No current attachment</p>';
-            }
-
-            // Load variants
-            const variantsList = document.getElementById('updateVariantsList');
-            variantsList.innerHTML = '';
-
-            question.variant.forEach((variant, index) => {
-                const isCorrect = variant === question.currentAnswer;
-                const variantDiv = document.createElement('div');
-                variantDiv.className = 'variant-item';
-                variantDiv.innerHTML = `
-                        <input type="text" class="variant-input" placeholder="Variant ${index + 1}" value="${variant}" required>
-                        <input type="radio" name="updateCorrectAnswer" value="${index}" ${isCorrect ? 'checked' : ''} required>
-                        <label>Correct</label>
-                        <button type="button" class="btn btn-danger" onclick="removeUpdateVariant(this)" style="padding: 5px 10px; font-size: 12px;">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    `;
-                variantsList.appendChild(variantDiv);
-            });
-
-            document.getElementById('updateQuestionAttachmentPreview').innerHTML = '';
-            openModal('updateQuestionModal');
-        } catch (error) {
-            console.error('Error loading question details:', error);
-            alert('Error loading question details. Please try again.');
-        }
-    }
-
-    async function loadCurrentQuestionAttachment(attachmentId) {
-        try {
-            const response = await fetch(`/api/v1/attachments/${attachmentId}`, {
-                headers: {
-                    'Authorization': localStorage.getItem('authToken')
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to load current attachment');
-            }
-
-            const attachment = await response.json();
-            const container = document.getElementById('currentQuestionAttachment');
-
-            const blob = new Blob([new Uint8Array(attachment.content)], {type: attachment.contentType});
-            const url = URL.createObjectURL(blob);
-
-            container.innerHTML = `
-                    <div class="attachment-item">
-                        <img src="${url}" alt="Current Question Attachment" class="attachment-image">
-                    </div>
-                `;
-        } catch (error) {
-            console.error('Error loading current question attachment:', error);
-            document.getElementById('currentQuestionAttachment').innerHTML = '<p>Error loading current attachment</p>';
-        }
-    }
-
-    function addUpdateVariant() {
-        const variantsList = document.getElementById('updateVariantsList');
-        const variantCount = variantsList.children.length;
-
-        const variantDiv = document.createElement('div');
-        variantDiv.className = 'variant-item';
-        variantDiv.innerHTML = `
-                <input type="text" class="variant-input" placeholder="Variant ${variantCount + 1}" required>
-                <input type="radio" name="updateCorrectAnswer" value="${variantCount}" required>
-                <label>Correct</label>
-                <button type="button" class="btn btn-danger" onclick="removeUpdateVariant(this)" style="padding: 5px 10px; font-size: 12px;">
-                    <i class="fas fa-trash"></i>
-                </button>
-            `;
-
-        variantsList.appendChild(variantDiv);
-    }
-
-    function removeUpdateVariant(button) {
-        const variantsList = document.getElementById('updateVariantsList');
-        if (variantsList.children.length > 2) {
-            button.parentElement.remove();
-
-            // Update radio button values and placeholders
-            Array.from(variantsList.children).forEach((variant, index) => {
-                const radio = variant.querySelector('input[type="radio"]');
-                const textInput = variant.querySelector('.variant-input');
-                radio.value = index;
-                textInput.placeholder = `Variant ${index + 1}`;
-            });
-        } else {
-            alert('At least 2 variants are required.');
-        }
-    }
-
-    function previewUpdateQuestionAttachment(input) {
-        const preview = document.getElementById('updateQuestionAttachmentPreview');
-        preview.innerHTML = '';
-
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                preview.innerHTML = `
-                        <div class="attachment-item">
-                            <img src="${e.target.result}" alt="New Question Attachment" class="attachment-image">
-                        </div>
-                    `;
-            };
-            reader.readAsDataURL(input.files[0]);
         }
     }
 
@@ -2286,51 +1960,35 @@
         loading.style.display = 'inline-block';
 
         try {
-            // Get variants and correct answer
-            const variantInputs = document.querySelectorAll('#updateVariantsList .variant-input');
-            const correctAnswerRadio = document.querySelector('input[name="updateCorrectAnswer"]:checked');
+            // Collect variants and find correct answer
+            const variantInputs = document.querySelectorAll('#updateVariantsContainer .variant-input');
+            const correctCheckboxes = document.querySelectorAll('#updateVariantsContainer .correct-checkbox');
 
-            if (!correctAnswerRadio) {
-                alert('Please select the correct answer.');
-                return;
-            }
+            const variants = [];
+            let correctAnswer = '';
+            let hasCorrectAnswer = false;
 
-            const variants = Array.from(variantInputs).map(input => input.value.trim()).filter(v => v);
-            const correctAnswerIndex = parseInt(correctAnswerRadio.value);
-            const correctAnswer = variants[correctAnswerIndex];
-
-            if (variants.length < 2) {
-                alert('At least 2 variants are required.');
-                return;
-            }
-
-            // Upload new attachment if exists
-            let attachmentId = null;
-            const attachmentFile = document.getElementById('updateQuestionAttachment').files[0];
-            if (attachmentFile) {
-                const formData = new FormData();
-                formData.append('file', attachmentFile);
-
-                const attachmentResponse = await fetch('/api/v1/attachments', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': localStorage.getItem('authToken')
-                    },
-                    body: formData
-                });
-
-                if (attachmentResponse.ok) {
-                    const attachmentResult = await attachmentResponse.json();
-                    attachmentId = attachmentResult.id;
+            variantInputs.forEach((input, index) => {
+                if (input.value.trim()) {
+                    variants.push(input.value.trim());
+                    if (correctCheckboxes[index].checked) {
+                        correctAnswer = input.value.trim();
+                        hasCorrectAnswer = true;
+                    }
                 }
+            });
+
+            if (!hasCorrectAnswer) {
+                showAlert('Please select at least one correct answer', 'danger');
+                return;
             }
 
-            const questionReq = {
-                attachmentId: attachmentId,
+            const questionData = {
                 questionTest: document.getElementById('updateQuestionText').value,
                 variant: variants,
                 currentAnswer: correctAnswer,
-                taskId: currentTask.id
+                taskId: currentTask.id,
+                attachmentId: currentQuestion.attachmentId
             };
 
             const response = await fetch(`/api/v1/questions/${currentQuestion.id}`, {
@@ -2339,35 +1997,344 @@
                     'Content-Type': 'application/json',
                     'Authorization': localStorage.getItem('authToken')
                 },
-                body: JSON.stringify(questionReq)
+                body: JSON.stringify(questionData)
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to update question');
+            if (response.ok) {
+                const result = await response.json();
+
+                // Update in current task questions
+                const questionIndex = currentTask.questionRes.findIndex(q => q.id === currentQuestion.id);
+                if (questionIndex !== -1) {
+                    currentTask.questionRes[questionIndex] = result;
+                }
+
+                displayQuestions();
+                showAlert('Question updated successfully!', 'success');
+                closeModal('updateQuestionModal');
+            } else {
+                showAlert('Failed to update question', 'danger');
             }
-
-            closeModal('updateQuestionModal');
-            alert('Question updated successfully!');
-
-            // Refresh questions view
-            viewTaskQuestions(currentTask.id, currentTask.name);
         } catch (error) {
             console.error('Error updating question:', error);
-            alert('Error updating question. Please try again.');
+            showAlert('Error updating question', 'danger');
         } finally {
             loading.style.display = 'none';
         }
     }
 
+    // Toggle module status
+    async function toggleModuleStatus() {
+        try {
+            const url = `/api/v1/module/${currentModule.id}`;
+            const method = currentModule.active === false ? 'POST' : 'DELETE';
+
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Authorization': localStorage.getItem('authToken')
+                }
+            });
+
+            if (response.ok) {
+                // Toggle status
+                currentModule.active = !currentModule.active;
+
+                // Update button
+                const statusBtn = document.getElementById('moduleStatusBtn');
+                if (currentModule.active === false) {
+                    statusBtn.innerHTML = '<i class="fas fa-eye"></i> Show to Mentors';
+                    statusBtn.className = 'btn btn-success';
+                } else {
+                    statusBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Hide from Mentors';
+                    statusBtn.className = 'btn btn-danger';
+                }
+
+                // Update in science modules list
+                const moduleIndex = currentScience.modules.findIndex(m => m.id === currentModule.id);
+                if (moduleIndex !== -1) {
+                    currentScience.modules[moduleIndex].active = currentModule.active;
+                }
+
+                const action = currentModule.active ? 'shown to' : 'hidden from';
+                showAlert(`Module ${action} mentors successfully!`, 'success');
+            } else {
+                showAlert('Failed to update module status', 'danger');
+            }
+        } catch (error) {
+            console.error('Error updating module status:', error);
+            showAlert('Error updating module status', 'danger');
+        }
+    }
+
+    // File upload functions
+    function setupFileUpload() {
+        // Setup drag and drop for file upload areas
+        const uploadAreas = document.querySelectorAll('.file-upload-area');
+
+        uploadAreas.forEach(area => {
+            area.addEventListener('dragover', function (e) {
+                e.preventDefault();
+                this.classList.add('dragover');
+            });
+
+            area.addEventListener('dragleave', function (e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+            });
+
+            area.addEventListener('drop', function (e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+
+                const files = e.dataTransfer.files;
+                const input = this.parentElement.querySelector('input[type="file"]');
+                if (input && files.length > 0) {
+                    input.files = files;
+                    input.dispatchEvent(new Event('change'));
+                }
+            });
+        });
+    }
+
+    function previewProfileImage(input) {
+        const previewContainer = document.getElementById('profileImagePreview');
+        previewContainer.innerHTML = ''; // Oldingi rasmni tozalash
+
+        const file = input.files[0];
+        if (file) {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.style.maxWidth = '200px';
+            img.style.maxHeight = '200px';
+            img.style.borderRadius = '10px';
+            previewContainer.appendChild(img);
+        }
+    }
+
+
+    function previewTaskFiles(input) {
+        const container = document.getElementById('taskFilesPreviews');
+        container.innerHTML = '';
+
+        for (let i = 0; i < input.files.length; i++) {
+            const file = input.files[i];
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const preview = document.createElement('div');
+                    preview.className = 'file-preview';
+                    preview.innerHTML = `
+                            <img src="${e.target.result}" alt="Preview">
+                            <button type="button" class="file-remove" onclick="removeTaskFile(${i})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                    container.appendChild(preview);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    }
+
+    function previewUpdateTaskFiles(input) {
+        const container = document.getElementById('updateTaskFilesPreviews');
+        container.innerHTML = '';
+
+        for (let i = 0; i < input.files.length; i++) {
+            const file = input.files[i];
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const preview = document.createElement('div');
+                    preview.className = 'file-preview';
+                    preview.innerHTML = `
+                            <img src="${e.target.result}" alt="Preview">
+                            <button type="button" class="file-remove" onclick="removeUpdateTaskFile(${i})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                    container.appendChild(preview);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    }
+
+    function previewQuestionAttachment(input) {
+        const container = document.getElementById('questionAttachmentPreview');
+        container.innerHTML = '';
+
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    container.innerHTML = `
+                            <div class="file-preview">
+                                <img src="${e.target.result}" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 10px;">
+                            </div>
+                        `;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    }
+
+    function previewUpdateQuestionAttachment(input) {
+        const container = document.getElementById('updateQuestionAttachmentPreview');
+        container.innerHTML = '';
+
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    container.innerHTML = `
+                            <div class="file-preview">
+                                <img src="${e.target.result}" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 10px;">
+                            </div>
+                        `;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    }
+
+    // Variant management functions
+    function addVariant() {
+        const container = document.getElementById('variantsContainer');
+        const variantCount = container.children.length;
+
+        const variantGroup = document.createElement('div');
+        variantGroup.className = 'variant-input-group';
+        variantGroup.innerHTML = `
+                <input type="text" class="form-control variant-input" placeholder="Variant ${variantCount + 1}" required>
+                <input type="checkbox" class="correct-checkbox" title="Mark as correct answer">
+                <button type="button" class="btn btn-danger" onclick="removeVariant(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+        container.appendChild(variantGroup);
+
+        // Show remove buttons if more than 2 variants
+        if (variantCount >= 2) {
+            const removeButtons = container.querySelectorAll('.btn-danger');
+            removeButtons.forEach(btn => btn.style.display = 'inline-block');
+        }
+    }
+
+    function removeVariant(button) {
+        const container = document.getElementById('variantsContainer');
+        const variantGroup = button.parentElement;
+        container.removeChild(variantGroup);
+
+        // Hide remove buttons if only 2 variants left
+        if (container.children.length <= 2) {
+            const removeButtons = container.querySelectorAll('.btn-danger');
+            removeButtons.forEach(btn => btn.style.display = 'none');
+        }
+    }
+
+    function addUpdateVariant() {
+        const container = document.getElementById('updateVariantsContainer');
+        const variantCount = container.children.length;
+
+        const variantGroup = document.createElement('div');
+        variantGroup.className = 'variant-input-group';
+        variantGroup.innerHTML = `
+                <input type="text" class="form-control variant-input" placeholder="Variant ${variantCount + 1}" required>
+                <input type="checkbox" class="correct-checkbox" title="Mark as correct answer">
+                <button type="button" class="btn btn-danger" onclick="removeUpdateVariant(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+        container.appendChild(variantGroup);
+
+        // Show remove buttons if more than 2 variants
+        if (variantCount >= 2) {
+            const removeButtons = container.querySelectorAll('.btn-danger');
+            removeButtons.forEach(btn => btn.style.display = 'inline-block');
+        }
+    }
+
+    function removeUpdateVariant(button) {
+        const container = document.getElementById('updateVariantsContainer');
+        const variantGroup = button.parentElement;
+        container.removeChild(variantGroup);
+
+        // Hide remove buttons if only 2 variants left
+        if (container.children.length <= 2) {
+            const removeButtons = container.querySelectorAll('.btn-danger');
+            removeButtons.forEach(btn => btn.style.display = 'none');
+        }
+    }
+
+    // Utility functions
+    function showAlert(message, type) {
+        // Remove existing alerts
+        const existingAlerts = document.querySelectorAll('.alert');
+        existingAlerts.forEach(alert => alert.remove());
+
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type}`;
+        alert.textContent = message;
+
+        // Insert at the top of main content
+        const mainContent = document.querySelector('.main-content');
+        mainContent.insertBefore(alert, mainContent.firstChild);
+
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (alert.parentElement) {
+                alert.remove();
+            }
+        }, 5000);
+    }
+
+    // Logout function
+    function logout() {
+        try {
+            const userData = JSON.parse(localStorage.getItem('userData'));
+
+            if (userData && userData.roles && userData.roles.length > 1) {
+                // Multiple roles - redirect to role selection
+                window.location.href = 'chooseRole.html';
+            } else {
+                // Single role or no roles - clear storage and redirect to login
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('userData');
+                window.location.href = 'index.html';
+            }
+        } catch (error) {
+            console.error('Error during logout:', error);
+            // Fallback - clear everything and redirect to login
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+    }
+
     // Close modals when clicking outside
-    window.onclick = function (event) {
+    window.addEventListener('click', function (event) {
         const modals = document.querySelectorAll('.modal');
         modals.forEach(modal => {
             if (event.target === modal) {
                 modal.style.display = 'none';
             }
         });
-    }
+    });
+
+    // Handle escape key to close modals
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (modal.style.display === 'block') {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    });
 </script>
 </body>
 </html>
