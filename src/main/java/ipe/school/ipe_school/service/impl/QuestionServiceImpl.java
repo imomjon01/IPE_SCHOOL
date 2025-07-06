@@ -10,6 +10,7 @@ import ipe.school.ipe_school.models.repo.QuestionRepository;
 import ipe.school.ipe_school.models.repo.TaskRepository;
 import ipe.school.ipe_school.service.interfaces.QuestionService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,13 +24,18 @@ public class QuestionServiceImpl implements QuestionService {
     private final AttachmentRepository attachmentRepository;
     private final TaskRepository taskRepository;
 
+    @SneakyThrows
     @Override
     @Transactional
     public QuestionRes save(QuestionReq questionReq) {
         Question question=new Question();
-        if (questionReq.getAttachmentId()!=null) {
-            Attachment attachment = attachmentRepository.findById(questionReq.getAttachmentId()).orElseThrow();
-            question.setAttachment(attachment);
+        if (questionReq.getAttachment()!=null) {
+            Attachment attachment = new Attachment();
+            attachment.setContentType(questionReq.getAttachment().getContentType());
+            attachment.setContent(questionReq.getAttachment().getBytes());
+            attachment.setActive(true);
+            Attachment save = attachmentRepository.save(attachment);
+            question.setAttachment(save);
         }
         question.setQuestionTest(questionReq.getQuestionTest());
         question.setVariant(questionReq.getVariant());
@@ -57,12 +63,30 @@ public class QuestionServiceImpl implements QuestionService {
         questionRepository.updateActive(questionId, false);
     }
 
+    @SneakyThrows
     @Override
     public QuestionRes updateQuestionBYId(Long questionId, QuestionReq questionReq) {
         Question question = questionRepository.findById(questionId).orElseThrow(RuntimeException::new);
         question.setQuestionTest(questionReq.getQuestionTest());
         question.setVariant(questionReq.getVariant());
         question.setCurrentAnswer(questionReq.getCurrentAnswer());
+        if (questionReq.getAttachment()!=null) {
+            if (question.getAttachment()!=null) {
+                Attachment attachment = question.getAttachment();
+                attachment.setContentType(questionReq.getAttachment().getContentType());
+                attachment.setContent(questionReq.getAttachment().getBytes());
+                attachment.setActive(true);
+                Attachment save = attachmentRepository.save(attachment);
+                question.setAttachment(save);
+            }else {
+                Attachment attachment = new Attachment();
+                attachment.setContentType(questionReq.getAttachment().getContentType());
+                attachment.setContent(questionReq.getAttachment().getBytes());
+                attachment.setActive(true);
+                Attachment save = attachmentRepository.save(attachment);
+                question.setAttachment(save);
+            }
+        }
         question.setActive(true);
         Question saved = questionRepository.save(question);
         if (saved.getAttachment()!=null) {
