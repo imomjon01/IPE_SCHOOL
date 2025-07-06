@@ -1385,7 +1385,7 @@
     // Show questions for a task
     async function showQuestions(taskId) {
         try {
-            const response = await fetch(`/api/v1/task/${taskId}`, {
+            const response = await fetch(`/api/v1/task/getActives/${taskId}`, {
                 headers: {
                     'Authorization': localStorage.getItem('authToken')
                 }
