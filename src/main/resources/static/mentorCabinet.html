@@ -1351,21 +1351,27 @@
         }
 
         changeModuleContent.innerHTML = `
-                <h3>Select a Science:</h3>
-                <div class="science-grid">
-                    ${allSciences.map(science => `
-                        <div class="science-card" onclick="selectScience(${science.id}, '${science.name}')">
-                            <i class="fas fa-flask" style="font-size: 24px; margin-bottom: 10px;"></i>
-                            <h4>${science.name}</h4>
-                            <p style="font-size: 12px; color: #666;">${science.modules ? science.modules.length : 0} modules</p>
-                        </div>
-                    `).join('')}
-                </div>
-                <div id="modulesSection" class="hidden">
-                    <h3>Select a Module:</h3>
-                    <div id="modulesGrid" class="modules-grid"></div>
+    <h3>Select a Science:</h3>
+    <div class="science-grid">
+        ${allSciences.map(science => {
+            const activeModuleCount = science.modules
+                ? science.modules.filter(module => module.active).length
+                : 0;
+
+            return `
+                <div class="science-card" onclick="selectScience(${science.id}, '${science.name}')">
+                    <i class="fas fa-flask" style="font-size: 24px; margin-bottom: 10px;"></i>
+                    <h4>${science.name}</h4>
+                    <p style="font-size: 12px; color: #666;">${activeModuleCount} modules</p>
                 </div>
             `;
+        }).join('')}
+    </div>
+    <div id="modulesSection" class="hidden">
+        <h3>Select a Module:</h3>
+        <div id="modulesGrid" class="modules-grid"></div>
+    </div>
+`;
     }
 
     // Select science
@@ -1381,12 +1387,16 @@
         document.getElementById('modulesSection').classList.remove('hidden');
         const modulesGrid = document.getElementById('modulesGrid');
 
-        modulesGrid.innerHTML = science.modules.map(module => `
-                <div class="module-card" onclick="selectModule(${module.id}, '${module.name}')">
-                    <h4>${module.name}</h4>
-                    <p style="color: #666; font-size: 14px;">Module ID: ${module.id}</p>
-                </div>
-            `).join('');
+        modulesGrid.innerHTML = science.modules
+            .filter(module => module.active) // faqat active modullar
+            .map(module => `
+        <div class="module-card" onclick="selectModule(${module.id}, '${module.name}')">
+            <h4>${module.name}</h4>
+            <p style="color: #666; font-size: 14px;">Module ID: ${module.id}</p>
+        </div>
+    `)
+            .join('');
+
     }
 
     // Select module

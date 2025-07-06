@@ -672,6 +672,80 @@
             font-weight: 700;
             font-size: 15px;
         }
+
+        .attachment-item {
+            position: relative;
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .attachment-thumbnail {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.2s ease;
+        }
+
+        .remove-btn:hover {
+            background-color: #ff0000;
+        }
+
+        .preview-item {
+            position: relative;
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .preview-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.2s ease;
+        }
+
+        .remove-btn:hover {
+            background-color: #ff0000;
+        }
+
+
     </style>
 </head>
 <body>
@@ -923,20 +997,29 @@
             <h3 class="modal-title">Update Task</h3>
             <span class="close" onclick="closeModal('updateTaskModal')">&times;</span>
         </div>
-        <form id="updateTaskForm">
+
+        <form id="updateTaskForm" onsubmit="handleUpdateTask(event)">
             <div class="form-group">
                 <label class="form-label">Task Name</label>
                 <input type="text" class="form-control" id="updateTaskName" required>
             </div>
+
+            <div class="form-group">
+                <label class="form-label">YouTube Preview</label>
+                <div id="youtubeVideoPreview"></div>
+            </div>
+
             <div class="form-group">
                 <label class="form-label">YouTube URL (Optional)</label>
                 <input type="url" class="form-control" id="updateTaskYoutubeUrl"
                        placeholder="https://youtube.com/watch?v=...">
             </div>
+
             <div class="form-group">
                 <label class="form-label">Current Attachments</label>
-                <div id="currentTaskAttachments"></div>
+                <div id="currentTaskAttachments" class="attachment-list"></div>
             </div>
+
             <div class="form-group">
                 <label class="form-label">New Attachments (Optional)</label>
                 <div class="file-upload-area" onclick="document.getElementById('updateTaskAttachments').click()">
@@ -944,13 +1027,14 @@
                     <p>Click to select new files</p>
                 </div>
                 <input type="file" id="updateTaskAttachments" multiple accept="image/*" style="display: none;"
-                       onchange="previewUpdateTaskFiles(this)">
-                <div class="uploaded-files" id="updateTaskFilesPreviews"></div>
+                       onchange="handleNewFiles(this)">
+                <div id="updateTaskFilesPreviews" class="preview-list"></div>
             </div>
+
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    <span id="updateTaskLoading" class="loading" style="display: none;"></span>
                     Update Task
+                    <span id="updateTaskLoading" class="loading" style="display: none;">Loading...</span>
                 </button>
             </div>
         </form>
@@ -1067,6 +1151,7 @@
     let currentQuestion = null;
     let sciences = [];
     let allFiles = [];
+    let selectedFiles = [];
 
     // Initialize the application
     document.addEventListener('DOMContentLoaded', function () {
@@ -1438,7 +1523,6 @@
         return match ? match[1] : '';
     }
 
-
     // View question details
     async function viewQuestion(questionId) {
         try {
@@ -1588,7 +1672,6 @@
         openModal('updateProfileModal');
     }
 
-
     function openAddModule() {
         document.getElementById('moduleName').value = '';
         openModal('addModuleModal');
@@ -1606,23 +1689,97 @@
         openModal('addTaskModal');
     }
 
+    function removeCurrentAttachment(index) {
+        currentTask.attachments.splice(index, 1);
+        openUpdateTask(); // qayta yuklaydi
+    }
+
     function openUpdateTask() {
         document.getElementById('updateTaskName').value = currentTask.name;
         document.getElementById('updateTaskYoutubeUrl').value = currentTask.youtubeURL || '';
 
-        // Show current attachments
-        const currentAttachments = document.getElementById('currentTaskAttachments');
-        if (currentTask.attachments && currentTask.attachments.length > 0) {
-            currentAttachments.innerHTML = currentTask.attachments.map(att => `
-                    <img src="data:${att.contentType};base64,${btoa(String.fromCharCode(...new Uint8Array(att.content)))}"
-                         style="max-width: 100px; max-height: 100px; margin: 5px; border-radius: 5px;">
-                `).join('');
+        // YouTube preview
+        const youtubePreview = document.getElementById('youtubeVideoPreview');
+        if (currentTask.youtubeURL) {
+            const videoId = getYoutubeVideoId(currentTask.youtubeURL);
+            youtubePreview.innerHTML = `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
         } else {
-            currentAttachments.innerHTML = '<p>No current attachments</p>';
+            youtubePreview.innerHTML = '';
         }
 
+        // Current attachments
+        const currentAttachments = document.getElementById('currentTaskAttachments');
+        currentAttachments.innerHTML = '';
+        (currentTask.attachments || []).forEach((att, index) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'attachment-item';
+            wrapper.innerHTML = `
+            <img src="data:${att.contentType};base64,${att.content}" class="attachment-thumbnail" />
+            <button class="remove-btn" onclick="removeCurrentAttachment(${index})">&times;</button>
+        `;
+            currentAttachments.appendChild(wrapper);
+        });
+
+        // Reset
+        selectedFiles = [];
+        document.getElementById('updateTaskAttachments').value = '';
         document.getElementById('updateTaskFilesPreviews').innerHTML = '';
+
         openModal('updateTaskModal');
+    }
+
+    function handleNewFiles(input) {
+        const files = Array.from(input.files);
+        selectedFiles = selectedFiles.concat(files);
+        renderFilePreviews();
+    }
+
+    function renderFilePreviews() {
+        const container = document.getElementById('updateTaskFilesPreviews');
+        container.innerHTML = '';
+
+        selectedFiles.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'preview-item';
+                previewDiv.innerHTML = `
+                <img src="${e.target.result}" class="preview-image" />
+                <button class="remove-btn" onclick="removeNewFile(${index})">&times;</button>
+            `;
+                container.appendChild(previewDiv);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function removeNewFile(index) {
+        selectedFiles.splice(index, 1);
+        renderFilePreviews();
+    }
+
+    function renderSelectedFilePreviews() {
+        const previewsContainer = document.getElementById('updateTaskFilesPreviews');
+        previewsContainer.innerHTML = '';
+
+        newSelectedFiles.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const preview = document.createElement('div');
+                preview.className = 'preview-item';
+                preview.innerHTML = `
+                <img src="${e.target.result}" style="max-width: 100px; margin: 5px; border-radius: 5px;">
+                <button class="btn btn-sm btn-danger" onclick="removeNewAttachment(${index})">Remove</button>
+            `;
+                previewsContainer.appendChild(preview);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function removeNewAttachment(index) {
+        newSelectedFiles.splice(index, 1);
+        renderSelectedFilePreviews(); // Qayta render qilamiz
     }
 
     function openAddQuestion() {
@@ -1858,7 +2015,6 @@
 
     async function handleUpdateTask(e) {
         e.preventDefault();
-
         const loading = document.getElementById('updateTaskLoading');
         loading.style.display = 'inline-block';
 
@@ -1866,17 +2022,27 @@
             const formData = new FormData();
             formData.append('taskName', document.getElementById('updateTaskName').value);
             formData.append('moduleId', currentModule.id);
+            formData.append('active', true);
 
             const youtubeUrl = document.getElementById('updateTaskYoutubeUrl').value;
-            if (youtubeUrl) {
-                formData.append('youtubeURL', youtubeUrl);
+            if (youtubeUrl) formData.append('youtubeURL', youtubeUrl);
+
+            // 🔹 1. Eski attachmentlarni qaytadan fayl sifatida qo‘shish
+            const oldAttachments = currentTask.attachments || [];
+            for (let i = 0; i < oldAttachments.length; i++) {
+                const att = oldAttachments[i];
+
+                const blob = base64ToBlob(att.content, att.contentType);
+                const file = new File([blob], `old-attachment-${i}.${getFileExtension(att.contentType)}`, { type: att.contentType });
+                formData.append('attachments', file);
             }
 
-            const fileInput = document.getElementById('updateTaskAttachments');
-            for (let i = 0; i < fileInput.files.length; i++) {
-                formData.append('attachments', fileInput.files[i]);
-            }
+            // 🔹 2. Yangi fayllarni qo‘shish
+            selectedFiles.forEach(file => {
+                formData.append('attachments', file);
+            });
 
+            // 🔹 3. So‘rov yuborish
             const response = await fetch(`/api/v1/task/${currentTask.id}`, {
                 method: 'POST',
                 headers: {
@@ -1886,32 +2052,46 @@
             });
 
             if (response.ok) {
-                // Update current task
-                currentTask.name = document.getElementById('updateTaskName').value;
-                currentTask.youtubeURL = youtubeUrl;
-
-                // Update in module tasks list
-                const taskIndex = currentModule.tasks.findIndex(t => t.id === currentTask.id);
-                if (taskIndex !== -1) {
-                    currentModule.tasks[taskIndex].taskName = currentTask.name;
-                }
-
-                // Refresh task display
-                document.getElementById('questionsTitle').textContent = `${currentTask.name} - Questions`;
-                displayQuestions();
-
                 showAlert('Task updated successfully!', 'success');
                 closeModal('updateTaskModal');
+                showQuestions(currentTask.id);
             } else {
                 showAlert('Failed to update task', 'danger');
             }
-        } catch (error) {
-            console.error('Error updating task:', error);
+        } catch (err) {
+            console.error(err);
             showAlert('Error updating task', 'danger');
         } finally {
             loading.style.display = 'none';
         }
     }
+
+    function base64ToBlob(base64, contentType = '') {
+        const byteCharacters = atob(base64);
+        const byteArrays = [];
+
+        for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+            const slice = byteCharacters.slice(offset, offset + 512);
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+
+        return new Blob(byteArrays, { type: contentType });
+    }
+
+    function getFileExtension(contentType) {
+        switch (contentType) {
+            case 'image/jpeg': return 'jpg';
+            case 'image/png': return 'png';
+            case 'image/gif': return 'gif';
+            default: return 'file';
+        }
+    }
+
 
     async function handleAddQuestion(e) {
         e.preventDefault();
@@ -2139,7 +2319,6 @@
         }
     }
 
-
     function previewTaskFiles(input) {
         const container = document.getElementById('taskFilesPreviews');
 
@@ -2208,38 +2387,6 @@
         const dataTransfer = new DataTransfer();
         allFiles.forEach(file => dataTransfer.items.add(file));
         input.files = dataTransfer.files;
-    }
-
-
-    function updateInputFiles(input) {
-        // Input fayllarini yangilash uchun DataTransfer obyekti
-        const dataTransfer = new DataTransfer();
-        allFiles.forEach(file => dataTransfer.items.add(file));
-        input.files = dataTransfer.files;
-    }
-
-    function previewUpdateTaskFiles(input) {
-        const container = document.getElementById('updateTaskFilesPreviews');
-        container.innerHTML = '';
-
-        for (let i = 0; i < input.files.length; i++) {
-            const file = input.files[i];
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const preview = document.createElement('div');
-                    preview.className = 'file-preview';
-                    preview.innerHTML = `
-                            <img src="${e.target.result}" alt="Preview">
-                            <button type="button" class="file-remove" onclick="removeUpdateTaskFile(${i})">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        `;
-                    container.appendChild(preview);
-                };
-                reader.readAsDataURL(file);
-            }
-        }
     }
 
     function previewQuestionAttachment(input) {
