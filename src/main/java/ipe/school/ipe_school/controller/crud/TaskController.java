@@ -42,7 +42,7 @@ public class TaskController {
 
     @DeleteMapping("/{taskId}")
     public ResponseEntity<?> deleteTask(@PathVariable Long taskId) {
-        taskService.updateTask_active(taskId);
+        taskService.updateTask_active(taskId, false);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -60,10 +60,14 @@ public class TaskController {
 
     @GetMapping("/getActives/{taskId}")
     public ResponseEntity<TaskDetailsRes> getTaskActive(@PathVariable Long taskId) {
-        Task task = taskService.findById(taskId); // active false larni ham userga korsatadi
-        List<QuestionRes> questionResList = taskMapper.mapQuestions(task);
-        List<Long> attachmentIds = taskMapper.extractAttachmentIds(task);
-        TaskDetailsRes taskDetailsRes = taskMapper.buildTaskDetails(task, questionResList, attachmentIds);
+        TaskDetailsRes taskDetailsRes =  taskService.getTask(taskId);
         return ResponseEntity.ok(taskDetailsRes);
+    }
+
+    @PostMapping("updateActive/{taskId}")
+    public ResponseEntity<TaskDetailsRes> updateTaskActive(@PathVariable Long taskId , @RequestParam Boolean active) {
+        taskService.updateTask_active(taskId, active);
+        TaskDetailsRes task = taskService.getTask(taskId);
+        return new ResponseEntity<>(task, HttpStatus.OK);
     }
 }

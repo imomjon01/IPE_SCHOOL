@@ -767,6 +767,56 @@
             background-color: #31b0d5;
         }
 
+        .task-container {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 20px auto;
+            border-left: 5px solid #4a6cf7;
+        }
+
+        .task-name {
+            color: #2d3748;
+            margin: 0 0 10px 0;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .task-icon {
+            font-size: 1.2em;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .active {
+            background-color: #48bb78;
+            color: white;
+        }
+
+        .inactive {
+            background-color: #e53e3e;
+            color: white;
+        }
+
+        .task-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #4a5568;
+            font-size: 0.95rem;
+        }
+
     </style>
 </head>
 <body>
@@ -858,7 +908,7 @@
         <!-- Questions View -->
         <div id="questionsView" style="display: none;">
             <div class="modules-header">
-                <h2 class="section-title" id="questionsTitle">Questions</h2>
+                <h2 class="section-title" id="questionsTitle">Information</h2>
                 <div>
                     <button class="btn btn-primary" onclick="openAddQuestion()">
                         <i class="fas fa-plus"></i> Add Question
@@ -866,10 +916,13 @@
                     <button class="btn btn-warning" onclick="openUpdateTask()">
                         <i class="fas fa-edit"></i> Update Task
                     </button>
+                    <button id="toggleTaskActiveBtn" class="btn btn-success" onclick="toggleTaskActive()">
+                        <i class="fas fa-eye"></i> Show Task
+                    </button>
                     <span class="badge manga-counter" id="questionCount">
-                        <i class="manga-icon"></i>
-                        <span class="count">0</span> modules
-                    </span>
+                <i class="manga-icon"></i>
+                <span class="count">0</span> modules
+            </span>
                 </div>
             </div>
             <div class="questions-container" id="questionsContainer">
@@ -1414,6 +1467,7 @@
 
             if (response.ok) {
                 currentTask = await response.json();
+                updateTaskActiveButton();
 
                 // Update breadcrumb
                 updateBreadcrumb([
@@ -1429,7 +1483,7 @@
                 document.getElementById('tasksView').style.display = 'none';
                 document.getElementById('questionsView').style.display = 'block';
 
-                document.getElementById('questionsTitle').textContent = `${currentTask.name} - Questions`;
+                document.getElementById('questionsTitle').textContent = `${currentTask.name} - Information`;
                 document.getElementById('questionCount').textContent = `${currentTask.questionRes.length} questions`;
 
                 // Load and display attachments if any
@@ -1444,6 +1498,46 @@
         } catch (error) {
             console.error('Error loading task:', error);
             showAlert('Error loading task', 'danger');
+        }
+    }
+
+    async function toggleTaskActive() {
+        try {
+            const newActive = !currentTask.active;
+
+            const response = await fetch(`/api/v1/task/updateActive/${currentTask.id}?active=${newActive}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': localStorage.getItem('authToken')
+                }
+            });
+
+            if (response.ok) {
+                const updatedTask = await response.json();
+                currentTask = updatedTask;
+
+                // Yangilangan holatni tugmada ko‘rsatish
+                updateTaskActiveButton();
+                showAlert('Task active status updated', 'success');
+            } else {
+                showAlert('Failed to update task active status', 'danger');
+            }
+        } catch (error) {
+            console.error('Error updating task active:', error);
+            showAlert('Error updating task active', 'danger');
+        }
+    }
+
+    function updateTaskActiveButton() {
+        const btn = document.getElementById('toggleTaskActiveBtn');
+        if (currentTask.active) {
+            btn.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Task';
+            btn.className = 'btn btn-danger';
+            btn.title = 'This will hide the task from users';
+        } else {
+            btn.innerHTML = '<i class="fas fa-eye"></i> Show Task';
+            btn.className = 'btn btn-success';
+            btn.title = 'This will make the task visible to users';
         }
     }
 
@@ -1490,6 +1584,7 @@
         <div class="task-meta">
             Status: ${currentTask.active ? 'Active' : 'Inactive'}
         </div>
+        <br>
         ${youtubeEmbed}
         ${currentTask.attachments ? `
             <div class="task-attachments">
@@ -1502,6 +1597,16 @@
     </div>`;
 
         container.appendChild(taskInfo);
+
+        // Sarlavha qo'shish (agar savollar bo‘lsa)
+        if (currentTask.questionRes.length > 0) {
+            const title = document.createElement('h3');
+            title.textContent = 'Task Questions';
+            title.className = 'text-lg font-semibold mb-3 text-gray-700';
+            container.appendChild(title);
+            const br = document.createElement('br');
+            container.appendChild(br);
+        }
 
         // Display questions
         currentTask.questionRes.forEach(question => {

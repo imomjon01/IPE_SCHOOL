@@ -1,6 +1,9 @@
 package ipe.school.ipe_school.service.impl;
 
+import ipe.school.ipe_school.component.TaskMapper;
 import ipe.school.ipe_school.models.dtos.req.TaskReq;
+import ipe.school.ipe_school.models.dtos.res.QuestionRes;
+import ipe.school.ipe_school.models.dtos.res.TaskDetailsRes;
 import ipe.school.ipe_school.models.dtos.res.TaskRes;
 import ipe.school.ipe_school.models.entity.*;
 import ipe.school.ipe_school.models.entity.Module;
@@ -16,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +31,7 @@ public class TaskServiceImpl implements TaskService {
     private final UserService userService;
     private final UserRepository userRepository;
     private final AnswerSubmissionRepository answerSubmissionRepository;
+    private final TaskMapper taskMapper;
 
     @Override
     @Transactional
@@ -47,7 +52,6 @@ public class TaskServiceImpl implements TaskService {
         }
         task.setTaskName(taskReq.getTaskName());
         task.setYoutubeURL(taskReq.getYoutubeURL());
-        task.setActive(true);
         Task savedTask = taskRepository.save(task);
         addCurrentModule(savedTask, taskReq.getModuleId());
         logger.info("Task added successfully: {}", savedTask.getId());
@@ -76,9 +80,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public void updateTask_active(Long taskId) {
+    public void updateTask_active(Long taskId, Boolean active) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
-        task.setActive(false);
+        task.setActive(active);
         taskRepository.save(task);
     }
 
@@ -122,6 +126,16 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task findById(Long taskId) {
         return taskRepository.findById(taskId).orElseThrow(RuntimeException::new);
+    }
+
+    @Override
+    public TaskDetailsRes getTask(Long taskId) {
+        Optional<Task> getById = taskRepository.findById(taskId);
+        if (getById.isEmpty()) return null;
+        Task task = getById.get();
+        List<QuestionRes> questionResList = taskMapper.mapQuestions(task);
+        List<Long> attachmentIds = taskMapper.extractAttachmentIds(task);
+        return taskMapper.buildTaskDetails(task, questionResList, attachmentIds);
     }
 
 }
