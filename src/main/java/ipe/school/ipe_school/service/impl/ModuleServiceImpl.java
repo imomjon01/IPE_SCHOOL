@@ -88,25 +88,21 @@ public class ModuleServiceImpl implements ModuleService {
 
     @Override
     public List<TaskRes> getAllModuleById(User user, Long moduleId) {
-        return Optional.ofNullable(userRepository.findByPhoneNumber(user.getPhoneNumber()))
-                .map(u -> {
-                    Module module = moduleRepository.findAllByModuleId(moduleId);
-                    if (module == null) return Collections.<TaskRes>emptyList();
-                    Set<Long> addedTaskIds = new HashSet<>();
-                    List<TaskRes> taskResList = new ArrayList<>();
-                    for (Task task : module.getTasks()) {
-                        boolean hasUnanswered = task.getQuestions().stream()
-                                .anyMatch(q -> answerSubmissionRepository
-                                        .findByStudentIdAndQuestionId(u.getId(), q.getId()).isEmpty());
+        Module module = moduleRepository.findAllByModuleId(moduleId);
+        User u = userRepository.findByPhoneNumber(user.getPhoneNumber());
 
-                        if (task.getActive() && hasUnanswered && addedTaskIds.add(task.getId())) {
-                            taskResList.add(new TaskRes(task.getId(), task.getTaskName(), true));
-                        }
-                    }
-                    return taskResList;
-                })
-                .orElse(Collections.emptyList());
+        if (module == null || u == null) return Collections.emptyList();
+
+        List<TaskRes> taskResList = new ArrayList<>();
+        for (Task task : module.getTasks()) {
+            boolean hasUnanswered = task.getQuestions().stream()
+                    .anyMatch(q -> answerSubmissionRepository
+                            .findByStudentIdAndQuestionId(u.getId(), q.getId()).isEmpty());
+
+            if (task.getActive() && hasUnanswered) {
+                taskResList.add(new TaskRes(task.getId(), task.getTaskName(), true));
+            }
+        }
+        return taskResList;
     }
-
-
 }
