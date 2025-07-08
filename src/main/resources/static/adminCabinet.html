@@ -868,6 +868,14 @@
         document.getElementById('role-change-tab-li').style.display = 'block';
     }
 
+    // 🔒 ROLE_ADMIN tekshiruvi
+    if (!userData.roles || !userData.roles.includes("ROLE_ADMIN")) {
+        alert("Sizga bu sahifaga kirish ruxsati yo'q!");
+        localStorage.removeItem('userData');
+        localStorage.removeItem('authToken');
+        window.location.href = 'index.html';
+    }
+
     // Admin profil ma'lumotlarini o‘rnatish
     document.getElementById('admin-name').textContent = userData.firstName || 'Admin';
     document.getElementById('dropdown-admin-name').textContent = `${userData.firstName || ''} ${userData.lastName || ''}`.trim() || 'Admin';

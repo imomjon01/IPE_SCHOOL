@@ -1021,9 +1021,18 @@
     let currentGroupId = null;
     let currentModuleId = null;
     let selectedModuleId = null;
+    let userData = JSON.parse(localStorage.getItem('userData')) || {};
     let allMentors = [];
     let mentorGroups = [];
     let allSciences = [];
+
+    // 🔒 ROLE_MENTOR tekshiruvi
+    if (!userData.roles || !userData.roles.includes("ROLE_MENTOR")) {
+        alert("Sizga bu sahifaga kirish ruxsati yo'q!");
+        localStorage.removeItem('userData');
+        localStorage.removeItem('authToken');
+        window.location.href = 'index.html';
+    }
 
     // Initialize the application
     document.addEventListener('DOMContentLoaded', function () {
@@ -1476,28 +1485,35 @@
             return;
         }
 
+        const activeTasks = moduleData.tasks.filter(task => task.active);
+
+        if (activeTasks.length === 0) {
+            moduleContent.innerHTML = '<p style="text-align: center; color: #666;">No active tasks available</p>';
+            return;
+        }
+
         moduleContent.innerHTML = `
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Task Name</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${moduleData.tasks.map(task => `
-                            <tr>
-                                <td>${task.taskName}</td>
-                                <td>
-                                    <button class="btn btn-secondary" onclick="showTaskDetails(${task.id}, '${task.taskName}')">
-                                        <i class="fas fa-eye"></i> View
-                                    </button>
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${activeTasks.map(task => `
+                    <tr>
+                        <td>${task.taskName}</td>
+                        <td>
+                            <button class="btn btn-secondary" onclick="showTaskDetails(${task.id}, '${task.taskName}')">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
     }
 
     // Show task details

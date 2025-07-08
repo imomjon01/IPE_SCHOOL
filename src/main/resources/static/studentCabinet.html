@@ -977,6 +977,14 @@
     let isTasksSectionOpen = false;
     let isProfileEditOpen = false;
 
+    // 🔒 ROLE_STUDENT tekshiruvi
+    if (!userData.roles || !userData.roles.includes("ROLE_STUDENT")) {
+        alert("Sizga bu sahifaga kirish ruxsati yo'q!");
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userData');
+        window.location.href = 'index.html';
+    }
+
     // YouTube API
     function onYouTubeIframeAPIReady() {
         youtubeApiLoaded = true;
