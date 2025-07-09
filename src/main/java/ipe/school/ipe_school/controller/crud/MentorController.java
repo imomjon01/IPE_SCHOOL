@@ -7,6 +7,7 @@ import ipe.school.ipe_school.service.interfaces.MentorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import static ipe.school.ipe_school.utils.ApiConstants.*;
 @RestController
 @RequestMapping(API_PATH + API_VERSION + MENTOR)
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('MENTOR')")
 public class MentorController {
     private final MentorService mentorService;
     private final GroupService groupService;

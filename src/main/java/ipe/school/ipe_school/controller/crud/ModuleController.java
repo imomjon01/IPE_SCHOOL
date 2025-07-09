@@ -40,14 +40,14 @@ public class ModuleController {
         return new ResponseEntity<>(moduleReses, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('SUPER_MENTOR','MENTOR')")
+    @PreAuthorize("hasAnyRole('SUPER_MENTOR','MENTOR','STUDENT')")
     @GetMapping("/{moduleId}")
     public ResponseEntity<ModuleDetailsRes> getModuleById(@PathVariable Long moduleId) {
         ModuleDetailsRes moduleDetailsRes = moduleService.getModuleById(moduleId);
         return new ResponseEntity<>(moduleDetailsRes, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('STUDNET')")
+    @PreAuthorize("hasRole('STUDENT')")
     @GetMapping("/get/{moduleId}")
     public ResponseEntity<List<TaskRes>> getTasksByModule(@AuthenticationPrincipal User user, @PathVariable Long moduleId) {
         List<TaskRes> taskRes = moduleService.getAllModuleById(user, moduleId);

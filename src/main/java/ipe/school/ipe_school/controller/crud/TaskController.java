@@ -49,7 +49,7 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PreAuthorize("hasAnyRole('STUDNET','MENTOR')")
+    @PreAuthorize("hasAnyRole('STUDENT','MENTOR')")
     @GetMapping("/{taskId}")
     public ResponseEntity<TaskDetailsRes> getTask(@PathVariable Long taskId) {
         Task task = taskService.findByActiveTask(taskId);
