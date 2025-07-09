@@ -12,6 +12,7 @@ import ipe.school.ipe_school.service.interfaces.AnswerSubmissionService;
 import ipe.school.ipe_school.service.interfaces.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ import static ipe.school.ipe_school.utils.ApiConstants.*;
 @RestController
 @RequestMapping(API_PATH + API_VERSION + ANSWER + SUBMISSION)
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('STUDENT')")
 public class AnswerSubmissionController {
 
     private final AnswerSubmissionService answerSubmissionService;

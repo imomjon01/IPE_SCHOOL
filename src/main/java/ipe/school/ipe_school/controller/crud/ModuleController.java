@@ -11,6 +11,7 @@ import ipe.school.ipe_school.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,7 @@ public class ModuleController {
         return new ResponseEntity<>(moduleRes, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('STUDENT')")
     @GetMapping
     public ResponseEntity<List<ModuleRes>> getModules(@AuthenticationPrincipal User user) {
         List<ModuleRes> moduleReses = moduleService.getAllModulesBy_active(user);
@@ -43,6 +45,7 @@ public class ModuleController {
         return new ResponseEntity<>(moduleDetailsRes, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('STUDNET')")
     @GetMapping("/get/{moduleId}")
     public ResponseEntity<List<TaskRes>> getTasksByModule(@AuthenticationPrincipal User user, @PathVariable Long moduleId) {
         List<TaskRes> taskRes = moduleService.getAllModuleById(user, moduleId);
