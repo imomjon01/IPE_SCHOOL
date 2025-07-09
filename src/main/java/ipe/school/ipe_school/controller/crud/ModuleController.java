@@ -26,6 +26,7 @@ public class ModuleController {
 
     private final ModuleService moduleService;
 
+    @PreAuthorize("hasRole('SUPER_MENTOR')")
     @PostMapping
     public ResponseEntity<ModuleRes> createModule(@RequestBody ModuleReq moduleReq) {
         ModuleRes moduleRes = moduleService.createModule(moduleReq);
@@ -39,6 +40,7 @@ public class ModuleController {
         return new ResponseEntity<>(moduleReses, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_MENTOR','MENTOR')")
     @GetMapping("/{moduleId}")
     public ResponseEntity<ModuleDetailsRes> getModuleById(@PathVariable Long moduleId) {
         ModuleDetailsRes moduleDetailsRes = moduleService.getModuleById(moduleId);
@@ -52,7 +54,8 @@ public class ModuleController {
         return new ResponseEntity<>(taskRes, HttpStatus.OK);
     }
 
-    @PostMapping("update/{moduleId}")
+    @PreAuthorize("hasRole('SUPER_MENTOR')")
+    @PostMapping("/update/{moduleId}")
     public ResponseEntity<ModuleDetailsRes> updateModule(@PathVariable Long moduleId, @RequestBody ModuleReq moduleReq) {
         ModuleDetailsRes moduleDetailsRes = moduleService.updateModule(moduleId, moduleReq);
         return new ResponseEntity<>(moduleDetailsRes, HttpStatus.OK);

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class AdminMentorController {
         return new ResponseEntity<>(mentorRes, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('MENTOR')")
     @GetMapping()
     public ResponseEntity<List<MentorRes>> getAllMentors() {
         List<MentorRes> mentorRes = mentorService.getMentorsBy_Active();
@@ -54,6 +56,7 @@ public class AdminMentorController {
         return new ResponseEntity<>(mentorRes, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getMentors")
     public ResponseEntity<Page<MentorRes>> getStudentsActiveFalse(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
                                                                 @RequestParam(required = false) String search
@@ -62,12 +65,14 @@ public class AdminMentorController {
         return ResponseEntity.ok(mentorRes);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/updateGroup/{groupId}")
     public ResponseEntity<MentorRes> updateGroupMentor(@PathVariable Long groupId, @RequestParam(required = false) Long mentorId) {
         groupService.updateMentor(groupId,mentorId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getMentorCount")
     public ResponseEntity<Integer> countMentors() {
         Integer totalElements = mentorService.getMentorCount();

@@ -29,12 +29,14 @@ public class TaskController {
     private final TaskService taskService;
     private final TaskMapper taskMapper;
 
+    @PreAuthorize("hasRole('SUPER_MENTOR')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<TaskRes> addTask(@ModelAttribute @Validated TaskReq task) {
         TaskRes taskRes = taskService.addTask(task);
         return new ResponseEntity<>(taskRes, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('SUPER_MENTOR')")
     @PostMapping("/{taskId}")
     public ResponseEntity<TaskRes> updateTask(@PathVariable Long taskId, @ModelAttribute @Validated TaskReq taskReq) {
         TaskRes taskRes = taskService.updateTaskById(taskId, taskReq);
@@ -47,7 +49,7 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PreAuthorize("hasRole('STUDNET')")
+    @PreAuthorize("hasAnyRole('STUDNET','MENTOR')")
     @GetMapping("/{taskId}")
     public ResponseEntity<TaskDetailsRes> getTask(@PathVariable Long taskId) {
         Task task = taskService.findByActiveTask(taskId);
@@ -60,12 +62,14 @@ public class TaskController {
         return ResponseEntity.ok(taskDetailsRes);
     }
 
+    @PreAuthorize("hasRole('SUPER_MENTOR')")
     @GetMapping("/getActives/{taskId}")
     public ResponseEntity<TaskDetailsRes> getTaskActive(@PathVariable Long taskId) {
         TaskDetailsRes taskDetailsRes =  taskService.getTask(taskId);
         return ResponseEntity.ok(taskDetailsRes);
     }
 
+    @PreAuthorize("hasRole('SUPER_MENTOR')")
     @PostMapping("updateActive/{taskId}")
     public ResponseEntity<TaskDetailsRes> updateTaskActive(@PathVariable Long taskId , @RequestParam Boolean active) {
         taskService.updateTask_active(taskId, active);
