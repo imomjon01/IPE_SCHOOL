@@ -14,9 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 public class Task extends BaseEntity {
-
     private String taskName;
-
     private String youtubeURL;
     @ManyToMany
     private List<Attachment> attachment;
