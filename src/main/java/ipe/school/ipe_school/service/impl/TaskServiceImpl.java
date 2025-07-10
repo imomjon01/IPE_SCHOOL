@@ -93,7 +93,10 @@ public class TaskServiceImpl implements TaskService {
         task.setTaskName(taskReq.getTaskName());
         if (taskReq.getYoutubeURL() != null) {
             task.setYoutubeURL(taskReq.getYoutubeURL());
+        }else {
+            task.setYoutubeURL(null);
         }
+
         if (taskReq.getAttachments() != null) {
             List<Attachment> attachments = taskReq.getAttachments().stream().map(item -> {
                 try {
