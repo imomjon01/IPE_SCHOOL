@@ -1,239 +1,336 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ipe School - Quality Education</title>
-    <link rel="icon" type="image/png" href="/images/favicon.ico" />
+    <title>Ipe School</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #6c5ce7;
-            --primary-dark: #5649c0;
-            --secondary: #00cec9;
-            --dark: #2d3436;
-            --darker: #1e272e;
-            --light: #f5f6fa;
-            --danger: #d63031;
-            --success: #00b894;
-            --warning: #fdcb6e;
-            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background-color: var(--light);
-            color: var(--darker);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            overflow-x: hidden;
+            color: #333;
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 50%, #faf5ff 100%);
         }
 
-        /* Enhanced Header Styles */
-        header {
-            background: var(--gradient);
-            color: white;
-            padding: 1rem 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        /* Header Styles */
+        .header {
             position: sticky;
             top: 0;
             z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 1rem;
-            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 64px;
         }
 
         .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
             display: flex;
             align-items: center;
-            z-index: 1001;
+            gap: 0.5rem;
         }
 
-        .logo i {
-            margin-right: 0.5rem;
-            color: var(--warning);
-            font-size: 2rem;
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #2563eb, #9333ea);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
         }
 
-        /* Mobile Navigation */
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #2563eb, #9333ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-center {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
         .nav-links {
             display: flex;
+            align-items: center;
+            gap: 2rem;
             list-style: none;
-            transition: all 0.3s ease;
-        }
-
-        .nav-links li {
-            margin-left: 2rem;
         }
 
         .nav-links a {
-            color: white;
             text-decoration: none;
+            color: #374151;
             font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 0.5rem 0;
-            border-bottom: 2px solid transparent;
-            position: relative;
+            transition: color 0.3s ease;
         }
 
         .nav-links a:hover {
-            border-bottom: 2px solid var(--warning);
-            transform: translateY(-2px);
+            color: #2563eb;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .language-switcher {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 0.25rem;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #6b7280;
+        }
+
+        .lang-btn.active {
+            background: white;
+            color: #2563eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .lang-btn:hover:not(.active) {
+            color: #374151;
         }
 
         .login-btn {
-            background-color: white;
-            color: var(--primary);
-            padding: 0.7rem 1.8rem;
-            border-radius: 50px;
+            background: linear-gradient(135deg, #2563eb, #9333ea);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 8px;
             font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+            text-decoration: none;
+            display: inline-block;
         }
 
         .login-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
-            border-bottom: none;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
 
-        /* Hamburger Menu */
-        .hamburger {
+        .mobile-menu-btn {
             display: none;
-            flex-direction: column;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
             cursor: pointer;
-            z-index: 1002;
-            position: relative;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
         }
 
-        .hamburger span {
-            width: 25px;
-            height: 3px;
-            background-color: white;
-            margin: 3px 0;
-            transition: 0.3s;
-            border-radius: 2px;
+        .mobile-menu-btn:hover {
+            background-color: #f3f4f6;
         }
 
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(-45deg) translate(-5px, 6px);
+        .mobile-nav {
+            display: none;
+            padding: 1rem;
+            border-top: 1px solid #e5e7eb;
+            background: white;
         }
 
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
+        .mobile-nav.active {
+            display: block;
         }
 
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(45deg) translate(-5px, -6px);
-        }
-
-        /* Enhanced Hero Section */
-        .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(108, 92, 231, 0.3)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            min-height: 85vh;
+        .mobile-nav-links {
             display: flex;
-            align-items: center;
-            text-align: center;
-            color: white;
-            position: relative;
+            flex-direction: column;
+            gap: 1rem;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, rgba(108, 92, 231, 0.8), rgba(0, 206, 201, 0.6));
-            z-index: 1;
+        .mobile-nav-links a {
+            text-decoration: none;
+            color: #374151;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .mobile-lang-switcher {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .hero {
+            padding: 5rem 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .hero-content {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem 1rem;
             position: relative;
-            z-index: 2;
+            z-index: 10;
         }
 
         .hero h1 {
             font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: bold;
+            color: #111827;
             margin-bottom: 1.5rem;
             line-height: 1.2;
-            font-weight: 800;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero .gradient-text {
+            background: linear-gradient(135deg, #2563eb, #9333ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
         }
 
         .hero p {
-            font-size: clamp(1rem, 2.5vw, 1.3rem);
-            max-width: 700px;
-            margin: 0 auto 2.5rem;
-            opacity: 0.95;
-            animation: fadeInUp 1s ease-out 0.3s both;
+            font-size: 1.25rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+            max-width: 48rem;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .cta-buttons {
-            animation: fadeInUp 1s ease-out 0.6s both;
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
         }
 
-        .cta-btn {
-            display: inline-block;
-            background: var(--gradient);
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #9333ea);
             color: white;
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.125rem;
             font-weight: 600;
-            text-decoration: none;
+            cursor: pointer;
             transition: all 0.3s ease;
-            margin: 0.5rem;
-            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);
-            border: 2px solid transparent;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .cta-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(108, 92, 231, 0.4);
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
         }
 
-        .cta-btn.outline {
-            background-color: transparent;
-            border: 2px solid white;
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        .btn-secondary {
+            background: white;
+            color: #374151;
+            padding: 1rem 2rem;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .cta-btn.outline:hover {
-            background-color: white;
-            color: var(--primary);
+        .btn-secondary:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+            background: #eff6ff;
         }
 
-        /* Enhanced Stats Section */
+        .decoration {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+
+        .decoration-1 {
+            top: 5rem;
+            left: 2.5rem;
+            width: 5rem;
+            height: 5rem;
+            background: #dbeafe;
+            animation: pulse 2s infinite;
+        }
+
+        .decoration-2 {
+            bottom: 5rem;
+            right: 2.5rem;
+            width: 8rem;
+            height: 8rem;
+            background: #e9d5ff;
+            animation: pulse 2s infinite;
+            animation-delay: 1s;
+        }
+
+        .decoration-3 {
+            top: 50%;
+            left: 25%;
+            width: 4rem;
+            height: 4rem;
+            background: #dcfce7;
+            animation: bounce 1s infinite;
+            animation-delay: 0.5s;
+        }
+
+        .decoration-4 {
+            top: 33%;
+            right: 25%;
+            width: 3rem;
+            height: 3rem;
+            background: #fef3c7;
+            animation: pulse 2s infinite;
+            animation-delay: 2s;
+        }
+
         .stats {
-            background: var(--gradient);
+            padding: 4rem 1rem;
+            background: linear-gradient(135deg, #2563eb, #9333ea);
             color: white;
-            padding: 4rem 0;
-            text-align: center;
             position: relative;
             overflow: hidden;
         }
@@ -241,13 +338,8 @@
         .stats::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: float 20s infinite linear;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.1);
         }
 
         .stats-container {
@@ -256,76 +348,140 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 2rem;
-            padding: 0 1rem;
             position: relative;
-            z-index: 2;
+            z-index: 10;
         }
 
         .stat-item {
-            padding: 2rem 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
+            text-align: center;
+            transition: transform 0.3s ease;
         }
 
         .stat-item:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
         }
 
         .stat-number {
             font-size: clamp(2.5rem, 5vw, 3.5rem);
-            font-weight: 800;
+            font-weight: bold;
             margin-bottom: 0.5rem;
-            color: var(--warning);
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .stat-label {
-            font-size: 1.2rem;
+            font-size: 1.125rem;
             opacity: 0.9;
-            font-weight: 500;
         }
 
-        /* Enhanced Features Section */
-        .features {
-            padding: 5rem 0;
-            background: linear-gradient(135deg, #f8f9ff 0%, #e8f4fd 100%);
+        .courses {
+            padding: 5rem 1rem;
+            background: #f8fafc;
+        }
+
+        .courses-container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .section-title {
             text-align: center;
             margin-bottom: 4rem;
-            padding: 0 1rem;
         }
 
         .section-title h2 {
             font-size: clamp(2rem, 4vw, 3rem);
-            color: var(--darker);
+            font-weight: bold;
+            color: #111827;
             margin-bottom: 1rem;
-            font-weight: 700;
-            position: relative;
-        }
-
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: var(--gradient);
-            border-radius: 2px;
         }
 
         .section-title p {
-            color: #666;
-            max-width: 700px;
+            font-size: 1.25rem;
+            color: #6b7280;
+            max-width: 48rem;
             margin: 0 auto;
-            font-size: 1.1rem;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #2563eb, #9333ea);
+        }
+
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-icon {
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(135deg, #2563eb, #9333ea);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .course-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+
+        .course-card p {
+            color: #6b7280;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .course-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        .course-features li {
+            padding: 0.5rem 0;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .course-features li::before {
+            content: '✓';
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .features {
+            padding: 5rem 1rem;
         }
 
         .features-container {
@@ -334,452 +490,150 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            padding: 0 1rem;
         }
 
         .feature-card {
             background: white;
-            border-radius: 20px;
-            padding: 2.5rem 2rem;
+            padding: 2rem;
+            border-radius: 16px;
             text-align: center;
-            transition: all 0.4s ease;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(108, 92, 231, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient);
-            opacity: 0.05;
-            transition: all 0.4s ease;
-        }
-
-        .feature-card:hover::before {
-            left: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
         }
 
         .feature-card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 20px 50px rgba(108, 92, 231, 0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card.blue {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-color: #bfdbfe;
+        }
+
+        .feature-card.purple {
+            background: linear-gradient(135deg, #faf5ff, #e9d5ff);
+            border-color: #d8b4fe;
+        }
+
+        .feature-card.green {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-color: #bbf7d0;
         }
 
         .feature-icon {
-            font-size: 3.5rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1.5rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--darker);
-            font-weight: 600;
-            position: relative;
-            z-index: 2;
-        }
-
-        .feature-card p {
-            color: #666;
-            line-height: 1.7;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Enhanced Mentors Section */
-        .mentors {
-            padding: 5rem 0;
-            background: white;
-        }
-
-        .mentors-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            padding: 0 1rem;
-        }
-
-        .mentor-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.4s ease;
-            border: 1px solid rgba(108, 92, 231, 0.1);
-        }
-
-        .mentor-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            box-shadow: 0 25px 50px rgba(108, 92, 231, 0.2);
-        }
-
-        .mentor-img {
-            height: 280px;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .mentor-img::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--gradient);
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .mentor-card:hover .mentor-img::before {
-            opacity: 0.3;
-        }
-
-        .mentor-info {
-            padding: 2rem 1.5rem;
-            text-align: center;
-        }
-
-        .mentor-info h3 {
-            font-size: 1.4rem;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--darker);
-        }
-
-        .mentor-info p {
-            color: var(--primary);
-            font-weight: 500;
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-        }
-
-        .mentor-social {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        .mentor-social a {
-            width: 40px;
-            height: 40px;
-            background: var(--light);
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(135deg, #2563eb, #9333ea);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--primary);
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .mentor-social a:hover {
-            background: var(--gradient);
+            margin: 0 auto 1.5rem;
             color: white;
-            transform: translateY(-3px);
-            border-color: var(--primary);
+            font-size: 2rem;
         }
 
-        /* Enhanced Location Section */
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+            line-height: 1.7;
+        }
+
         .location {
-            padding: 5rem 0;
-            background: linear-gradient(135deg, #f8f9ff 0%, #e8f4fd 100%);
+            padding: 5rem 1rem;
+            background: #f9fafb;
         }
 
         .location-container {
             max-width: 1200px;
             margin: 0 auto;
+        }
+
+        .location-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 3rem;
-            padding: 0 1rem;
-            align-items: center;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
         }
 
-        .location-info h2 {
-            font-size: clamp(2rem, 4vw, 2.5rem);
-            margin-bottom: 1.5rem;
-            color: var(--darker);
-            font-weight: 700;
-        }
-
-        .location-info p {
-            margin-bottom: 2rem;
-            color: #666;
-            font-size: 1.1rem;
-            line-height: 1.7;
-        }
-
-        .contact-info {
-            margin-top: 2rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding: 1rem;
+        .location-card {
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
             transition: all 0.3s ease;
         }
 
-        .contact-item:hover {
-            transform: translateX(10px);
-            box-shadow: 0 10px 25px rgba(108, 92, 231, 0.1);
+        .location-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
         }
 
-        .contact-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--gradient);
+        .location-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .location-icon {
+            width: 3rem;
+            height: 3rem;
+            background: linear-gradient(135deg, #2563eb, #9333ea);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 1rem;
             color: white;
-            font-size: 1.2rem;
-        }
-
-        .contact-item div h4 {
-            font-weight: 600;
-            color: var(--darker);
-            margin-bottom: 0.3rem;
-        }
-
-        .contact-item div p {
-            color: #666;
-            margin: 0;
-        }
-
-        .map-container {
-            height: 400px;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(108, 92, 231, 0.1);
-        }
-
-        .map-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* Enhanced Login Modal */
-        .login-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-            padding: 1rem;
-        }
-
-        .login-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .login-container {
-            background: white;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 450px;
-            padding: 2.5rem;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-            position: relative;
-            transform: scale(0.8);
-            transition: all 0.3s ease;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .login-modal.active .login-container {
-            transform: scale(1);
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
             font-size: 1.5rem;
-            cursor: pointer;
-            color: #666;
-            transition: all 0.3s ease;
-            width: 35px;
-            height: 35px;
+        }
+
+        .location-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .location-address {
+            color: #6b7280;
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+        }
+
+        .location-phone {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .phone-icon {
+            width: 2rem;
+            height: 2rem;
+            background: #dcfce7;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--light);
-            z-index: 10;
+            color: #16a34a;
         }
 
-        .close-modal:hover {
-            color: var(--danger);
-            transform: rotate(90deg);
-            background: #ffe6e6;
-        }
-
-        .login-header {
+        .location-cta {
             text-align: center;
-            margin-bottom: 2rem;
         }
 
-        .login-header h2 {
-            font-size: 2rem;
-            color: var(--darker);
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-
-        .login-header p {
-            color: #666;
-            font-size: 1rem;
-        }
-
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .input-group label {
-            font-weight: 500;
-            color: var(--darker);
-            font-size: 0.95rem;
-        }
-
-        .input-group input {
-            padding: 1rem 1.2rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: #fafafa;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
-            background: white;
-        }
-
-        .login-btn {
-            background: var(--gradient);
+        .footer {
+            background: #111827;
             color: white;
-            border: none;
-            padding: 1rem;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 0.5rem;
-            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);
-        }
-
-        .login-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(108, 92, 231, 0.4);
-        }
-
-        .login-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .login-footer {
-            text-align: center;
-            margin-top: 1.5rem;
-            color: #666;
-        }
-
-        .login-footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .login-footer a:hover {
-            color: var(--primary-dark);
-        }
-
-        /* Alert Messages */
-        .alert {
-            padding: 1rem;
-            border-radius: 10px;
-            margin: 1rem 0;
-            font-weight: 500;
-            animation: slideIn 0.3s ease;
-        }
-
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        /* Enhanced Footer */
-        footer {
-            background: var(--darker);
-            color: white;
-            padding: 4rem 0 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gradient);
+            padding: 3rem 1rem;
         }
 
         .footer-container {
@@ -787,33 +641,19 @@
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            padding: 0 1rem;
+            gap: 2rem;
         }
 
         .footer-col h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            padding-bottom: 0.5rem;
+            font-size: 1.125rem;
             font-weight: 600;
-        }
-
-        .footer-col h3::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 50px;
-            height: 3px;
-            background: var(--gradient);
-            border-radius: 2px;
+            margin-bottom: 1rem;
         }
 
         .footer-col p {
-            margin-bottom: 1rem;
-            opacity: 0.8;
+            color: #9ca3af;
             line-height: 1.7;
+            margin-bottom: 1rem;
         }
 
         .footer-links {
@@ -821,758 +661,1063 @@
         }
 
         .footer-links li {
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.5rem;
         }
 
         .footer-links a {
-            color: white;
-            opacity: 0.8;
+            color: #9ca3af;
             text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-block;
+            transition: color 0.3s ease;
         }
 
         .footer-links a:hover {
-            opacity: 1;
-            padding-left: 10px;
-            color: var(--warning);
+            color: white;
         }
 
         .social-links {
             display: flex;
             gap: 1rem;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
         }
 
-        .social-links a {
+        .social-link {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: #374151;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 45px;
-            height: 45px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
             color: white;
+            text-decoration: none;
             transition: all 0.3s ease;
-            border: 2px solid transparent;
         }
 
-        .social-links a:hover {
-            background: var(--gradient);
-            transform: translateY(-5px);
-            border-color: var(--warning);
+        .social-link:hover {
+            transform: translateY(-2px);
         }
 
-        .copyright {
-            text-align: center;
-            margin-top: 3rem;
+        .social-link.facebook:hover {
+            background: #1877f2;
+        }
+
+        .social-link.instagram:hover {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        .social-link.telegram:hover {
+            background: #0088cc;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            margin-top: 2rem;
             padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            opacity: 0.7;
-            font-size: 0.95rem;
+            text-align: center;
+            color: #9ca3af;
         }
 
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
         }
 
-        @keyframes float {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(30px, -30px) rotate(120deg); }
-            66% { transform: translate(-20px, 20px) rotate(240deg); }
-            100% { transform: translate(0, 0) rotate(360deg); }
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 28rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
         }
 
-        /* Mobile Responsive Styles */
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: #f3f4f6;
+        }
+
+        .modal-body {
+            padding: 0 2rem 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .password-input {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #6b7280;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            background: #f3f4f6;
+        }
+
+        .form-footer {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .form-footer a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
         @media (max-width: 768px) {
-            .hamburger {
-                display: flex;
+            .nav-center {
+                display: none;
             }
 
-            .nav-links {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                height: 100vh;
-                width: 100%;
-                background: var(--gradient);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                transition: all 0.3s ease;
-                backdrop-filter: blur(10px);
-                z-index: 1001;
+            .nav-right {
+                display: none;
             }
 
-            .nav-links.active {
-                right: 0;
-            }
-
-            .nav-links li {
-                margin: 1rem 0;
-            }
-
-            .nav-links a {
-                font-size: 1.2rem;
-                padding: 1rem;
-            }
-
-            /* Mobile login button in nav */
-            .nav-links .login-btn {
-                background-color: white;
-                color: var(--primary);
-                padding: 1rem 2rem;
-                border-radius: 50px;
-                font-weight: 600;
-                transition: all 0.3s ease;
-                box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
-                margin-top: 1rem;
-            }
-
-            .nav-links .login-btn:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
-                border-bottom: none;
+            .mobile-menu-btn {
+                display: block;
             }
 
             .hero {
-                background-attachment: scroll;
-                min-height: 70vh;
+                padding: 3rem 1rem;
             }
 
-            .hero-content {
-                padding: 1rem;
+            .hero-buttons {
+                flex-direction: column;
+                align-items: stretch;
             }
 
-            .cta-btn {
-                display: block;
-                margin: 0.5rem auto;
+            .btn-primary,
+            .btn-secondary {
                 text-align: center;
-                max-width: 250px;
+            }
+
+            .stats {
+                padding: 3rem 1rem;
             }
 
             .stats-container {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 1rem;
-                padding: 0 1rem;
             }
 
-            .stat-item {
-                padding: 1.5rem 1rem;
+            .courses {
+                padding: 3rem 1rem;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                padding: 3rem 1rem;
             }
 
             .features-container {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
             }
 
-            .feature-card {
-                padding: 2rem 1.5rem;
+            .location {
+                padding: 3rem 1rem;
             }
 
-            .mentors-container {
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 1.5rem;
+            .location-grid {
+                grid-template-columns: 1fr;
             }
 
-            .location-container {
-                gap: 2rem;
-            }
-
-            .contact-item {
-                flex-direction: column;
-                text-align: center;
-                padding: 1.5rem;
-            }
-
-            .contact-icon {
-                margin-right: 0;
-                margin-bottom: 1rem;
-            }
-
-            .map-container {
-                height: 300px;
-            }
-
-            .login-container {
-                margin: 0.5rem;
-                padding: 2rem 1.5rem;
-                max-height: 95vh;
+            .footer {
+                padding: 2rem 1rem;
             }
 
             .footer-container {
                 grid-template-columns: 1fr;
-                gap: 2rem;
                 text-align: center;
-            }
-
-            .footer-col h3::after {
-                left: 50%;
-                transform: translateX(-50%);
             }
 
             .social-links {
                 justify-content: center;
             }
+
+            .decoration-1,
+            .decoration-2,
+            .decoration-3,
+            .decoration-4 {
+                display: none;
+            }
         }
 
         @media (max-width: 480px) {
-            .navbar {
-                padding: 0 1rem;
-            }
-
-            .logo {
-                font-size: 1.5rem;
-            }
-
-            .logo i {
-                font-size: 1.7rem;
-            }
-
             .stats-container {
                 grid-template-columns: 1fr;
             }
 
-            .stat-item {
-                padding: 1rem;
+            .modal-content {
+                margin: 1rem;
             }
 
-            .feature-card {
-                padding: 1.5rem 1rem;
-            }
-
-            .mentor-img {
-                height: 250px;
-            }
-
-            .mentor-info {
-                padding: 1.5rem 1rem;
-            }
-
-            .contact-item {
-                padding: 1rem;
-            }
-
-            .login-container {
-                padding: 1.5rem 1rem;
-                margin: 0.5rem;
-            }
-
-            .login-header h2 {
-                font-size: 1.5rem;
-            }
-
-            .input-group input {
-                padding: 0.8rem 1rem;
-                font-size: 16px; /* Prevents zoom on iOS */
+            .modal-header,
+            .modal-body {
+                padding-left: 1rem;
+                padding-right: 1rem;
             }
         }
 
-        /* Prevent body scroll when modal is open */
-        body.modal-open {
-            overflow: hidden;
-            position: fixed;
-            width: 100%;
+        .hidden {
+            display: none;
         }
 
-        /* Smooth scrolling */
-        html {
+        .loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .smooth-scroll {
             scroll-behavior: smooth;
-        }
-
-        /* Loading animation for buttons */
-        .btn-loading {
-            position: relative;
-            color: transparent;
-        }
-
-        .btn-loading::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            top: 50%;
-            left: 50%;
-            margin-left: -10px;
-            margin-top: -10px;
-            border: 2px solid #ffffff;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
         }
     </style>
 </head>
-<body>
+<body class="smooth-scroll">
 <!-- Header -->
-<header>
+<header class="header">
     <nav class="navbar">
         <div class="logo">
-            <i class="fas fa-graduation-cap"></i>
-            <span>IPE School</span>
+            <div class="logo-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <span class="logo-text">Ipe School</span>
         </div>
-        <ul class="nav-links" id="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#mentors">Mentors</a></li>
-            <li><a href="#location">Location</a></li>
-            <li><a href="#" class="login-btn" id="open-login">Login</a></li>
-        </ul>
-        <div class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
+
+        <div class="nav-center">
+            <ul class="nav-links">
+                <li><a href="#home" data-key="home_link" onclick="scrollToSection('home')">Bosh sahifa</a></li>
+                <li><a href="#courses" data-key="courses_link" onclick="scrollToSection('courses')">Kurslar</a></li>
+                <li><a href="#about" data-key="about_link" onclick="scrollToSection('about')">Biz haqimizda</a></li>
+                <li><a href="#location" data-key="location_link" onclick="scrollToSection('location')">Manzil</a></li>
+            </ul>
         </div>
+
+        <div class="nav-right">
+            <div class="language-switcher">
+                <button class="lang-btn active" onclick="switchLanguage('uz')">UZ</button>
+                <button class="lang-btn" onclick="switchLanguage('ru')">RU</button>
+                <button class="lang-btn" onclick="switchLanguage('en')">EN</button>
+            </div>
+            <button class="login-btn" data-key="login_btn" onclick="openModal()">Kirish</button>
+        </div>
+
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars" id="mobile-menu-icon"></i>
+        </button>
     </nav>
+
+    <div class="mobile-nav" id="mobile-nav">
+        <div class="mobile-nav-links">
+            <a href="#home" data-key="home_link" onclick="scrollToSection('home'); closeMobileMenu()">Bosh sahifa</a>
+            <a href="#courses" data-key="courses_link" onclick="scrollToSection('courses'); closeMobileMenu()">Kurslar</a>
+            <a href="#about" data-key="about_link" onclick="scrollToSection('about'); closeMobileMenu()">Biz haqimizda</a>
+            <a href="#location" data-key="location_link" onclick="scrollToSection('location'); closeMobileMenu()">Manzil</a>
+
+            <div class="mobile-lang-switcher">
+                <div class="language-switcher">
+                    <button class="lang-btn active" onclick="switchLanguage('uz')">UZ</button>
+                    <button class="lang-btn" onclick="switchLanguage('ru')">RU</button>
+                    <button class="lang-btn" onclick="switchLanguage('en')">EN</button>
+                </div>
+            </div>
+
+            <button class="login-btn" data-key="login_btn" onclick="openModal(); closeMobileMenu()" style="width: 100%; margin-top: 0.5rem;">Kirish</button>
+        </div>
+    </div>
 </header>
 
 <!-- Hero Section -->
-<section class="hero" id="home">
+<section id="home" class="hero">
     <div class="hero-content">
-        <h1>Quality Education with Expert Mentors</h1>
-        <p>Join over 800 students who are transforming their futures with our specialized programs and experienced instructors.</p>
-        <div class="cta-buttons">
-            <a href="#about" class="cta-btn">Learn More</a>
-            <a href="#contact" class="cta-btn outline">Contact Us</a>
+        <h1 data-key="hero_title">
+            Sifatli ta'lim bilan <span class="gradient-text">kelajagingizni quring</span>
+        </h1>
+        <p data-key="hero_subtitle">10,000 dan ortiq o'quvchilar tahsil olgan. 40 dan ortiq o'qituvchilar xizmatingizga tayyor.</p>
+        <div class="hero-buttons">
+            <button class="btn-primary" data-key="free_lesson_btn">BEPUL DARSGA YOZILISH</button>
+            <button class="btn-secondary" data-key="view_courses_btn" onclick="scrollToSection('courses')">Kurslarni ko'rish</button>
         </div>
     </div>
+
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+    <div class="decoration decoration-3"></div>
+    <div class="decoration decoration-4"></div>
 </section>
 
 <!-- Stats Section -->
 <section class="stats">
     <div class="stats-container">
         <div class="stat-item">
-            <div class="stat-number">800+</div>
-            <div class="stat-label">Students</div>
+            <div class="stat-number">10,000+</div>
+            <div class="stat-label" data-key="students_label">O'quvchilar</div>
         </div>
         <div class="stat-item">
-            <div class="stat-number">50+</div>
-            <div class="stat-label">Mentors</div>
+            <div class="stat-number">40+</div>
+            <div class="stat-label" data-key="teachers_label">O'qituvchilar</div>
         </div>
         <div class="stat-item">
             <div class="stat-number">98%</div>
-            <div class="stat-label">Success Rate</div>
+            <div class="stat-label" data-key="success_label">Muvaffaqiyat</div>
         </div>
         <div class="stat-item">
             <div class="stat-number">10+</div>
-            <div class="stat-label">Years Experience</div>
+            <div class="stat-label" data-key="experience_label">Yillik tajriba</div>
+        </div>
+    </div>
+</section>
+
+<!-- Courses Section -->
+<section id="courses" class="courses">
+    <div class="courses-container">
+        <div class="section-title">
+            <h2 data-key="courses_title">Bizning kurslarimiz</h2>
+            <p data-key="courses_subtitle">Professional o'qituvchilar bilan sifatli ta'lim oling</p>
+        </div>
+
+        <div class="courses-grid">
+            <div class="course-card">
+                <div class="course-icon">
+                    <i class="fas fa-language"></i>
+                </div>
+                <h3 data-key="english_course_title">Ingliz tili</h3>
+                <p data-key="english_course_desc">Ingliz tilini professional darajada o'rganing</p>
+                <ul class="course-features">
+                    <li data-key="english_feature_1">Beginner dan Advanced gacha</li>
+                    <li data-key="english_feature_2">IELTS/CEFR tayyorgarlik</li>
+                    <li data-key="english_feature_3">Speaking klublar</li>
+                    <li data-key="english_feature_4">Sertifikat berish</li>
+                </ul>
+            </div>
+
+            <div class="course-card">
+                <div class="course-icon">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <h3 data-key="russian_course_title">Rus tili</h3>
+                <p data-key="russian_course_desc">Rus tilini mukammal o'rganing</p>
+                <ul class="course-features">
+                    <li data-key="russian_feature_1">A1 dan C2 gacha</li>
+                    <li data-key="russian_feature_2">Grammatika va leksika</li>
+                    <li data-key="russian_feature_3">Suhbat amaliyoti</li>
+                    <li data-key="russian_feature_4">Davlat sertifikati</li>
+                </ul>
+            </div>
+
+            <div class="course-card">
+                <div class="course-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <h3 data-key="math_course_title">Matematika</h3>
+                <p data-key="math_course_desc">Matematikani chuqur o'rganing</p>
+                <ul class="course-features">
+                    <li data-key="math_feature_1">Algebra va geometriya</li>
+                    <li data-key="math_feature_2">DTM tayyorgarlik</li>
+                    <li data-key="math_feature_3">Olimpiada tayyorlash</li>
+                    <li data-key="math_feature_4">Individual darslar</li>
+                </ul>
+            </div>
+
+            <div class="course-card">
+                <div class="course-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3 data-key="frontend_course_title">Front-end</h3>
+                <p data-key="frontend_course_desc">Zamonaviy web dasturlashni o'rganing</p>
+                <ul class="course-features">
+                    <li data-key="frontend_feature_1">HTML, CSS, JavaScript</li>
+                    <li data-key="frontend_feature_2">React, Vue.js</li>
+                    <li data-key="frontend_feature_3">Portfolio yaratish</li>
+                    <li data-key="frontend_feature_4">Ish topishda yordam</li>
+                </ul>
+            </div>
         </div>
     </div>
 </section>
 
 <!-- Features Section -->
-<section class="features" id="about">
+<section id="about" class="features">
     <div class="section-title">
-        <h2>Why Choose IPE School</h2>
-        <p>We provide the best learning environment with modern facilities and expert guidance</p>
+        <h2 data-key="why_us_title">Nima uchun Ipe School?</h2>
+        <p data-key="why_us_subtitle">Zamonaviy ta'lim usullari va tajribali o'qituvchilar bilan eng yaxshi natijalarni kafolatlaydi</p>
     </div>
+
     <div class="features-container">
-        <div class="feature-card">
-            <div class="feature-icon">
-                <i class="fas fa-chalkboard-teacher"></i>
-            </div>
-            <h3>Expert Mentors</h3>
-            <p>Our mentors are highly qualified professionals with years of teaching experience in their respective fields.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">
-                <i class="fas fa-laptop-code"></i>
-            </div>
-            <h3>Modern Curriculum</h3>
-            <p>We offer up-to-date courses that match current industry standards and requirements.</p>
-        </div>
-        <div class="feature-card">
+        <div class="feature-card blue">
             <div class="feature-icon">
                 <i class="fas fa-users"></i>
             </div>
-            <h3>Community Learning</h3>
-            <p>Join a vibrant community of learners who support and motivate each other to succeed.</p>
+            <h3 data-key="feature_1_title">Tajribali o'qituvchilar</h3>
+            <p data-key="feature_1_desc">40 dan ortiq malakali o'qituvchilar sizning muvaffaqiyatingiz uchun tayyor</p>
         </div>
-    </div>
-</section>
 
-<!-- Mentors Section -->
-<section class="mentors" id="mentors">
-    <div class="section-title">
-        <h2>Our Expert Mentors</h2>
-        <p>Meet some of our highly qualified and experienced mentors</p>
-    </div>
-    <div class="mentors-container">
-        <div class="mentor-card">
-            <div class="mentor-img" style="background-image: url('https://randomuser.me/api/portraits/men/32.jpg');"></div>
-            <div class="mentor-info">
-                <h3>John Smith</h3>
-                <p>Mathematics Expert</p>
-                <div class="mentor-social">
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                </div>
+        <div class="feature-card purple">
+            <div class="feature-icon">
+                <i class="fas fa-award"></i>
             </div>
+            <h3 data-key="feature_2_title">Zamonaviy dastur</h3>
+            <p data-key="feature_2_desc">Eng so'nggi ta'lim dasturlari va innovatsion o'qitish usullari</p>
         </div>
-        <div class="mentor-card">
-            <div class="mentor-img" style="background-image: url('https://randomuser.me/api/portraits/women/44.jpg');"></div>
-            <div class="mentor-info">
-                <h3>Sarah Johnson</h3>
-                <p>Physics Specialist</p>
-                <div class="mentor-social">
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                </div>
+
+        <div class="feature-card green">
+            <div class="feature-icon">
+                <i class="fas fa-clock"></i>
             </div>
-        </div>
-        <div class="mentor-card">
-            <div class="mentor-img" style="background-image: url('https://randomuser.me/api/portraits/men/75.jpg');"></div>
-            <div class="mentor-info">
-                <h3>Michael Chen</h3>
-                <p>Computer Science</p>
-                <div class="mentor-social">
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="mentor-card">
-            <div class="mentor-img" style="background-image: url('https://randomuser.me/api/portraits/women/68.jpg');"></div>
-            <div class="mentor-info">
-                <h3>Emily Wilson</h3>
-                <p>English Literature</p>
-                <div class="mentor-social">
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
+            <h3 data-key="feature_3_title">Moslashuvchan jadval</h3>
+            <p data-key="feature_3_desc">Sizning vaqtingizga mos keladigan dars jadvallari</p>
         </div>
     </div>
 </section>
 
 <!-- Location Section -->
-<section class="location" id="location">
+<section id="location" class="location">
     <div class="location-container">
-        <div class="location-info">
-            <h2>Our Location</h2>
-            <p>Visit our modern campus equipped with state-of-the-art facilities to enhance your learning experience.</p>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <div class="contact-icon">
+        <div class="section-title">
+            <h2 data-key="locations_title">Bizning manzillarimiz</h2>
+            <p data-key="locations_subtitle">Sizga qulay bo'lgan filialimizni tanlang</p>
+        </div>
+
+        <div class="location-grid">
+            <div class="location-card">
+                <div class="location-header">
+                    <div class="location-icon">
                         <i class="fas fa-map-marker-alt"></i>
                     </div>
-                    <div>
-                        <h4>Address</h4>
-                        <p>123 Education Street, Tashkent, Uzbekistan</p>
-                    </div>
+                    <h3 data-key="branch_1_title">1-filial</h3>
                 </div>
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-phone-alt"></i>
+                <div class="location-address" data-key="branch_1_address">Vodnik daxasi 107</div>
+                <div class="location-phone">
+                    <div class="phone-icon">
+                        <i class="fas fa-phone"></i>
                     </div>
-                    <div>
-                        <h4>Phone</h4>
-                        <p>+998 90 123 45 67 (Administrator)</p>
-                    </div>
+                    <span>78 113 07 74</span>
                 </div>
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-envelope"></i>
+            </div>
+
+            <div class="location-card">
+                <div class="location-header">
+                    <div class="location-icon">
+                        <i class="fas fa-map-marker-alt"></i>
                     </div>
-                    <div>
-                        <h4>Email</h4>
-                        <p>info@ipeschool.uz</p>
+                    <h3 data-key="branch_2_title">2-filial</h3>
+                </div>
+                <div class="location-address" data-key="branch_2_address">X.Boyqaro 80</div>
+                <div class="location-phone">
+                    <div class="phone-icon">
+                        <i class="fas fa-phone"></i>
                     </div>
+                    <span>71 295 11 05</span>
                 </div>
             </div>
         </div>
-        <div class="map-container">
-            <iframe
-                    src="https://www.google.com/maps?q=41.253506,69.375075&hl=en&z=17&output=embed"
-                    width="600"
-                    height="450"
-                    style="border:0;"
-                    allowfullscreen=""
-                    loading="lazy">
-            </iframe>
+
+        <div class="location-cta">
+            <button class="btn-primary" data-key="free_lesson_btn">
+                <i class="fas fa-phone" style="margin-right: 0.5rem;"></i>
+                BEPUL DARSGA YOZILISH
+            </button>
         </div>
     </div>
 </section>
 
-<!-- Login Modal -->
-<div class="login-modal" id="login-modal">
-    <div class="login-container">
-        <span class="close-modal" id="close-login">&times;</span>
-        <div class="login-header">
-            <h2>Login to Your Account</h2>
-            <p>Enter your credentials to access your dashboard</p>
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-col">
+            <div class="logo" style="margin-bottom: 1rem;">
+                <div class="logo-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <span style="color: white; font-size: 1.125rem; font-weight: bold;">Ipe School</span>
+            </div>
+            <p data-key="footer_desc">Sifatli ta'lim va professional o'qituvchilar bilan muvaffaqiyatga erishing.</p>
+            <div class="social-links">
+                <a href="#" class="social-link facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-link instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://t.me/ipeschool" class="social-link telegram" target="_blank">
+                    <i class="fab fa-telegram-plane"></i>
+                </a>
+            </div>
         </div>
-        <form class="login-form" id="login-form">
-            <div class="input-group">
-                <label for="phoneNumber">Phone Number</label>
-                <input type="text" value="+998" id="phoneNumber" name="phoneNumber" placeholder="+998XXXXXXXXX" required>
+
+        <div class="footer-col">
+            <h3 data-key="quick_links_title">Tezkor havolalar</h3>
+            <ul class="footer-links">
+                <li><a href="#home" data-key="home_link" onclick="scrollToSection('home')">Bosh sahifa</a></li>
+                <li><a href="#courses" data-key="courses_link" onclick="scrollToSection('courses')">Kurslar</a></li>
+                <li><a href="#about" data-key="about_link" onclick="scrollToSection('about')">Biz haqimizda</a></li>
+                <li><a href="#location" data-key="location_link" onclick="scrollToSection('location')">Manzil</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h3 data-key="courses_title">Kurslarimiz</h3>
+            <ul class="footer-links">
+                <li><a href="#" data-key="english_course_title">Ingliz tili</a></li>
+                <li><a href="#" data-key="russian_course_title">Rus tili</a></li>
+                <li><a href="#" data-key="math_course_title">Matematika</a></li>
+                <li><a href="#" data-key="frontend_course_title">Front-end</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h3 data-key="contact_title">Aloqa</h3>
+            <div style="color: #9ca3af; line-height: 1.7;">
+                <div style="margin-bottom: 0.5rem;">
+                    <i class="fas fa-phone" style="margin-right: 0.5rem;"></i>
+                    78 113 07 74
+                </div>
+                <div style="margin-bottom: 0.5rem;">
+                    <i class="fas fa-phone" style="margin-right: 0.5rem;"></i>
+                    71 295 11 05
+                </div>
             </div>
-            <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+    </div>
+</footer>
+
+<!-- Login Modal -->
+<div class="modal" id="loginModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title" data-key="login_title">Tizimga kirish</h2>
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label" for="phoneNumber" data-key="phone_label">Telefon raqam</label>
+                    <input
+                            type="tel"
+                            id="phoneNumber"
+                            class="form-input"
+                            value="+998"
+                            placeholder="+998XXXXXXXXX"
+                            required
+                    >
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="password" data-key="password_label">Parol</label>
+                    <div class="password-input">
+                        <input
+                                type="password"
+                                id="password"
+                                class="form-input"
+                                placeholder="Parolni kiriting"
+                                required
+                        >
+                        <button type="button" class="password-toggle" onclick="togglePassword()">
+                            <i class="fas fa-eye" id="passwordIcon"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;" id="loginButton" data-key="login_btn">Kirish</button>
+            </form>
+            <div class="form-footer">
+                <span data-key="no_account_text">Akkauntingiz yo'qmi?</span> <a href="#" data-key="contact_admin_link">Administrator bilan bog'laning</a>
             </div>
-            <button type="submit" class="login-btn">Login</button>
-        </form>
-        <div class="login-footer">
-            <p>Don't have an account? <a href="#">Contact administrator</a></p>
         </div>
     </div>
 </div>
 
-<!-- Footer -->
-<footer id="contact">
-    <div class="footer-container">
-        <div class="footer-col">
-            <h3>About Us</h3>
-            <p>IPE School is a leading educational institution dedicated to providing quality education with expert mentors and modern facilities.</p>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-        </div>
-        <div class="footer-col">
-            <h3>Quick Links</h3>
-            <ul class="footer-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#mentors">Mentors</a></li>
-                <li><a href="#location">Location</a></li>
-                <li><a href="#">Login</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h3>Courses</h3>
-            <ul class="footer-links">
-                <li><a href="#">Mathematics</a></li>
-                <li><a href="#">Physics</a></li>
-                <li><a href="#">Computer Science</a></li>
-                <li><a href="#">English</a></li>
-                <li><a href="#">Chemistry</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h3>Contact Info</h3>
-            <p><i class="fas fa-map-marker-alt"></i> 123 Education Street, Tashkent</p>
-            <p><i class="fas fa-phone-alt"></i> +998 90 123 45 67</p>
-            <p><i class="fas fa-envelope"></i> info@ipeschool.uz</p>
-        </div>
-    </div>
-    <div class="copyright">
-        <p>&copy; 2023 IPE School. All Rights Reserved.</p>
-    </div>
-</footer>
-
 <script>
-    // Mobile Navigation Toggle
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('nav-links');
+    // Til ma'lumotlari
+    const translations = {
+        uz: {
+            home_link: "Bosh sahifa",
+            courses_link: "Kurslar",
+            about_link: "Biz haqimizda",
+            location_link: "Manzil",
+            login_btn: "Kirish",
+            hero_title: "Sifatli ta'lim bilan <span class='gradient-text'>kelajagingizni quring</span>",
+            hero_subtitle: "10,000 dan ortiq o'quvchilar tahsil olgan. 40 dan ortiq o'qituvchilar xizmatingizga tayyor.",
+            free_lesson_btn: "BEPUL DARSGA YOZILISH",
+            view_courses_btn: "Kurslarni ko'rish",
+            students_label: "O'quvchilar",
+            teachers_label: "O'qituvchilar",
+            success_label: "Muvaffaqiyat",
+            experience_label: "Yillik tajriba",
+            courses_title: "Bizning kurslarimiz",
+            courses_subtitle: "Professional o'qituvchilar bilan sifatli ta'lim oling",
+            english_course_title: "Ingliz tili",
+            english_course_desc: "Ingliz tilini professional darajada o'rganing",
+            english_feature_1: "Beginner dan Advanced gacha",
+            english_feature_2: "IELTS/CEFR tayyorgarlik",
+            english_feature_3: "Speaking klublar",
+            english_feature_4: "Sertifikat berish",
+            russian_course_title: "Rus tili",
+            russian_course_desc: "Rus tilini mukammal o'rganing",
+            russian_feature_1: "A1 dan C2 gacha",
+            russian_feature_2: "Grammatika va leksika",
+            russian_feature_3: "Suhbat amaliyoti",
+            russian_feature_4: "Davlat sertifikati",
+            math_course_title: "Matematika",
+            math_course_desc: "Matematikani chuqur o'rganing",
+            math_feature_1: "Algebra va geometriya",
+            math_feature_2: "DTM tayyorgarlik",
+            math_feature_3: "Olimpiada tayyorlash",
+            math_feature_4: "Individual darslar",
+            frontend_course_title: "Front-end",
+            frontend_course_desc: "Zamonaviy web dasturlashni o'rganing",
+            frontend_feature_1: "HTML, CSS, JavaScript",
+            frontend_feature_2: "React, Vue.js",
+            frontend_feature_3: "Portfolio yaratish",
+            frontend_feature_4: "Ish topishda yordam",
+            why_us_title: "Nima uchun Ipe School?",
+            why_us_subtitle: "Zamonaviy ta'lim usullari va tajribali o'qituvchilar bilan eng yaxshi natijalarni kafolatlaydi",
+            feature_1_title: "Tajribali o'qituvchilar",
+            feature_1_desc: "40 dan ortiq malakali o'qituvchilar sizning muvaffaqiyatingiz uchun tayyor",
+            feature_2_title: "Zamonaviy dastur",
+            feature_2_desc: "Eng so'nggi ta'lim dasturlari va innovatsion o'qitish usullari",
+            feature_3_title: "Moslashuvchan jadval",
+            feature_3_desc: "Sizning vaqtingizga mos keladigan dars jadvallari",
+            locations_title: "Bizning manzillarimiz",
+            locations_subtitle: "Sizga qulay bo'lgan filialimizni tanlang",
+            branch_1_title: "1-filial",
+            branch_1_address: "Vodnik daxasi 107",
+            branch_2_title: "2-filial",
+            branch_2_address: "X.Boyqaro 80",
+            footer_desc: "Sifatli ta'lim va professional o'qituvchilar bilan muvaffaqiyatga erishing.",
+            quick_links_title: "Tezkor havolalar",
+            contact_title: "Aloqa",
+            footer_copyright: "© 2024 Ipe School o'quv markaz. Barcha huquqlar himoyalangan.",
+            login_title: "Tizimga kirish",
+            phone_label: "Telefon raqam",
+            password_label: "Parol",
+            no_account_text: "Akkauntingiz yo'qmi?",
+            contact_admin_link: "Administrator bilan bog'laning",
+            login_success: "Login muvaffaqiyatli! Yo'naltirilmoqda...",
+            login_error: "Login xatolik. Ma'lumotlaringizni tekshiring.",
+            network_error: "Tarmoq xatolik. Qaytadan urinib ko'ring."
+        },
+        ru: {
+            home_link: "Главная",
+            courses_link: "Курсы",
+            about_link: "О нас",
+            location_link: "Адреса",
+            login_btn: "Войти",
+            hero_title: "Качественное образование для <span class='gradient-text'>вашего будущего</span>",
+            hero_subtitle: "Более 10,000 студентов обучались. Более 40 преподавателей к вашим услугам.",
+            free_lesson_btn: "ЗАПИСАТЬСЯ НА БЕСПЛАТНЫЙ УРОК",
+            view_courses_btn: "Посмотреть курсы",
+            students_label: "Студенты",
+            teachers_label: "Преподаватели",
+            success_label: "Успех",
+            experience_label: "Годы опыта",
+            courses_title: "Наши курсы",
+            courses_subtitle: "Получите качественное образование с профессиональными преподавателями",
+            english_course_title: "Английский язык",
+            english_course_desc: "Изучайте английский на профессиональном уровне",
+            english_feature_1: "От начального до продвинутого уровня",
+            english_feature_2: "Подготовка к IELTS/CEFR",
+            english_feature_3: "Клубы разговорной практики",
+            english_feature_4: "Выдача сертификата",
+            russian_course_title: "Русский язык",
+            russian_course_desc: "Совершенствуйте русский язык",
+            russian_feature_1: "От A1 до C2",
+            russian_feature_2: "Грамматика и лексика",
+            russian_feature_3: "Практика разговорной речи",
+            russian_feature_4: "Государственный сертификат",
+            math_course_title: "Математика",
+            math_course_desc: "Глубоко изучайте математику",
+            math_feature_1: "Алгебра и геометрия",
+            math_feature_2: "Подготовка к ЕГЭ",
+            math_feature_3: "Подготовка к олимпиадам",
+            math_feature_4: "Индивидуальные занятия",
+            frontend_course_title: "Фронтенд",
+            frontend_course_desc: "Изучайте современное веб-программирование",
+            frontend_feature_1: "HTML, CSS, JavaScript",
+            frontend_feature_2: "React, Vue.js",
+            frontend_feature_3: "Создание портфолио",
+            frontend_feature_4: "Помощь в трудоустройстве",
+            why_us_title: "Почему Ipe School?",
+            why_us_subtitle: "Современные методы обучения и опытные преподаватели гарантируют лучшие результаты",
+            feature_1_title: "Опытные преподаватели",
+            feature_1_desc: "Более 40 квалифицированных преподавателей готовы к вашему успеху",
+            feature_2_title: "Современная программа",
+            feature_2_desc: "Новейшие образовательные программы и инновационные методы обучения",
+            feature_3_title: "Гибкий график",
+            feature_3_desc: "Расписание занятий, адаптированное к вашему времени",
+            locations_title: "Наши адреса",
+            locations_subtitle: "Выберите удобный для вас филиал",
+            branch_1_title: "1-й филиал",
+            branch_1_address: "Водник дахаси 107",
+            branch_2_title: "2-й филиал",
+            branch_2_address: "Х.Бойкаро 80",
+            footer_desc: "Достигайте успеха с качественным образованием и профессиональными преподавателями.",
+            quick_links_title: "Быстрые ссылки",
+            contact_title: "Контакты",
+            footer_copyright: "© 2024 Учебный центр Ipe School. Все права защищены.",
+            login_title: "Вход в систему",
+            phone_label: "Номер телефона",
+            password_label: "Пароль",
+            no_account_text: "Нет аккаунта?",
+            contact_admin_link: "Связаться с администратором",
+            login_success: "Вход выполнен успешно! Перенаправление...",
+            login_error: "Ошибка входа. Проверьте свои данные.",
+            network_error: "Сетевая ошибка. Попробуйте снова."
+        },
+        en: {
+            home_link: "Home",
+            courses_link: "Courses",
+            about_link: "About Us",
+            location_link: "Locations",
+            login_btn: "Login",
+            hero_title: "Build your future with <span class='gradient-text'>quality education</span>",
+            hero_subtitle: "Over 10,000 students trained. More than 40 teachers at your service.",
+            free_lesson_btn: "REGISTER FOR A FREE LESSON",
+            view_courses_btn: "View Courses",
+            students_label: "Students",
+            teachers_label: "Teachers",
+            success_label: "Success Rate",
+            experience_label: "Years of Experience",
+            courses_title: "Our Courses",
+            courses_subtitle: "Get quality education with professional teachers",
+            english_course_title: "English Language",
+            english_course_desc: "Learn English at a professional level",
+            english_feature_1: "From Beginner to Advanced",
+            english_feature_2: "IELTS/CEFR Preparation",
+            english_feature_3: "Speaking Clubs",
+            english_feature_4: "Certificate Issuance",
+            russian_course_title: "Russian Language",
+            russian_course_desc: "Master Russian perfectly",
+            russian_feature_1: "From A1 to C2",
+            russian_feature_2: "Grammar and Vocabulary",
+            russian_feature_3: "Conversation Practice",
+            russian_feature_4: "State Certificate",
+            math_course_title: "Mathematics",
+            math_course_desc: "Study mathematics in depth",
+            math_feature_1: "Algebra and Geometry",
+            math_feature_2: "Entrance Exam Preparation",
+            math_feature_3: "Olympiad Training",
+            math_feature_4: "Individual Lessons",
+            frontend_course_title: "Front-end",
+            frontend_course_desc: "Learn modern web programming",
+            frontend_feature_1: "HTML, CSS, JavaScript",
+            frontend_feature_2: "React, Vue.js",
+            frontend_feature_3: "Portfolio Creation",
+            frontend_feature_4: "Job Placement Assistance",
+            why_us_title: "Why Ipe School?",
+            why_us_subtitle: "Modern teaching methods and experienced teachers guarantee the best results",
+            feature_1_title: "Experienced Teachers",
+            feature_1_desc: "Over 40 qualified teachers ready for your success",
+            feature_2_title: "Modern Curriculum",
+            feature_2_desc: "The latest educational programs and innovative teaching methods",
+            feature_3_title: "Flexible Schedule",
+            feature_3_desc: "Class schedules tailored to your time",
+            locations_title: "Our Locations",
+            locations_subtitle: "Choose the branch convenient for you",
+            branch_1_title: "Branch 1",
+            branch_1_address: "Vodnik daxasi 107",
+            branch_2_title: "Branch 2",
+            branch_2_address: "X.Boyqaro 80",
+            footer_desc: "Achieve success with quality education and professional teachers.",
+            quick_links_title: "Quick Links",
+            contact_title: "Contact",
+            footer_copyright: "© 2024 Ipe School Educational Center. All rights reserved.",
+            login_title: "Login to the System",
+            phone_label: "Phone Number",
+            password_label: "Password",
+            no_account_text: "Don't have an account?",
+            contact_admin_link: "Contact the Administrator",
+            login_success: "Login successful! Redirecting...",
+            login_error: "Login error. Please check your credentials.",
+            network_error: "Network error. Please try again."
+        }
+    };
 
-    hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        navLinks.classList.toggle('active');
-    });
+    // Language switching functionality
+    let currentLanguage = 'uz';
 
-    // Login Modal Toggle
-    const loginModal = document.getElementById('login-modal');
-    const openLogin = document.getElementById('open-login');
-    const closeLogin = document.getElementById('close-login');
+    function switchLanguage(lang) {
+        currentLanguage = lang;
 
-    // Function to open login modal
-    function openLoginModal() {
-        // Close mobile menu first if it's open
-        hamburger.classList.remove('active');
-        navLinks.classList.remove('active');
+        // Update active language button
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.textContent === lang.toUpperCase()) {
+                btn.classList.add('active');
+            }
+        });
 
-        // Open login modal
-        loginModal.classList.add('active');
-        document.body.classList.add('modal-open');
+        // Update text content
+        document.querySelectorAll('[data-key]').forEach(element => {
+            const key = element.getAttribute('data-key');
+            if (translations[lang][key]) {
+                element.innerHTML = translations[lang][key];
+            }
+        });
 
-        // Focus on first input
+        console.log('Language switched to:', lang);
+    }
+
+    // Mobile menu functionality
+    let mobileMenuOpen = false;
+
+    function toggleMobileMenu() {
+        const mobileNav = document.getElementById('mobile-nav');
+        const icon = document.getElementById('mobile-menu-icon');
+
+        mobileMenuOpen = !mobileMenuOpen;
+
+        if (mobileMenuOpen) {
+            mobileNav.classList.add('active');
+            icon.className = 'fas fa-times';
+        } else {
+            mobileNav.classList.remove('active');
+            icon.className = 'fas fa-bars';
+        }
+    }
+
+    function closeMobileMenu() {
+        const mobileNav = document.getElementById('mobile-nav');
+        const icon = document.getElementById('mobile-menu-icon');
+
+        mobileMenuOpen = false;
+        mobileNav.classList.remove('active');
+        icon.className = 'fas fa-bars';
+    }
+
+    // Smooth scrolling
+    function scrollToSection(sectionId) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    // Modal functionality
+    function openModal() {
+        const modal = document.getElementById('loginModal');
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
         setTimeout(() => {
             document.getElementById('phoneNumber').focus();
         }, 300);
     }
 
-    // Function to close login modal
-    function closeLoginModal() {
-        loginModal.classList.remove('active');
-        document.body.classList.remove('modal-open');
+    function closeModal() {
+        const modal = document.getElementById('loginModal');
+        modal.classList.remove('active');
+        document.body.style.overflow = 'unset';
     }
 
-    // Event listeners for login modal
-    openLogin.addEventListener('click', (e) => {
-        e.preventDefault();
-        openLoginModal();
-    });
-
-    closeLogin.addEventListener('click', closeLoginModal);
-
-    // Close modal when clicking outside
-    loginModal.addEventListener('click', (e) => {
-        if (e.target === loginModal) {
-            closeLoginModal();
+    document.getElementById('loginModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
         }
     });
 
-    // Close modal with Escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && loginModal.classList.contains('active')) {
-            closeLoginModal();
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
         }
     });
 
-    // Close mobile menu when clicking on a link (except login)
-    navLinks.addEventListener('click', (e) => {
-        if (e.target.tagName === 'A' && !e.target.classList.contains('login-btn')) {
-            hamburger.classList.remove('active');
-            navLinks.classList.remove('active');
-        }
-    });
+    // Password visibility toggle
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const passwordIcon = document.getElementById('passwordIcon');
 
-    // Enhanced Login Form Submission
-    document.getElementById('login-form').addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        const submitBtn = e.target.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-
-        // Show loading state
-        submitBtn.disabled = true;
-        submitBtn.classList.add('btn-loading');
-        submitBtn.textContent = 'Logging in...';
-
-        const phoneNumber = e.target.phoneNumber.value;
-        const password = e.target.password.value;
-
-        try {
-            const response = await fetch('/api/v1/auth', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ phoneNumber, password })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                // Store user data
-                localStorage.setItem("authToken", data.token);
-                localStorage.setItem('userData', JSON.stringify({
-                    token: data.token,
-                    userId: data.userId,
-                    firstName: data.firstName,
-                    lastName: data.lastName,
-                    phoneNumber: data.phoneNumber,
-                    roles: data.roles,
-                    image: data.image
-                }));
-
-                // Show success message
-                showMessage('Login successful! Redirecting...', 'success');
-
-                // Redirect after short delay
-                setTimeout(() => {
-                    window.location.href = data.redirect || determineRedirectUrl(data.roles);
-                }, 1500);
-            } else {
-                showMessage(data.message || 'Login failed. Please check your credentials.', 'error');
-            }
-        } catch (error) {
-            console.error('Login error:', error);
-            showMessage('Network error. Please try again later.', 'error');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.classList.remove('btn-loading');
-            submitBtn.textContent = originalText;
-        }
-    });
-
-    // Determine redirect URL based on roles
-    function determineRedirectUrl(roles) {
-        if (roles.includes('ADMIN')) {
-            return '/adminCabinet';
-        } else if (roles.includes('MENTOR')) {
-            return '/mentorCabinet';
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            passwordIcon.className = 'fas fa-eye-slash';
         } else {
-            return '/studentCabinet';
+            passwordInput.type = 'password';
+            passwordIcon.className = 'fas fa-eye';
         }
     }
 
-    // Enhanced show message function
-    function showMessage(message, type) {
-        // Remove any existing messages first
-        const existingAlert = document.querySelector('.login-header .alert');
-        if (existingAlert) {
-            existingAlert.remove();
+    // Phone number formatting
+    document.getElementById('phoneNumber').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+
+        if (!value.startsWith('998')) {
+            value = '998' + value.replace(/^998/, '');
         }
 
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `alert alert-${type}`;
-        messageDiv.innerHTML = `
-            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
-            ${message}
-        `;
+        if (value.length > 12) {
+            value = value.slice(0, 12);
+        }
 
-        const loginHeader = document.querySelector('.login-header');
-        loginHeader.appendChild(messageDiv);
+        e.target.value = '+' + value;
+    });
 
-        setTimeout(() => {
-            if (messageDiv.parentNode) {
-                messageDiv.remove();
-            }
-        }, 5000);
-    }
+    // Login form submission
+    function handleLogin(event) {
+        event.preventDefault();
 
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
+        const button = document.getElementById('loginButton');
+        const phoneNumber = document.getElementById('phoneNumber').value;
+        const password = document.getElementById('password').value;
+
+        button.classList.add('loading');
+        button.textContent = translations[currentLanguage].login_btn + '...';
+        button.disabled = true;
+
+        setTimeout(async () => {
+            try {
+                const response = await fetch('/api/v1/auth', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ phoneNumber, password })
                 });
-            }
-        });
-    });
 
-    // Add scroll effect to navbar
-    window.addEventListener('scroll', () => {
-        const header = document.querySelector('header');
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem("authToken", data.token);
+                    localStorage.setItem('userData', JSON.stringify({
+                        token: data.token,
+                        userId: data.userId,
+                        firstName: data.firstName,
+                        lastName: data.lastName,
+                        phoneNumber: data.phoneNumber,
+                        roles: data.roles,
+                        image: data.image
+                    }));
+
+                    alert(translations[currentLanguage].login_success || 'Login muvaffaqiyatli! Yo\'naltirilmoqda...');
+
+                    let redirectUrl = '/studentCabinet';
+                    if (data.roles.includes('ADMIN')) {
+                        redirectUrl = '/adminCabinet';
+                    } else if (data.roles.includes('MENTOR')) {
+                        redirectUrl = '/mentorCabinet';
+                    }
+
+                    setTimeout(() => {
+                        window.location.href = data.redirect || redirectUrl;
+                    }, 1500);
+                } else {
+                    alert(data.message || translations[currentLanguage].login_error || 'Login xatolik. Ma\'lumotlaringizni tekshiring.');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert(translations[currentLanguage].network_error || 'Tarmoq xatolik. Qaytadan urinib ko\'ring.');
+            } finally {
+                button.classList.remove('loading');
+                button.textContent = translations[currentLanguage].login_btn;
+                button.disabled = false;
+            }
+        }, 2000);
+    }
+
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('.header');
         if (window.scrollY > 100) {
-            header.style.background = 'rgba(108, 92, 231, 0.95)';
-            header.style.backdropFilter = 'blur(10px)';
+            header.style.background = 'rgba(255, 255, 255, 0.98)';
+            header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
         } else {
-            header.style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
-            header.style.backdropFilter = 'none';
+            header.style.background = 'rgba(255, 255, 255, 0.95)';
+            header.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
         }
     });
 
@@ -1592,123 +1737,28 @@
     }, observerOptions);
 
     // Observe elements for animation
-    document.querySelectorAll('.feature-card, .mentor-card, .stat-item').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'all 0.6s ease';
-        observer.observe(el);
-    });
-
-    // Phone number input formatting
-    const phoneInput = document.getElementById('phoneNumber');
-    phoneInput.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (!value.startsWith('998')) {
-            value = '998' + value.replace(/^998/, '');
-        }
-        if (value.length > 12) {
-            value = value.slice(0, 12);
-        }
-        e.target.value = '+' + value;
+    document.addEventListener('DOMContentLoaded', function() {
+        const animatedElements = document.querySelectorAll('.feature-card, .location-card, .stat-item, .course-card');
+        animatedElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
     });
 
     // Prevent zoom on input focus (iOS)
     document.querySelectorAll('input').forEach(input => {
         input.addEventListener('focus', function() {
-            this.style.fontSize = '16px';
+            if (window.innerWidth < 768) {
+                this.style.fontSize = '16px';
+            }
         });
+
         input.addEventListener('blur', function() {
             this.style.fontSize = '';
         });
     });
-
-    // Check authentication on page load for protected pages
-    function checkAuthentication() {
-        const token = localStorage.getItem('authToken');
-        const userData = JSON.parse(localStorage.getItem('userData'));
-
-        if (!token) {
-            return false;
-        }
-
-        // Display user info in dashboard
-        if (userData) {
-            const userNameElement = document.getElementById('user-name');
-            const userPhoneElement = document.getElementById('user-phone');
-
-            if (userNameElement) {
-                userNameElement.textContent = `${userData.firstName} ${userData.lastName}`;
-            }
-            if (userPhoneElement) {
-                userPhoneElement.textContent = userData.phoneNumber;
-            }
-        }
-
-        return true;
-    }
-
-    // Add loading animation to page
-    window.addEventListener('load', () => {
-        document.body.style.opacity = '1';
-    });
-
-    // Add touch feedback for mobile
-    document.querySelectorAll('.cta-btn, .login-btn, .feature-card, .mentor-card').forEach(element => {
-        element.addEventListener('touchstart', function() {
-            this.style.transform = 'scale(0.98)';
-        });
-
-        element.addEventListener('touchend', function() {
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 150);
-        });
-    });
-
-    // Prevent scrolling issues on mobile
-    let scrollPosition = 0;
-
-    function disableScroll() {
-        scrollPosition = window.pageYOffset;
-        document.body.style.overflow = 'hidden';
-        document.body.style.position = 'fixed';
-        document.body.style.top = `-${scrollPosition}px`;
-        document.body.style.width = '100%';
-    }
-
-    function enableScroll() {
-        document.body.style.removeProperty('overflow');
-        document.body.style.removeProperty('position');
-        document.body.style.removeProperty('top');
-        document.body.style.removeProperty('width');
-        window.scrollTo(0, scrollPosition);
-    }
-
-    // Update modal functions to use new scroll prevention
-    const originalOpenLoginModal = openLoginModal;
-    const originalCloseLoginModal = closeLoginModal;
-
-    openLoginModal = function() {
-        // Close mobile menu first if it's open
-        hamburger.classList.remove('active');
-        navLinks.classList.remove('active');
-
-        // Disable scroll
-        disableScroll();
-
-        // Open login modal
-        loginModal.classList.add('active');
-
-        // Focus on first input
-        setTimeout(() => {
-            document.getElementById('phoneNumber').focus();
-        }, 300);
-    };
-
-    closeLoginModal = function() {
-        loginModal.classList.remove('active');
-        enableScroll();
-    };
 </script>
 </body>
 </html>
