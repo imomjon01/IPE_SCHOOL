@@ -16,15 +16,12 @@ public class GroupMapper {
         dto.setId(group.getId());
         dto.setName(group.getName());
 
-        // Map mentor
         dto.setMentor(toUserRes(group.getMentor()));
 
-        // Map students
         dto.setStudents(group.getStudents().stream()
                 .map(this::toUserRes)
                 .toList());
 
-        // Map modules
         dto.setModules(group.getModules().stream()
                 .map(this::toModuleRes)
                 .toList());
@@ -33,7 +30,7 @@ public class GroupMapper {
     }
 
     private UserRes toUserRes(User user) {
-        if (user==null) return null;
+        if (user == null) return null;
         UserRes res = new UserRes();
         res.setId(user.getId());
         res.setFirstName(user.getFirstName());
@@ -43,7 +40,7 @@ public class GroupMapper {
     }
 
     private ModuleRes toModuleRes(Module module) {
-        if (module==null) return null;
+        if (module == null) return null;
         ModuleRes res = new ModuleRes();
         res.setId(module.getId());
         res.setModuleName(module.getModuleName());
