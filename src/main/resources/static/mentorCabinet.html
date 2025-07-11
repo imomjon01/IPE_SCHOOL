@@ -795,10 +795,6 @@
 
         <div class="nav-section">
             <h3>Navigation</h3>
-            <div class="nav-item" onclick="showView('mentors'); closeSidebar();">
-                <i class="fas fa-users"></i>
-                <span>All Mentors</span>
-            </div>
             <div class="nav-item" onclick="showView('profile'); closeSidebar();">
                 <i class="fas fa-user"></i>
                 <span>My Profile</span>
@@ -883,17 +879,6 @@
             </form>
         </div>
 
-        <!-- Mentors View -->
-        <div id="mentors" class="view">
-            <h2>All Mentors</h2>
-            <div id="mentorsGrid" class="mentors-grid">
-                <div class="loading">
-                    <div class="spinner"></div>
-                    Loading mentors...
-                </div>
-            </div>
-        </div>
-
         <!-- Group Details View -->
         <div id="groupDetails" class="view">
             <div class="group-header">
@@ -916,7 +901,6 @@
                 <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Phone</th>
                 </tr>
                 </thead>
                 <tbody id="studentsTableBody">
@@ -997,20 +981,6 @@
             <button id="updateModuleBtn" class="btn btn-success hidden" onclick="updateGroupModule()">
                 <i class="fas fa-save"></i> Update Module
             </button>
-        </div>
-    </div>
-</div>
-
-<!-- Mentor Groups Modal -->
-<div id="mentorGroupsModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('mentorGroupsModal')">&times;</span>
-        <h2 id="mentorGroupsTitle">Mentor Groups</h2>
-        <div id="mentorGroupsContent">
-            <div class="loading">
-                <div class="spinner"></div>
-                Loading groups...
-            </div>
         </div>
     </div>
 </div>
@@ -1181,81 +1151,11 @@
             studentsTableBody.innerHTML = groupData.students.map(student => `
                     <tr>
                         <td>${student.firstName} ${student.lastName}</td>
-                        <td>${student.phoneNumber}</td>
                     </tr>
                 `).join('');
         } else {
             studentsTableBody.innerHTML = '<tr><td colspan="2" style="text-align: center; color: #666;">No students in this group</td></tr>';
         }
-    }
-
-    // Load all mentors
-    async function loadAllMentors() {
-        try {
-            const response = await fetch('/api/v1/admin/mentor', {
-                headers: {'Authorization': `${localStorage.getItem('authToken')}`}
-            });
-            if (response.ok) {
-                allMentors = await response.json();
-                displayMentors();
-            } else {
-                console.error('Failed to load mentors');
-            }
-        } catch (error) {
-            console.error('Error loading mentors:', error);
-        }
-    }
-
-    // Display mentors
-    function displayMentors() {
-        const mentorsGrid = document.getElementById('mentorsGrid');
-
-        if (allMentors.length === 0) {
-            mentorsGrid.innerHTML = '<div style="text-align: center; color: #666;">No mentors found</div>';
-            return;
-        }
-
-        mentorsGrid.innerHTML = allMentors.map(mentor => `
-                <div class="mentor-card" onclick="showMentorGroups(${mentor.id}, '${mentor.firstName} ${mentor.lastName}')">
-                    <img class="mentor-image"
-                         src="${mentor.image ? `data:image/jpeg;base64,${arrayBufferToBase64(mentor.image)}` : '/placeholder.svg?height=50&width=50'}"
-                         alt="${mentor.firstName}">
-                    <div class="mentor-info">
-                        <div class="mentor-name">${mentor.firstName} ${mentor.lastName}</div>
-                        <div class="mentor-phone">${mentor.phoneNumber}</div>
-                    </div>
-                </div>
-            `).join('');
-    }
-
-    // Show mentor groups
-    function showMentorGroups(mentorId, mentorName) {
-        const mentor = allMentors.find(m => m.id === mentorId);
-        if (!mentor) return;
-
-        document.getElementById('mentorGroupsTitle').textContent = `${mentorName} - Groups`;
-        document.getElementById('mentorGroupsModal').style.display = 'block';
-
-        const mentorGroupsContent = document.getElementById('mentorGroupsContent');
-
-        if (!mentor.groups || mentor.groups.length === 0) {
-            mentorGroupsContent.innerHTML = '<p style="text-align: center; color: #666;">No groups assigned to this mentor</p>';
-            return;
-        }
-
-        mentorGroupsContent.innerHTML = `
-                <div class="mentors-grid">
-                    ${mentor.groups.map(group => `
-                        <div class="mentor-card" style="cursor: default;">
-                            <i class="fas fa-users" style="font-size: 24px; color: #667eea; margin-right: 10px;"></i>
-                            <div class="mentor-info">
-                                <div class="mentor-name">${group.name}</div>
-                                <div class="mentor-phone">Group ID: ${group.id}</div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
     }
 
     // Show student progress
