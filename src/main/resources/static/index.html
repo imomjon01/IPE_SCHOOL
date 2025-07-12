@@ -11,14 +11,12 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
             background: linear-gradient(135deg, #eff6ff 0%, #ffffff 50%, #faf5ff 100%);
         }
-
         /* Header Styles */
         .header {
             position: sticky;
@@ -29,7 +27,6 @@
             border-bottom: 1px solid #e5e7eb;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
-
         .navbar {
             max-width: 1200px;
             margin: 0 auto;
@@ -39,13 +36,11 @@
             align-items: center;
             height: 64px;
         }
-
         .logo {
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-
         .logo-icon {
             width: 40px;
             height: 40px;
@@ -57,7 +52,6 @@
             color: white;
             font-size: 1.5rem;
         }
-
         .logo-text {
             font-size: 1.25rem;
             font-weight: bold;
@@ -66,37 +60,31 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
         .nav-center {
             display: flex;
             align-items: center;
             gap: 2rem;
         }
-
         .nav-links {
             display: flex;
             align-items: center;
             gap: 2rem;
             list-style: none;
         }
-
         .nav-links a {
             text-decoration: none;
             color: #374151;
             font-weight: 500;
             transition: color 0.3s ease;
         }
-
         .nav-links a:hover {
             color: #2563eb;
         }
-
         .nav-right {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
-
         .language-switcher {
             display: flex;
             align-items: center;
@@ -105,7 +93,6 @@
             border-radius: 8px;
             padding: 0.25rem;
         }
-
         .lang-btn {
             background: none;
             border: none;
@@ -117,17 +104,14 @@
             transition: all 0.3s ease;
             color: #6b7280;
         }
-
         .lang-btn.active {
             background: white;
             color: #2563eb;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
-
         .lang-btn:hover:not(.active) {
             color: #374151;
         }
-
         .login-btn {
             background: linear-gradient(135deg, #2563eb, #9333ea);
             color: white;
@@ -140,12 +124,10 @@
             text-decoration: none;
             display: inline-block;
         }
-
         .login-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
-
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -156,28 +138,23 @@
             border-radius: 8px;
             transition: background-color 0.3s ease;
         }
-
         .mobile-menu-btn:hover {
             background-color: #f3f4f6;
         }
-
         .mobile-nav {
             display: none;
             padding: 1rem;
             border-top: 1px solid #e5e7eb;
             background: white;
         }
-
         .mobile-nav.active {
             display: block;
         }
-
         .mobile-nav-links {
             display: flex;
             flex-direction: column;
             gap: 1rem;
         }
-
         .mobile-nav-links a {
             text-decoration: none;
             color: #374151;
@@ -185,31 +162,26 @@
             padding: 0.5rem 0;
             transition: color 0.3s ease;
         }
-
         .mobile-nav-links a:hover {
             color: #2563eb;
         }
-
         .mobile-lang-switcher {
             display: flex;
             justify-content: center;
             margin: 1rem 0;
         }
-
         .hero {
             padding: 5rem 1rem;
             text-align: center;
             position: relative;
             overflow: hidden;
         }
-
         .hero-content {
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
             z-index: 10;
         }
-
         .hero h1 {
             font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: bold;
@@ -217,7 +189,6 @@
             margin-bottom: 1.5rem;
             line-height: 1.2;
         }
-
         .hero .gradient-text {
             background: linear-gradient(135deg, #2563eb, #9333ea);
             -webkit-background-clip: text;
@@ -225,7 +196,6 @@
             background-clip: text;
             display: block;
         }
-
         .hero p {
             font-size: 1.25rem;
             color: #6b7280;
@@ -234,7 +204,6 @@
             margin-left: auto;
             margin-right: auto;
         }
-
         .hero-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -242,7 +211,6 @@
             justify-content: center;
             align-items: center;
         }
-
         .btn-primary {
             background: linear-gradient(135deg, #2563eb, #9333ea);
             color: white;
@@ -256,12 +224,10 @@
             text-decoration: none;
             display: inline-block;
         }
-
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
         }
-
         .btn-secondary {
             background: white;
             color: #374151;
@@ -275,19 +241,16 @@
             text-decoration: none;
             display: inline-block;
         }
-
         .btn-secondary:hover {
             border-color: #2563eb;
             color: #2563eb;
             background: #eff6ff;
         }
-
         .decoration {
             position: absolute;
             border-radius: 50%;
             opacity: 0.5;
         }
-
         .decoration-1 {
             top: 5rem;
             left: 2.5rem;
@@ -296,7 +259,6 @@
             background: #dbeafe;
             animation: pulse 2s infinite;
         }
-
         .decoration-2 {
             bottom: 5rem;
             right: 2.5rem;
@@ -306,7 +268,6 @@
             animation: pulse 2s infinite;
             animation-delay: 1s;
         }
-
         .decoration-3 {
             top: 50%;
             left: 25%;
@@ -316,7 +277,6 @@
             animation: bounce 1s infinite;
             animation-delay: 0.5s;
         }
-
         .decoration-4 {
             top: 33%;
             right: 25%;
@@ -326,7 +286,6 @@
             animation: pulse 2s infinite;
             animation-delay: 2s;
         }
-
         .stats {
             padding: 4rem 1rem;
             background: linear-gradient(135deg, #2563eb, #9333ea);
@@ -334,14 +293,12 @@
             position: relative;
             overflow: hidden;
         }
-
         .stats::before {
             content: '';
             position: absolute;
             inset: 0;
             background: rgba(0, 0, 0, 0.1);
         }
-
         .stats-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -351,62 +308,51 @@
             position: relative;
             z-index: 10;
         }
-
         .stat-item {
             text-align: center;
             transition: transform 0.3s ease;
         }
-
         .stat-item:hover {
             transform: scale(1.05);
         }
-
         .stat-number {
             font-size: clamp(2.5rem, 5vw, 3.5rem);
             font-weight: bold;
             margin-bottom: 0.5rem;
         }
-
         .stat-label {
             font-size: 1.125rem;
             opacity: 0.9;
         }
-
         .courses {
             padding: 5rem 1rem;
             background: #f8fafc;
         }
-
         .courses-container {
             max-width: 1200px;
             margin: 0 auto;
         }
-
         .section-title {
             text-align: center;
             margin-bottom: 4rem;
         }
-
         .section-title h2 {
             font-size: clamp(2rem, 4vw, 3rem);
             font-weight: bold;
             color: #111827;
             margin-bottom: 1rem;
         }
-
         .section-title p {
             font-size: 1.25rem;
             color: #6b7280;
             max-width: 48rem;
             margin: 0 auto;
         }
-
         .courses-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
         }
-
         .course-card {
             background: white;
             padding: 2rem;
@@ -418,7 +364,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .course-card::before {
             content: '';
             position: absolute;
@@ -428,12 +373,10 @@
             height: 4px;
             background: linear-gradient(135deg, #2563eb, #9333ea);
         }
-
         .course-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
-
         .course-icon {
             width: 4rem;
             height: 4rem;
@@ -446,26 +389,22 @@
             color: white;
             font-size: 2rem;
         }
-
         .course-card h3 {
             font-size: 1.5rem;
             font-weight: 600;
             color: #111827;
             margin-bottom: 1rem;
         }
-
         .course-card p {
             color: #6b7280;
             line-height: 1.7;
             margin-bottom: 1.5rem;
         }
-
         .course-features {
             list-style: none;
             text-align: left;
             margin-bottom: 1.5rem;
         }
-
         .course-features li {
             padding: 0.5rem 0;
             color: #374151;
@@ -473,17 +412,14 @@
             align-items: center;
             gap: 0.5rem;
         }
-
         .course-features li::before {
             content: '✓';
             color: #10b981;
             font-weight: bold;
         }
-
         .features {
             padding: 5rem 1rem;
         }
-
         .features-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -491,7 +427,6 @@
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
         }
-
         .feature-card {
             background: white;
             padding: 2rem;
@@ -501,27 +436,22 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             border: 1px solid #e5e7eb;
         }
-
         .feature-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
-
         .feature-card.blue {
             background: linear-gradient(135deg, #eff6ff, #dbeafe);
             border-color: #bfdbfe;
         }
-
         .feature-card.purple {
             background: linear-gradient(135deg, #faf5ff, #e9d5ff);
             border-color: #d8b4fe;
         }
-
         .feature-card.green {
             background: linear-gradient(135deg, #f0fdf4, #dcfce7);
             border-color: #bbf7d0;
         }
-
         .feature-icon {
             width: 4rem;
             height: 4rem;
@@ -534,36 +464,30 @@
             color: white;
             font-size: 2rem;
         }
-
         .feature-card h3 {
             font-size: 1.25rem;
             font-weight: 600;
             color: #111827;
             margin-bottom: 1rem;
         }
-
         .feature-card p {
             color: #6b7280;
             line-height: 1.7;
         }
-
         .location {
             padding: 5rem 1rem;
             background: #f9fafb;
         }
-
         .location-container {
             max-width: 1200px;
             margin: 0 auto;
         }
-
         .location-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin-bottom: 3rem;
         }
-
         .location-card {
             background: white;
             padding: 2rem;
@@ -572,19 +496,16 @@
             border: 1px solid #e5e7eb;
             transition: all 0.3s ease;
         }
-
         .location-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
         }
-
         .location-header {
             display: flex;
             align-items: center;
             gap: 0.75rem;
             margin-bottom: 1.5rem;
         }
-
         .location-icon {
             width: 3rem;
             height: 3rem;
@@ -596,25 +517,21 @@
             color: white;
             font-size: 1.5rem;
         }
-
         .location-card h3 {
             font-size: 1.25rem;
             font-weight: 600;
             color: #111827;
         }
-
         .location-address {
             color: #6b7280;
             font-size: 1.125rem;
             margin-bottom: 1rem;
         }
-
         .location-phone {
             display: flex;
             align-items: center;
             gap: 0.75rem;
         }
-
         .phone-icon {
             width: 2rem;
             height: 2rem;
@@ -625,17 +542,14 @@
             justify-content: center;
             color: #16a34a;
         }
-
         .location-cta {
             text-align: center;
         }
-
         .footer {
             background: #111827;
             color: white;
             padding: 3rem 1rem;
         }
-
         .footer-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -643,43 +557,35 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
         }
-
         .footer-col h3 {
             font-size: 1.125rem;
             font-weight: 600;
             margin-bottom: 1rem;
         }
-
         .footer-col p {
             color: #9ca3af;
             line-height: 1.7;
             margin-bottom: 1rem;
         }
-
         .footer-links {
             list-style: none;
         }
-
         .footer-links li {
             margin-bottom: 0.5rem;
         }
-
         .footer-links a {
             color: #9ca3af;
             text-decoration: none;
             transition: color 0.3s ease;
         }
-
         .footer-links a:hover {
             color: white;
         }
-
         .social-links {
             display: flex;
             gap: 1rem;
             margin-top: 1rem;
         }
-
         .social-link {
             width: 2.5rem;
             height: 2.5rem;
@@ -692,23 +598,15 @@
             text-decoration: none;
             transition: all 0.3s ease;
         }
-
         .social-link:hover {
             transform: translateY(-2px);
         }
-
-        .social-link.facebook:hover {
-            background: #1877f2;
-        }
-
         .social-link.instagram:hover {
             background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
         }
-
         .social-link.telegram:hover {
             background: #0088cc;
         }
-
         .footer-bottom {
             border-top: 1px solid #374151;
             margin-top: 2rem;
@@ -716,7 +614,6 @@
             text-align: center;
             color: #9ca3af;
         }
-
         .modal {
             position: fixed;
             inset: 0;
@@ -731,12 +628,10 @@
             visibility: hidden;
             transition: all 0.3s ease;
         }
-
         .modal.active {
             opacity: 1;
             visibility: visible;
         }
-
         .modal-content {
             background: white;
             border-radius: 16px;
@@ -746,11 +641,9 @@
             transform: scale(0.9);
             transition: transform 0.3s ease;
         }
-
         .modal.active .modal-content {
             transform: scale(1);
         }
-
         .modal-header {
             display: flex;
             justify-content: space-between;
@@ -758,13 +651,11 @@
             padding: 2rem 2rem 0;
             margin-bottom: 2rem;
         }
-
         .modal-title {
             font-size: 1.5rem;
             font-weight: bold;
             color: #111827;
         }
-
         .modal-close {
             background: none;
             border: none;
@@ -774,26 +665,21 @@
             border-radius: 50%;
             transition: background-color 0.3s ease;
         }
-
         .modal-close:hover {
             background: #f3f4f6;
         }
-
         .modal-body {
             padding: 0 2rem 2rem;
         }
-
         .form-group {
             margin-bottom: 1.5rem;
         }
-
         .form-label {
             display: block;
             font-weight: 500;
             color: #374151;
             margin-bottom: 0.5rem;
         }
-
         .form-input {
             width: 100%;
             padding: 0.75rem 1rem;
@@ -802,17 +688,14 @@
             font-size: 1rem;
             transition: all 0.3s ease;
         }
-
         .form-input:focus {
             outline: none;
             border-color: #2563eb;
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
-
         .password-input {
             position: relative;
         }
-
         .password-toggle {
             position: absolute;
             right: 0.75rem;
@@ -826,111 +709,87 @@
             border-radius: 4px;
             transition: background-color 0.3s ease;
         }
-
         .password-toggle:hover {
             background: #f3f4f6;
         }
-
         .form-footer {
             margin-top: 1.5rem;
             text-align: center;
             font-size: 0.875rem;
             color: #6b7280;
         }
-
         .form-footer a {
             color: #2563eb;
             text-decoration: none;
             font-weight: 500;
         }
-
         .form-footer a:hover {
             text-decoration: underline;
         }
-
         @keyframes pulse {
             0%, 100% { opacity: 0.5; }
             50% { opacity: 0.8; }
         }
-
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
-
         @media (max-width: 768px) {
             .nav-center {
                 display: none;
             }
-
             .nav-right {
                 display: none;
             }
-
             .mobile-menu-btn {
                 display: block;
             }
-
             .hero {
                 padding: 3rem 1rem;
             }
-
             .hero-buttons {
                 flex-direction: column;
                 align-items: stretch;
             }
-
             .btn-primary,
             .btn-secondary {
                 text-align: center;
             }
-
             .stats {
                 padding: 3rem 1rem;
             }
-
             .stats-container {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 1rem;
             }
-
             .courses {
                 padding: 3rem 1rem;
             }
-
             .courses-grid {
                 grid-template-columns: 1fr;
             }
-
             .features {
                 padding: 3rem 1rem;
             }
-
             .features-container {
                 grid-template-columns: 1fr;
             }
-
             .location {
                 padding: 3rem 1rem;
             }
-
             .location-grid {
                 grid-template-columns: 1fr;
             }
-
             .footer {
                 padding: 2rem 1rem;
             }
-
             .footer-container {
                 grid-template-columns: 1fr;
                 text-align: center;
             }
-
             .social-links {
                 justify-content: center;
             }
-
             .decoration-1,
             .decoration-2,
             .decoration-3,
@@ -938,32 +797,26 @@
                 display: none;
             }
         }
-
         @media (max-width: 480px) {
             .stats-container {
                 grid-template-columns: 1fr;
             }
-
             .modal-content {
                 margin: 1rem;
             }
-
             .modal-header,
             .modal-body {
                 padding-left: 1rem;
                 padding-right: 1rem;
             }
         }
-
         .hidden {
             display: none;
         }
-
         .loading {
             opacity: 0.7;
             cursor: not-allowed;
         }
-
         .smooth-scroll {
             scroll-behavior: smooth;
         }
@@ -979,7 +832,6 @@
             </div>
             <span class="logo-text">Ipe School</span>
         </div>
-
         <div class="nav-center">
             <ul class="nav-links">
                 <li><a href="#home" data-key="home_link" onclick="scrollToSection('home')">Bosh sahifa</a></li>
@@ -988,7 +840,6 @@
                 <li><a href="#location" data-key="location_link" onclick="scrollToSection('location')">Manzil</a></li>
             </ul>
         </div>
-
         <div class="nav-right">
             <div class="language-switcher">
                 <button class="lang-btn active" onclick="switchLanguage('uz')">UZ</button>
@@ -997,19 +848,16 @@
             </div>
             <button class="login-btn" data-key="login_btn" onclick="openModal()">Kirish</button>
         </div>
-
         <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
             <i class="fas fa-bars" id="mobile-menu-icon"></i>
         </button>
     </nav>
-
     <div class="mobile-nav" id="mobile-nav">
         <div class="mobile-nav-links">
             <a href="#home" data-key="home_link" onclick="scrollToSection('home'); closeMobileMenu()">Bosh sahifa</a>
             <a href="#courses" data-key="courses_link" onclick="scrollToSection('courses'); closeMobileMenu()">Kurslar</a>
             <a href="#about" data-key="about_link" onclick="scrollToSection('about'); closeMobileMenu()">Biz haqimizda</a>
             <a href="#location" data-key="location_link" onclick="scrollToSection('location'); closeMobileMenu()">Manzil</a>
-
             <div class="mobile-lang-switcher">
                 <div class="language-switcher">
                     <button class="lang-btn active" onclick="switchLanguage('uz')">UZ</button>
@@ -1017,7 +865,6 @@
                     <button class="lang-btn" onclick="switchLanguage('en')">EN</button>
                 </div>
             </div>
-
             <button class="login-btn" data-key="login_btn" onclick="openModal(); closeMobileMenu()" style="width: 100%; margin-top: 0.5rem;">Kirish</button>
         </div>
     </div>
@@ -1031,11 +878,10 @@
         </h1>
         <p data-key="hero_subtitle">10,000 dan ortiq o'quvchilar tahsil olgan. 40 dan ortiq o'qituvchilar xizmatingizga tayyor.</p>
         <div class="hero-buttons">
-            <button class="btn-primary" data-key="free_lesson_btn">BEPUL DARSGA YOZILISH</button>
+            <a href="tel:+998712004433" class="btn-primary" data-key="free_lesson_btn">BEPUL DARSGA YOZILISH</a>
             <button class="btn-secondary" data-key="view_courses_btn" onclick="scrollToSection('courses')">Kurslarni ko'rish</button>
         </div>
     </div>
-
     <div class="decoration decoration-1"></div>
     <div class="decoration decoration-2"></div>
     <div class="decoration decoration-3"></div>
@@ -1071,7 +917,6 @@
             <h2 data-key="courses_title">Bizning kurslarimiz</h2>
             <p data-key="courses_subtitle">Professional o'qituvchilar bilan sifatli ta'lim oling</p>
         </div>
-
         <div class="courses-grid">
             <div class="course-card">
                 <div class="course-icon">
@@ -1086,7 +931,6 @@
                     <li data-key="english_feature_4">Sertifikat berish</li>
                 </ul>
             </div>
-
             <div class="course-card">
                 <div class="course-icon">
                     <i class="fas fa-globe"></i>
@@ -1100,7 +944,6 @@
                     <li data-key="russian_feature_4">Davlat sertifikati</li>
                 </ul>
             </div>
-
             <div class="course-card">
                 <div class="course-icon">
                     <i class="fas fa-calculator"></i>
@@ -1114,7 +957,6 @@
                     <li data-key="math_feature_4">Individual darslar</li>
                 </ul>
             </div>
-
             <div class="course-card">
                 <div class="course-icon">
                     <i class="fas fa-code"></i>
@@ -1138,7 +980,6 @@
         <h2 data-key="why_us_title">Nima uchun Ipe School?</h2>
         <p data-key="why_us_subtitle">Zamonaviy ta'lim usullari va tajribali o'qituvchilar bilan eng yaxshi natijalarni kafolatlaydi</p>
     </div>
-
     <div class="features-container">
         <div class="feature-card blue">
             <div class="feature-icon">
@@ -1147,7 +988,6 @@
             <h3 data-key="feature_1_title">Tajribali o'qituvchilar</h3>
             <p data-key="feature_1_desc">40 dan ortiq malakali o'qituvchilar sizning muvaffaqiyatingiz uchun tayyor</p>
         </div>
-
         <div class="feature-card purple">
             <div class="feature-icon">
                 <i class="fas fa-award"></i>
@@ -1155,7 +995,6 @@
             <h3 data-key="feature_2_title">Zamonaviy dastur</h3>
             <p data-key="feature_2_desc">Eng so'nggi ta'lim dasturlari va innovatsion o'qitish usullari</p>
         </div>
-
         <div class="feature-card green">
             <div class="feature-icon">
                 <i class="fas fa-clock"></i>
@@ -1173,7 +1012,6 @@
             <h2 data-key="locations_title">Bizning manzillarimiz</h2>
             <p data-key="locations_subtitle">Sizga qulay bo'lgan filialimizni tanlang</p>
         </div>
-
         <div class="location-grid">
             <div class="location-card">
                 <div class="location-header">
@@ -1190,7 +1028,6 @@
                     <span>78 113 07 74</span>
                 </div>
             </div>
-
             <div class="location-card">
                 <div class="location-header">
                     <div class="location-icon">
@@ -1207,12 +1044,11 @@
                 </div>
             </div>
         </div>
-
         <div class="location-cta">
-            <button class="btn-primary" data-key="free_lesson_btn">
+            <a href="tel:+998712004433" class="btn-primary" data-key="free_lesson_btn">
                 <i class="fas fa-phone" style="margin-right: 0.5rem;"></i>
                 BEPUL DARSGA YOZILISH
-            </button>
+            </a>
         </div>
     </div>
 </section>
@@ -1229,10 +1065,7 @@
             </div>
             <p data-key="footer_desc">Sifatli ta'lim va professional o'qituvchilar bilan muvaffaqiyatga erishing.</p>
             <div class="social-links">
-                <a href="#" class="social-link facebook">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="#" class="social-link instagram">
+                <a href="https://www.instagram.com/ipe_school?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="social-link instagram" target="_blank">
                     <i class="fab fa-instagram"></i>
                 </a>
                 <a href="https://t.me/ipeschool" class="social-link telegram" target="_blank">
@@ -1240,7 +1073,6 @@
                 </a>
             </div>
         </div>
-
         <div class="footer-col">
             <h3 data-key="quick_links_title">Tezkor havolalar</h3>
             <ul class="footer-links">
@@ -1250,7 +1082,6 @@
                 <li><a href="#location" data-key="location_link" onclick="scrollToSection('location')">Manzil</a></li>
             </ul>
         </div>
-
         <div class="footer-col">
             <h3 data-key="courses_title">Kurslarimiz</h3>
             <ul class="footer-links">
@@ -1260,7 +1091,6 @@
                 <li><a href="#" data-key="frontend_course_title">Front-end</a></li>
             </ul>
         </div>
-
         <div class="footer-col">
             <h3 data-key="contact_title">Aloqa</h3>
             <div style="color: #9ca3af; line-height: 1.7;">
@@ -1534,7 +1364,6 @@
 
     function switchLanguage(lang) {
         currentLanguage = lang;
-
         // Update active language button
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.classList.remove('active');
@@ -1575,7 +1404,6 @@
     function closeMobileMenu() {
         const mobileNav = document.getElementById('mobile-nav');
         const icon = document.getElementById('mobile-menu-icon');
-
         mobileMenuOpen = false;
         mobileNav.classList.remove('active');
         icon.className = 'fas fa-bars';
@@ -1594,7 +1422,6 @@
         const modal = document.getElementById('loginModal');
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
-
         setTimeout(() => {
             document.getElementById('phoneNumber').focus();
         }, 300);
@@ -1635,22 +1462,18 @@
     // Phone number formatting
     document.getElementById('phoneNumber').addEventListener('input', function(e) {
         let value = e.target.value.replace(/\D/g, '');
-
         if (!value.startsWith('998')) {
             value = '998' + value.replace(/^998/, '');
         }
-
         if (value.length > 12) {
             value = value.slice(0, 12);
         }
-
         e.target.value = '+' + value;
     });
 
     // Login form submission
     function handleLogin(event) {
         event.preventDefault();
-
         const button = document.getElementById('loginButton');
         const phoneNumber = document.getElementById('phoneNumber').value;
         const password = document.getElementById('password').value;
@@ -1754,7 +1577,6 @@
                 this.style.fontSize = '16px';
             }
         });
-
         input.addEventListener('blur', function() {
             this.style.fontSize = '';
         });
