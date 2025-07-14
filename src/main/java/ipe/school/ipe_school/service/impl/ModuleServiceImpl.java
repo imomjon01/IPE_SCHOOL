@@ -34,16 +34,16 @@ public class ModuleServiceImpl implements ModuleService {
                 .active(true)
                 .build();
         Module savedModule = moduleRepository.save(module);
-        addingCurrentScience(savedModule,moduleReq.getScienceId());
+        addingCurrentScience(savedModule, moduleReq.getScienceId());
         return new ModuleRes(savedModule.getId(), savedModule.getModuleName(), savedModule.getActive());
     }
 
     private void addingCurrentScience(Module savedModule, Long scienceId) {
-        if (scienceId!=null){
+        if (scienceId != null) {
             Science science = scienceRepository.findById(scienceId).orElseThrow(RuntimeException::new);
-            if (science.getModules()!=null){
+            if (science.getModules() != null) {
                 science.getModules().add(savedModule);
-            }else  {
+            } else {
                 science.setModules(Collections.singletonList(savedModule));
             }
         }
@@ -53,14 +53,17 @@ public class ModuleServiceImpl implements ModuleService {
     public List<ModuleRes> getAllModulesBy_active(User user) {
         return Optional.ofNullable(userRepository.findByPhoneNumber(user.getPhoneNumber()))
                 .map(u -> groupRepository.findGroupIdByStudentId(u.getId()))
-                .map(groupRepository::findById)
-                .flatMap(g -> g.map(group -> group.getModules().stream()
-                        .map(module -> new ModuleRes(
-                                module.getId(),
-                                module.getModuleName(),
-                                module.getActive()))
-                        .collect(Collectors.toList())))
-                .orElse(Collections.emptyList());
+                .flatMap(groupRepository::findById)
+                .map(Group::getModules)
+                .stream()
+                .flatMap(List::stream)
+                .filter(Module::getActive)
+                .map(module -> new ModuleRes(
+                        module.getId(),
+                        module.getModuleName(),
+                        true
+                ))
+                .collect(Collectors.toList());
     }
 
 
