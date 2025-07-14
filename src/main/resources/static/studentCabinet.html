@@ -718,60 +718,42 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            border-radius: 10px;
+            border-radius: 12px;
             box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
             max-width: 90vw;
             max-height: 90vh;
         }
 
+        /* Beautiful Close Button */
         .image-modal-close {
             position: absolute;
-            top: -50px;
+            top: -60px;
             right: 0;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
             color: white;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: rgba(0, 0, 0, 0.7);
+            border: none;
             width: 50px;
             height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            backdrop-filter: blur(10px);
         }
 
         .image-modal-close:hover {
-            color: #ff6b6b;
-            transform: scale(1.1);
-            background: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+            background: linear-gradient(135deg, #ff5252 0%, #d32f2f 100%);
         }
 
-        .image-modal-info {
-            position: absolute;
-            bottom: -80px;
-            left: 0;
-            right: 0;
-            color: white;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .image-modal-info h6 {
-            margin-bottom: 5px;
-            font-size: 1.2rem;
-            color: #fff;
-        }
-
-        .image-modal-info p {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin: 0;
+        .image-modal-close:active {
+            transform: scale(0.95) rotate(90deg);
         }
 
         /* Navigation arrows for multiple images */
@@ -779,7 +761,7 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(255, 255, 255, 0.1);
             color: white;
             border: 2px solid rgba(255, 255, 255, 0.3);
             font-size: 24px;
@@ -788,12 +770,14 @@
             border-radius: 50%;
             transition: all 0.3s ease;
             z-index: 10001;
+            backdrop-filter: blur(10px);
         }
 
         .image-nav-arrow:hover {
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(255, 255, 255, 0.2);
             transform: translateY(-50%) scale(1.1);
             color: #667eea;
+            border-color: #667eea;
         }
 
         .image-prev-arrow {
@@ -810,6 +794,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            border-radius: 8px;
         }
 
         .clickable-image:hover {
@@ -888,28 +873,15 @@
             }
 
             .image-modal-close {
-                top: -40px;
-                font-size: 30px;
-                width: 40px;
-                height: 40px;
+                top: -50px;
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
             }
 
             .image-nav-arrow {
                 font-size: 18px;
                 padding: 10px 15px;
-            }
-
-            .image-modal-info {
-                bottom: -60px;
-                padding: 10px;
-            }
-
-            .image-modal-info h6 {
-                font-size: 1rem;
-            }
-
-            .image-modal-info p {
-                font-size: 0.8rem;
             }
         }
 
@@ -1145,12 +1117,10 @@
 <!-- IMAGE MODAL -->
 <div id="imageModal" class="image-modal">
     <div class="image-modal-content">
-        <span class="image-modal-close" id="imageModalClose">&times;</span>
+        <button class="image-modal-close" id="imageModalClose">
+            <i class="fas fa-times"></i>
+        </button>
         <img class="image-modal-image" id="modalImage" src="/placeholder.svg" alt="">
-        <div class="image-modal-info" id="modalInfo">
-            <h6 id="modalTitle">Rasm</h6>
-            <p id="modalDescription">Rasmni yopish uchun X tugmasini bosing</p>
-        </div>
     </div>
     <button class="image-nav-arrow image-prev-arrow" id="prevImageBtn">&#8249;</button>
     <button class="image-nav-arrow image-next-arrow" id="nextImageBtn">&#8250;</button>
@@ -1194,11 +1164,9 @@
     }
 
     // IMAGE MODAL FUNCTIONS
-    function openImageModal(imageSrc, imageTitle = 'Rasm', imageDescription = 'Rasmni yopish uchun X tugmasini bosing', allImages = []) {
+    function openImageModal(imageSrc, allImages = []) {
         const modal = document.getElementById('imageModal');
         const modalImage = document.getElementById('modalImage');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalDescription = document.getElementById('modalDescription');
         const prevBtn = document.getElementById('prevImageBtn');
         const nextBtn = document.getElementById('nextImageBtn');
 
@@ -1207,8 +1175,6 @@
         if (currentImageIndex === -1) currentImageIndex = 0;
 
         modalImage.src = imageSrc;
-        modalTitle.textContent = imageTitle;
-        modalDescription.textContent = imageDescription;
 
         // Show/hide navigation arrows
         if (currentImages.length > 1) {
@@ -2140,12 +2106,7 @@
 
                         // Add click event to open modal
                         img.addEventListener('click', () => {
-                            openImageModal(
-                                imageData,
-                                `Vazifa rasmi ${index + 1}`,
-                                'Rasmni yopish uchun X tugmasini bosing yoki ESC tugmasini bosing',
-                                allImageUrls
-                            );
+                            openImageModal(imageData, allImageUrls);
                         });
                     } else {
                         img.src = '/placeholder.svg?height=200&width=300';
@@ -2235,11 +2196,7 @@
 
                     // Add click event to open modal
                     img.addEventListener('click', () => {
-                        openImageModal(
-                            imageData,
-                            'Savol rasmi',
-                            'Rasmni yopish uchun X tugmasini bosing yoki ESC tugmasini bosing'
-                        );
+                        openImageModal(imageData);
                     });
                 } else {
                     img.src = '/placeholder.svg?height=200&width=300';
