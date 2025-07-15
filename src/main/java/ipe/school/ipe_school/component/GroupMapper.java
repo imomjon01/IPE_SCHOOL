@@ -15,7 +15,6 @@ public class GroupMapper {
         GroupDetailsRes dto = new GroupDetailsRes();
         dto.setId(group.getId());
         dto.setName(group.getName());
-
         dto.setMentor(toUserRes(group.getMentor()));
 
         dto.setStudents(group.getStudents().stream()
