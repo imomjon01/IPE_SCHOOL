@@ -47,21 +47,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name = 'ROLE_STUDENT' AND u.active = true")
     List<User> findAllActiveStudents();
 
-    @Query("SELECT u FROM User u JOIN u.roles r " +
-            "WHERE  u.active = :isActive " +
-            "AND (" +
+    @Query("SELECT DISTINCT u FROM User u JOIN u.roles r " +
+            "WHERE u.active = :isActive AND (" +
             "LOWER(u.firstName) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
             "LOWER(u.lastName) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
-            "LOWER(u.phoneNumber) LIKE LOWER(CONCAT('%', :search, '%'))" +
-            ")")
+            "LOWER(u.phoneNumber) LIKE LOWER(CONCAT('%', :search, '%')))")
     Page<User> findAllActiveUsersWithSearch(@Param("search") String search,
-                                               @Param("isActive") Boolean isActive,
-                                               Pageable pageable);
+                                            @Param("isActive") Boolean isActive,
+                                            Pageable pageable);
 
 
-    @Query("SELECT u FROM User u JOIN u.roles r " +
-            "WHERE u.active = :isActive")
+
+    @Query("SELECT DISTINCT u FROM User u JOIN u.roles r WHERE u.active = :isActive")
     Page<User> findAllActiveUsers(@Param("isActive") Boolean isActive, Pageable pageable);
+
 
     @Query("SELECT COUNT(u) FROM User u JOIN u.roles r WHERE r.name = 'ROLE_STUDENT' AND u.active = true")
     Integer findAllCountStudentActive();

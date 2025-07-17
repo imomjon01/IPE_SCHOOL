@@ -24,7 +24,7 @@ public class AdminUserController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> delete_mentor(@PathVariable Long userId, Authentication authentication) {
         User authenticatedUser = userService.getAuthenticatedUser(authentication);
-        if (authenticatedUser.getId() != 1) {
+        if (authenticatedUser.getId() != 1 || userId == 1) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only user with ID 1 can delete users");
         }
         userService.updateUser_Active(userId);
@@ -38,7 +38,7 @@ public class AdminUserController {
     }
 
     @GetMapping("/archived")
-    public ResponseEntity<Page<UserRes>> getStudentsActiveFalse(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+    public ResponseEntity<Page<UserRes>> getUsersActiveFalse(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
                                                                 @RequestParam(required = false) String search
     ) {
         Page<UserRes> users = userService.findAllUsersActive(page, size, search, false);
