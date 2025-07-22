@@ -1,43 +1,26 @@
 version: '3.8'
-
 services:
   app:
     image: ipe-school:latest
-    container_name: ipe-school-app
     ports:
       - "80:80"
     depends_on:
       - db
     networks:
       - app-network
-    restart: always
-    environment:
-      SPRING_PROFILES_ACTIVE: prod
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
 
   db:
     image: postgres:15
-    container_name: ipe-school-db
-    restart: always
     environment:
-      POSTGRES_DB: ipe_school
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root123
+      - POSTGRES_DB=ipe_school
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root123
     ports:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
     networks:
       - app-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
 networks:
   app-network:
