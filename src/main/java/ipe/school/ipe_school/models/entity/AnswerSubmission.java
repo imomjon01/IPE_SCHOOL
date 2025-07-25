@@ -16,8 +16,10 @@ public class AnswerSubmission extends BaseEntity {
 
     @ManyToOne
     private User student;
+
     @ManyToOne
     private Question question;
+
     private String selectedAnswer;
     private Boolean correct;
 }
