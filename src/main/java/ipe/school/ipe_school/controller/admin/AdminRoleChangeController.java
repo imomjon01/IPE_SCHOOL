@@ -43,7 +43,7 @@ public class AdminRoleChangeController {
     }
 
     @GetMapping("/getByPage")
-    public ResponseEntity<Page<UserRes>> getStudents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+    public ResponseEntity<Page<UserRes>> getUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
                                                                @RequestParam(required = false) String search
     ) {
         Page<UserRes> users = userService.findAllUsersActive(page, size, search, true);
