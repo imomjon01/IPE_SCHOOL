@@ -30,28 +30,28 @@ jobs:
         run: |
           docker save -o ipe-school.tar ipe-school:latest
 
-      - name: Copy Docker image and Docker Compose file to server
+      - name: Copy Docker image and Docker Compose file to server (root user)
         env:
           SERVER_IP: ${{ secrets.SERVER_IP }}
           SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
         run: |
           echo "$SERVER_SSH_KEY" > ssh_key
           chmod 600 ssh_key
-          scp -o StrictHostKeyChecking=no -i ssh_key ipe-school.tar ubuntu@$SERVER_IP:/home/ubuntu/
-          scp -o StrictHostKeyChecking=no -i ssh_key docker-compose.yml ubuntu@$SERVER_IP:/home/ubuntu/
+          scp -o StrictHostKeyChecking=no -i ssh_key ipe-school.tar root@$SERVER_IP:/root/
+          scp -o StrictHostKeyChecking=no -i ssh_key docker-compose.yml root@$SERVER_IP:/root/
           rm ssh_key
 
-      - name: Deploy to server
+      - name: Deploy to server (root user)
         env:
           SERVER_IP: ${{ secrets.SERVER_IP }}
           SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
         run: |
           echo "$SERVER_SSH_KEY" > ssh_key
           chmod 600 ssh_key
-          ssh -o StrictHostKeyChecking=no -i ssh_key ubuntu@$SERVER_IP << 'EOF'
-            docker load -i /home/ubuntu/ipe-school.tar
-            docker compose -f /home/ubuntu/docker-compose.yml down
-            docker compose -f /home/ubuntu/docker-compose.yml up -d
-            rm /home/ubuntu/ipe-school.tar
+          ssh -o StrictHostKeyChecking=no -i ssh_key root@$SERVER_IP << 'EOF'
+            docker load -i /root/ipe-school.tar
+            docker compose -f /root/docker-compose.yml down
+            docker compose -f /root/docker-compose.yml up -d
+            rm /root/ipe-school.tar
           EOF
           rm ssh_key
