@@ -662,6 +662,37 @@
     </div>
 </div>
 
+<!-- Group nomeni update qilish modali -->
+<div class="modal fade" id="updateGroupName" tabindex="-1" aria-labelledby="updateGroupNameLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateGroupNameLabel">Guruh nomini o‘zgartirish</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Yopish"></button>
+            </div>
+            <div class="modal-body">
+                <form id="update-group-name-form" class="was-validated">
+                    <div class="mb-3">
+                        <label for="group-name-input" class="form-label">Yangi guruh nomi</label>
+                        <input type="text" class="form-control" id="group-name-input" placeholder="Yangi guruh nomi" required>
+                        <div class="invalid-feedback">Iltimos, guruh nomini kiriting.</div>
+                    </div>
+                    <input type="hidden" id="update-group-id"> <!-- guruhId saqlash -->
+                    <div id="alert-container-for-group"></div>
+                    <div class="modal-footer px-0">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                        <button type="submit" class="btn btn-primary">
+                            <span class="spinner" role="status" aria-hidden="true" style="display: none;"></span>
+                            Saqlash
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- Mentor Tayinlash Modali -->
 <div class="modal fade" id="assignMentorModal" tabindex="-1" aria-labelledby="assignMentorModalLabel"
      aria-hidden="true">
@@ -2163,6 +2194,7 @@
                 <button class="btn btn-danger btn-sm delete-group-btn" data-group-id="${group.id}">
                     O‘chirish
                 </button>
+                <button class="btn btn-primary btn-sm edit-group-btn" data-group-id="${group.id}">O‘zgartirish</button>
             </td>
         `;
             tableBody.appendChild(row);
@@ -2212,7 +2244,82 @@
                 }
             });
         });
+
+        document.querySelectorAll('.edit-group-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const groupId = this.getAttribute('data-group-id');
+                const groupName = this.closest('tr').querySelector('td:nth-child(2)').innerText;
+
+                document.getElementById('group-name-input').value = groupName;
+                document.getElementById('update-group-id').value = groupId;
+
+                const modal = new bootstrap.Modal(document.getElementById('updateGroupName'));
+                modal.show();
+            });
+        });
+
     }
+
+    document.getElementById('updateGroupName').addEventListener('hidden.bs.modal', function () {
+        const container = document.getElementById('alert-container-for-group');
+        container.innerHTML = '';
+    });
+
+
+    function showAlertForGroup(message, type = 'info') {
+        const container = document.getElementById('alert-container-for-group');
+        container.innerHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show mt-2" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Yopish"></button>
+        </div>
+    `;
+
+        setTimeout(() => {
+            container.innerHTML = '';
+        }, 3000);
+    }
+
+
+    document.getElementById('update-group-name-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const groupId = document.getElementById('update-group-id').value;
+        const name = document.getElementById('group-name-input').value.trim();
+        const spinner = this.querySelector('.spinner');
+        const modalEl = bootstrap.Modal.getInstance(document.getElementById('updateGroupName'));
+
+        if (!name) return;
+
+        spinner.style.display = 'inline-block';
+
+        try {
+            const response = await fetch(`/api/v1/group/${groupId}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `${localStorage.getItem('authToken')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name })
+            });
+
+            if (!response.ok) throw new Error('Xatolik yuz berdi!');
+
+            const updatedGroup = await response.json();
+            showAlertForGroup('Guruh nomi muvaffaqiyatli yangilandi.', 'success');
+            modalEl.hide();
+
+            // Guruhlarni qayta yuklash
+            loadGroups(); // bu sizda bor funktsiya bo'lishi kerak
+
+        } catch (err) {
+            showAlertForGroup(err.message || 'Server xatoligi!', 'danger');
+        } finally {
+            spinner.style.display = 'none';
+        }
+    });
+
+
 
     function loadGroupProgress(groupId) {
         axios.get(`/api/v1/group/getProgress/${groupId}`, {
