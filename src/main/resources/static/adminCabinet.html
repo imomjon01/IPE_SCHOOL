@@ -1854,44 +1854,70 @@
                     const studentGroupId = student.groupId;
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${student.id}</td>
-                        <td>${student.firstName} ${student.lastName}</td>
-                        <td>${student.phoneNumber}</td>
-                        <td>
-                            <select class="form-select group-select"
-                                    data-student-id="${student.id}"
-                                    data-old-group-id="${studentGroupId || ''}">
-                                <option value="">Guruh Yo‘q</option>
-                                ${groups.map(group => {
+                <td>${student.id}</td>
+                <td>${student.firstName} ${student.lastName}</td>
+                <td>${student.phoneNumber}</td>
+                <td>
+                    <select class="form-select group-select"
+                            data-student-id="${student.id}"
+                            data-old-group-id="${studentGroupId || ''}">
+                        <option value="">Guruh Yo‘q</option>
+                        ${groups.map(group => {
                         const isSelected = studentGroupId && studentGroupId === group.id ? 'selected' : '';
                         return `<option value="${group.id}" ${isSelected}>${group.name}</option>`;
                     }).join('')}
-                            </select>
-                        </td>
-                        <td>
-                            <button class="btn btn-primary btn-sm update-group-btn" data-student-id="${student.id}">
-                                Yangilash
-                            </button>
-                        </td>
-                    `;
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-primary btn-sm update-group-btn" data-student-id="${student.id}">
+                        Yangilash
+                    </button>
+                </td>
+            `;
                     tableBody.appendChild(row);
                 });
 
+                // Pagination
                 const pagination = document.getElementById('student-pagination');
                 pagination.innerHTML = '';
 
+                // Oldingi tugma
                 const prevItem = document.createElement('li');
                 prevItem.className = `page-item ${currentPage === 0 ? 'disabled' : ''}`;
                 prevItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Oldingi</a>`;
                 pagination.appendChild(prevItem);
 
-                for (let i = 0; i < totalPages; i++) {
-                    const pageItem = document.createElement('li');
-                    pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
-                    pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i + 1}</a>`;
-                    pagination.appendChild(pageItem);
+                // Previous page (agar mavjud bo‘lsa)
+                if (currentPage > 0) {
+                    const prevPage = document.createElement('li');
+                    prevPage.className = 'page-item';
+                    prevPage.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">${currentPage}</a>`;
+                    pagination.appendChild(prevPage);
                 }
 
+                // Current page
+                const currentPageItem = document.createElement('li');
+                currentPageItem.className = 'page-item active';
+                currentPageItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage}">${currentPage + 1}</a>`;
+                pagination.appendChild(currentPageItem);
+
+                // Next page (agar mavjud bo‘lsa)
+                if (currentPage < totalPages - 1) {
+                    const nextPage = document.createElement('li');
+                    nextPage.className = 'page-item';
+                    nextPage.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">${currentPage + 2}</a>`;
+                    pagination.appendChild(nextPage);
+                }
+
+                // Oxirgi page (agar oxirgi page ko‘rsatilmagan bo‘lsa)
+                if (currentPage < totalPages - 2) {
+                    const lastPage = document.createElement('li');
+                    lastPage.className = 'page-item';
+                    lastPage.innerHTML = `<a class="page-link" href="#" data-page="${totalPages - 1}">${totalPages}</a>`;
+                    pagination.appendChild(lastPage);
+                }
+
+                // Keyingi tugma
                 const nextItem = document.createElement('li');
                 nextItem.className = `page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`;
                 nextItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Keyingi</a>`;

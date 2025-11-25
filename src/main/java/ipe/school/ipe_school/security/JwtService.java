@@ -1,20 +1,13 @@
 package ipe.school.ipe_school.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import ipe.school.ipe_school.models.entity.Roles;
-import ipe.school.ipe_school.models.entity.User;
+import ipe.school.ipe_school.models.entity.*;
 import ipe.school.ipe_school.models.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.Role;
 import org.springframework.stereotype.Service;
-
 import javax.crypto.SecretKey;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
