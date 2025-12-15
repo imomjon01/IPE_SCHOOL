@@ -21,7 +21,7 @@ public class Runner implements CommandLineRunner {
     private final MentorService mentorService;
     private final UserRepository userRepository;
 
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         if (rolesService.findAll().isEmpty()) {
             rolesService.saveAll(new ArrayList<>(List.of(
                     new Roles("ROLE_ADMIN"),
@@ -32,8 +32,7 @@ public class Runner implements CommandLineRunner {
         }
         if (userRepository.findAll().isEmpty()) {
             MentorReq mentorReq = new MentorReq("Imomjon", "Risqiboyev", "+99811", "root123");
-            MentorRes mentor = mentorService.createMentor(mentorReq);
-            System.out.println("Mentor: " + mentor);
+            mentorService.createMentor(mentorReq);
         }
     }
 }

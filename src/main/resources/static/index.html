@@ -824,7 +824,6 @@
     </style>
 </head>
 <body class="smooth-scroll">
-<!-- Header -->
 <header class="header">
     <nav class="navbar">
         <div class="logo">
@@ -1155,7 +1154,6 @@
 </div>
 
 <script>
-    // Til ma'lumotlari
     const translations = {
         uz: {
             home_link: "Bosh sahifa",
@@ -1360,7 +1358,6 @@
         }
     };
 
-    // Language switching functionality
     let currentLanguage = 'uz';
 
     function switchLanguage(lang) {
@@ -1517,7 +1514,7 @@
 
                     setTimeout(() => {
                         window.location.href = data.redirect || redirectUrl;
-                    }, 1500);
+                    });
                 } else {
                     alert(data.message || translations[currentLanguage].login_error || 'Login xatolik. Ma\'lumotlaringizni tekshiring.');
                 }
@@ -1529,7 +1526,7 @@
                 button.textContent = translations[currentLanguage].login_btn;
                 button.disabled = false;
             }
-        }, 2000);
+        });
     }
 
     // Header scroll effect
