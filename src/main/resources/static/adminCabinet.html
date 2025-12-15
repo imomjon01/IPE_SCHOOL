@@ -2066,11 +2066,44 @@
         prevItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Oldingi</a>`;
         pagination.appendChild(prevItem);
 
-        for (let i = 0; i < totalPages; i++) {
-            const pageItem = document.createElement('li');
-            pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
-            pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i + 1}</a>`;
-            pagination.appendChild(pageItem);
+        function addPage(page, isActive = false) {
+            const li = document.createElement('li');
+            li.className = `page-item ${isActive ? 'active' : ''}`;
+            li.innerHTML = `<a class="page-link" href="#" data-page="${page}">${page + 1}</a>`;
+            pagination.appendChild(li);
+        }
+
+        function addDots() {
+            const li = document.createElement('li');
+            li.className = 'page-item disabled';
+            li.innerHTML = `<span class="page-link">...</span>`;
+            pagination.appendChild(li);
+        }
+
+        addPage(0, currentPage === 0);
+
+        if (currentPage > 1) {
+            addDots();
+        }
+
+        if (currentPage - 1 > 0) {
+            addPage(currentPage - 1);
+        }
+
+        if (currentPage !== 0 && currentPage !== totalPages - 1) {
+            addPage(currentPage, true);
+        }
+
+        if (currentPage + 1 < totalPages - 1) {
+            addPage(currentPage + 1);
+        }
+
+        if (currentPage < totalPages - 2) {
+            addDots();
+        }
+
+        if (totalPages > 1) {
+            addPage(totalPages - 1, currentPage === totalPages - 1);
         }
 
         const nextItem = document.createElement('li');
@@ -2082,7 +2115,9 @@
             link.addEventListener('click', e => {
                 e.preventDefault();
                 const page = parseInt(e.target.getAttribute('data-page'));
-                if (!isNaN(page)) loadUsersForRoleChange(page, size, search);
+                if (!isNaN(page)) {
+                    loadUsersForRoleChange(page, size, search);
+                }
             });
         });
 

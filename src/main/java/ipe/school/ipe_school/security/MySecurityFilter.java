@@ -24,7 +24,6 @@ public class MySecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader("Authorization");
-        System.out.println(" token : " + token);
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
             try {
