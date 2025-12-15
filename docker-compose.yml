@@ -3,8 +3,9 @@ version: '3.8'
 services:
   app:
     image: ipe-school:latest
+    container_name: ipe-school-app
     ports:
-      - "80:80"
+      - "80:8080"   # tashqi 80 → ichki 8080
     depends_on:
       - db
     networks:
@@ -13,6 +14,7 @@ services:
 
   db:
     image: postgres:15
+    container_name: ipe-school-db
     environment:
       POSTGRES_DB: ipe_school
       POSTGRES_USER: postgres

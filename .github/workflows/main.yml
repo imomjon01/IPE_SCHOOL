@@ -18,19 +18,18 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+          cache: maven
 
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
       - name: Build Docker image
-        run: |
-          docker build -t ipe-school:latest .
+        run: docker build -t ipe-school:latest .
 
       - name: Save Docker image
-        run: |
-          docker save -o ipe-school.tar ipe-school:latest
+        run: docker save ipe-school:latest -o ipe-school.tar
 
-      - name: Copy Docker image and Docker Compose file to server (root user)
+      - name: Copy Docker image and docker-compose.yml to server
         env:
           SERVER_IP: ${{ secrets.SERVER_IP }}
           SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
@@ -41,7 +40,7 @@ jobs:
           scp -o StrictHostKeyChecking=no -i ssh_key docker-compose.yml root@$SERVER_IP:/root/
           rm ssh_key
 
-      - name: Deploy to server (root user)
+      - name: Deploy on server
         env:
           SERVER_IP: ${{ secrets.SERVER_IP }}
           SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
