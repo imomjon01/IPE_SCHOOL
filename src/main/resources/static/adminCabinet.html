@@ -1877,47 +1877,54 @@
                     tableBody.appendChild(row);
                 });
 
-                // Pagination
                 const pagination = document.getElementById('student-pagination');
                 pagination.innerHTML = '';
 
-                // Oldingi tugma
                 const prevItem = document.createElement('li');
                 prevItem.className = `page-item ${currentPage === 0 ? 'disabled' : ''}`;
                 prevItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Oldingi</a>`;
                 pagination.appendChild(prevItem);
 
-                // Previous page (agar mavjud bo‘lsa)
-                if (currentPage > 0) {
-                    const prevPage = document.createElement('li');
-                    prevPage.className = 'page-item';
-                    prevPage.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">${currentPage}</a>`;
-                    pagination.appendChild(prevPage);
+                function addPage(page, active = false) {
+                    const li = document.createElement('li');
+                    li.className = `page-item ${active ? 'active' : ''}`;
+                    li.innerHTML = `<a class="page-link" href="#" data-page="${page}">${page + 1}</a>`;
+                    pagination.appendChild(li);
                 }
 
-                // Current page
-                const currentPageItem = document.createElement('li');
-                currentPageItem.className = 'page-item active';
-                currentPageItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage}">${currentPage + 1}</a>`;
-                pagination.appendChild(currentPageItem);
-
-                // Next page (agar mavjud bo‘lsa)
-                if (currentPage < totalPages - 1) {
-                    const nextPage = document.createElement('li');
-                    nextPage.className = 'page-item';
-                    nextPage.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">${currentPage + 2}</a>`;
-                    pagination.appendChild(nextPage);
+                function addDots() {
+                    const li = document.createElement('li');
+                    li.className = 'page-item disabled';
+                    li.innerHTML = `<span class="page-link">...</span>`;
+                    pagination.appendChild(li);
                 }
 
-                // Oxirgi page (agar oxirgi page ko‘rsatilmagan bo‘lsa)
-                if (currentPage < totalPages - 2) {
-                    const lastPage = document.createElement('li');
-                    lastPage.className = 'page-item';
-                    lastPage.innerHTML = `<a class="page-link" href="#" data-page="${totalPages - 1}">${totalPages}</a>`;
-                    pagination.appendChild(lastPage);
+                addPage(0, currentPage === 0);
+
+                if (currentPage > 2) {
+                    addDots();
                 }
 
-                // Keyingi tugma
+                if (currentPage - 1 > 0) {
+                    addPage(currentPage - 1);
+                }
+
+                if (currentPage !== 0 && currentPage !== totalPages - 1) {
+                    addPage(currentPage, true);
+                }
+
+                if (currentPage + 1 < totalPages - 1) {
+                    addPage(currentPage + 1);
+                }
+
+                if (currentPage < totalPages - 3) {
+                    addDots();
+                }
+
+                if (totalPages > 1) {
+                    addPage(totalPages - 1, currentPage === totalPages - 1);
+                }
+
                 const nextItem = document.createElement('li');
                 nextItem.className = `page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`;
                 nextItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Keyingi</a>`;
@@ -1927,7 +1934,9 @@
                     link.addEventListener('click', e => {
                         e.preventDefault();
                         const page = parseInt(e.target.getAttribute('data-page'));
-                        if (!isNaN(page)) loadStudents(page, size, search);
+                        if (!isNaN(page)) {
+                            loadStudents(page, size, search);
+                        }
                     });
                 });
 
