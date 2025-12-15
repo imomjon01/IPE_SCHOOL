@@ -1446,11 +1446,44 @@
         prevItem.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Oldingi</a>`;
         pagination.appendChild(prevItem);
 
-        for (let i = 0; i < totalPages; i++) {
-            const pageItem = document.createElement('li');
-            pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
-            pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i + 1}</a>`;
-            pagination.appendChild(pageItem);
+        function addPage(page, active = false) {
+            const li = document.createElement('li');
+            li.className = `page-item ${active ? 'active' : ''}`;
+            li.innerHTML = `<a class="page-link" href="#" data-page="${page}">${page + 1}</a>`;
+            pagination.appendChild(li);
+        }
+
+        function addDots() {
+            const li = document.createElement('li');
+            li.className = 'page-item disabled';
+            li.innerHTML = `<span class="page-link">...</span>`;
+            pagination.appendChild(li);
+        }
+
+        addPage(0, currentPage === 0);
+
+        if (currentPage > 2) {
+            addDots();
+        }
+
+        if (currentPage - 1 > 0) {
+            addPage(currentPage - 1);
+        }
+
+        if (currentPage !== 0 && currentPage !== totalPages - 1) {
+            addPage(currentPage, true);
+        }
+
+        if (currentPage + 1 < totalPages - 1) {
+            addPage(currentPage + 1);
+        }
+
+        if (currentPage < totalPages - 3) {
+            addDots();
+        }
+
+        if (totalPages > 1) {
+            addPage(totalPages - 1, currentPage === totalPages - 1);
         }
 
         const nextItem = document.createElement('li');
@@ -1462,7 +1495,9 @@
             link.addEventListener('click', e => {
                 e.preventDefault();
                 const page = parseInt(e.target.getAttribute('data-page'));
-                if (!isNaN(page)) loadMentors(page, size, search);
+                if (!isNaN(page)) {
+                    loadMentors(page, size, search);
+                }
             });
         });
 
@@ -2278,11 +2313,44 @@
         prevItem.innerHTML = `<a class="page-link" href="#" data-page="${page - 1}">Oldingi</a>`;
         pagination.appendChild(prevItem);
 
-        for (let i = 0; i < totalPages; i++) {
-            const pageItem = document.createElement('li');
-            pageItem.className = `page-item ${i === page ? 'active' : ''}`;
-            pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i + 1}</a>`;
-            pagination.appendChild(pageItem);
+        function addPage(p, active = false) {
+            const li = document.createElement('li');
+            li.className = `page-item ${active ? 'active' : ''}`;
+            li.innerHTML = `<a class="page-link" href="#" data-page="${p}">${p + 1}</a>`;
+            pagination.appendChild(li);
+        }
+
+        function addDots() {
+            const li = document.createElement('li');
+            li.className = 'page-item disabled';
+            li.innerHTML = `<span class="page-link">...</span>`;
+            pagination.appendChild(li);
+        }
+
+        addPage(0, page === 0);
+
+        if (page > 2) {
+            addDots();
+        }
+
+        if (page - 1 > 0) {
+            addPage(page - 1);
+        }
+
+        if (page !== 0 && page !== totalPages - 1) {
+            addPage(page, true);
+        }
+
+        if (page + 1 < totalPages - 1) {
+            addPage(page + 1);
+        }
+
+        if (page < totalPages - 3) {
+            addDots();
+        }
+
+        if (totalPages > 1) {
+            addPage(totalPages - 1, page === totalPages - 1);
         }
 
         const nextItem = document.createElement('li');
@@ -2293,8 +2361,10 @@
         pagination.querySelectorAll('.page-link').forEach(link => {
             link.addEventListener('click', e => {
                 e.preventDefault();
-                const page = parseInt(e.target.getAttribute('data-page'));
-                if (!isNaN(page)) loadGroups(page, size, search);
+                const p = parseInt(e.target.getAttribute('data-page'));
+                if (!isNaN(p)) {
+                    loadGroups(p, size, search);
+                }
             });
         });
 
