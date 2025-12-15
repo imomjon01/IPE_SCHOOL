@@ -294,7 +294,9 @@
                     <div class="search-box">
                         <i class="fas fa-search"></i>
                         <input type="text" class="form-control" placeholder="Qidirish..." id="search-input">
+                        <button id="search-btn" class="btn btn-primary">Qidirish</button>
                     </div>
+
                     <div class="profile-dropdown">
                         <div class="d-flex align-items-center">
                             <span class="me-2 d-none d-sm-inline" id="admin-name">Admin Ismi</span>
@@ -1991,9 +1993,10 @@
             });
     }
 
-    // Qidiruv inputiga hodisa qo‘shish
-    document.getElementById('search-input').addEventListener('input', e => {
-        const searchTerm = e.target.value.trim();
+    document.getElementById('search-btn').addEventListener('click', doSearch);
+    function doSearch() {
+        const searchTerm = document.getElementById('search-input').value.trim();
+
         if (currentTab === 'student') {
             loadStudents(0, 10, searchTerm);
         } else if (currentTab === 'mentor') {
@@ -2005,7 +2008,7 @@
         } else if (currentTab === 'role-change') {
             loadUsersForRoleChange(0, 10, searchTerm);
         }
-    });
+    }
 
     // Tab o‘tishda currentTab ni yangilash
     tabs.forEach(tab => {
