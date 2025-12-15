@@ -5,7 +5,7 @@ services:
     image: ipe-school:latest
     container_name: ipe-school-app
     ports:
-      - "80:8080"   # tashqi 80 → ichki 8080
+      - "80:80"
     depends_on:
       - db
     networks:
